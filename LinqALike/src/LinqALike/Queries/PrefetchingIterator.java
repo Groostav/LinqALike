@@ -22,7 +22,7 @@ public abstract class PrefetchingIterator<TElement> implements Iterator<TElement
     @Override
     public boolean hasNext() {
         updateCache();
-        return cachedValueIsValid;
+        return hasPrefetchedValue();
     }
 
     @Override
