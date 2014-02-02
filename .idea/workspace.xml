@@ -4,6 +4,63 @@
     <list default="true" id="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" name="Default" comment="" />
     <ignored path="Linq-A-Like.iws" />
     <ignored path=".idea/workspace.xml" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/Queryable/Queries/ExcludingQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391335904382" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/Queryable/Queries/IntersectionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391335904382" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/Queryable/Queries/SelectQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391335904382" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/Queryable/Queries/PrefetchingIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391335904382" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/ModelUpdaterService.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391335904823" ignored="false" />
+    <file path="/fragment.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336982015" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable/Queries/ExcludingQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336015907" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable/Queries/SelectQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336015907" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable/Queries/PrefetchingIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336015907" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable/Queries/IntersectionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336015907" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/PrefetchingIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336069534" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/Queryable.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/Infrastructure/NumberTextFieldView.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/LinqBehaviour.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341511562" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/QueryableMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/LinqingList.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/AmmendedIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/DataObject/Visitors/ExcelResultsNodeExecutor.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/NonEmptySetIsEmptyException.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/Queries/IntersectionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/LinqingMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/QueryableBase.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341511562" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/Infrastructure/NumberConstraint.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/MainPanel/Workspace/ProxyLocatedVariable.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/tests/PDOL/UnitTests/GraphModelMarshallerFixture.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Tuple.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341511562" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/DataObject/VariableSymbol.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Delegate/NamedCondition.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Delegate/CommonDelegates.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341511562" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/MainPanel/Workspace/WorkspaceBlockController.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
+    <file path="/LinqBehaviour.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391340807159" ignored="false" />
+    <file path="/CommonDelegates.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341226113" ignored="false" />
+    <file path="/Condition.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337674291" ignored="false" />
+    <file path="/Command.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336784072" ignored="false" />
+    <file path="/Command1.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336799985" ignored="false" />
+    <file path="/Command3.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336848137" ignored="false" />
+    <file path="/Action2.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391338200182" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/Nodes/ProblemSetup/UserDefinedFunctionController.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336965121" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/Nodes/ProblemSetup/OptimizationFunctionController.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336965121" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/Queries/UnionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341511562" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/ExternalToolsWindow/ETToolOptions/UserDefinedProxyConfiguration.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336965121" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/DataObject/Optimization.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336965121" ignored="false" />
+    <file path="/Transform.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337829830" ignored="false" />
+    <file path="/Func.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391338164461" ignored="false" />
+    <file path="/Func2.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337914722" ignored="false" />
+    <file path="/Func3.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337885110" ignored="false" />
+    <file path="/Action.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337290998" ignored="false" />
+    <file path="/Action1.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391338176951" ignored="false" />
+    <file path="/Action3.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337582347" ignored="false" />
+    <file path="/LinqingList.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391340145464" ignored="false" />
+    <file path="/Queryable.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391340168890" ignored="false" />
+    <file path="/AmmendedIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391339823915" ignored="false" />
+    <file path="/*.regexp" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341095289" ignored="false" />
+    <file path="/LinqingMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391340308687" ignored="false" />
+    <file path="/QueryableBase.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391340402830" ignored="false" />
+    <file path="/Tuple.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341293210" ignored="false" />
+    <file path="/ReadonlyLinqingList.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341399084" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,11 +119,165 @@
   <component name="FavoritesManager">
     <favorites_list name="Linq-A-Like" />
   </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="CommonDelegates.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/CommonDelegates.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="67" column="35" selection-start="3168" selection-end="3168" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Action2.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Action2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="39" selection-start="602" selection-end="602" vertical-scroll-proportion="0.4391144">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LinqingMap.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="57" selection-start="714" selection-end="714" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SingletonSetContainsMultipleElementsException.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/SingletonSetContainsMultipleElementsException.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="51" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LinqBehaviour.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="159" column="27" selection-start="5670" selection-end="5670" vertical-scroll-proportion="-3.1960785">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#20573#20634#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LinqingList.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Queryable.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="32" selection-start="157" selection-end="157" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Tuple.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Tuple.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="66" selection-start="209" selection-end="209" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2442#2469#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ReadonlyLinqingList.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/ReadonlyLinqingList.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="38" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QueryableMap.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="15" column="21" selection-start="567" selection-end="567" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/AmmendedIterator.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableBase.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/ExcludingQuery.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/NonEmptySetIsEmptyException.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingSet.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/SelectQuery.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/IntersectionQuery.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/CommonDelegates.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/SingletonSetContainsMultipleElementsException.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Tuple.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/ReadonlyLinqingList.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="1672" />
     <option name="y" value="-8" />
     <option name="width" value="1696" />
     <option name="height" value="1036" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>XPath</id>
+          </State>
+        </expanded-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -94,7 +305,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -102,20 +313,123 @@
               <option name="myItemId" value="Linq-A-Like" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Delegate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="Repository.Attach.JavaDocs" value="true" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="options.lastSelected" value="fileTemplates" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="Repository.Attach.Sources" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="Downloaded.Files.Path" value="D:\Users\Geoff\Code\LinqALike\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Users\Geoff\Code\LinqALike\LinqALike\src\LinqALike" />
+      <recent name="D:\Users\Geoff\Code\LinqALike\LinqALike\src" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="LinqALike" />
+      <recent name="LinqALike.Delegate" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -216,6 +530,23 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" name="Default" comment="" />
@@ -226,29 +557,31 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1672" y="-8" width="1696" height="1036" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1772" y="92" width="930" height="836" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32915717" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249694" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249694" sideWeight="0.6708428" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -310,6 +643,232 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/ExcludingQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="122" selection-end="122" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/NonEmptySetIsEmptyException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="44" selection-start="95" selection-end="95" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="16" selection-start="75" selection-end="75" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/SelectQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="29" selection-start="335" selection-end="335" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/IntersectionQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="64" selection-start="212" selection-end="212" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/SetSizeInsufficientException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="118" selection-start="25" selection-end="25" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="17" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="32" selection-start="157" selection-end="157" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="27" selection-start="5670" selection-end="5670" vertical-scroll-proportion="-3.1960785">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#20573#20634#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/CommonDelegates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="35" selection-start="3168" selection-end="3168" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/SingletonSetContainsMultipleElementsException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="51" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Tuple.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="66" selection-start="209" selection-end="209" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2442#2469#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/ReadonlyLinqingList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="38" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="15" column="21" selection-start="567" selection-end="567" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="57" selection-start="714" selection-end="714" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Action2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="39" selection-start="602" selection-end="602" vertical-scroll-proportion="0.4391144">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>LinqALike</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>org.apache.commons:com.springsource.org.apache.commons.lang:2.6.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
 
