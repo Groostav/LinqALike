@@ -106,7 +106,7 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
-    public LinqingList<Tuple<TKey, TValue>> where(Condition<? super Tuple<TKey, TValue>> condition) {
+    public Queryable<Tuple<TKey, TValue>> where(Condition<? super Tuple<TKey, TValue>> condition) {
         return LinqBehaviour.where(this, condition);
     }
 

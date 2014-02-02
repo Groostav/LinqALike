@@ -5,9 +5,7 @@ import LinqALike.Delegate.Action1;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
-import LinqALike.Queries.ExcludingQuery;
-import LinqALike.Queries.IntersectionQuery;
-import LinqALike.Queries.SelectQuery;
+import LinqALike.Queries.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -123,14 +121,8 @@ public class LinqBehaviour {
         return null;
     }
 
-    public static <TElement> LinqingList<TElement> where(Iterable<TElement> elements, Condition<? super TElement> condition) {
-        LinqingList<TElement> results = new LinqingList<TElement>();
-        for (TElement element : elements) {
-            if (condition.passesFor(element)) {
-                results.add(element);
-            }
-        }
-        return markupAsReadonly(results);
+    public static <TElement> Queryable<TElement> where(Iterable<TElement> elements, Condition<? super TElement> condition) {
+        return new WhereQuery<>(elements, condition);
     }
 
     public static <TElement, TResult> Iterable<TResult> select(TElement[] set,
@@ -297,33 +289,20 @@ public class LinqBehaviour {
         return markupAsReadonly(results);
     }
 
-    public static <TElement> LinqingList<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
+    public static <TElement> Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
         return union(left, right, CommonDelegates.AsIs());
     }
 
-    public static <TElement, TCompared>
-    LinqingList<TElement> union(Iterable<? extends TElement> left,
-                                Iterable<? extends TElement> right,
-                                Func1<? super TElement, TCompared> comparableSelector){
-        HashMap<TCompared, TElement> elementsByTheirChampion = new HashMap<>();
-        LinqingList<TElement> result = new LinqingList<>();
-        for(TElement leftMember : left){
-            TCompared leftKey = comparableSelector.getFrom(leftMember);
-            elementsByTheirChampion.put(leftKey, leftMember);
-            result.add(leftMember);
-        }
-        for(TElement rightMember : right){
-            TCompared rightKey = comparableSelector.getFrom(rightMember);
-            if(elementsByTheirChampion.containsKey(rightKey)){
-                continue;
-            }
-            result.add(rightMember);
-        }
-        return result;
+    public static <TElement> Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
+        return union(left, from(toInclude));
     }
 
-    public static <TElement> LinqingList<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return union(left, from(toInclude));
+    public static <TElement, TCompared>
+    Queryable<TElement> union(Iterable<? extends TElement> left,
+                                Iterable<? extends TElement> right,
+                                Func1<? super TElement, TCompared> comparableSelector){
+
+        return new UnionQuery<>(left, right, comparableSelector);
     }
 
     public static <TKey, TValue> LinqingMap<TKey,TValue> toMap(Iterable<TKey> keys, Iterable<TValue> values) {

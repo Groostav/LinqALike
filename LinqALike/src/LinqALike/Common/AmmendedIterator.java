@@ -29,7 +29,7 @@ public class AmmendedIterator<TElement> implements Iterator<TElement> {
 
     @Override
     public TElement next() {
-        TElement returnable = tookFront ? front : body.next();
+        TElement returnable = tookFront ? body.next() : front;
         tookFront = true;
         return returnable;
     }

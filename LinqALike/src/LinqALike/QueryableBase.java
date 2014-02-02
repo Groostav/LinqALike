@@ -44,8 +44,8 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     }
 
     @Override
-    public LinqingList<TElement> where(Condition<? super TElement> condition){
-        return LinqBehaviour.<TElement>where(this, condition);
+    public Queryable<TElement> where(Condition<? super TElement> condition){
+        return LinqBehaviour.where(this, condition);
     }
 
     @Override
@@ -245,7 +245,7 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     }
 
     @Override
-    public LinqingList<TElement> union(Iterable<? extends TElement> toInclude) {
+    public Queryable<TElement> union(Iterable<? extends TElement> toInclude) {
         return LinqBehaviour.union(this, toInclude);
     }
 

@@ -50,7 +50,7 @@ public class CommonDelegates {
                 "is instance of any " + join(allowedTypes.iterator(), ","),
                 actual -> actual != null &&
                         from(allowedTypes).any((Class allowed) -> {
-                            Class actualType = actual instanceof Class ? (Class)actual : actual.getClass();
+                            Class actualType = actual instanceof Class ? (Class) actual : actual.getClass();
                             return allowed.isAssignableFrom(actualType);
                         })
         );
@@ -71,5 +71,12 @@ public class CommonDelegates {
     }
     public static String nullSafeToString(Object source){
         return source == null ? "<null>" : source.toString();
+    }
+
+    public static Condition.WithDescription<Object> Is(String desired) {
+        return new Condition.WithDescription<>(
+                "Is: object -> object.equals(desired)",
+                object -> object.equals(desired)
+        );
     }
 }

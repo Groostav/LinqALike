@@ -154,7 +154,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     @Override
-    public LinqingList<TElement> where(Condition<? super TElement> condition){
+    public Queryable<TElement> where(Condition<? super TElement> condition){
         return LinqBehaviour.where(this, condition);
     }
 
@@ -346,12 +346,12 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     @Override
-    public LinqingList<TElement> union(TElement... toInclude){
+    public Queryable<TElement> union(TElement... toInclude){
         return LinqBehaviour.union(this, toInclude);
     }
 
     @Override
-    public LinqingList<TElement> union(Iterable<? extends TElement> toInclude) {
+    public Queryable<TElement> union(Iterable<? extends TElement> toInclude) {
         return LinqBehaviour.union(this, toInclude);
     }
 
