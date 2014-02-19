@@ -1,5 +1,7 @@
 package LinqALike;
 
+import LinqALike.Delegate.Func1;
+
 import java.util.Map;
 
 public interface QueryableMap<TKey, TValue> extends Queryable<Tuple<TKey, TValue>>{
@@ -14,6 +16,9 @@ public interface QueryableMap<TKey, TValue> extends Queryable<Tuple<TKey, TValue
 
     @Override
     QueryableMap<TKey, TValue> union(Tuple<TKey, TValue>... toInclude);
+
+    <TTransformedValue>
+    QueryableMap<TKey, TTransformedValue> selectValues(Func1<TValue, TTransformedValue> valueSelector);
 
     TValue get(Object key);
     Queryable<TValue> getAll(Iterable<? extends TKey> keys);

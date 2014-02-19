@@ -183,6 +183,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     Queryable<TElement> skip(int numberToSkip);
 
+    <TComparable>
+    QueryableMultiMap<TComparable, TElement> groupBy(Func1<TElement, TComparable> comparableSelector);
+
     <TDerived>
     Queryable<TDerived> selectCast();
 
@@ -487,6 +490,10 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     ReadonlyLinqingList<TElement> asReadOnly();
 
     LinqingList<TElement> toList();
+
+    <TKey>
+    LinqingMap<TKey, TElement> toMap(Func1<TElement, TKey> keySelector);
+
     Object[] toArray();
 
     <TDesired> TDesired[] toArray(TDesired[] arrayTypeIndicator);
