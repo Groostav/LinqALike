@@ -1,0 +1,18 @@
+LinqingHashSet		//set, HashSet
+LinqingSet 			//set, RedBlackSet
+LinqingList			//bag, ArrayList
+LinqingHashMap		//set, HashMap
+LinqingMap			//bag, RedBlackMap
+
+//multimaps are useful
+//bi-direcitonal maps too
+//guava...?
+//orDefault behaviour should...? Use annotatoins? use Java-8's Optional class?
+
+Queryable
+- defines Distinct, which simply "return this" in a set
+QueryableMap
+- currently extends Queryable, which is no-good, follow java convention -> keySet, Values, Entries as Queryable.
+
+QueryableBase
+- must be bag/set agnostic

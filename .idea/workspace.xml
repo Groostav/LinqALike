@@ -67,7 +67,7 @@
     <file path="/FunctionalFixture.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391342863351" ignored="false" />
     <file path="$PROJECT_DIR$/../OPTIP/lib/exception assertions/catch-exception-1.0.4-sources.jar!/com/googlecode/catchexception/CatchException.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391342268946" ignored="false" />
     <file path="/Exceptions.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391342706833" ignored="false" />
-    <file path="/UnionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391343280350" ignored="false" />
+    <file path="/UnionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391346933353" ignored="false" />
     <file path="/PrefetchingIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391344044942" ignored="false" />
     <file path="/SimpleExamples.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391346600974" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -162,22 +162,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="IntersectionFixture.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java">
+      <file leaf-file-name="SimpleExamples.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="70" selection-start="633" selection-end="633" vertical-scroll-proportion="0.0">
+            <state line="72" column="65" selection-start="3062" selection-end="3062" vertical-scroll-proportion="0.5102041">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PropertyChangeListener.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/beans/PropertyChangeListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="33" column="17" selection-start="461" selection-end="461" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleExamples.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java">
+      <file leaf-file-name="Beans.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/beans/Beans.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="57" selection-start="2486" selection-end="2486" vertical-scroll-proportion="0.36734694">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="60" column="13" selection-start="974" selection-end="974" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -240,15 +249,6 @@
         <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Collection.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="579" column="22" selection-start="26948" selection-end="26948" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ArchetectureExamples.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/ArchetectureExamples.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="55" selection-start="62" selection-end="62" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -342,6 +342,60 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="External Libraries" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; 1.8 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; 1.8 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rt.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="&lt; 1.8 &gt;" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rt.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -749,22 +803,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/AllFixture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="70" selection-end="70" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/ExcludingFixture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="77" selection-start="470" selection-end="470" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/PrefetchingIterator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="49" selection-start="1112" selection-end="1112" vertical-scroll-proportion="0.0">
@@ -856,9 +894,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/beans/Beans.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="60" column="13" selection-start="974" selection-end="974" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/beans/PropertyChangeListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="17" selection-start="461" selection-end="461" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="57" selection-start="2486" selection-end="2486" vertical-scroll-proportion="0.36734694">
+        <state line="72" column="65" selection-start="3062" selection-end="3062" vertical-scroll-proportion="0.5102041">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

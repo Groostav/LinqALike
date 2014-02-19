@@ -39,7 +39,7 @@ public class UnionQuery<TElement, TCompared> extends QueryableBase<TElement> {
         public boolean hasNext() {
             return lefts.hasNext() || rights.hasNext();
         }
-
+                                  // what wha                     t
         @Override
         public TElement next() {
             if(lefts.hasNext()){
