@@ -18,7 +18,7 @@ public class ExcludingFixture extends QueryFixtureBase {
         LinqingList<Double> originalSet = from(1.0, 3.0, 5.0, 7.0);
 
         //act
-        Queryable<Double> result = originalSet.excluding(from(1.0, 5.0));
+        Queryable<Double> result = originalSet.except(from(1.0, 5.0));
         LinqingList<Double> flattenedResults = result.toList();
 
         //assert
@@ -32,7 +32,7 @@ public class ExcludingFixture extends QueryFixtureBase {
         CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
 
         //act
-        Queryable<NumberValue> result = originalSet.excluding(from(new NumberValue(1), new NumberValue(3)), getValueTransform);
+        Queryable<NumberValue> result = originalSet.except(from(new NumberValue(1), new NumberValue(3)), getValueTransform);
         LinqingList<NumberValue> flattenedResults = result.toList();
 
         //assert
@@ -47,7 +47,7 @@ public class ExcludingFixture extends QueryFixtureBase {
         CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
 
         //act
-        Queryable<NumberValue> result = originalSet.excluding(from(new NumberValue(1), new NumberValue(3)), getValueTransform);
+        Queryable<NumberValue> result = originalSet.except(from(new NumberValue(1), new NumberValue(3)), getValueTransform);
         LinqingList<NumberValue> flattenedResults = result.toList();
 
         //assert
@@ -60,7 +60,7 @@ public class ExcludingFixture extends QueryFixtureBase {
         LinqingList<String> originalSet = new LinqingList<>("A", "B", "C");
 
         //act
-        Queryable<String> result = originalSet.excluding(LinqingList.<String>empty());
+        Queryable<String> result = originalSet.except(LinqingList.<String>empty());
         LinqingList<String> flattenedResults = result.toList();
 
         //assert

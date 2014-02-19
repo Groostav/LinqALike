@@ -108,14 +108,6 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
         }
         return returnable;
     }
-    public <TKey> LinqingMap<TKey, TElement> toMap(Func1<? super TElement, TKey> keySelector){
-        LinqingMap<TKey, TElement> returnable = new LinqingMap<>();
-        for(TElement element : this){
-            returnable.put(keySelector.getFrom(element), element);
-        }
-        return returnable;
-    }
-
     public ReadonlyLinqingList<TElement> asReadOnly(ReadonlyLinqingList.Because because){
         return new ReadonlyLinqingList<>(this, because);
     }
@@ -160,7 +152,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
 
     @Override
     public <TDesired extends TElement>
-    Queryable<TDesired> whereTypeIs(Class<TDesired> desiredClass) {
+    Queryable<TDesired> ofType(Class<TDesired> desiredClass) {
         return LinqBehaviour.whereTypeIs(this, desiredClass);
     }
 
@@ -172,6 +164,11 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     @Override
     public LinqingList<TElement> toList() {
         return LinqBehaviour.toList(this);
+    }
+
+    @Override
+    public <TKey> LinqingMap<TKey, TElement> toMap(Func1<TElement, TKey> keySelector) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -286,7 +283,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     @Override
-    public ReadonlyLinqingList<TElement> asReadOnly() {
+    public ReadonlyLinqingList<TElement> toReadOnly() {
         return new ReadonlyLinqingList<>(this);
     }
 
@@ -306,17 +303,17 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     @Override
-    public Queryable<TElement> excluding(Iterable<? extends TElement> toExclude) {
+    public Queryable<TElement> except(Iterable<? extends TElement> toExclude) {
         return LinqBehaviour.excluding(this, toExclude);
     }
 
     @Override
-    public Queryable<TElement> excluding(TElement... toExclude) {
+    public Queryable<TElement> except(TElement... toExclude) {
         return LinqBehaviour.excluding(this, toExclude);
     }
 
     @Override
-    public <TCompared> Queryable<TElement> excluding(Iterable<? extends TElement> toExclude, Func1<? super TElement, TCompared> comparableSelector) {
+    public <TCompared> Queryable<TElement> except(Iterable<? extends TElement> toExclude, Func1<? super TElement, TCompared> comparableSelector) {
         return LinqBehaviour.excluding(this, toExclude, comparableSelector);
     }
 
@@ -366,6 +363,11 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     @Override
+    public <TComparable> QueryableMultiMap<TComparable, TElement> groupBy(Func1<TElement, TComparable> comparableSelector) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public Queryable<TElement> skipWhile(Condition<? super TElement> toExclude) {
         return LinqBehaviour.skipWhile(this, toExclude);
     }
@@ -376,22 +378,22 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     @Override
-    public Queryable<TElement> intersection(Iterable<? extends TElement> toInclude) {
+    public Queryable<TElement> intersect(Iterable<? extends TElement> toInclude) {
         return LinqBehaviour.intersection(this, toInclude);
     }
 
     @Override
-    public <TCompared> Queryable<TElement> intersection(Iterable<? extends TElement> toInclude, Func1<? super TElement, TCompared> comparableSelector) {
+    public <TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> toInclude, Func1<? super TElement, TCompared> comparableSelector) {
         return LinqBehaviour.intersection(this, toInclude, comparableSelector);
     }
 
     @Override
-    public Queryable<TElement> intersection(TElement... toIntersect) {
+    public Queryable<TElement> intersect(TElement... toIntersect) {
         return LinqBehaviour.intersection(this, toIntersect);
     }
 
     @Override
-    public <TDerived> LinqingList<TDerived> selectCast() {
+    public <TDerived> LinqingList<TDerived> cast() {
         return LinqBehaviour.selectCast(this);
     }
 
@@ -402,7 +404,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     public void addAllNew(Iterable<TElement> setContainingNewAndExistingElements) {
-        Queryable<TElement> intersection = from(setContainingNewAndExistingElements).excluding(this.intersection(setContainingNewAndExistingElements));
+        Queryable<TElement> intersection = from(setContainingNewAndExistingElements).except(this.intersect(setContainingNewAndExistingElements));
         this.addAll(intersection);
     }
 

@@ -6,6 +6,8 @@ import LinqALike.Delegate.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import static LinqALike.LinqingList.from;
 
@@ -76,7 +78,7 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
-    public ReadonlyLinqingList<Tuple<TKey, TValue>> asReadOnly() {
+    public ReadonlyLinqingList<Tuple<TKey, TValue>> toReadOnly() {
         return new ReadonlyLinqingList<>(this);
     }
 
@@ -96,6 +98,16 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
+    public void forEach(Consumer<? super Tuple<TKey, TValue>> action) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Spliterator<Tuple<TKey, TValue>> spliterator() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public <TTransformed> Queryable<TTransformed> select(Func1<? super Tuple<TKey, TValue>, TTransformed> selector) {
         return LinqBehaviour.select(this, selector);
     }
@@ -111,7 +123,7 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
-    public <TDesired extends Tuple<TKey, TValue>> LinqingList<TDesired> whereTypeIs(Class<TDesired> desiredClass) {
+    public <TDesired extends Tuple<TKey, TValue>> LinqingList<TDesired> ofType(Class<TDesired> desiredClass) {
         assert false : "not implemented, also erasure makes this difficult";
         return null;
     }
@@ -125,6 +137,12 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     @Override
     public LinqingList<Tuple<TKey, TValue>> toList() {
         return new LinqingList<>(this);
+    }
+
+    @Override
+    public <TOuterKey> LinqingMap<TOuterKey, Tuple<TKey, TValue>> toMap(Func1<Tuple<TKey, TValue>, TOuterKey> keySelector) {
+        assert false : "not implemented";
+        return null;
     }
 
     @Override
@@ -284,18 +302,18 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
-    public Queryable<Tuple<TKey, TValue>> excluding(Iterable<? extends Tuple<TKey, TValue>> toExclude) {
+    public Queryable<Tuple<TKey, TValue>> except(Iterable<? extends Tuple<TKey, TValue>> toExclude) {
         return LinqBehaviour.excluding(from(this), from(toExclude));
     }
 
     @Override
-    public Queryable<Tuple<TKey, TValue>> excluding(Tuple<TKey, TValue>... toExclude) {
+    public Queryable<Tuple<TKey, TValue>> except(Tuple<TKey, TValue>... toExclude) {
         assert false : "not implemented";
         return null;
     }
 
     @Override
-    public <TCompared> Queryable<Tuple<TKey, TValue>> excluding(Iterable<? extends Tuple<TKey, TValue>> toExclude, Func1<? super Tuple<TKey, TValue>, TCompared> comparableSelector) {
+    public <TCompared> Queryable<Tuple<TKey, TValue>> except(Iterable<? extends Tuple<TKey, TValue>> toExclude, Func1<? super Tuple<TKey, TValue>, TCompared> comparableSelector) {
         assert false : "not implemented";
         return null;
     }
@@ -327,7 +345,12 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
-    public <TDerived> Queryable<TDerived> selectCast() {
+    public <TComparable> QueryableMultiMap<TComparable, Tuple<TKey, TValue>> groupBy(Func1<Tuple<TKey, TValue>, TComparable> comparableSelector) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public <TDerived> Queryable<TDerived> cast() {
         assert false : "not implemented";
         return null;
     }
@@ -335,6 +358,11 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     @Override
     public LinqingMap<TKey, TValue> union(Tuple<TKey, TValue>... toInclude) {
         return new LinqingMap<>(LinqBehaviour.union(this, from(toInclude)));
+    }
+
+    @Override
+    public <TTransformedValue> QueryableMap<TKey, TTransformedValue> selectValues(Func1<TValue, TTransformedValue> valueSelector) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -348,17 +376,17 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
     }
 
     @Override
-    public Queryable<Tuple<TKey, TValue>> intersection(Iterable<? extends Tuple<TKey, TValue>> toInclude) {
+    public Queryable<Tuple<TKey, TValue>> intersect(Iterable<? extends Tuple<TKey, TValue>> toInclude) {
         return LinqBehaviour.intersection(this, toInclude);
     }
 
     @Override
-    public <TCompared> Queryable<Tuple<TKey, TValue>> intersection(Iterable<? extends Tuple<TKey, TValue>> toInclude, Func1<? super Tuple<TKey, TValue>, TCompared> comparableSelector) {
+    public <TCompared> Queryable<Tuple<TKey, TValue>> intersect(Iterable<? extends Tuple<TKey, TValue>> toInclude, Func1<? super Tuple<TKey, TValue>, TCompared> comparableSelector) {
         return LinqBehaviour.intersection(this, toInclude, comparableSelector);
     }
 
     @Override
-    public Queryable<Tuple<TKey, TValue>> intersection(Tuple<TKey, TValue>... toIntersect) {
+    public Queryable<Tuple<TKey, TValue>> intersect(Tuple<TKey, TValue>... toIntersect) {
         return LinqBehaviour.intersection(this, toIntersect);
     }
 
@@ -400,3 +428,4 @@ public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements Q
         }
     }
 }
+

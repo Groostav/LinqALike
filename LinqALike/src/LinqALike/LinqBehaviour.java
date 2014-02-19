@@ -30,7 +30,7 @@ public class LinqBehaviour {
             }
         }
 
-        return returnable.asReadOnly();
+        return returnable.toReadOnly();
     }
 
     public static <TElement> TElement single(Iterable<TElement> elements) {
@@ -369,7 +369,7 @@ public class LinqBehaviour {
 
         return firstPassingValue.target != null
                 ? new LinqingList<>(new AmmendedIterator<>(firstPassingValue.target, iterator))
-                : LinqingList.<TElement>empty().asReadOnly();
+                : LinqingList.<TElement>empty().toReadOnly();
     }
 
 
@@ -380,7 +380,7 @@ public class LinqBehaviour {
 
         return firstPassingValue.target != null
                 ? new LinqingList<>(new AmmendedIterator<>(firstPassingValue.target, iterator))
-                : LinqingList.<TElement>empty().asReadOnly();
+                : LinqingList.<TElement>empty().toReadOnly();
     }
 
     private static <TElement>

@@ -39,7 +39,7 @@ public class WhereFixture extends QueryFixtureBase {
         assert( ! classOfAnonymousSubclass.equals(NumberValue.class) && NumberValue.class.isAssignableFrom(classOfAnonymousSubclass));
 
         //act
-        LinqingList<NumberValue> results = testableSet.whereTypeIs(NumberValue.class).toList();
+        LinqingList<NumberValue> results = testableSet.ofType(NumberValue.class).toList();
 
         //assert
         assertThat(results).hasSize(2);

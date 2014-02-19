@@ -16,13 +16,13 @@ import static java.util.stream.Collectors.*;
 
 public class SimpleExamples {
 
-    @Test
     /**
      * Below is a simple example of why you would want to use Linq-A-Like, and not streams
      * or a for-each loop. This example does not get too technical. Please see the {@link ArchetectureExamples}
      * for more detailed differences between Linq-A-Like and the Java-8 {@link Stream}s API.
      */
-    public void why_you_would_want_to_use_a_where_call(){
+    @Test
+    public void using_where_reduces_code_waste(){
 
         //Lets say you've got a nice simple customer class
         //that looks something like this.
@@ -97,6 +97,28 @@ public class SimpleExamples {
     }
 
 
+    //model class for the next example:
+    static class Person{
+
+        enum Sex {MALE, FEMALE}
+
+        private final String name;
+        private final Sex gender;
+
+        public Person(String name, Sex gender){
+            this.name = name;
+            this.gender = gender;
+        }
+
+        public String getName(){
+            return name;
+        }
+
+        public Sex getGender(){
+            return gender;
+        }
+    }
+
     /**
      * Below is a demonstration of how Linq-A-Like's wider interface can simplify
      * a consumer's code. Here we're going to use an explicit method on linq, {@link Queryable#groupBy},
@@ -106,36 +128,19 @@ public class SimpleExamples {
     public void increased_interface_size_results_in_simpler_calls(){
 
         //one of the reasons Linq-A-Like can be simpler to use than Streams is because it has
-        //more methods available on its base type, the Queryable. This does occasionally make implementing
-        //the Queryable interface more combersome, but it does so in exchange for simpler consumption models.
+        //more methods available on its base interface, "Queryable". This does occasionally make implementing
+        //the Queryable interface more cumbersome, but it does so in exchange for simpler consumption models.
 
-        //So, heres our model in this example:
+        //given a data-set that looks like this:
+        LinqingList<Person> roster = from(
+                new Person("Sue", Person.Sex.FEMALE), new Person("Bob", Person.Sex.MALE), new Person("Alice", Person.Sex.FEMALE),
+                new Person("Eve", Person.Sex.FEMALE), new Person("Chris", Person.Sex.MALE), new Person("Chris", Person.Sex.MALE));
 
-        class Person{
-
-            enum Sex {MALE, FEMALE}
-
-            private final String name;
-            private final Sex gender;
-
-            public Person(String name, Sex gender){
-                this.name = name;
-                this.gender = gender;
-            }
-
-            public String getName(){
-                return name;
-            }
-
-            public Sex getGender(){
-                return gender;
-            }
-
-        }
-
-        //Lets say we want to do a grouping.
-
-        LinqingList<Person> roster = from(new Person);
+        //Lets say we want to do a grouping. Lets say we want the names of each person grouped by their sex.
+        //so we want the map:
+        // key      | names of that sex
+        // MALE     | {"Bob", "Chris", "Chris"}
+        // FEMALE   | {"Sue", "Alice", "Eve" }
 
         //from Oracle's usage examples
         // (here: http://docs.oracle.com/javase/tutorial/collections/streams/reduction.html)
@@ -160,16 +165,15 @@ public class SimpleExamples {
         //but if we use linq, we get:
         QueryableMultiMap<Person.Sex, String> namesByGenderFromLinq =
                 roster.groupBy(Person::getGender)
-                      .selectManyValues(Person::getName);
+                      .selectFromGroup(Person::getName);
 
-        //you'll notice there isn't actually that much in code-savings,
-        //but look at the nested-brackets and the use of static methods:
-        //  - Linq-A-Like has no static method uses and no nested brackets
-        //  - Streams has 3 static method calls and 3 nested brackets (3 nested calls).
-        //to an object oriented programmer whose used to "dot-tab programming"
-        //(using an IDE's built-in method lookup functionality, and selecting
+        // You'll notice there isn't actually that much in code-savings,
+        // but look at the nested-brackets and the use of static methods:
+        //      - Linq-A-Like has no static method uses and no nested brackets
+        //      - Streams has 3 static method calls and 3 nested brackets (3 nested calls).
+        //
+        // To an object oriented programmer whose used to "dot-tab programming"
+        // (using an IDE's built-in method lookup functionality, and selecting
         // "that one" from a list of methods) Linq-A-Like is drastically easier to use.
     }
-
-
 }

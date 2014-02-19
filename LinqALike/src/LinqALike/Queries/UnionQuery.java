@@ -1,10 +1,10 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.QueryableSet;
 import LinqALike.Delegate.Func1;
 import LinqALike.QueryableBase;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static LinqALike.LinqingList.from;
@@ -33,28 +33,36 @@ public class UnionQuery<TElement, TCompared> extends QueryableBase<TElement> {
     private class UnionIterator implements Iterator<TElement>{
 
         private final Iterator<? extends TElement> lefts = left.iterator();
-        private final Iterator<? extends TElement> rights = right.iterator();
+        private final Iterator<? extends TElement> rights;
+
+        private boolean leftsWereAvailable = true;
+        private boolean rightsWereAvailable = true;
+
+        @SuppressWarnings("unchecked")//LinqingList.from consumes its argument in a read-only nature,
+        // making its argument's type parameter covariant. Thus we wont get a run-time exception from this cast
+        //now or further on in the program.
+        private UnionIterator(){
+            rights = left instanceof QueryableSet
+                    ? QueryableBase.of((Iterable<TElement>)right).except(left, comparableSelector).iterator()
+                    : right.iterator();
+        }
 
         @Override
         public boolean hasNext() {
             return lefts.hasNext() || rights.hasNext();
         }
-                                  // what wha                     t
+
         @Override
         public TElement next() {
-            if(lefts.hasNext()){
+            leftsWereAvailable = leftsWereAvailable && lefts.hasNext();
+            if(leftsWereAvailable){
                 return lefts.next();
             }
 
-            Map<TCompared, ? extends TElement> leftsByTheirChampion = from(left).toMap(comparableSelector);
-            do{
-                TElement candidate = rights.next();
-                TCompared champion = comparableSelector.getFrom(candidate);
-                if( ! leftsByTheirChampion.containsKey(champion)){
-                    return candidate;
-                }
+            rightsWereAvailable = rightsWereAvailable && rights.hasNext();
+            if(rightsWereAvailable){
+                return rights.next();
             }
-            while(rights.hasNext());
 
             throw new NoSuchElementException();
         }

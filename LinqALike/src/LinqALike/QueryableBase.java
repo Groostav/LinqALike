@@ -50,7 +50,7 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
 
     @Override
     public <TDesired extends TElement>
-    LinqingList<TDesired> whereTypeIs(Class<TDesired> desiredClass) {
+    LinqingList<TDesired> ofType(Class<TDesired> desiredClass) {
         return LinqBehaviour.whereTypeIs(this, desiredClass);
     }
 
@@ -62,6 +62,11 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     @Override
     public LinqingList<TElement> toList() {
         return new LinqingList<>(this);
+    }
+
+    @Override
+    public <TKey> LinqingMap<TKey, TElement> toMap(Func1<TElement, TKey> keySelector) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -198,7 +203,7 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     }
 
     @Override
-    public ReadonlyLinqingList<TElement> asReadOnly() {
+    public ReadonlyLinqingList<TElement> toReadOnly() {
         return new ReadonlyLinqingList<>(this);
     }
 
@@ -228,18 +233,18 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     }
 
     @Override
-    public Queryable<TElement> excluding(Iterable<? extends TElement> toExclude) {
+    public Queryable<TElement> except(Iterable<? extends TElement> toExclude) {
         return LinqBehaviour.excluding(from(this), from(toExclude));
     }
 
     @Override
-    public Queryable<TElement> excluding(TElement... toExclude) {
+    public Queryable<TElement> except(TElement... toExclude) {
         assert false : "not implemented";
         return null;
     }
 
     @Override
-    public <TCompared> Queryable<TElement> excluding(Iterable<? extends TElement> toExclude, Func1<? super TElement, TCompared> comparableSelector) {
+    public <TCompared> Queryable<TElement> except(Iterable<? extends TElement> toExclude, Func1<? super TElement, TCompared> comparableSelector) {
         assert false : "not implemented";
         return null;
     }
@@ -265,6 +270,11 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     }
 
     @Override
+    public <TComparable> QueryableMultiMap<TComparable, TElement> groupBy(Func1<TElement, TComparable> comparableSelector) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
     public Queryable<TElement> skipWhile(Condition<? super TElement> toExclude) {
         return LinqBehaviour.skipWhile(this, toExclude);
     }
@@ -275,28 +285,38 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     }
 
     @Override
-    public Queryable<TElement> intersection(Iterable<? extends TElement> toInclude) {
+    public Queryable<TElement> intersect(Iterable<? extends TElement> toInclude) {
         return LinqBehaviour.intersection(this, toInclude);
     }
 
     @Override
-    public <TCompared> Queryable<TElement> intersection(Iterable<? extends TElement> toInclude, Func1<? super TElement, TCompared> comparableSelector) {
+    public <TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> toInclude, Func1<? super TElement, TCompared> comparableSelector) {
         assert false : "not implemented";
         return null;
     }
 
     @Override
-    public Queryable<TElement> intersection(TElement... toIntersect) {
+    public Queryable<TElement> intersect(TElement... toIntersect) {
         assert false : "not implemented";
         return null;
     }
 
     @Override
-    public <TDerived> Queryable<TDerived> selectCast() {
+    public <TDerived> Queryable<TDerived> cast() {
         return LinqBehaviour.selectCast(this);
     }
 
     public TElement secondToLast() {
         return LinqBehaviour.secondToLast(this);
+    }
+
+    public static <TElement> QueryableBase<TElement> of(final Iterable<TElement> elements) {
+
+        return new QueryableBase<TElement>() {
+            @Override
+            public Iterator<TElement> iterator() {
+                return elements.iterator();
+            }
+        };
     }
 }

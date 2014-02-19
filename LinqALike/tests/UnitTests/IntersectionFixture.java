@@ -17,7 +17,7 @@ public class IntersectionFixture extends QueryFixtureBase {
         LinqingList<String> original = from("A", "B", "C");
 
         //act
-        Queryable<String> result = original.excluding(from("B", "C"));
+        Queryable<String> result = original.except(from("B", "C"));
         LinqingList<String> flattenedResults = result.toList();
 
         //assert
@@ -32,7 +32,7 @@ public class IntersectionFixture extends QueryFixtureBase {
         CountingTransform<NamedValue, String> getName = NamedValue.GetName();
 
         //act
-        Queryable<NamedValue> result = left.intersection(NamedValue.makeWithEach("B", "C"), getName);
+        Queryable<NamedValue> result = left.intersect(NamedValue.makeWithEach("B", "C"), getName);
         LinqingList<NamedValue> flattenedResults = result.toList();
 
         //assert

@@ -24,7 +24,7 @@
     <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/NonEmptySetIsEmptyException.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
     <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/Queries/IntersectionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
     <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/LinqingMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336147828" ignored="false" />
-    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/QueryableBase.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341511562" ignored="false" />
+    <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/Common/Queryable/QueryableBase.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392799030478" ignored="false" />
     <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/Infrastructure/NumberConstraint.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
     <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/UserInterface/MainPanel/Workspace/ProxyLocatedVariable.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
     <file path="$PROJECT_DIR$/../OPTIP/tests/PDOL/UnitTests/GraphModelMarshallerFixture.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336265247" ignored="false" />
@@ -47,17 +47,17 @@
     <file path="$PROJECT_DIR$/../OPTIP/src/PDOL/DataObject/Optimization.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391336965121" ignored="false" />
     <file path="/Transform.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337829830" ignored="false" />
     <file path="/Func.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391338164461" ignored="false" />
-    <file path="/Func2.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337914722" ignored="false" />
+    <file path="/Func2.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392801596457" ignored="false" />
     <file path="/Func3.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337885110" ignored="false" />
     <file path="/Action.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337290998" ignored="false" />
     <file path="/Action1.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391338176951" ignored="false" />
     <file path="/Action3.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391337582347" ignored="false" />
     <file path="/LinqingList.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391343545272" ignored="false" />
-    <file path="/Queryable.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392794438019" ignored="false" />
+    <file path="/Queryable.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392803691445" ignored="false" />
     <file path="/AmmendedIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391343142614" ignored="false" />
     <file path="/*.regexp" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341726669" ignored="false" />
-    <file path="/LinqingMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391343499681" ignored="false" />
-    <file path="/QueryableBase.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391343552889" ignored="false" />
+    <file path="/LinqingMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392803305990" ignored="false" />
+    <file path="/QueryableBase.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392799020250" ignored="false" />
     <file path="/Tuple.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341293210" ignored="false" />
     <file path="/ReadonlyLinqingList.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341399084" ignored="false" />
     <file path="/*.txt" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391341737022" ignored="false" />
@@ -69,10 +69,14 @@
     <file path="/Exceptions.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391342706833" ignored="false" />
     <file path="/UnionQuery.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391346933353" ignored="false" />
     <file path="/PrefetchingIterator.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1391344044942" ignored="false" />
-    <file path="/SimpleExamples.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392796694953" ignored="false" />
-    <file path="/Dummy.txt" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392791802757" ignored="false" />
+    <file path="/SimpleExamples.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392800009541" ignored="false" />
+    <file path="/Dummy.txt" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392798944784" ignored="false" />
     <file path="/QueryableMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392794367377" ignored="false" />
     <file path="/QueryableMultiMap.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392794482479" ignored="false" />
+    <file path="/LangaugeSmokeTests.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392799727266" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392802012646" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/tests/UnitTests/ExcludingFixture.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392800656157" ignored="false" />
+    <file path="$PROJECT_DIR$/LinqALike/tests/UnitTests/WhereFixture.java" changelist="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" time="1392802442547" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,30 +169,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SimpleExamples.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java">
+      <file leaf-file-name="LinqingMap.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="144" column="140" selection-start="6653" selection-end="6653" vertical-scroll-proportion="0.5374707">
+            <state line="404" column="89" selection-start="12724" selection-end="12724" vertical-scroll-proportion="0.31418094">
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#631#761#0" expanded="true" />
+                <element signature="e#754#755#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Collectors.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/stream/Collectors.java">
+      <file leaf-file-name="LinqingMultiMap.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMultiMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="228" column="29" selection-start="8366" selection-end="8366" vertical-scroll-proportion="0.0">
+            <state line="3" column="65" selection-start="106" selection-end="106" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArrayList.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/ArrayList.java">
+      <file leaf-file-name="QueryableMap.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="153" column="11" selection-start="5835" selection-end="5835" vertical-scroll-proportion="0.0">
+            <state line="8" column="14" selection-start="176" selection-end="176" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -197,21 +202,56 @@
       <file leaf-file-name="Queryable.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="186" column="45" selection-start="8628" selection-end="8628" vertical-scroll-proportion="0.0">
+            <state line="89" column="48" selection-start="3419" selection-end="3419" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#196#240#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#127#171#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="QueryableMap.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java">
+      <file leaf-file-name="IntFunction.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/function/IntFunction.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="57" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="38" column="56" selection-start="640" selection-end="640" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="String.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/String.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="110" column="19" selection-start="3617" selection-end="3617" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Integer.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/Integer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="51" column="19" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Func2.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Func2.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="17" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Func.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Func.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="17" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -219,7 +259,7 @@
       <file leaf-file-name="QueryableMultiMap.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMultiMap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="47" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0">
+            <state line="4" column="17" selection-start="71" selection-end="71" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -235,22 +275,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/LinqALike/tests/UnitTests/FunctionalFixture.java" />
-        <option value="$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/AmmendedIterator.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/WhereQuery.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/UnionQuery.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableBase.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/SelectQuery.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/PrefetchingIterator.java" />
         <option value="$PROJECT_DIR$/LinqALike/tests/UsageExamples/ArchetectureExamples.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMultiMap.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/UnionQuery.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableBase.java" />
+        <option value="$PROJECT_DIR$/LinqALike/tests/LanguageSmokeTests/LangaugeSmokeTests.java" />
+        <option value="$PROJECT_DIR$/LinqALike/tests/LanguageSmokeTests/when_two_unrelated_interfaces_provide_the_same_signature_default_impl.java" />
         <option value="$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Func2.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/EqualityComparison.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMultiMap.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java" />
       </list>
     </option>
   </component>
@@ -395,60 +435,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UsageExamples" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Linq-A-Like" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinqALike" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UnitTests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Linq-A-Like" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinqALike" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Assists" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Linq-A-Like" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LinqALike" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -475,7 +461,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Queries" />
+              <option name="myItemId" value="Delegate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Linq-A-Like" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="LinqALike" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Common" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -500,13 +508,13 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="Repository.Attach.Sources" value="true" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
     <property name="Downloaded.Files.Path" value="D:\Users\Geoff\Code\LinqALike\lib" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -564,19 +572,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -603,6 +598,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -684,10 +692,10 @@
     <frame x="-8" y="-8" width="1696" height="1036" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1772" y="92" width="930" height="836" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -695,16 +703,16 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915717" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.249694" sideWeight="0.6708428" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1772" y="92" width="930" height="836" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915717" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32915717" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -774,122 +782,120 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/io/Serializable.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/function/Consumer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="168" column="17" selection-start="7567" selection-end="7567" vertical-scroll-proportion="0.8367347">
+        <state line="58" column="49" selection-start="1357" selection-end="1357" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="445" column="58" selection-start="16321" selection-end="16321" vertical-scroll-proportion="0.8758782">
+        <state line="48" column="122" selection-start="1666" selection-end="1666" vertical-scroll-proportion="0.37638375">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/beans/PropertyChangeListener.java">
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Tuple.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="17" selection-start="461" selection-end="461" vertical-scroll-proportion="0.19906323">
+        <state line="12" column="13" selection-start="343" selection-end="343" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/stream/Sink.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Set.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="140" column="17" selection-start="5944" selection-end="5944" vertical-scroll-proportion="0.033957846">
+        <state line="84" column="17" selection-start="2997" selection-end="2997" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/stream/StreamOpFlag.java">
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/QueryableSet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="604" column="42" selection-start="19854" selection-end="19854" vertical-scroll-proportion="0.3325527">
+        <state line="6" column="49" selection-start="128" selection-end="128" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Optional.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="254" column="79" selection-start="8682" selection-end="8682" vertical-scroll-proportion="4.5386415">
-          <folding>
-            <element signature="e#2256#2286#1" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/stream/Stream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="839" column="8" selection-start="39049" selection-end="39049" vertical-scroll-proportion="0.45199063">
+        <state line="545" column="8" selection-start="24869" selection-end="24869" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Objects.java">
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMultiMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="19" selection-start="589" selection-end="589" vertical-scroll-proportion="0.27868852">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/stream/ReferencePipeline.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="20" selection-start="1374" selection-end="1374" vertical-scroll-proportion="0.31850117">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/beans/Beans.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="13" selection-start="974" selection-end="974" vertical-scroll-proportion="0.019906323">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/ArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="11" selection-start="5835" selection-end="5835" vertical-scroll-proportion="0.0">
+        <state line="4" column="17" selection-start="71" selection-end="71" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="57" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/QueryableMultiMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="47" selection-start="222" selection-end="222" vertical-scroll-proportion="0.0">
+        <state line="8" column="14" selection-start="176" selection-end="176" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/stream/Collectors.java">
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Func.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="228" column="29" selection-start="8366" selection-end="8366" vertical-scroll-proportion="0.0">
+        <state line="3" column="17" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Func2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="17" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="19" selection-start="3617" selection-end="3617" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/function/IntFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="56" selection-start="640" selection-end="640" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/Integer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="19" selection-start="1149" selection-end="1149" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="186" column="45" selection-start="8628" selection-end="8628" vertical-scroll-proportion="0.0">
+        <state line="89" column="48" selection-start="3419" selection-end="3419" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="e#196#240#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#127#171#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UsageExamples/SimpleExamples.java">
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMultiMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="140" selection-start="6653" selection-end="6653" vertical-scroll-proportion="0.5374707">
+        <state line="3" column="65" selection-start="106" selection-end="106" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="404" column="89" selection-start="12724" selection-end="12724" vertical-scroll-proportion="0.31418094">
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#631#761#0" expanded="true" />
+            <element signature="e#754#755#0" expanded="true" />
           </folding>
         </state>
       </provider>

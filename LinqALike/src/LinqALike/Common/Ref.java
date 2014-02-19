@@ -1,4 +1,4 @@
-package LinqALike;
+package LinqALike.Common;
 
 /**
  * This class is effectively a double pointer, allowing you to ether modify
