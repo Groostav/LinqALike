@@ -3,15 +3,12 @@ package LinqALike;
 import LinqALike.Common.QueryableSet;
 import LinqALike.Delegate.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static LinqALike.LinqingList.from;
 
-public class LinqingMap<TKey, TValue> extends HashMap<TKey, TValue> implements QueryableMap<TKey, TValue> {
+public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements QueryableMap<TKey, TValue> {
 
     private static final <TKey, TValue> Func1<Map.Entry<TKey, TValue>, Tuple<TKey, TValue>> EntryToTuple(){
         return keyValuePair -> new Tuple(keyValuePair.getKey(), keyValuePair.getValue());
