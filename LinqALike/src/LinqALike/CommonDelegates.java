@@ -5,7 +5,6 @@ import LinqALike.Delegate.Func1;
 
 import java.io.File;
 
-import static LinqALike.LinqingList.from;
 import static org.apache.commons.lang.StringUtils.join;
 
 public class CommonDelegates {
@@ -15,7 +14,7 @@ public class CommonDelegates {
             (Condition<Iterable>) candidate -> ! candidate.iterator().hasNext()
     );
 
-    public static <TObject> Func1.WithDescription<TObject, TObject> AsIs(){
+    public static <TObject> Func1.WithDescription<TObject, TObject> identity(){
         return new Func1.WithDescription<>("as is: object -> object", object -> object);
     };
 
@@ -42,14 +41,14 @@ public class CommonDelegates {
 
 
     public static Condition<Object> IsInstanceOfAny(final Class... allowedTypes){
-        return IsInstanceOfAny(from(allowedTypes));
+        return IsInstanceOfAny(LinqingList.asList(allowedTypes));
     }
 
     public static Condition<Object> IsInstanceOfAny(final Iterable<Class> allowedTypes){
         return new Condition.WithDescription<>(
                 "is instance of any " + join(allowedTypes.iterator(), ","),
                 actual -> actual != null &&
-                        from(allowedTypes).any((Class allowed) -> {
+                        LinqingList.asList(allowedTypes).any((Class allowed) -> {
                             Class actualType = actual instanceof Class ? (Class) actual : actual.getClass();
                             return allowed.isAssignableFrom(actualType);
                         })

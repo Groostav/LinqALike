@@ -1,4 +1,4 @@
-package LinqALike.Queries;
+package LinqALike.Common;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

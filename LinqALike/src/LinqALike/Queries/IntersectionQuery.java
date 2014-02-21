@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.PrefetchingIterator;
 import LinqALike.Delegate.Func1;
 import LinqALike.QueryableBase;
 
@@ -25,7 +26,7 @@ public class IntersectionQuery<TElement, TCompared> extends QueryableBase<TEleme
         return new IntersectionIterator();
     }
 
-    private class IntersectionIterator extends PrefetchingIterator<TElement>{
+    private class IntersectionIterator extends PrefetchingIterator<TElement> {
 
         Iterator<? extends TElement> leftIterator = left.iterator();
         Iterator<? extends TElement> rightIterator = right.iterator();

@@ -51,7 +51,7 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
     @Override
     public <TDesired extends TElement>
     LinqingList<TDesired> ofType(Class<TDesired> desiredClass) {
-        return LinqBehaviour.whereTypeIs(this, desiredClass);
+        return LinqBehaviour.ofType(this, desiredClass);
     }
 
     @Override
@@ -164,7 +164,7 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
 
     @Override
     public boolean isSetEquivalentOf(Iterable<TElement> otherSet) {
-        return LinqBehaviour.isSameSetAs(this, otherSet);
+        return LinqBehaviour.isSetEquivalentOf(this, otherSet);
     }
 
     @Override
@@ -234,7 +234,7 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
 
     @Override
     public Queryable<TElement> except(Iterable<? extends TElement> toExclude) {
-        return LinqBehaviour.excluding(from(this), from(toExclude));
+        return LinqBehaviour.excluding(LinqingList.asList(this), LinqingList.asList(toExclude));
     }
 
     @Override
@@ -286,37 +286,27 @@ public abstract class QueryableBase<TElement> implements Queryable<TElement> {
 
     @Override
     public Queryable<TElement> intersect(Iterable<? extends TElement> toInclude) {
-        return LinqBehaviour.intersection(this, toInclude);
+        return LinqBehaviour.intersect(this, toInclude);
     }
 
     @Override
-    public <TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> toInclude, Func1<? super TElement, TCompared> comparableSelector) {
-        assert false : "not implemented";
-        return null;
+    public <TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> toInclude,
+                                                     Func1<? super TElement, TCompared> comparableSelector) {
+        return LinqBehaviour.intersect(this, toInclude, comparableSelector);
     }
 
     @Override
     public Queryable<TElement> intersect(TElement... toIntersect) {
-        assert false : "not implemented";
-        return null;
+        return LinqBehaviour.intersect(this, toIntersect);
     }
 
     @Override
     public <TDerived> Queryable<TDerived> cast() {
-        return LinqBehaviour.selectCast(this);
+        return LinqBehaviour.cast(this);
     }
 
     public TElement secondToLast() {
         return LinqBehaviour.secondToLast(this);
     }
 
-    public static <TElement> QueryableBase<TElement> of(final Iterable<TElement> elements) {
-
-        return new QueryableBase<TElement>() {
-            @Override
-            public Iterator<TElement> iterator() {
-                return elements.iterator();
-            }
-        };
-    }
 }

@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.PrefetchingIterator;
 import LinqALike.Delegate.Condition;
 import LinqALike.QueryableBase;
 
@@ -20,7 +21,7 @@ public class WhereQuery<TElement> extends QueryableBase<TElement> {
         return new SelectIterator();
     }
 
-    private class SelectIterator extends PrefetchingIterator<TElement>{
+    private class SelectIterator extends PrefetchingIterator<TElement> {
 
         private final Iterator<TElement> previousIterator = elements.iterator();
 

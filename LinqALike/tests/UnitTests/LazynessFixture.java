@@ -8,7 +8,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static LinqALike.LinqingList.from;
 import static org.junit.Assume.assumeTrue;
 
 /**
@@ -48,15 +47,15 @@ public class LazynessFixture extends QueryFixtureBase {
     @Test
     public void when_running_a_excluding_query_it_only_invokes_delegate_when_set_is_iterated(){
         //setup
-        LinqingList<NamedValue> elements = from(new NamedValue("H"), new NamedValue("Hg"), new NamedValue("Li"),
-                                                new NamedValue("Ne"), new NamedValue("Si"), new NamedValue("He"));
+        LinqingList<NamedValue> elements = LinqingList.asList(new NamedValue("H"), new NamedValue("Hg"), new NamedValue("Li"),
+                new NamedValue("Ne"), new NamedValue("Si"), new NamedValue("He"));
         List<NamedValue> scaryMetals = Arrays.asList(new NamedValue("Li"), new NamedValue("Hg"));
         CountingTransform<NamedValue, String> getName = new CountingTransform<NamedValue, String>() {
             public String getFromImpl(NamedValue cause) { return cause.name; }
         };
 
         //act
-        Queryable<NamedValue> result = LinqBehaviour.excluding(elements, scaryMetals, getName);
+        Queryable<NamedValue> result = LinqBehaviour.except(elements, scaryMetals, getName);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(getName, result);
@@ -88,7 +87,7 @@ public class LazynessFixture extends QueryFixtureBase {
         };
 
         //act
-        Queryable<NamedValue> goodAndBadResult = LinqBehaviour.intersection(goodUDCourses, hardUDCourses, getName);
+        Queryable<NamedValue> goodAndBadResult = LinqBehaviour.intersect(goodUDCourses, hardUDCourses, getName);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(getName, goodAndBadResult);

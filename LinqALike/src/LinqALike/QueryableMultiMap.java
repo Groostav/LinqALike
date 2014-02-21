@@ -4,86 +4,50 @@ import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 
+import java.util.Map;
+
 public interface QueryableMultiMap<TKey, TValue> extends QueryableMap<TKey, Queryable<TValue>>{
 
-
-    Queryable<TElement> except(Iterable<? extends TElement> toExclude);
-    Queryable<TElement> except(TElement... toExclude);
-    Queryable<TElement> except(Iterable<? extends TElement> toExclude,
-                               Func2<TElement, TElement, Boolean> equalityComparison);
-    <TCompared>
-    Queryable<TElement> except(Iterable<? extends TElement> toExclude,
-                               Func1<? super TElement, TCompared> comparableSelector);
+    public Queryable<TValue> flatValues();
 
 
-    <TCompared>
-    Queryable<TElement> intersect(Iterable<? extends TElement> toInclude,
-                                  Func1<? super TElement, TCompared> comparableSelector);
-    Queryable<TElement> intersect(Iterable<? extends TElement> toInclude,
-                                  Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
-    Queryable<TElement> intersect(Iterable<? extends TElement> toInclude);
-    Queryable<TElement> intersect(TElement... toIntersect);
+    @Override QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude);
+    @Override QueryableMultiMap<TKey, TValue> except(Map.Entry<TKey, Queryable<TValue>>... toExclude);
+    @Override QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude,
+                                                     Func2<Map.Entry<TKey, Queryable<TValue>>, Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison);
+    @Override <TCompared>
+    QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude,
+                                           Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector);
 
 
-
-    double max(Func1<? super TElement, Double> valueSelector);
-    TElement withMax(Func1<? super TElement, Double> valueSelector);
-    double min(Func1<? super TElement, Double> valueSelector);
-    TElement withMin(Func1<? super TElement, Double> valueSelector);
-
-
-    <TCompared extends Comparable<TCompared>>
-    Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector);
-    Queryable<TElement> orderBy(Func2<? super TElement, ? super TElement, Integer> comparator);
+    @Override <TCompared>
+    QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude,
+                                              Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector);
+    @Override QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude,
+                                                        Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison);
+    @Override QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude);
+    @Override QueryableMultiMap<TKey, TValue> intersect(Map.Entry<TKey, Queryable<TValue>>... toIntersect);
 
 
-    Queryable<TElement> reversed();
+    @Override <TCompared extends Comparable<TCompared>>
+    QueryableMultiMap<TKey, TValue> orderBy(Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector);
+    @Override QueryableMultiMap<TKey, TValue> orderBy(Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Integer> equalityComparator);
 
 
-    <TTransformed>
-    Queryable<TTransformed> select(Func1<? super TElement, TTransformed> selector);
-    <TTransformed>
-    LinqingList<TTransformed> selectMany(Func1<? super TElement, ? extends Iterable<TTransformed>> selector);
-    <TTransformedValue>
-    QueryableMultiMap<TKey, TTransformedValue> selectFromGroup(Func1<TValue, TTransformedValue> valueSelector);
+    @Override QueryableMultiMap<TKey, TValue> reversed();
 
 
+    @Override QueryableMultiMap<TKey, TValue> skipWhile(Condition<? super Map.Entry<TKey, Queryable<TValue>>> toExclude);
+    @Override QueryableMultiMap<TKey, TValue> skipUntil(Condition<? super Map.Entry<TKey, Queryable<TValue>>> toInclude);
+    @Override QueryableMultiMap<TKey, TValue> skip(int numberToSkip);
 
 
-    Queryable<TElement> skipWhile(Condition<? super TElement> toExclude);
-    Queryable<TElement> skipUntil(Condition<? super TElement> toInclude);
-    Queryable<TElement> skip(int numberToSkip);
+    ReadonlyLinqingList<Map.Entry<TKey, TValue>> toFlattenedReadOnly();
+    LinqingList<Map.Entry<TKey, TValue>> toFlattenedList();
+    LinqingSet<Map.Entry<TKey, TValue>> toFlattenedSet();
 
 
+    @Override
+    QueryableMultiMap<TKey, TValue> where(Condition<? super Map.Entry<TKey, Queryable<TValue>>> condition);
 
-    ReadonlyLinqingList<TElement> toReadOnly();
-    LinqingList<TElement> toList();
-    LinqingSet<TElement> toSet();
-    Queryable<TElement> fetch();
-
-
-
-    Object[] toArray();
-    <TDesired> TDesired[] toArray(TDesired[] arrayTypeIndicator);
-    <TDesired> TDesired[] toArray(Func1<Integer, TDesired> arrayFactory);
-
-
-    Queryable<TElement> union(TElement... elements);
-    Queryable<TElement> union(Iterable<? extends TElement> toInclude);
-    <TCompared>
-    Queryable<TElement> union(Iterable<? extends TElement> toInclude,
-                              Func1<? super TElement, TCompared> comparableSelector);
-
-
-    Queryable<TElement> where(Condition<? super TElement> condition);
-
-
-    int size();
-
-
-    boolean isSingle();
-    boolean isEmpty();
-    boolean isSetEquivalentOf(Iterable<? extends TElement> otherSet);
-    boolean isSubsetOf(Iterable<? extends TElement> otherSet);
-    boolean isDistinct();
 }

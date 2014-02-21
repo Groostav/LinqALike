@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import static Assists.Exceptions.verifyThrows;
 import static LinqALike.CommonDelegates.Is;
-import static LinqALike.LinqingList.from;
 import static org.fest.assertions.Assertions.assertThat;
 
 public class FunctionalFixture extends QueryFixtureBase{
@@ -209,8 +208,8 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_asking_if_two_equivalent_sets_are_equivalent(){
         //setup
-        LinqingList<EquatableValue> leftSet = from(new EquatableValue("one"), new EquatableValue("two"), new EquatableValue("3"));
-        LinqingList<EquatableValue> rightSet = from(new EquatableValue("3"), new EquatableValue("one"), new EquatableValue("two"));
+        LinqingList<EquatableValue> leftSet = LinqingList.asList(new EquatableValue("one"), new EquatableValue("two"), new EquatableValue("3"));
+        LinqingList<EquatableValue> rightSet = LinqingList.asList(new EquatableValue("3"), new EquatableValue("one"), new EquatableValue("two"));
 
         //act
         boolean areEquivalentSets = leftSet.isSetEquivalentOf(rightSet);
@@ -222,7 +221,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_skipping_until_a_condition_queryable_should_get_the_correct_result(){
         //setup
-        LinqingList<String> strings = from("one", "one", "one", "two", "three");
+        LinqingList<String> strings = LinqingList.asList("one", "one", "one", "two", "three");
 
         //act
         Queryable<String> result = strings.skipUntil(Is("two"));
@@ -234,7 +233,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_skipping_while_a_condition_queryable_should_get_the_correct_result(){
         //setup
-        LinqingList<String> strings = from("one", "one", "one", "two", "three");
+        LinqingList<String> strings = LinqingList.asList("one", "one", "one", "two", "three");
 
         //act
         Queryable<String> result = strings.skipWhile(Is("one"));
@@ -246,7 +245,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_skipping_three_elements(){
         //setup
-        LinqingList<String> strings = from("one", "one", "one", "two", "three");
+        LinqingList<String> strings = LinqingList.asList("one", "one", "one", "two", "three");
 
         //act
         Queryable<String> result = strings.skip(3);

@@ -2,8 +2,7 @@ package LinqALike.Common;
 
 import LinqALike.Delegate.Condition;
 import LinqALike.LinqBehaviour;
-
-import static LinqALike.LinqingList.from;
+import LinqALike.LinqingList;
 
 public class NonEmptySetIsEmptyException extends QueryDelegateException {
 
@@ -12,7 +11,7 @@ public class NonEmptySetIsEmptyException extends QueryDelegateException {
                 + "The original set was:"
                 + LinqBehaviour.verticallyPrintMembers(problemSet)
                 + "And the condition was:"
-                + LinqBehaviour.verticallyPrintMembers(from(condition)));
+                + LinqBehaviour.verticallyPrintMembers(LinqingList.asList(condition)));
     }
     public NonEmptySetIsEmptyException(){
         super("The provided set contains no elements!");

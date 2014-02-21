@@ -12,13 +12,12 @@ import java.util.*;
 
 import static LinqALike.CommonDelegates.*;
 import static LinqALike.LinqingList.firstNotNull;
-import static LinqALike.LinqingList.from;
 import static LinqALike.Tuple.pair;
 
 public class LinqBehaviour {
 
-    public static <TBase, TDerived extends TBase> LinqingList<TDerived> whereTypeIs(Iterable<TBase> set,
-                                                                                    Class<TDerived> desiredType) {
+    public static <TBase, TDerived extends TBase> LinqingList<TDerived> ofType(Iterable<TBase> set,
+                                                                               Class<TDerived> desiredType) {
         LinqingList<TDerived> returnable = new LinqingList<>();
 
         for (TBase candidate : set) {
@@ -37,7 +36,8 @@ public class LinqBehaviour {
         return single(elements, Tautology);
     }
 
-    public static <TElement> TElement single(Iterable<TElement> elements, Condition<? super TElement> uniqueCondition) {
+    public static <TElement> TElement single(Iterable<TElement> elements,
+                                             Condition<? super TElement> uniqueCondition) {
         TElement result = singleOrDefault(elements, uniqueCondition);
         if (result == null) {
             throw new NonEmptySetIsEmptyException(elements, uniqueCondition);
@@ -49,7 +49,8 @@ public class LinqBehaviour {
         return single(Arrays.asList(listeners));
     }
 
-    public static <TElement> TElement single(TElement[] set, Condition<? super TElement> condition) {
+    public static <TElement> TElement single(TElement[] set,
+                                             Condition<? super TElement> condition) {
         return single(Arrays.<TElement>asList(set), condition);
     }
 
@@ -57,7 +58,8 @@ public class LinqBehaviour {
         return singleOrDefault(elements, Tautology);
     }
 
-    public static <TElement> TElement singleOrDefault(Iterable<TElement> elements, Condition<? super TElement> uniqueCondition) {
+    public static <TElement> TElement singleOrDefault(Iterable<TElement> elements,
+                                                      Condition<? super TElement> uniqueCondition) {
         Iterator<TElement> iterator = elements.iterator();
 
         if (!iterator.hasNext()) {
@@ -94,7 +96,8 @@ public class LinqBehaviour {
         return last;
     }
 
-    public static <TElement> TElement first(Iterable<TElement> elements, Condition<? super TElement> condition) {
+    public static <TElement> TElement first(Iterable<TElement> elements,
+                                            Condition<? super TElement> condition) {
         Iterator<TElement> iterator = elements.iterator();
 
         if (!iterator.hasNext()) {
@@ -112,7 +115,8 @@ public class LinqBehaviour {
         throw new NonEmptySetIsEmptyException(elements, condition);
     }
 
-    public static <TElement> TElement firstOrDefault(Iterable<TElement> elements, Condition<? super TElement> condition) {
+    public static <TElement> TElement firstOrDefault(Iterable<TElement> elements,
+                                                     Condition<? super TElement> condition) {
         for (TElement element : elements) {
             if (condition.passesFor(element)) {
                 return element;
@@ -121,7 +125,8 @@ public class LinqBehaviour {
         return null;
     }
 
-    public static <TElement> Queryable<TElement> where(Iterable<TElement> elements, Condition<? super TElement> condition) {
+    public static <TElement> Queryable<TElement> where(Iterable<TElement> elements,
+                                                       Condition<? super TElement> condition) {
         return new WhereQuery<>(elements, condition);
     }
 
@@ -131,7 +136,7 @@ public class LinqBehaviour {
     }
 
     public static <TElement, TResult> Queryable<TResult> select(Iterable<TElement> set,
-                                                                final Func1<? super TElement, TResult> targetSite) {
+                                                                Func1<? super TElement, TResult> targetSite) {
         return new SelectQuery<>(set, targetSite);
     }
 
@@ -146,29 +151,9 @@ public class LinqBehaviour {
         return set[set.length - 1];
     }
 
-    public static <TElement> boolean containsOnly(Iterable<TElement> set, TElement desiredElement) {
-        boolean result = true;
-        for (TElement element : set) {
-            result &= nullSafeEquals(desiredElement, element);
-        }
-        return result;
-    }
-
-    public static <TElement> Queryable<TElement> excluding(Iterable<? extends TElement> left, Iterable<? extends TElement> right) {
-        return excluding(left, right, CommonDelegates.AsIs());
-    }
-
-    public static <TElement> boolean contains(Iterable<TElement> set, Object member){
-        for (TElement element : set) {
-            if (nullSafeEquals(element, member)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static <TElement> boolean contains(TElement[] set, TElement member) {
-        return from(set).contains(member);
+        return LinqingList.asList(set).contains(member);
     }
 
     public static <TElement> boolean any(Iterable<TElement> set, Condition<? super TElement> condition) {
@@ -290,11 +275,11 @@ public class LinqBehaviour {
     }
 
     public static <TElement> Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return union(left, right, CommonDelegates.AsIs());
+        return union(left, right, CommonDelegates.identity());
     }
 
     public static <TElement> Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return union(left, from(toInclude));
+        return union(left, LinqingList.asList(toInclude));
     }
 
     public static <TElement, TCompared>
@@ -314,7 +299,7 @@ public class LinqBehaviour {
         return returnable;
     }
 
-    public static <TDerived, TElement> LinqingList<TDerived> selectCast(Iterable<TElement> set) {
+    public static <TDerived, TElement> LinqingList<TDerived> cast(Iterable<TElement> set) {
         LinqingList<TDerived> returnable = new LinqingList<TDerived>();
         for(TElement element : set){
             TDerived castElement;
@@ -342,7 +327,7 @@ public class LinqBehaviour {
 
 
     //O(n)!!, _not_ O(n^2) :D
-    public static <TElement> boolean isSameSetAs(Iterable<TElement> left, Iterable<TElement> right) {
+    public static <TElement> boolean isSetEquivalentOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
         if(left instanceof Collection && right instanceof Collection){
             if( ((Collection)left).size() != ((Collection)right).size()) return false;
         }
@@ -354,7 +339,7 @@ public class LinqBehaviour {
             leftHashes.put(leftElement, null);
         }
 
-        return from(right).all(new Condition<TElement>() {
+        return LinqingList.asList(right).all(new Condition<TElement>() {
             public boolean passesFor(TElement candidate) {
                 return leftHashes.containsKey(candidate);
             }
@@ -412,7 +397,7 @@ public class LinqBehaviour {
 
     public static <TElement> Queryable<TElement> expand(TElement seed, Func1<TElement, TElement> nextValueGetter){
         assert seed != null;
-        LinqingList<TElement> returnable = from(seed);
+        LinqingList<TElement> returnable = LinqingList.asList(seed);
         TElement next = seed;
         do{
             returnable.add(next);
@@ -422,9 +407,10 @@ public class LinqBehaviour {
 
         return returnable;
     }
-    public static <TElement> boolean isSubsetOf(Iterable<TElement> left, Iterable<TElement> right) {
+    public static <TElement> boolean isSubsetOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        LinqingList<? extends TElement> rightFetched = LinqingList.asList(right);
         for(TElement leftElement : left){
-            if ( ! from(right).contains(leftElement))
+            if ( ! rightFetched.contains(leftElement))
                 return false;
         }
         return true;
@@ -456,35 +442,52 @@ public class LinqBehaviour {
         return set.isSetEquivalentOf(constrainedSet) && constrainedSet.isSingle();
     }
 
-    public static <TElement> Queryable<TElement> excluding(Iterable<? extends TElement> left, TElement... toExclude) {
-        return excluding(left, from(toExclude));
+    public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> left, TElement... toExclude) {
+        return new ExceptQuery.WithNaturalEquality<>(left, QueryableBase.of(toExclude));
     }
 
-    public static <TElement, TCompared> Queryable<TElement> excluding(Iterable<? extends TElement> originalMembers,
-                                                                      Iterable<? extends TElement> membersToExclude,
+    public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> left, Iterable<? extends TElement> right) {
+        return new ExceptQuery.WithNaturalEquality<>(left, right);
+    }
+
+
+    public static <TElement, TCompared> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
+                                                                   Iterable<? extends TElement> membersToExclude,
+                                                                   Func1<? super TElement, TCompared> comparableSelector) {
+        return new ExceptQuery.WithComparable<>(originalMembers, membersToExclude, comparableSelector);
+    }
+
+    public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
+                                                        Iterable<? extends TElement> membersToExclude,
+                                                        Func2<? super TElement, ? super TElement, Boolean> comparableSelector) {
+
+        return new ExceptQuery.WithEquatable<>(originalMembers, membersToExclude, comparableSelector);
+    }
+
+    public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                           Iterable<? extends TElement> right) {
+        return intersect(left, right, CommonDelegates.identity());
+    }
+
+    public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                           TElement... right) {
+        return intersect(left, LinqingList.asList(right), CommonDelegates.identity());
+    }
+
+    public static <TElement, TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                                      Iterable<? extends TElement> right,
                                                                       Func1<? super TElement, TCompared> comparableSelector) {
-        return new ExcludingQuery<>(originalMembers, membersToExclude, comparableSelector);
-    }
-
-    public static <TElement> Queryable<TElement> intersection(Iterable<? extends TElement> left,
-                                                              Iterable<? extends TElement> right) {
-        return intersection(left, right, CommonDelegates.AsIs());
-    }
-
-    public static <TElement, TCompared> Queryable<TElement> intersection(Iterable<? extends TElement> left,
-                                                                         Iterable<? extends TElement> right,
-                                                                         Func1<? super TElement, TCompared> comparableSelector) {
         return new IntersectionQuery<>(left, right, comparableSelector);
     }
-
-    public static <TElement> Queryable<TElement> intersection(Iterable<? extends TElement> left,
-                                                              TElement... right) {
-        return intersection(left, from(right), CommonDelegates.AsIs());
+    public static <TElement, TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                                      Iterable<? extends TElement> right,
+                                                                      Func2<? super TElement, ? super TElement, Boolean> comparableSelector) {
+        return new IntersectionQuery<>(left, right, comparableSelector);
     }
 
     public static <TElement> String verticallyPrintMembers(Iterable<TElement> problemMembers) {
         String newlineIndent = "\n\t";
-        return StringUtils.join(from(problemMembers).select(CommonDelegates.NullSafeToString).iterator(), newlineIndent) + "\n";
+        return StringUtils.join(LinqingList.asList(problemMembers).select(CommonDelegates.NullSafeToString).iterator(), newlineIndent) + "\n";
     }
 
     public static <TElement> Queryable<TElement> skip(Iterable<TElement> setToSkip, int numberToSkip) {
@@ -542,7 +545,7 @@ public class LinqBehaviour {
     }
 
     public static String verticallyPrintMembers(String... members) {
-        return verticallyPrintMembers(from(members));
+        return verticallyPrintMembers(LinqingList.asList(members));
     }
 
     public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
@@ -619,6 +622,14 @@ public class LinqBehaviour {
         }
 
         return results;
+    }
+
+    public static <TElement, TDesired> TDesired[] toArray(Iterable<TElement> entries, Func1<Integer,TDesired[]> arrayFactory) {
+        assert false : "not implemented";
+    }
+
+    public static <TElement> Queryable<TElement> distinct(Iterable<TElement> candidateWithDuplicates) {
+        return new DistinctQuery.WithNaturalEquality(candidateWithDuplicates);
     }
 }
 

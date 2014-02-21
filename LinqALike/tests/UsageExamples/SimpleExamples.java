@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static LinqALike.LinqingList.from;
 import static java.util.stream.Collectors.*;
 
 public class SimpleExamples {
@@ -42,7 +41,7 @@ public class SimpleExamples {
 
         //here we're creating some simple sample data. Neither Linq nor Streams
         //is limited to such small data-sets.
-        LinqingList<CustomerWithAge> sampleData = LinqingList.from(
+        LinqingList<CustomerWithAge> sampleData = LinqingList.asList(
                 new CustomerWithAge(20), new CustomerWithAge(34),
                 new CustomerWithAge(66), new CustomerWithAge(72),
                 new CustomerWithAge(45)
@@ -132,7 +131,7 @@ public class SimpleExamples {
         //the Queryable interface more cumbersome, but it does so in exchange for simpler consumption models.
 
         //given a data-set that looks like this:
-        LinqingList<Person> roster = from(
+        LinqingList<Person> roster = LinqingList.asList(
                 new Person("Sue", Person.Sex.FEMALE), new Person("Bob", Person.Sex.MALE), new Person("Alice", Person.Sex.FEMALE),
                 new Person("Eve", Person.Sex.FEMALE), new Person("Chris", Person.Sex.MALE), new Person("Chris", Person.Sex.MALE));
 

@@ -4,7 +4,6 @@ import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
 
-import static LinqALike.LinqingList.from;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
@@ -14,10 +13,10 @@ public class IntersectionFixture extends QueryFixtureBase {
     @Test
     public void when_intersecting_a_set_containing_2_members_from_another_set(){
         //setup
-        LinqingList<String> original = from("A", "B", "C");
+        LinqingList<String> original = LinqingList.asList("A", "B", "C");
 
         //act
-        Queryable<String> result = original.except(from("B", "C"));
+        Queryable<String> result = original.except(LinqingList.asList("B", "C"));
         LinqingList<String> flattenedResults = result.toList();
 
         //assert
@@ -27,8 +26,8 @@ public class IntersectionFixture extends QueryFixtureBase {
     @Test
     public void when_intersecting_a_set_with_specific_comparer(){
         //setup
-        LinqingList<NamedValue> left = from(NamedValue.makeWithEach("A", "B", "C"));
-        LinqingList<NamedValue> right = from(NamedValue.makeWithEach("A"));
+        LinqingList<NamedValue> left = LinqingList.asList(NamedValue.makeWithEach("A", "B", "C"));
+        LinqingList<NamedValue> right = LinqingList.asList(NamedValue.makeWithEach("A"));
         CountingTransform<NamedValue, String> getName = NamedValue.GetName();
 
         //act

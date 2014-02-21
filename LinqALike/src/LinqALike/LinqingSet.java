@@ -2,7 +2,10 @@ package LinqALike;
 
 import LinqALike.Common.QueryableSet;
 
-public class LinqingSet<TElement> extends LinqingList<TElement> implements QueryableSet<TElement> {
+import java.util.Set;
+
+public class LinqingSet<TElement> extends LinqingList<TElement> implements QueryableSet<TElement>, Set<TElement> {
+
     public LinqingSet() {
     }
 
