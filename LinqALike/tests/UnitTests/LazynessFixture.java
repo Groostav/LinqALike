@@ -1,5 +1,6 @@
 package UnitTests;
 
+import LinqALike.Factories;
 import LinqALike.LinqBehaviour;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
@@ -47,7 +48,7 @@ public class LazynessFixture extends QueryFixtureBase {
     @Test
     public void when_running_a_excluding_query_it_only_invokes_delegate_when_set_is_iterated(){
         //setup
-        LinqingList<NamedValue> elements = LinqingList.asList(new NamedValue("H"), new NamedValue("Hg"), new NamedValue("Li"),
+        LinqingList<NamedValue> elements = Factories.asList(new NamedValue("H"), new NamedValue("Hg"), new NamedValue("Li"),
                 new NamedValue("Ne"), new NamedValue("Si"), new NamedValue("He"));
         List<NamedValue> scaryMetals = Arrays.asList(new NamedValue("Li"), new NamedValue("Hg"));
         CountingTransform<NamedValue, String> getName = new CountingTransform<NamedValue, String>() {

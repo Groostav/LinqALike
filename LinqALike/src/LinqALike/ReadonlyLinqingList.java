@@ -117,7 +117,7 @@ public class ReadonlyLinqingList<TElement> extends LinqingList<TElement> {
     }
     @Override
     public Iterator<TElement> iterator(){
-        return new LinqingListIterator(super.iterator());
+        return super.listIterator();
     }
 
     private void throwReadonly(String methodName) {
@@ -125,28 +125,5 @@ public class ReadonlyLinqingList<TElement> extends LinqingList<TElement> {
                 + "currently the set is: \n\t"
                 + StringUtils.join(this.select(NullSafeToString).iterator(), "\n\t");
         throw new UnsupportedOperationException(message, origin);
-    }
-
-    private class LinqingListIterator implements Iterator<TElement> {
-        private Iterator<TElement> backingIterator;
-
-        public LinqingListIterator(Iterator<TElement> backingIterator) {
-            this.backingIterator = backingIterator;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return backingIterator.hasNext();
-        }
-
-        @Override
-        public TElement next() {
-            return backingIterator.next();
-        }
-
-        @Override
-        public void remove() {
-            throwReadonly("Iterator.remove");
-        }
     }
 }

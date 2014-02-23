@@ -1,6 +1,5 @@
 package LinqALike;
 
-import LinqALike.Common.NonEmptySetIsEmptyException;
 import LinqALike.Delegate.Condition;
 
 import java.util.ArrayList;
@@ -47,42 +46,6 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     /*
-     * Static Factories
-     */
-
-    public static <TElement> LinqingList<TElement> empty() {
-        return new LinqingList<>();
-    }
-    public static <TElement> LinqingList<TElement> asList(Iterable<TElement> set){
-        return new LinqingList<>(set);
-    }
-    @SafeVarargs
-    public static <TElement> LinqingList<TElement> asList(TElement... set){
-        return new LinqingList<>(set);
-    }
-
-
-    @SafeVarargs
-    public static <TElement> TElement firstNotNullOrDefault(TElement ... set){
-        return asList(set).firstOrDefault(CommonDelegates.NotNull);
-    }
-
-    @SafeVarargs
-    public static <TElement> TElement firstNotNull(TElement ... set){
-        return asList(set).first(CommonDelegates.NotNull);
-    }
-
-    @SafeVarargs
-    public static <TSet extends Iterable> TSet firstNotEmpty(TSet ... sets){
-        for(TSet set : sets){
-            if(set.iterator().hasNext()){
-                return set;
-            }
-        }
-        throw new NonEmptySetIsEmptyException();
-    }
-
-    /*
      * List-based Mutators
      */
 
@@ -121,7 +84,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
     }
 
     public void addAllNew(Iterable<TElement> setContainingNewAndExistingElements) {
-        Queryable<TElement> intersection = asList(setContainingNewAndExistingElements).except(this.intersect(setContainingNewAndExistingElements));
+        Queryable<TElement> intersection = Factories.asList(setContainingNewAndExistingElements).except(this.intersect(setContainingNewAndExistingElements));
         this.addAll(intersection);
     }
 

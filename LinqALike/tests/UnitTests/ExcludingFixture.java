@@ -1,5 +1,6 @@
 package UnitTests;
 
+import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
@@ -14,10 +15,10 @@ public class ExcludingFixture extends QueryFixtureBase {
     @Test
     public void when_excluding_elements_using_the_default_equality_comparer(){
         //setup
-        LinqingList<Double> originalSet = LinqingList.asList(1.0, 3.0, 5.0, 7.0);
+        LinqingList<Double> originalSet = Factories.asList(1.0, 3.0, 5.0, 7.0);
 
         //act
-        Queryable<Double> result = originalSet.except(LinqingList.asList(1.0, 5.0));
+        Queryable<Double> result = originalSet.except(Factories.asList(1.0, 5.0));
         LinqingList<Double> flattenedResults = result.toList();
 
         //assert
@@ -27,11 +28,11 @@ public class ExcludingFixture extends QueryFixtureBase {
     @Test
     public void when_excluding_some_elements_including_duplicates_using_a_selector(){
         //setup
-        LinqingList<NumberValue> originalSet = LinqingList.asList(new NumberValue(1), new NumberValue(1), new NumberValue(2), new NumberValue(3), new NumberValue(4));
+        LinqingList<NumberValue> originalSet = Factories.asList(new NumberValue(1), new NumberValue(1), new NumberValue(2), new NumberValue(3), new NumberValue(4));
         CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
 
         //act
-        Queryable<NumberValue> result = originalSet.except(LinqingList.asList(new NumberValue(1), new NumberValue(3)), getValueTransform);
+        Queryable<NumberValue> result = originalSet.except(Factories.asList(new NumberValue(1), new NumberValue(3)), getValueTransform);
         LinqingList<NumberValue> flattenedResults = result.toList();
 
         //assert
@@ -46,7 +47,7 @@ public class ExcludingFixture extends QueryFixtureBase {
         CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
 
         //act
-        Queryable<NumberValue> result = originalSet.except(LinqingList.asList(new NumberValue(1), new NumberValue(3)), getValueTransform);
+        Queryable<NumberValue> result = originalSet.except(Factories.asList(new NumberValue(1), new NumberValue(3)), getValueTransform);
         LinqingList<NumberValue> flattenedResults = result.toList();
 
         //assert
@@ -59,7 +60,7 @@ public class ExcludingFixture extends QueryFixtureBase {
         LinqingList<String> originalSet = new LinqingList<>("A", "B", "C");
 
         //act
-        Queryable<String> result = originalSet.except(LinqingList.<String>empty());
+        Queryable<String> result = originalSet.except(Factories.<String>empty());
         LinqingList<String> flattenedResults = result.toList();
 
         //assert

@@ -4,6 +4,7 @@ import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public interface QueryableMultiMap<TKey, TValue> extends QueryableMap<TKey, Queryable<TValue>>{
@@ -12,7 +13,7 @@ public interface QueryableMultiMap<TKey, TValue> extends QueryableMap<TKey, Quer
 
 
     @Override QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude);
-    @Override QueryableMultiMap<TKey, TValue> except(Map.Entry<TKey, Queryable<TValue>>... toExclude);
+    @Override QueryableMultiMap<TKey, TValue> except(ArrayList<Map.Entry<TKey, Queryable<TValue>>> toExclude);
     @Override QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude,
                                                      Func2<Map.Entry<TKey, Queryable<TValue>>, Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison);
     @Override <TCompared>

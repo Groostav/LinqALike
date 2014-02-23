@@ -2,11 +2,11 @@ package LinqALike.Queries;
 
 import LinqALike.Common.PrefetchingIterator;
 import LinqALike.Delegate.Condition;
-import LinqALike.QueryableBase;
+import LinqALike.Queryable;
 
 import java.util.Iterator;
 
-public class WhereQuery<TElement> extends QueryableBase<TElement> {
+public class WhereQuery<TElement> implements Queryable<TElement> {
 
     private final Iterable<TElement> elements;
     private final Condition<? super TElement> condition;

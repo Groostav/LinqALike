@@ -1,5 +1,9 @@
 package LinqALike.Common;
 
+import LinqALike.CommonDelegates;
+import LinqALike.Factories;
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Geoff
@@ -12,5 +16,10 @@ public class Formatting {
 
     public static String getClassNameOrPrintableNull(Object objectToGetTypeOf){
         return objectToGetTypeOf == null ? "<null>" : objectToGetTypeOf.getClass().getCanonicalName();
+    }
+
+    public static <TElement> String verticallyPrintMembers(Iterable<TElement> problemMembers) {
+        String newlineIndent = "\n\t";
+        return StringUtils.join(Factories.asList(problemMembers).select(CommonDelegates.NullSafeToString).iterator(), newlineIndent) + "\n";
     }
 }

@@ -15,7 +15,7 @@ public class CommonDelegates {
     );
 
     public static <TObject> Func1.WithDescription<TObject, TObject> identity(){
-        return new Func1.WithDescription<>("as is: object -> object", object -> object);
+        return new Func1.WithDescription<>("identity function: object -> object", object -> object);
     };
 
     public static <TInspected> Condition.WithDescription<TInspected> Not(final Condition<TInspected> condition){
@@ -41,14 +41,14 @@ public class CommonDelegates {
 
 
     public static Condition<Object> IsInstanceOfAny(final Class... allowedTypes){
-        return IsInstanceOfAny(LinqingList.asList(allowedTypes));
+        return IsInstanceOfAny(Factories.asList(allowedTypes));
     }
 
     public static Condition<Object> IsInstanceOfAny(final Iterable<Class> allowedTypes){
         return new Condition.WithDescription<>(
                 "is instance of any " + join(allowedTypes.iterator(), ","),
                 actual -> actual != null &&
-                        LinqingList.asList(allowedTypes).any((Class allowed) -> {
+                        Factories.asList(allowedTypes).any((Class allowed) -> {
                             Class actualType = actual instanceof Class ? (Class) actual : actual.getClass();
                             return allowed.isAssignableFrom(actualType);
                         })

@@ -1,5 +1,6 @@
 package UsageExamples;
 
+import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import LinqALike.QueryableMultiMap;
@@ -41,7 +42,7 @@ public class SimpleExamples {
 
         //here we're creating some simple sample data. Neither Linq nor Streams
         //is limited to such small data-sets.
-        LinqingList<CustomerWithAge> sampleData = LinqingList.asList(
+        LinqingList<CustomerWithAge> sampleData = Factories.asList(
                 new CustomerWithAge(20), new CustomerWithAge(34),
                 new CustomerWithAge(66), new CustomerWithAge(72),
                 new CustomerWithAge(45)
@@ -131,7 +132,7 @@ public class SimpleExamples {
         //the Queryable interface more cumbersome, but it does so in exchange for simpler consumption models.
 
         //given a data-set that looks like this:
-        LinqingList<Person> roster = LinqingList.asList(
+        LinqingList<Person> roster = Factories.asList(
                 new Person("Sue", Person.Sex.FEMALE), new Person("Bob", Person.Sex.MALE), new Person("Alice", Person.Sex.FEMALE),
                 new Person("Eve", Person.Sex.FEMALE), new Person("Chris", Person.Sex.MALE), new Person("Chris", Person.Sex.MALE));
 

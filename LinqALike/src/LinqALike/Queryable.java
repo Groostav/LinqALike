@@ -2,12 +2,13 @@ package LinqALike;
 
 import LinqALike.Delegate.*;
 
+import java.util.ArrayList;
+
 import static LinqALike.LinqBehaviour.first;
 
 /**
  * @author Geoff on 06/09/13
  */
-@SuppressWarnings("SpellCheckingInspection")
 public interface Queryable<TElement> extends Iterable<TElement> {
 
     default TElement aggregate(Func2<TElement, TElement, TElement> aggregator){
@@ -43,6 +44,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     default boolean contains(Object candidate){
         return LinqBehaviour.contains(this, candidate);
     }
+    default boolean containsElement(TElement element){
+        return LinqBehaviour.containsElement(this, element);
+    }
 
 
     default int count(Condition<? super TElement> condition){
@@ -62,10 +66,10 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     }
 
 
-    default Queryable<TElement> except(Iterable<? extends TElement> toExclude){
+    default Queryable<TElement> except(TElement... toExclude){
         return LinqBehaviour.except(this, toExclude);
     }
-    default Queryable<TElement> except(TElement... toExclude){
+    default Queryable<TElement> except(Iterable<? extends TElement> toExclude){
         return LinqBehaviour.except(this, toExclude);
     }
     default Queryable<TElement> except(Iterable<? extends TElement> toExclude,
@@ -248,7 +252,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     default <TDesired> TDesired[] toArray(Func1<Integer, TDesired[]> arrayFactory){
         return LinqBehaviour.toArray(this, arrayFactory);
     }
-
+    default Object[] toArray(){
+        return LinqBehaviour.toArray(this);
+    }
 
     default Queryable<TElement> union(TElement... elements){
         return LinqBehaviour.union(this, elements);

@@ -1,5 +1,6 @@
 package UnitTests;
 
+import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
@@ -13,10 +14,10 @@ public class IntersectionFixture extends QueryFixtureBase {
     @Test
     public void when_intersecting_a_set_containing_2_members_from_another_set(){
         //setup
-        LinqingList<String> original = LinqingList.asList("A", "B", "C");
+        LinqingList<String> original = Factories.asList("A", "B", "C");
 
         //act
-        Queryable<String> result = original.except(LinqingList.asList("B", "C"));
+        Queryable<String> result = original.except(Factories.asList("B", "C"));
         LinqingList<String> flattenedResults = result.toList();
 
         //assert
@@ -26,8 +27,8 @@ public class IntersectionFixture extends QueryFixtureBase {
     @Test
     public void when_intersecting_a_set_with_specific_comparer(){
         //setup
-        LinqingList<NamedValue> left = LinqingList.asList(NamedValue.makeWithEach("A", "B", "C"));
-        LinqingList<NamedValue> right = LinqingList.asList(NamedValue.makeWithEach("A"));
+        LinqingList<NamedValue> left = Factories.asList(NamedValue.makeWithEach("A", "B", "C"));
+        LinqingList<NamedValue> right = Factories.asList(NamedValue.makeWithEach("A"));
         CountingTransform<NamedValue, String> getName = NamedValue.GetName();
 
         //act

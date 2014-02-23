@@ -2,14 +2,14 @@ package LinqALike.Queries;
 
 import LinqALike.Common.QueryableSet;
 import LinqALike.Delegate.Func1;
-import LinqALike.QueryableBase;
+import LinqALike.Factories;
+import LinqALike.Queryable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import static LinqALike.LinqingList.from;
 
-public class UnionQuery<TElement, TCompared> extends QueryableBase<TElement> {
+public class UnionQuery<TElement, TCompared> implements Queryable<TElement> {
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;
@@ -43,7 +43,7 @@ public class UnionQuery<TElement, TCompared> extends QueryableBase<TElement> {
         //now or further on in the program.
         private UnionIterator(){
             rights = left instanceof QueryableSet
-                    ? QueryableBase.of((Iterable<TElement>)right).except(left, comparableSelector).iterator()
+                    ? Factories.from((Iterable<TElement>) right).except(left, comparableSelector).iterator()
                     : right.iterator();
         }
 

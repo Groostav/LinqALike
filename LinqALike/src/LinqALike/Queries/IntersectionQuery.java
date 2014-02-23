@@ -1,80 +1,110 @@
 package LinqALike.Queries;
 
 import LinqALike.Common.PrefetchingIterator;
+import LinqALike.CommonDelegates;
 import LinqALike.Delegate.Func1;
-import LinqALike.QueryableBase;
+import LinqALike.Delegate.Func2;
+import LinqALike.Factories;
+import LinqALike.Queryable;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
-public class IntersectionQuery<TElement, TCompared> extends QueryableBase<TElement> {
+public abstract class IntersectionQuery<TElement> implements Queryable<TElement> {
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;
-    private final Func1<? super TElement, TCompared> comparableSelector;
 
-    public IntersectionQuery(Iterable<? extends TElement> left,
-                             Iterable<? extends TElement> right,
-                             Func1<? super TElement, TCompared> comparableSelector) {
+    protected IntersectionQuery(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
         this.left = left;
         this.right = right;
-        this.comparableSelector = comparableSelector;
     }
 
-    @Override
-    public Iterator<TElement> iterator() {
-        return new IntersectionIterator();
-    }
+    public static class WithComparable<TElement, TCompared> extends IntersectionQuery<TElement>{
 
-    private class IntersectionIterator extends PrefetchingIterator<TElement> {
+        private final Func1<? super TElement, TCompared> comparable;
 
-        Iterator<? extends TElement> leftIterator = left.iterator();
-        Iterator<? extends TElement> rightIterator = right.iterator();
-        HashMap<TCompared, TElement> toIncludeByTheirChampion = new HashMap<>();
-
-        @Override
-        public TElement next() {
-            return super.next();
+        public WithComparable(Iterable<? extends TElement> left,
+                              Iterable<? extends TElement> right,
+                              Func1<? super TElement, TCompared> comparableSelector) {
+            super(left, right);
+            this.comparable = comparableSelector;
         }
 
         @Override
-        public boolean hasNext() {
-            return super.hasNext();
+        public Iterator<TElement> iterator() {
+            return new IntersectionWithComparableIterator<>(comparable);
+        }
+    }
+
+    public static class WithEqualityComparator<TElement> extends IntersectionQuery<TElement>{
+
+        private final Func2<? super TElement, ? super TElement, Boolean> comparator;
+
+        public WithEqualityComparator(Iterable<? extends TElement> left,
+                                      Iterable<? extends TElement> right,
+                                      Func2<? super TElement, ? super TElement, Boolean> comparator) {
+            super(left, right);
+            this.comparator = comparator;
+        }
+
+        @Override
+        public Iterator<TElement> iterator() {
+            return new IntersectionWithEqualityIterator(comparator);
+        }
+    }
+
+    public static class WithNaturalEquality<TElement> extends WithComparable<TElement, TElement>{
+
+        public WithNaturalEquality(Iterable<? extends TElement> left, Iterable<? extends TElement> right) {
+            super(left, right, CommonDelegates.identity());
+        }
+    }
+
+    private class IntersectionWithEqualityIterator extends PrefetchingIterator<TElement>{
+
+        private final Iterator<? extends TElement> leftIterator = left.iterator();
+        private final Queryable<? extends TElement> rightIterator = Factories.cache(right);
+        private final Func2<? super TElement, ? super TElement, Boolean> equalityComparor;
+
+        public IntersectionWithEqualityIterator(Func2<? super TElement, ? super TElement, Boolean>  equalityComparor){
+            this.equalityComparor = equalityComparor;
+        }
+
+        protected void prefetch() {
+
+            while(leftIterator.hasNext() && ! hasPrefetchedValue()){
+                TElement candidate = leftIterator.next();
+
+                if(rightIterator.any(x -> equalityComparor.getFrom(x, candidate))){
+                    setPrefetchedValue(candidate);
+                }
+            }
+        }
+    }
+
+    private class IntersectionWithComparableIterator<TCompared> extends PrefetchingIterator<TElement> {
+
+        private final Queryable<TCompared> rights;
+        private final Iterator<? extends TElement> leftIterator = left.iterator();
+        private final Func1<? super TElement, TCompared> comparableSelector;
+
+        public IntersectionWithComparableIterator(Func1<? super TElement, TCompared> comparableSelector){
+            this.comparableSelector = comparableSelector;
+            rights = Factories.cache(right).select(comparableSelector);
         }
 
         @Override
         protected void prefetch() {
-            TElement leftMemberCandidate;
 
             while(leftIterator.hasNext() && ! hasPrefetchedValue()){
 
-                leftMemberCandidate = leftIterator.next();
-                TCompared candidateKey = comparableSelector.getFrom(leftMemberCandidate);
+                TElement candidate = leftIterator.next();
+                TCompared candidateComparable = comparableSelector.getFrom(candidate);
 
-                flattenIncludedsUntilFound(candidateKey);
-
-                if (toIncludeByTheirChampion.containsKey(candidateKey)) {
-                    setPrefetchedValue(leftMemberCandidate);
+                if (rights.contains(candidateComparable)) {
+                    setPrefetchedValue(candidate);
                 }
             }
-        }
-
-        private void flattenIncludedsUntilFound(TCompared candidateKey) {
-
-            while(rightIterator.hasNext()){
-                TElement next = rightIterator.next();
-                TCompared nextKey = comparableSelector.getFrom(next);
-                toIncludeByTheirChampion.put(nextKey, next);
-
-                if(nextKey.equals(candidateKey)){
-                    break;
-                }
-            }
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
         }
     }
 }

@@ -1,5 +1,6 @@
 package UnitTests;
 
+import LinqALike.Factories;
 import LinqALike.LinqingList;
 import org.junit.Test;
 
@@ -14,8 +15,8 @@ public class UnionFixture {
     @Test
     public void when_calling_union_on_two_sets_with_duplicates() throws Exception {
         //setup
-        LinqingList<Integer> left = LinqingList.asList(1, 2, 3);
-        LinqingList<Integer> right = LinqingList.asList(2, 3, 4, 6);
+        LinqingList<Integer> left = Factories.asList(1, 2, 3);
+        LinqingList<Integer> right = Factories.asList(2, 3, 4, 6);
 
         //act
         LinqingList<Integer> result = left.union(right).toList();
@@ -40,8 +41,8 @@ public class UnionFixture {
     @Test
     public void when_calling_union_on_one_filled_set_and_one_empty_set(){
         //setup
-        LinqingList<Integer> left = LinqingList.asList();
-        LinqingList<Integer> right = LinqingList.asList(2, 3, 4, 6);
+        LinqingList<Integer> left = Factories.asList();
+        LinqingList<Integer> right = Factories.asList(2, 3, 4, 6);
 
         //act
         LinqingList<Integer> result = left.union(right).toList();
@@ -53,8 +54,8 @@ public class UnionFixture {
     @Test
     public void when_calling_union_on_two_sets_both_with_nulls(){
         //setup
-        LinqingList<String> left = LinqingList.asList("one", null, "two", "three");
-        LinqingList<String> right = LinqingList.asList(null, "four", "five");
+        LinqingList<String> left = Factories.asList("one", null, "two", "three");
+        LinqingList<String> right = Factories.asList(null, "four", "five");
 
         //act
         LinqingList<String> result = left.union(right).toList();

@@ -1,11 +1,11 @@
 package LinqALike.Queries;
 
 import LinqALike.Delegate.Func1;
-import LinqALike.QueryableBase;
+import LinqALike.Queryable;
 
 import java.util.Iterator;
 
-public class SelectQuery<TElement, TResult> extends QueryableBase<TResult> {
+public class SelectQuery<TElement, TResult> implements Queryable<TResult> {
 
     private final Iterable<TElement> set;
     private final Func1<? super TElement, TResult> targetSite;
