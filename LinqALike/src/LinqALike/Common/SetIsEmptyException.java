@@ -3,16 +3,16 @@ package LinqALike.Common;
 import LinqALike.Delegate.Condition;
 import LinqALike.Factories;
 
-public class NonEmptySetIsEmptyException extends QueryDelegateException {
+public class SetIsEmptyException extends QueryDelegateException {
 
-    public <TElement> NonEmptySetIsEmptyException(Iterable<TElement> problemSet, Condition<? super TElement> condition){
+    public <TElement> SetIsEmptyException(Iterable<TElement> problemSet, Condition<? super TElement> condition){
         super("The provided set once filtered by the given condition contains no elements!\n"
-                + "The original set was:"
+                + "The visible members were:"
                 + Formatting.verticallyPrintMembers(problemSet)
                 + "And the condition was:"
                 + Formatting.verticallyPrintMembers(Factories.asList(condition)));
     }
-    public NonEmptySetIsEmptyException(){
+    public SetIsEmptyException(){
         super("The provided set contains no elements!");
     }
 }

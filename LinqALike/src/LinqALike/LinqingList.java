@@ -56,8 +56,12 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
      * @param   valuesToBeAdded the elements to be added to this linqing list.
      * @return  true if the list changed as a result of this call.
      */
-    public void addAll(TElement... valuesToBeAdded){
-
+    public boolean addAll(TElement... valuesToBeAdded){
+        boolean modified = false;
+        for(TElement element : valuesToBeAdded){
+            modified |= add(element);
+        }
+        return modified;
     }
 
     public boolean addAll(Iterable<? extends TElement> valuesToBeAdded) {

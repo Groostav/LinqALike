@@ -1,6 +1,7 @@
 package LinqALike.Common;
 
 
+import LinqALike.Factories;
 import LinqALike.Queryable;
 
 import java.util.Iterator;
@@ -8,7 +9,7 @@ import java.util.Iterator;
 public class IterableCache<TElement> implements Queryable<TElement> {
 
     private final Iterator<TElement> origin;
-    private Queryable<TElement> cache;
+    private Queryable<TElement> cache = Factories.<TElement>empty();
 
     public IterableCache(Iterable<TElement> origin){
         this.origin = origin.iterator();

@@ -4,6 +4,7 @@ import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 
 import java.io.File;
+import java.lang.invoke.SerializedLambda;
 
 import static org.apache.commons.lang.StringUtils.join;
 
@@ -66,6 +67,7 @@ public class CommonDelegates {
     public static Condition<File> FileExists = new Condition.WithDescription<>("The File exists: File::exists", File::exists);
 
     public static <TElement> boolean nullSafeEquals(TElement left, TElement right) {
+
         return left == null ? right == null : left.equals(right);
     }
     public static String nullSafeToString(Object source){

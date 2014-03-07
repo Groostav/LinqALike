@@ -2,6 +2,7 @@ package LinqALike;
 
 import LinqALike.Delegate.*;
 
+import java.lang.invoke.SerializedLambda;
 import java.util.ArrayList;
 
 import static LinqALike.LinqBehaviour.first;

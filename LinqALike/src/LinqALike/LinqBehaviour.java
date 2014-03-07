@@ -39,7 +39,7 @@ public class LinqBehaviour {
                                              Condition<? super TElement> uniqueCondition) {
         TElement result = singleOrDefault(elements, uniqueCondition);
         if (result == null) {
-            throw new NonEmptySetIsEmptyException(elements, uniqueCondition);
+            throw new SetIsEmptyException(elements, uniqueCondition);
         }
         return result;
     }
@@ -87,7 +87,7 @@ public class LinqBehaviour {
         Iterator<TElement> iterator = elements.iterator();
 
         if (!iterator.hasNext()) {
-            throw new NonEmptySetIsEmptyException();
+            throw new SetIsEmptyException();
         }
 
         while (iterator.hasNext()) {
@@ -98,7 +98,7 @@ public class LinqBehaviour {
             }
         }
 
-        throw new NonEmptySetIsEmptyException(elements, condition);
+        throw new SetIsEmptyException(elements, condition);
     }
 
     public static <TElement> TElement firstOrDefault(Iterable<TElement> elements,
@@ -112,7 +112,7 @@ public class LinqBehaviour {
     }
 
     public static <TElement> TElement last(Iterable<TElement> elements){
-        if( ! elements.iterator().hasNext()) throw new NonEmptySetIsEmptyException();
+        if( ! elements.iterator().hasNext()) throw new SetIsEmptyException();
         return lastOrDefault(elements);
     }
 
@@ -166,7 +166,7 @@ public class LinqBehaviour {
     public static <TElement> TElement withMinimum(Iterable<TElement> set, Func1<TElement, Number> valueSelector) {
         Iterator<TElement> iterator = set.iterator();
         if( ! iterator.hasNext()){
-            throw new NonEmptySetIsEmptyException();
+            throw new SetIsEmptyException();
         }
 
         Double minValue = null;
@@ -268,8 +268,6 @@ public class LinqBehaviour {
         return true;
     }
 
-
-    //O(n)!!, _not_ O(n^2) :D
     public static <TElement> boolean isSetEquivalentOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
         if(left instanceof Collection && right instanceof Collection){
             if( ((Collection)left).size() != ((Collection)right).size()) return false;
@@ -331,8 +329,9 @@ public class LinqBehaviour {
             List<TElement> list = (List<TElement>) set;
             return new QueryAdapter.Iterable<>(new ListReverser<>(list));
         }
-        else
-        return reverseViaStack(set);
+        else{
+            return reverseViaStack(set);
+        }
     }
 
     private static <TElement> Queryable<TElement> reverseViaStack(Iterable<TElement> set) {
@@ -481,6 +480,8 @@ public class LinqBehaviour {
         Object[] elementData = originalSet.toArray();
 
         //copy-paste from java.util.ArrayList#toArray(T[] a)
+        //... which is dumb since that means we create the array twice...
+        assert false : "not implemented";
 
         if (a.length < size)
             // Make a new array of a's runtime type, but my contents:
@@ -489,10 +490,6 @@ public class LinqBehaviour {
         if (a.length > size)
             a[size] = null;
         return a;
-    }
-
-    public static String verticallyPrintMembers(String... members) {
-        return Formatting.verticallyPrintMembers(Factories.asList(members));
     }
 
     public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
@@ -539,24 +536,9 @@ public class LinqBehaviour {
     public static <TResult, TLeft, TRight>
     Queryable<TResult> join(Iterable<TLeft> left,
                             Iterable<TRight> right,
-                            Func2<TLeft, TRight, TResult> makeResult) {
-
-        Iterator<TLeft> leftIterator = left.iterator();
-        Iterator<TRight> rightIterator = right.iterator();
-        LinqingList<TResult> results = new LinqingList<>();
-
-        while(leftIterator.hasNext() && rightIterator.hasNext()){
-            TResult result = makeResult.getFrom(leftIterator.next(), rightIterator.next());
-            results.add(result);
-        }
-
-        //for now we're going to assert this is a natural join. If we need to, we can get into left v right v outer v inner...
-        //note we do already have a cartesianProduct method.
-        if(leftIterator.hasNext() ^ rightIterator.hasNext()){
-            throw new EquivalentSizeSetsDifferInSizeException(left, right);
-        }
-
-        return results;
+                            Func2<? super TLeft, ? super TRight, TResult> makeResult) {
+        assert false : "not implemented";
+        return null;
     }
 
     public static <TElement, TDesired> TDesired[] toArray(Iterable<TElement> entries,
@@ -591,6 +573,7 @@ public class LinqBehaviour {
     }
 
     public static <TElement> double average(Iterable<? extends TElement> set, Func1<? super TElement, Double> valueSelector) {
+        cannotBeEmpty(set);
         double sum = 0.0;
         int size = size(set);
 
@@ -599,6 +582,12 @@ public class LinqBehaviour {
         }
 
         return sum / size;
+    }
+
+    private static <TElement> void cannotBeEmpty(Iterable<TElement> set) {
+        if(isEmpty(set)){
+            throw new SetIsEmptyException();
+        }
     }
 
     public static <TElement> boolean containsElement(Iterable<? extends TElement> set, TElement candidate) {
@@ -628,37 +617,60 @@ public class LinqBehaviour {
         return reversed(set).first(condition);
     }
 
-    public static <TElement> double min(Queryable<TElement> tElements, Func1<? super TElement,Double> valueSelector) {
-        assert false;
-        return 0.0;
-    }
     public static <TElement> TElement lastOrDefault(Iterable<TElement> set, Condition<? super TElement> condition) {
         return reversed(set).firstOrDefault(condition);
     }
+    public static <TElement> double min(Queryable<TElement> source, Func1<? super TElement,Double> valueSelector) {
+        return extrema(source, valueSelector, Double.POSITIVE_INFINITY, Math::min).getKey();
+    }
 
     public static <TElement> double max(Iterable<TElement> set, Func1<? super TElement, Double> valueSelector) {
-        if(isEmpty(set)){
-            return 0.0;
-        }
-
-        double max = Double.NEGATIVE_INFINITY;
-        for(TElement element : set){
-
-        }
-
-        assert false;
-        return 0.0;
+        return extrema(set, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getKey();
     }
 
-    public static <TElement> TElement withMax(Queryable<TElement> tElements, Func1<? super TElement,Double> valueSelector) {
-        assert false;
-        return null;
+    private static <TElement> Tuple<Double, TElement> extrema(Iterable<TElement> source,
+                                                              Func1<? super TElement, Double> valueElementSelector,
+                                                              double startingValue,
+                                                              Func2<Double, Double, Double> valueContentionResolver) {
+        cannotBeEmpty(source);
+
+        double previousMax = startingValue;
+        double currentMax = startingValue;
+        TElement chosenElement = null;
+
+        for(TElement element : source){
+            Double value = valueElementSelector.getFrom(element);
+            throwNPEIfNull("value selector", valueElementSelector, element, value);
+
+            currentMax = valueContentionResolver.getFrom(currentMax, value);
+
+            if(previousMax != currentMax){
+                chosenElement = element;
+                previousMax = currentMax;
+            }
+
+        }
+
+        return new Tuple<>(currentMax, chosenElement);
+    }
+
+    private static <TElement> void throwNPEIfNull(String delegateDescription, Func1<? super TElement, Double> valueSelector, TElement element, Double value) {
+        if(value == null){
+            throw new NullPointerException(
+                    "The " + delegateDescription + " '" + valueSelector + "' " +
+                    "returned " + Formatting.NullStringRepresentation + " " +
+                    "for the element '" + Formatting.nullSafeToString(element) + "', " +
+                    "and null is not comparable to other double values.");
+        }
+    }
+
+    public static <TElement> TElement withMax(Queryable<TElement> source, Func1<? super TElement ,Double> valueSelector) {
+        return extrema(source, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getValue();
     }
 
 
-    public static <TElement> TElement withMin(Queryable<TElement> tElements, Func1<? super TElement, Double> valueSelector) {
-        assert false;
-        return null;
+    public static <TElement> TElement withMin(Queryable<TElement> source, Func1<? super TElement, Double> valueSelector) {
+        return extrema(source, valueSelector, Double.POSITIVE_INFINITY, Math::min).getValue();
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>> Queryable<TElement> orderBy(Queryable<TElement> set, Func1<? super TElement, TCompared> comparableSelector) {
@@ -712,8 +724,23 @@ public class LinqBehaviour {
     }
 
     public static <TElement> boolean isDistinct(Queryable<TElement> source) {
-        assert false : "not implemented";
-        return false;
+
+        if(source instanceof Set || source instanceof QueryableSet){
+            return true;
+        }
+
+        int size = source.size();
+        HashSet<TElement> set = new HashSet<>(size, 0.90F);
+
+        for(TElement element : source){
+
+            boolean modified = set.add(element);
+
+            if ( ! modified){
+                return false;
+            }
+        }
+        return true;
     }
 }
 
