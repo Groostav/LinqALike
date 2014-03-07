@@ -5,6 +5,8 @@ import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TValue>>{
@@ -12,53 +14,117 @@ public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TV
     public Queryable<TKey> keySet();
     public Queryable<TValue> values();
 
-    boolean containsTKey(TKey candidateKey);
-    boolean containsTValue(TValue candidateValue);
+    default boolean containsTKey(TKey candidateKey){
+        return keySet().contains(candidateKey);
+    }
+    default boolean containsTValue(TValue candidateValue){
+        return values().contains(candidateValue);
+    }
 
-
-    @Override QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude);
-    @Override QueryableMap<TKey, TValue> except(ArrayList<Map.Entry<TKey, TValue>> toExclude);
-    @Override QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
-                                                Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> equalityComparison);
-    @Override <TCompared>
+    @Override default QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
+                                                        Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> equalityComparison){
+        assert false : "not implemented";
+        return null;
+    }
+    default @Override <TCompared>
     QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
-                               Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector);
+                               Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    TValue get(TKey key);
-    Queryable<TValue> getAll(Iterable<? extends TKey> keys);
-    Queryable<TValue> getAll(TKey ... keys);
+    default TValue get(TKey key){
+        assert false : "not implemented";
+        return null;
+    }
+    default Queryable<TValue> getAll(Iterable<? extends TKey> keys){
+        assert false : "not implemented";
+        return null;
+    }
+    default Queryable<TValue> getAll(TKey ... keys){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override <TCompared>
+    @Override default <TCompared>
     QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
-                                         Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector);
-    @Override QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
-                                                   Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> equalityComparison);
-    @Override QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> toInclude);
-    @Override QueryableMap<TKey, TValue> intersect(Map.Entry<TKey, TValue>... toIntersect);
+                                         Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                                   Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> equalityComparison){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> toInclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> intersect(Map.Entry<TKey, TValue>... toIntersect){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override <TCompared extends Comparable<TCompared>>
-    QueryableMap<TKey, TValue> orderBy(Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector);
-    @Override QueryableMap<TKey, TValue> orderBy(Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Integer> equalityComparator);
+    @Override default <TCompared extends Comparable<TCompared>>
+    QueryableMap<TKey, TValue> orderBy(Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> orderBy(Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Integer> equalityComparator){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override QueryableMap<TKey, TValue> reversed();
+    @Override default QueryableMap<TKey, TValue> reversed(){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override QueryableMap<TKey, TValue> skipWhile(Condition<? super Map.Entry<TKey, TValue>> toExclude);
-    @Override QueryableMap<TKey, TValue> skipUntil(Condition<? super Map.Entry<TKey, TValue>> toInclude);
-    @Override QueryableMap<TKey, TValue> skip(int numberToSkip);
+    @Override default QueryableMap<TKey, TValue> skipWhile(Condition<? super Map.Entry<TKey, TValue>> toExclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> skipUntil(Condition<? super Map.Entry<TKey, TValue>> toInclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> skip(int numberToSkip){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override QueryableMap<TKey, TValue> union(Map.Entry<TKey, TValue>... elements);
-    @Override QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> toInclude);
-    @Override <TCompared>
+    @Override default QueryableMap<TKey, TValue> union(Map.Entry<TKey, TValue>... elements){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> toInclude){
+        assert false : "not implemented";
+        return null;
+    }
+
+    @Override
+    default <TCompared>
     QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
-                              Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector);
+                              Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override QueryableMap<TKey, TValue> where(Condition<? super Map.Entry<TKey, TValue>> condition);
+    @Override default QueryableMap<TKey, TValue> where(Condition<? super Map.Entry<TKey, TValue>> condition){
+        assert false : "not implemented";
+        return null;
+    }
 }
 

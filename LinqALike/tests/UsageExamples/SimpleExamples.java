@@ -7,6 +7,7 @@ import LinqALike.QueryableMultiMap;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -161,11 +162,42 @@ public class SimpleExamples {
                       .collect(groupingBy(Person::getGender,
                                mapping(Person::getName, toList())));
 
+        //with a for-each loop:
+        List<Person> males = new ArrayList<>();
+        List<Person> females = new ArrayList<>();
+        for(Person person : roster){
+            if(person.getGender() == Person.Sex.MALE){
+                males.add(person);
+            }
+            else if (person.getGender() == Person.Sex.FEMALE){
+                females.add(person);
+            }
+            else{
+                throw new RuntimeException();
+            }
+        }
+
+        List<String> maleNames = new ArrayList<>();
+        List<String> femaleNames = new ArrayList<>();
+        for(Person p : males){
+            maleNames.add(p.getName());
+        }
+        for(Person p : females){
+            femaleNames.add(p.getName());
+        }
+
+        Map<Person.Sex, String> namesByGender = new LinkedHashMap<>();
+        for(String name : maleNames){
+            namesByGender.put(Person.Sex.MALE, name);
+        }
+        for(String name : femaleNames){
+            namesByGender.put(Person.Sex.FEMALE, name);
+        }
 
         //but if we use linq, we get:
-        QueryableMultiMap<Person.Sex, String> namesByGenderFromLinq =
+        Queryable<Queryable<String>> namesByGenderFromLinq =
                 roster.groupBy(Person::getGender)
-                      .selectFromGroup(Person::getName);
+                      .select(group -> group.select(Person::getName));
 
         // You'll notice there isn't actually that much in code-savings,
         // but look at the nested-brackets and the use of static methods:

@@ -234,7 +234,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     default <TKey> LinqingMap<TKey, TElement> toMap(Iterable<TKey> keys){
-        return LinqBehaviour.toMap(this, keys);
+        return LinqBehaviour.toMap(keys, this);
     }
     default <TKey> LinqingMap<TKey, TElement> toMap(Func1<? super TElement, TKey> keySelector){
         return LinqBehaviour.toMap(this, keySelector);

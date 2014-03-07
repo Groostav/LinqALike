@@ -129,10 +129,6 @@ public class LinqBehaviour {
         return new WhereQuery<>(elements, condition);
     }
 
-    public static <TElement, TResult> Iterable<TResult> select(TElement[] set,
-                                                               Func1<? super TElement, TResult> targetSite) {
-        return select(Arrays.asList(set), targetSite);
-    }
 
     public static <TElement, TResult> Queryable<TResult> select(Iterable<TElement> set,
                                                                 Func1<? super TElement, TResult> targetSite) {
@@ -222,7 +218,7 @@ public class LinqBehaviour {
     }
 
     public static <TElement> Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return union(left, right, CommonDelegates.identity());
+        return union(left, right, CommonDelegates.<TElement>identity());
     }
 
     public static <TElement> Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
@@ -632,6 +628,10 @@ public class LinqBehaviour {
         return reversed(set).first(condition);
     }
 
+    public static <TElement> double min(Queryable<TElement> tElements, Func1<? super TElement,Double> valueSelector) {
+        assert false;
+        return 0.0;
+    }
     public static <TElement> TElement lastOrDefault(Iterable<TElement> set, Condition<? super TElement> condition) {
         return reversed(set).firstOrDefault(condition);
     }
@@ -645,6 +645,75 @@ public class LinqBehaviour {
         for(TElement element : set){
 
         }
+
+        assert false;
+        return 0.0;
+    }
+
+    public static <TElement> TElement withMax(Queryable<TElement> tElements, Func1<? super TElement,Double> valueSelector) {
+        assert false;
+        return null;
+    }
+
+
+    public static <TElement> TElement withMin(Queryable<TElement> tElements, Func1<? super TElement, Double> valueSelector) {
+        assert false;
+        return null;
+    }
+
+    public static <TElement, TCompared extends Comparable<TCompared>> Queryable<TElement> orderBy(Queryable<TElement> set, Func1<? super TElement, TCompared> comparableSelector) {
+        assert false;
+        return null;
+    }
+
+    public static <TElement> Queryable<TElement> orderBy(Queryable<TElement> tElements, Func2<? super TElement, ? super TElement, Integer> equalityComparator) {
+        assert false : "not implemented";
+        return null;
+    }
+
+    public static <TElement> double sum(Queryable<TElement> set, Func1<? super TElement, Double> valueSelector) {
+        assert false;
+        return 0;
+    }
+
+    public static <TElement> ReadonlyLinqingList<TElement> toReadOnly(Queryable<TElement> source) {
+        return new ReadonlyLinqingList<>(source);
+    }
+
+    public static <TElement> LinqingSet<TElement> toSet(Queryable<TElement> source) {
+        return new LinqingSet<>(source);
+    }
+
+    public static <TElement> Queryable<TElement> fetch(Queryable<TElement> source) {
+        return new ReadonlyLinqingList<>(source);
+    }
+
+    public static <TKey, TElement> LinqingMap<TKey,TElement> toMap(Queryable<TElement> source, Func1<? super TElement,TKey> keySelector) {
+        assert false;
+        return null;
+    }
+
+    public static <TKey, TValue, TElement> LinqingMap<TKey,TValue> toMap(Queryable<TElement> tElements, Func1<? super TElement,TKey> keySelector, Func1<? super TElement,TValue> valueSelector) {
+        assert false;
+        return null;
+    }
+
+    public static <TElement> boolean isSingle(Iterable<TElement> source) {
+        if(source instanceof Collection){
+            return ((Collection)source).size() == 1;
+        }
+
+        Iterator<TElement> iterator = source.iterator();
+        boolean hasFirst = iterator.hasNext();
+        if ( ! hasFirst) return false;
+        iterator.next();
+        boolean hasSecond = iterator.hasNext();
+        return ! hasSecond;
+    }
+
+    public static <TElement> boolean isDistinct(Queryable<TElement> source) {
+        assert false : "not implemented";
+        return false;
     }
 }
 

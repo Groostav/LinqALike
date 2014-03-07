@@ -30,7 +30,7 @@ public abstract class GroupByQuery<TElement> implements Queryable<Queryable<TEle
 
         @Override
         public Iterator<Queryable<TElement>> iterator() {
-            return new GroupByWithComparableIterator<>(groupByPropertySelector);
+            return this.new GroupByWithComparableIterator<TComparable>(groupByPropertySelector);
         }
 
     }
@@ -47,11 +47,11 @@ public abstract class GroupByQuery<TElement> implements Queryable<Queryable<TEle
 
         @Override
         public Iterator<Queryable<TElement>> iterator() {
-            return new GroupByWithEqualityComparatorIterator(groupMembershipComparator);
+            return this.new GroupByWithEqualityComparatorIterator(groupMembershipComparator);
         }
     }
 
-    private class GroupByWithComparableIterator<TComparable> implements Iterator<Queryable<TElement>> {
+    protected class GroupByWithComparableIterator<TComparable> implements Iterator<Queryable<TElement>> {
 
         private final Func1<? super TElement, TComparable> comparable;
 
@@ -82,7 +82,7 @@ public abstract class GroupByQuery<TElement> implements Queryable<Queryable<TEle
         }
     }
 
-    private class GroupByWithEqualityComparatorIterator implements Iterator<Queryable<TElement>> {
+    protected class GroupByWithEqualityComparatorIterator implements Iterator<Queryable<TElement>> {
 
         private final Func2<? super TElement, ? super TElement, Boolean> membershipTest;
 

@@ -76,4 +76,8 @@ public class Factories {
     public static <TElement> Queryable<TElement> cache(Iterable<TElement> origin){
         return new IterableCache<>(origin);
     }
+
+    public static <TElement> Iterable<TElement> empty() {
+        return new LinqingList<>();
+    }
 }

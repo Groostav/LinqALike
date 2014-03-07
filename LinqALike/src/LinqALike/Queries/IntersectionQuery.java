@@ -32,7 +32,7 @@ public abstract class IntersectionQuery<TElement> implements Queryable<TElement>
 
         @Override
         public Iterator<TElement> iterator() {
-            return new IntersectionWithComparableIterator<>(comparable);
+            return this.new IntersectionWithComparableIterator<TCompared>(comparable);
         }
     }
 
@@ -49,7 +49,7 @@ public abstract class IntersectionQuery<TElement> implements Queryable<TElement>
 
         @Override
         public Iterator<TElement> iterator() {
-            return new IntersectionWithEqualityIterator(comparator);
+            return this.new IntersectionWithEqualityIterator(comparator);
         }
     }
 
@@ -60,7 +60,7 @@ public abstract class IntersectionQuery<TElement> implements Queryable<TElement>
         }
     }
 
-    private class IntersectionWithEqualityIterator extends PrefetchingIterator<TElement>{
+    protected class IntersectionWithEqualityIterator extends PrefetchingIterator<TElement>{
 
         private final Iterator<? extends TElement> leftIterator = left.iterator();
         private final Queryable<? extends TElement> rightIterator = Factories.cache(right);
@@ -82,7 +82,7 @@ public abstract class IntersectionQuery<TElement> implements Queryable<TElement>
         }
     }
 
-    private class IntersectionWithComparableIterator<TCompared> extends PrefetchingIterator<TElement> {
+    protected class IntersectionWithComparableIterator<TCompared> extends PrefetchingIterator<TElement> {
 
         private final Queryable<TCompared> rights;
         private final Iterator<? extends TElement> leftIterator = left.iterator();

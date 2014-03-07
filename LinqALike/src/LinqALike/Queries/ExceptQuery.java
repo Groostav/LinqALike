@@ -1,6 +1,7 @@
 package LinqALike.Queries;
 
 import LinqALike.Common.PrefetchingIterator;
+import LinqALike.CommonDelegates;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 import LinqALike.LinqingMap;
@@ -29,7 +30,7 @@ public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
 
         @Override
         public Iterator<TElement> iterator() {
-            return new ExcludingWithComparableIterator<>(identity());
+            return this.new ExcludingWithComparableIterator<TElement>(identity());
         }
     }
 
@@ -46,7 +47,7 @@ public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
 
         @Override
         public Iterator<TElement> iterator() {
-            return new ExcludingWithComparableIterator<>(comparableSelector);
+            return this.new ExcludingWithComparableIterator<TCompared>(comparableSelector);
         }
 
     }
@@ -68,10 +69,10 @@ public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
 
         @Override
         public Iterator<TElement> iterator() {
-            return new ExcludingWithEqualityComparatorIterator();
+            return this.new ExcludingWithEqualityComparatorIterator();
         }
 
-        private class ExcludingWithEqualityComparatorIterator extends PrefetchingIterator<TElement> {
+        protected class ExcludingWithEqualityComparatorIterator extends PrefetchingIterator<TElement> {
 
             @Override
             protected void prefetch() {
@@ -102,7 +103,7 @@ public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
         }
     }
 
-    private class ExcludingWithComparableIterator<TCompared> extends PrefetchingIterator<TElement> implements Iterator<TElement> {
+    protected class ExcludingWithComparableIterator<TCompared> extends PrefetchingIterator<TElement> implements Iterator<TElement> {
 
         private Iterator<? extends TElement> source = leftBasis.iterator();
         private Iterator<? extends TElement> toExcludes = rightSetToExclude.iterator();

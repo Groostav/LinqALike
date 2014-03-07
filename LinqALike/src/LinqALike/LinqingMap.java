@@ -4,10 +4,7 @@ import LinqALike.Delegate.*;
 
 import java.util.*;
 
-import static LinqALike.LinqingList.from;
-
 public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements QueryableMap<TKey, TValue> {
-
 
     /*
      * Static factories
@@ -91,17 +88,32 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
      */
     @Override
     public LinqingSet<TKey> keySet() {
-        return new LinqingSet<>(this.select(x -> x.getKey()));
+        return new LinqingSet<>(super.keySet());
     }
 
     @Override
     public LinqingList<TValue> values() {
-        return new LinqingList<>(this.select(x -> x.getValue()));
+        return new LinqingList<>(super.values());
+    }
+
+    @Override
+    public boolean containsTKey(TKey candidateKey) {
+        return keySet().contains(candidateKey);
+    }
+
+    @Override
+    public boolean containsTValue(TValue candidateValue) {
+        return values().contains(candidateValue);
     }
 
     @Override
     public LinqingSet<Map.Entry<TKey, TValue>> entrySet() {
         return new LinqingSet<>(this);
+    }
+
+    @Override
+    public Iterator<Map.Entry<TKey, TValue>> iterator() {
+        return super.entrySet().iterator();
     }
 }
 

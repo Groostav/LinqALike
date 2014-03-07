@@ -12,40 +12,86 @@ public interface QueryableMultiMap<TKey, TValue> extends QueryableMap<TKey, Quer
     public Queryable<TValue> flatValues();
 
 
-    @Override QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude);
-    @Override QueryableMultiMap<TKey, TValue> except(ArrayList<Map.Entry<TKey, Queryable<TValue>>> toExclude);
-    @Override QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude,
-                                                     Func2<Map.Entry<TKey, Queryable<TValue>>, Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison);
-    @Override <TCompared>
+    @Override default QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude,
+                                                     Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default <TCompared>
     QueryableMultiMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toExclude,
-                                           Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector);
+                                           Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
 
-
-    @Override <TCompared>
+    @Override default <TCompared>
     QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude,
-                                              Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector);
-    @Override QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude,
-                                                        Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison);
-    @Override QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude);
-    @Override QueryableMultiMap<TKey, TValue> intersect(Map.Entry<TKey, Queryable<TValue>>... toIntersect);
+                                              Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude,
+                                                        Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Boolean> equalityComparison){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, Queryable<TValue>>> toInclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> intersect(Map.Entry<TKey, Queryable<TValue>>... toIntersect){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override <TCompared extends Comparable<TCompared>>
-    QueryableMultiMap<TKey, TValue> orderBy(Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector);
-    @Override QueryableMultiMap<TKey, TValue> orderBy(Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Integer> equalityComparator);
+    @Override default <TCompared extends Comparable<TCompared>>
+    QueryableMultiMap<TKey, TValue> orderBy(Func1<? super Map.Entry<TKey, Queryable<TValue>>, TCompared> comparableSelector){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> orderBy(Func2<? super Map.Entry<TKey, Queryable<TValue>>, ? super Map.Entry<TKey, Queryable<TValue>>, Integer> equalityComparator){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override QueryableMultiMap<TKey, TValue> reversed();
+    @Override default QueryableMultiMap<TKey, TValue> reversed(){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    @Override QueryableMultiMap<TKey, TValue> skipWhile(Condition<? super Map.Entry<TKey, Queryable<TValue>>> toExclude);
-    @Override QueryableMultiMap<TKey, TValue> skipUntil(Condition<? super Map.Entry<TKey, Queryable<TValue>>> toInclude);
-    @Override QueryableMultiMap<TKey, TValue> skip(int numberToSkip);
+    @Override default QueryableMultiMap<TKey, TValue> skipWhile(Condition<? super Map.Entry<TKey, Queryable<TValue>>> toExclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> skipUntil(Condition<? super Map.Entry<TKey, Queryable<TValue>>> toInclude){
+        assert false : "not implemented";
+        return null;
+    }
+    @Override default QueryableMultiMap<TKey, TValue> skip(int numberToSkip){
+        assert false : "not implemented";
+        return null;
+    }
 
 
-    ReadonlyLinqingList<Map.Entry<TKey, TValue>> toFlattenedReadOnly();
-    LinqingList<Map.Entry<TKey, TValue>> toFlattenedList();
-    LinqingSet<Map.Entry<TKey, TValue>> toFlattenedSet();
+    default ReadonlyLinqingList<Map.Entry<TKey, TValue>> toFlattenedReadOnly(){
+        assert false : "not implemented";
+        return null;
+    }
+    default LinqingList<Map.Entry<TKey, TValue>> toFlattenedList(){
+        assert false : "not implemented";
+        return null;
+    }
+    default LinqingSet<Map.Entry<TKey, TValue>> toFlattenedSet(){
+        assert false : "not implemented";
+        return null;
+    }
 
 
     @Override
