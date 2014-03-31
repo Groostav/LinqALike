@@ -126,7 +126,14 @@ public class LinqBehaviour {
 
     public static <TElement> Queryable<TElement> where(Iterable<TElement> elements,
                                                        Condition<? super TElement> condition) {
+        assertNotNull(condition, "condition");
         return new WhereQuery<>(elements, condition);
+    }
+
+    private static <TElement> void assertNotNull(Object parameter, String parameterName) {
+        if(parameter == null){
+            throw new IllegalArgumentException(parameterName);
+        }
     }
 
 

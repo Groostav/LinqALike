@@ -77,15 +77,6 @@ public class QueryFixtureBase {
             this.value = value;
         }
 
-        public static LinqingList<EquatableValue> makeWithEach(String... values){
-            LinqingList<EquatableValue> returnable = new LinqingList<>();
-            for(String value : values){
-                EquatableValue wrappedValue = new EquatableValue(value);
-                returnable.add(wrappedValue);
-            }
-            return returnable;
-        }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -112,8 +103,17 @@ public class QueryFixtureBase {
      */
     protected static abstract class CountingCondition<TInspected> extends CountingDelegate implements Condition<TInspected> {
 
+        public static <TInspected> CountingCondition<TInspected> track(Condition<TInspected> actualCondition){
+            return new CountingCondition<TInspected>() {
+                @Override
+                protected boolean passesForImpl(TInspected cause) {
+                    return actualCondition.passesFor(cause);
+                }
+            };
+        }
+
         /**
-         * note: the final is simply to make sure forgetful programmers don't override {@link PDOL.Common.Delegate.Condition#passesFor(Object)}
+         * note: the final is simply to make sure forgetful programmers don't override {@link LinqALike.Delegate.Condition#passesFor(Object)}
          * instead of {@link #passesForImpl(Object)} (as they should).
          */
         @Override

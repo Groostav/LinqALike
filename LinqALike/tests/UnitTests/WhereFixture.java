@@ -1,7 +1,11 @@
 package UnitTests;
 
 import LinqALike.LinqingList;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -10,40 +14,145 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class WhereFixture extends QueryFixtureBase {
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Test
-    public void when_calling_where_on_number_values_with_several_values_passing_the_condition() throws Exception {
+    public void when_filtering_on_number_list_by_evenness_it_should_return_even_values(){
         //setup
-        LinqingList<NumberValue> testableSet = new LinqingList<NumberValue>(NumberValue.class, new Object[]
-                {new NumberValue(1), null, new NumberValue(2), new NumberValue(3)});
-        CountingCondition<NumberValue> condition = new CountingCondition<NumberValue>() {
-            @Override public boolean passesForImpl(NumberValue cause) {
-                return cause != null && cause.number >= 2;
-            }
-        };
+        LinqingList<Integer> numbers = new LinqingList<>(1, 2, 3, 4, 5, 6, 7, 8);
+        CountingCondition<Integer> condition = CountingCondition.track(number -> number % 2 == 0);
 
         //act
-        LinqingList<NumberValue> results = testableSet.where(condition).toList();
+        List<Integer> evens = numbers.where(condition).toList();
 
-        //assert
-        assertThat(results).hasSize(2);
-        assertThat(results).containsExactly(testableSet.get(2), testableSet.get(3));
-        condition.shouldHaveBeenInvoked(FOUR_TIMES);
+        //Assert
+        assertThat(evens).containsExactly(2, 4, 6, 8);
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(numbers.size());
+
     }
 
     @Test
-    public void when_calling_whereTypeIs() throws Exception {
+    public void when_filtering_on_number_list_by_null_it_should_throw_argumentexception() {
         //setup
-        LinqingList<Object> testableSet = new LinqingList<Object>(5.0d, new NumberValue(20), null, new NamedValue("hi"), new NumberValue(5){{number = 6;}});
-        //the last element is an anonymous subclass, make sure that its class is not EQUAL to (but rather inherits from) NumberValue.class
-        Class classOfAnonymousSubclass = testableSet.get(4).getClass();
-        assert( ! classOfAnonymousSubclass.equals(NumberValue.class) && NumberValue.class.isAssignableFrom(classOfAnonymousSubclass));
+        thrown.expect(IllegalArgumentException.class);
+        LinqingList<Integer> numbers = new LinqingList<>(1, 2, 3, 4, 5, 6, 7, 8);
 
         //act
-        LinqingList<NumberValue> results = testableSet.ofType(NumberValue.class).toList();
+        numbers.where(null);
+    }
+
+    @Test
+    public void when_filtering_on_number_list_by_non_matching_condition_should_return_empty_list() {
+        //setup
+        LinqingList<Integer> numbers = new LinqingList<>(1, 2, 3, 4, 5, 6, 7, 8);
+        CountingCondition<Integer> condition = CountingCondition.track(number -> number < 0);
+
+        //act
+        List<Integer> emptyList = numbers.where(condition).toList();
 
         //assert
-        assertThat(results).hasSize(2);
-        assertThat(results.get(0).number).isEqualTo(20);
-        assertThat(results.get(1).number).isEqualTo(QueryFixtureBase.SIX_TIMES);
+        assertThat(emptyList).isEmpty();
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(numbers.size());
     }
+
+    @Test
+    public void when_filtering_on_number_list_by_tautology_should_return_all_members_of_list() {
+        //setup
+        LinqingList<Integer> numbers = new LinqingList<>(1, 2, 3, 4, 5, 6 ,7, 8);
+        CountingCondition<Integer> condition = CountingCondition.track(number -> true);
+
+        //act
+        List<Integer> completeList = numbers.where(condition).toList();
+
+        //assert
+        assertThat(completeList).containsExactly(1, 2, 3, 4, 5, 6, 7, 8);
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(numbers.size());
+    }
+
+    @Test
+    public void when_filtering_an_empty_list_it_should_return_empty_list(){
+        //setup
+        LinqingList<Integer> numbers = new LinqingList<>();
+        CountingCondition<Integer> condition = CountingCondition.track(number -> true);
+
+        //act
+        List<Integer> filteredList = numbers.where(condition).toList();
+
+        //assert
+        assertThat(filteredList).isEmpty();
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(numbers.size());
+    }
+
+    @Test
+    public void when_filtering_on_a_list_of_desperate_types_it_should_apply_the_condition_to_each(){
+        //setup
+        LinqingList<Object> desperateList = new LinqingList<>(null, new NamedValue("hi"), "Hi", -1d, 1L, 2, new Integer[]{1, 2, 3, 4, 5}, new NumberValue(5));
+        CountingCondition<Object> condition = CountingCondition.track(element -> element instanceof Number);
+
+        //act
+        List<Object> typedList = desperateList.where(condition).toList();
+
+        //assert
+        assertThat(typedList).containsExactly(-1d, 1L, 2);
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(desperateList.size());
+    }
+
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    @Test
+    public void when_filtering_on_a_list_of_country_namedvalues_it_should_return_proper_countries() {
+        //setup
+        LinqingList<NamedValue> countries = new LinqingList<>(new NamedValue("Uganda"), new NamedValue("Zimbabwe"),
+                                                              new NamedValue("Denmark"), new NamedValue("Deutschland"));
+        CountingCondition<NamedValue> condition = CountingCondition.track(country -> country.name.startsWith("D"));
+
+        //act
+        List<NamedValue> dCountries = countries.where(condition).toList();
+
+        //assert
+        assertThat(dCountries).containsExactly(countries.get(2), countries.get(3));
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(countries.size());
+    }
+
+
+
+//    @Test
+//    public void when_calling_where_on_number_values_with_several_values_passing_the_condition() throws Exception {
+//        //setup
+//        LinqingList<NumberValue> testableSet = new LinqingList<>(NumberValue.class, new Object[]
+//                {new NumberValue(1), null, new NumberValue(2), new NumberValue(3)});
+//        CountingCondition<NumberValue> condition = new CountingCondition<NumberValue>() {
+//            @Override public boolean passesForImpl(NumberValue cause) {
+//                return cause != null && cause.number >= 2;
+//            }
+//        };
+//
+//        //act
+//        LinqingList<NumberValue> results = testableSet.where(condition).toList();
+//
+//        //assert
+//        assertThat(results).hasSize(2);
+//        assertThat(results).containsExactly(testableSet.get(2), testableSet.get(3));
+//        condition.shouldHaveBeenInvoked(FOUR_TIMES);
+//    }
+//
+//    @Test
+//    public void when_calling_whereTypeIs() throws Exception {
+//        //setup
+//        LinqingList<Object> testableSet = new LinqingList<>(5.0d, new NumberValue(20), null, new NamedValue("hi"), new NumberValue(5){{number = 6;}});
+//        //the last element is an anonymous subclass, make sure that its class is not EQUAL to (but rather inherits from) NumberValue.class
+//        Class classOfAnonymousSubclass = testableSet.get(4).getClass();
+//        assert( ! classOfAnonymousSubclass.equals(NumberValue.class) && NumberValue.class.isAssignableFrom(classOfAnonymousSubclass));
+//
+//        //act
+//        LinqingList<NumberValue> results = testableSet.ofType(NumberValue.class).toList();
+//
+//        //assert
+//        assertThat(results).hasSize(2);
+//        assertThat(results.get(0).number).isEqualTo(20);
+//        assertThat(results.get(1).number).isEqualTo(QueryFixtureBase.SIX_TIMES);
+//    }
+
+
+
 }

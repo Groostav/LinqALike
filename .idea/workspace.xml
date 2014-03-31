@@ -55,7 +55,7 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java" line="35" class="UnitTests.IntersectionFixture" package="UnitTests">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -101,6 +101,21 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/WhereFixture.java" line="0" class="UnitTests.WhereFixture" package="UnitTests">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
     </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
@@ -111,94 +126,76 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SelectQuery.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/SelectQuery.java">
+      <file leaf-file-name="LinqBehaviour.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="0" selection-start="592" selection-end="592" vertical-scroll-proportion="0.0" vertical-offset="161" max-vertical-offset="952">
+            <state line="126" column="49" selection-start="4255" selection-end="4255" vertical-scroll-proportion="0.0" vertical-offset="1760" max-vertical-offset="12682">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LinqingList.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java">
+      <file leaf-file-name="WhereFixture.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/WhereFixture.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="0" selection-start="660" selection-end="660" vertical-scroll-proportion="0.0" vertical-offset="212" max-vertical-offset="1972">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PrefetchingIterator.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/PrefetchingIterator.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="0" selection-start="4215" selection-end="4215" vertical-scroll-proportion="0.0" vertical-offset="1399" max-vertical-offset="1887">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IntersectionQuery.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/IntersectionQuery.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="103" column="0" selection-start="3949" selection-end="3949" vertical-scroll-proportion="0.0" vertical-offset="1365" max-vertical-offset="1853">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReflectiveCallable.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="40" selection-start="388" selection-end="388" vertical-scroll-proportion="-6.8" vertical-offset="0" max-vertical-offset="289">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParentRunner.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/org/junit/runners/ParentRunner.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="25" selection-start="2400" selection-end="2400" vertical-scroll-proportion="-6.48" vertical-offset="569" max-vertical-offset="1224">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IntersectionFixture.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="0" selection-start="1176" selection-end="1176" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="when_two_unrelated_interfaces_provide_the_same_signature_default_impl.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/LanguageSmokeTests/when_two_unrelated_interfaces_provide_the_same_signature_default_impl.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="13" selection-start="43" selection-end="43" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UnionFixture.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/UnionFixture.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="53" selection-start="868" selection-end="868" vertical-scroll-proportion="0.51811594" vertical-offset="139" max-vertical-offset="1156">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IterableCache.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/IterableCache.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="53" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="714">
+            <state line="54" column="97" selection-start="1678" selection-end="1678" vertical-scroll-proportion="-0.4795222" vertical-offset="1199" max-vertical-offset="2788">
               <folding>
-                <element signature="e#279#289#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Number.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/Number.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="54" column="21" selection-start="1427" selection-end="1427" vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1819">
+              <folding>
+                <element signature="e#0#3692#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IllegalArgumentException.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/IllegalArgumentException.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="35" column="30" selection-start="396" selection-end="420" vertical-scroll-proportion="0.0" vertical-offset="9" max-vertical-offset="1309">
+              <folding>
+                <element signature="e#0#2511#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Queryable.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="273" column="31" selection-start="9912" selection-end="9912" vertical-scroll-proportion="0.0" vertical-offset="4344" max-vertical-offset="5083">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="QueryFixtureBase.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/QueryFixtureBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="105" column="74" selection-start="3332" selection-end="3332" vertical-scroll-proportion="0.0" vertical-offset="1386" max-vertical-offset="2533">
+              <folding>
+                <element signature="e#1845#2055#0" expanded="true" />
+                <element signature="e#2040#2041#0" expanded="true" />
+                <element signature="e#3388#3612#0" expanded="true" />
+                <element signature="e#3597#3598#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Condition.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Condition.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="0" selection-start="91" selection-end="651" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -231,18 +228,21 @@
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingSet.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java" />
-        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Common/IterableCache.java" />
         <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/Factories.java" />
         <option value="$PROJECT_DIR$/LinqALike/tests/UnitTests/UnionFixture.java" />
+        <option value="$PROJECT_DIR$/LinqALike/tests/UnitTests/FunctionalFixture.java" />
+        <option value="$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java" />
+        <option value="$PROJECT_DIR$/LinqALike/tests/UnitTests/QueryFixtureBase.java" />
+        <option value="$PROJECT_DIR$/LinqALike/tests/UnitTests/WhereFixture.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1064" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1066" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -287,8 +287,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -497,8 +497,8 @@
       <recent name="LinqALike.Delegate" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UnitTests in LinqALike">
-    <configuration default="false" name="UnitTests in LinqALike" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RunManager" selected="JUnit.WhereFixture.when_filtering_on_a_list_of_country_namedvalues_it_should_return_proper_countries">
+    <configuration default="false" name="WhereFixture.when_filtering_on_number_list_by_evenness_it_should_return_even_values" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="UnitTests.*" />
@@ -509,36 +509,8 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="UnitTests" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="package" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="moduleWithDependencies" />
-      </option>
-      <envs />
-      <patterns />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
-    <configuration default="false" name="IntersectionFixture.when_intersecting_a_set_with_specific_comparer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-        <pattern>
-          <option name="PATTERN" value="UnitTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <module name="LinqALike" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="UnitTests" />
-      <option name="MAIN_CLASS_NAME" value="UnitTests.IntersectionFixture" />
-      <option name="METHOD_NAME" value="when_intersecting_a_set_with_specific_comparer" />
+      <option name="MAIN_CLASS_NAME" value="UnitTests.WhereFixture" />
+      <option name="METHOD_NAME" value="when_filtering_on_number_list_by_evenness_it_should_return_even_values" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -555,7 +527,121 @@
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="WhereFixture.when_filtering_on_number_list_by_null_it_should_throw_argumentexception" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="UnitTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="LinqALike" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="UnitTests" />
+      <option name="MAIN_CLASS_NAME" value="UnitTests.WhereFixture" />
+      <option name="METHOD_NAME" value="when_filtering_on_number_list_by_null_it_should_throw_argumentexception" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="WhereFixture.when_filtering_on_a_list_of_desperate_types_it_should_apply_the_condition_to_each" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="UnitTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="LinqALike" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="UnitTests" />
+      <option name="MAIN_CLASS_NAME" value="UnitTests.WhereFixture" />
+      <option name="METHOD_NAME" value="when_filtering_on_a_list_of_desperate_types_it_should_apply_the_condition_to_each" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="WhereFixture" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="UnitTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="LinqALike" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="UnitTests" />
+      <option name="MAIN_CLASS_NAME" value="UnitTests.WhereFixture" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="WhereFixture.when_filtering_on_a_list_of_country_namedvalues_it_should_return_proper_countries" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="UnitTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="LinqALike" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="UnitTests" />
+      <option name="MAIN_CLASS_NAME" value="UnitTests.WhereFixture" />
+      <option name="METHOD_NAME" value="when_filtering_on_a_list_of_country_namedvalues_it_should_return_proper_countries" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
     <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails" singleton="true">
@@ -566,26 +652,6 @@
       <setting name="passParentEnv" value="true" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <setting name="launchBrowser" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
-      <module name="" />
-      <option name="TESTING_TYPE" value="0" />
-      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <method />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -709,25 +775,6 @@
       <patterns />
       <method />
     </configuration>
-    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
-      <module name="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="DEPLOY" value="true" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="USE_COMMAND_LINE" value="true" />
-      <option name="COMMAND_LINE" value="" />
-      <option name="WIPE_USER_DATA" value="false" />
-      <option name="DISABLE_BOOT_ANIMATION" value="false" />
-      <option name="NETWORK_SPEED" value="full" />
-      <option name="NETWORK_LATENCY" value="none" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
-      <method />
-    </configuration>
     <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
       <option name="BCName" value="" />
       <option name="IOSSimulatorSdkPath" value="" />
@@ -763,14 +810,20 @@
       <option name="usbDebugPort" value="7936" />
       <method />
     </configuration>
-    <list size="2">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.UnitTests in LinqALike" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.IntersectionFixture.when_intersecting_a_set_with_specific_comparer" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_number_list_by_evenness_it_should_return_even_values" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_number_list_by_null_it_should_throw_argumentexception" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_a_list_of_desperate_types_it_should_apply_the_condition_to_each" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.WhereFixture" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_a_list_of_country_namedvalues_it_should_return_proper_countries" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.UnitTests in LinqALike" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.IntersectionFixture.when_intersecting_a_set_with_specific_comparer" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_a_list_of_country_namedvalues_it_should_return_proper_countries" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.WhereFixture" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_number_list_by_null_it_should_throw_argumentexception" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_number_list_by_evenness_it_should_return_even_values" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.WhereFixture.when_filtering_on_a_list_of_desperate_types_it_should_apply_the_condition_to_each" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
@@ -801,12 +854,16 @@
       <changelist id="d4532e2e-bb6c-42ea-ba36-4340e55f3c94" name="Default" comment="" />
       <created>1391335631509</created>
       <updated>1391335631509</updated>
-      <workItem from="1394157207184" duration="6273000" />
+      <workItem from="1394157207184" duration="7942000" />
+      <workItem from="1394230243401" duration="649000" />
+      <workItem from="1395008746123" duration="643000" />
+      <workItem from="1395957396798" duration="977000" />
+      <workItem from="1396289673748" duration="5784000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6273000" />
+    <option name="totallyTimeSpent" value="15995000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -829,37 +886,37 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1064" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1098" y="111" width="606" height="836" />
-      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32739422" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3997773" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3989011" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32857144" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17891374" sideWeight="0.6722222" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32850778" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747254" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="1098" y="111" width="606" height="836" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32739422" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.249694" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -884,69 +941,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="628" column="104" selection-start="24397" selection-end="24397" vertical-scroll-proportion="0.0" vertical-offset="10676" max-vertical-offset="12104">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/ReadonlyLinqingList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="119" column="26" selection-start="3613" selection-end="3613" vertical-scroll-proportion="0.0" vertical-offset="2023" max-vertical-offset="2295">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/ArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="892" column="54" selection-start="32467" selection-end="32467" vertical-scroll-proportion="0.0" vertical-offset="15164" max-vertical-offset="24667">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/ListIterator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="50" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.0" vertical-offset="969" max-vertical-offset="3417">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/TreeMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1779" column="24" selection-start="61821" selection-end="61821" vertical-scroll-proportion="0.0" vertical-offset="30243" max-vertical-offset="51340">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Spliterator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="272" column="63" selection-start="12861" selection-end="12861" vertical-scroll-proportion="0.0" vertical-offset="4624" max-vertical-offset="14246">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Factories.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="37" selection-start="469" selection-end="469" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="1513">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/QueryAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="57" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="680">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/ListReverser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="11" selection-start="370" selection-end="370" vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="629">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="148" column="31" selection-start="5263" selection-end="5263" vertical-scroll-proportion="0.0" vertical-offset="2516" max-vertical-offset="5151">
@@ -956,9 +950,7 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/List.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="17" selection-start="4250" selection-end="4250" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
-        </state>
+        <state line="110" column="17" selection-start="4250" selection-end="4250" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/AbstractList.java">
@@ -973,9 +965,7 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Arrays.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4247" column="19" selection-start="193647" selection-end="193647" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
-        </state>
+        <state line="4247" column="19" selection-start="193647" selection-end="193647" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/function/BiConsumer.java">
@@ -1004,23 +994,17 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/ArrayList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="892" column="54" selection-start="32467" selection-end="32467" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
-        </state>
+        <state line="892" column="54" selection-start="32467" selection-end="32467" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/ListIterator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="57" column="50" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
-        </state>
+        <state line="57" column="50" selection-start="1520" selection-end="1520" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/TreeMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1779" column="24" selection-start="61821" selection-end="61821" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <folding />
-        </state>
+        <state line="1779" column="24" selection-start="61821" selection-end="61821" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/SetIsEmptyException.java">
@@ -1032,37 +1016,22 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/jre/lib/rt.jar!/com/sun/istack/internal/Nullable.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="18" selection-start="485" selection-end="485" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
-          <folding />
-        </state>
+        <state line="9" column="18" selection-start="485" selection-end="485" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="408" column="74" selection-start="19100" selection-end="19100" vertical-scroll-proportion="6.6690226" vertical-offset="832" max-vertical-offset="19771">
-          <folding />
-        </state>
+        <state line="408" column="74" selection-start="19100" selection-end="19100" vertical-scroll-proportion="6.6690226" vertical-offset="832" max-vertical-offset="19771" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Formatter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1850" column="19" selection-start="79092" selection-end="79092" vertical-scroll-proportion="0.3325688" vertical-offset="30191" max-vertical-offset="78999">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/ListReverser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="112" selection-start="358" selection-end="358" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
-          <folding />
-        </state>
+        <state line="1850" column="19" selection-start="79092" selection-end="79092" vertical-scroll-proportion="0.3325688" vertical-offset="30191" max-vertical-offset="78999" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/UnsupportedOperationException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="11" selection-start="670" selection-end="670" vertical-scroll-proportion="-0.74738675" vertical-offset="735" max-vertical-offset="1309">
-          <folding />
-        </state>
+        <state line="41" column="11" selection-start="670" selection-end="670" vertical-scroll-proportion="-0.74738675" vertical-offset="735" max-vertical-offset="1309" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/Formatting.java">
@@ -1076,7 +1045,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="47" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1156">
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1090,16 +1059,12 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/LinkedHashSet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="192" column="59" selection-start="7765" selection-end="7765" vertical-scroll-proportion="0.0" vertical-offset="2452" max-vertical-offset="3026">
-          <folding />
-        </state>
+        <state line="192" column="59" selection-start="7765" selection-end="7765" vertical-scroll-proportion="0.0" vertical-offset="2452" max-vertical-offset="3026" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/Spliterator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="245" column="99" selection-start="11682" selection-end="11682" vertical-scroll-proportion="0.0" vertical-offset="3872" max-vertical-offset="13804">
-          <folding />
-        </state>
+        <state line="245" column="99" selection-start="11682" selection-end="11682" vertical-scroll-proportion="0.0" vertical-offset="3872" max-vertical-offset="13804" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingSet.java">
@@ -1118,30 +1083,22 @@
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/AbstractCollection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="340" column="19" selection-start="11460" selection-end="11460" vertical-scroll-proportion="0.0" vertical-offset="5198" max-vertical-offset="7684">
-          <folding />
-        </state>
+        <state line="340" column="19" selection-start="11460" selection-end="11460" vertical-scroll-proportion="0.0" vertical-offset="5198" max-vertical-offset="7684" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/HashMap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="454" column="19" selection-start="18674" selection-end="18674" vertical-scroll-proportion="0.0" vertical-offset="6847" max-vertical-offset="40018">
-          <folding />
-        </state>
+        <state line="454" column="19" selection-start="18674" selection-end="18674" vertical-scroll-proportion="0.0" vertical-offset="6847" max-vertical-offset="40018" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/util/HashSet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="131" column="18" selection-start="4854" selection-end="4854" vertical-scroll-proportion="0.0" vertical-offset="1628" max-vertical-offset="5712">
-          <folding />
-        </state>
+        <state line="131" column="18" selection-start="4854" selection-end="4854" vertical-scroll-proportion="0.0" vertical-offset="1628" max-vertical-offset="5712" />
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0/jre/lib/rt.jar!/sun/reflect/NativeMethodAccessorImpl.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="43" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
-          <folding />
-        </state>
+        <state line="17" column="43" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqingList.java">
@@ -1160,37 +1117,7 @@
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/org/junit/runners/ParentRunner.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="25" selection-start="2400" selection-end="2400" vertical-scroll-proportion="-6.48" vertical-offset="569" max-vertical-offset="1224">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="0" selection-start="1263" selection-end="1263" vertical-scroll-proportion="0.3319672" vertical-offset="518" max-vertical-offset="5083">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="156" column="0" selection-start="5308" selection-end="5308" vertical-scroll-proportion="0.3135246" vertical-offset="2312" max-vertical-offset="12563">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="40" selection-start="388" selection-end="388" vertical-scroll-proportion="-6.8" vertical-offset="0" max-vertical-offset="289">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/IntersectionQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="103" column="0" selection-start="3949" selection-end="3949" vertical-scroll-proportion="0.0" vertical-offset="1365" max-vertical-offset="1853">
-          <folding />
-        </state>
+        <state line="44" column="25" selection-start="2400" selection-end="2400" vertical-scroll-proportion="-6.48" vertical-offset="569" max-vertical-offset="1224" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/SelectQuery.java">
@@ -1210,30 +1137,135 @@
     <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/IterableCache.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="22" column="53" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="714">
-          <folding>
-            <element signature="e#279#289#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="0" selection-start="1176" selection-end="1176" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="748">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LinqALike/tests/LanguageSmokeTests/when_two_unrelated_interfaces_provide_the_same_signature_default_impl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="13" selection-start="43" selection-end="43" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/UnionFixture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="53" selection-start="868" selection-end="868" vertical-scroll-proportion="0.51811594" vertical-offset="139" max-vertical-offset="1156">
+        <state line="30" column="53" selection-start="868" selection-end="868" vertical-scroll-proportion="0.17494357" vertical-offset="355" max-vertical-offset="1241">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/LanguageSmokeTests/when_two_unrelated_interfaces_provide_the_same_signature_default_impl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="13" selection-start="43" selection-end="43" vertical-scroll-proportion="0.092391305" vertical-offset="0" max-vertical-offset="552">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/org/junit/internal/runners/model/ReflectiveCallable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="40" selection-start="388" selection-end="388" vertical-scroll-proportion="0.3090909" vertical-offset="0" max-vertical-offset="550" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queries/IntersectionQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="0" selection-start="3949" selection-end="3949" vertical-scroll-proportion="0.0" vertical-offset="1365" max-vertical-offset="1853">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/IntersectionFixture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="0" selection-start="1176" selection-end="1176" vertical-scroll-proportion="0.67155755" vertical-offset="0" max-vertical-offset="886">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/LazynessFixture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="106" column="24" selection-start="4366" selection-end="4366" vertical-scroll-proportion="0.59706545" vertical-offset="1273" max-vertical-offset="2159">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/FunctionalFixture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="199" column="0" selection-start="7481" selection-end="7481" vertical-scroll-proportion="0.0" vertical-offset="3383" max-vertical-offset="4471">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Common/ListReverser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="26" selection-start="385" selection-end="385" vertical-scroll-proportion="0.18063754" vertical-offset="0" max-vertical-offset="847">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/javax/xml/ws/handler/MessageContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="188" column="70" selection-start="5426" selection-end="5426" vertical-scroll-proportion="0.58239275" vertical-offset="2289" max-vertical-offset="3196">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/ExcludingFixture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="56" selection-start="1296" selection-end="1296" vertical-scroll-proportion="0.23250565" vertical-offset="304" max-vertical-offset="1190">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/IllegalArgumentException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="30" selection-start="396" selection-end="420" vertical-scroll-proportion="0.0" vertical-offset="9" max-vertical-offset="1309">
+          <folding>
+            <element signature="e#0#2511#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0/src.zip!/java/lang/Number.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="21" selection-start="1427" selection-end="1427" vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1819">
+          <folding>
+            <element signature="e#0#3692#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Queryable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="273" column="31" selection-start="9912" selection-end="9912" vertical-scroll-proportion="0.0" vertical-offset="4344" max-vertical-offset="5083">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/QueryFixtureBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="74" selection-start="3332" selection-end="3332" vertical-scroll-proportion="0.0" vertical-offset="1386" max-vertical-offset="2533">
+          <folding>
+            <element signature="e#1845#2055#0" expanded="true" />
+            <element signature="e#2040#2041#0" expanded="true" />
+            <element signature="e#3388#3612#0" expanded="true" />
+            <element signature="e#3597#3598#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/LinqBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="126" column="49" selection-start="4255" selection-end="4255" vertical-scroll-proportion="0.0" vertical-offset="1760" max-vertical-offset="12682">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/src/LinqALike/Delegate/Condition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="0" selection-start="91" selection-end="651" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LinqALike/tests/UnitTests/WhereFixture.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="97" selection-start="1678" selection-end="1678" vertical-scroll-proportion="-0.4795222" vertical-offset="1199" max-vertical-offset="2788">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1294,6 +1326,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

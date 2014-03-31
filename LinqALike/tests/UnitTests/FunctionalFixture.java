@@ -194,7 +194,7 @@ public class FunctionalFixture extends QueryFixtureBase{
                 {new NumberValue(1), new NumberValue(2), new NumberValue(2), null, new NumberValue(3)});
         CountingCondition<NumberValue> condition = new CountingCondition<NumberValue>() {
             public boolean passesForImpl(NumberValue cause) {
-                return cause == null ? false : cause.number == 20;
+                return cause != null && cause.number == 20;
             }
         };
 
