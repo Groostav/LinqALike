@@ -40,4 +40,45 @@ public class IntersectionFixture extends QueryFixtureBase {
         assertThat(flattenedResults.first().name).isEqualTo("B");
         assertThat(flattenedResults.last().name).isEqualTo("C");
     }
+
+    @Test
+    public void when_intersecting_two_sets_with_overlap_should_return_overlapping_elements() {
+        //setup
+        LinqingList<Integer> left = new LinqingList<>(1,2,3,4,5);
+        LinqingList<Integer> right = new LinqingList<>(3,4);
+
+        //act
+        Queryable<Integer> result = left.intersect(right).toList();
+
+        //assert
+        assertThat(result).containsOnly(3,4);
+        assertThat(result).doesNotHaveDuplicates();
+    }
+
+    @Test
+    public void when_intersecting_two_empty_sets_should_return_empty_set() {
+        //setup
+        LinqingList<Integer> left = new LinqingList<>();
+        LinqingList<Integer> right = new LinqingList<>();
+
+        //act
+        Queryable<Integer> result = left.intersect(right).toList();
+
+        //assert
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void when_intersecting_two_sets_should_not_matter_order_by_which_intersect_is_applied() {
+        //setup
+        LinqingList<Integer> left = new LinqingList<>(1, 2, 3, 4, 5);
+        LinqingList<Integer> right = new LinqingList<>(4, 5);
+
+        //act
+        Queryable<Integer> resultLeft = left.intersect(right).toList();
+        Queryable<Integer> resultRight = right.intersect(left).toList();
+
+        //assert
+        assertThat(resultLeft.equals(resultRight));
+    }
 }

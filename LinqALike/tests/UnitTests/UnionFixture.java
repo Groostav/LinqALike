@@ -2,7 +2,10 @@ package UnitTests;
 
 import LinqALike.Factories;
 import LinqALike.LinqingList;
+import LinqALike.Queryable;
 import org.junit.Test;
+
+import java.util.List;
 
 import static UnitTests.QueryFixtureBase.NamedValue;
 import static org.fest.assertions.Assertions.assertThat;
@@ -64,4 +67,29 @@ public class UnionFixture {
         assertThat(result).containsExactly("one", null, "two", "three", null, "four", "five");
     }
 
+    @Test
+    public void when_calling_union_on_two_valid_sets_should_return_valid_output() {
+        //setup
+        LinqingList<Integer> left = new LinqingList<>(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        LinqingList<Integer> right = new LinqingList<>(4, 5, 6);
+
+        //act
+        List<Integer> result = left.union(right).toList();
+
+        //assert
+        assertThat(result).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6);
+    }
+
+    @Test
+    public void when_calling_union_on_two_valid_sets_with_duplicate_elements_should_return_unique() {
+        //setup
+        LinqingList<Integer> left = new LinqingList<>(1, 2, 3, 4, 5);
+        LinqingList<Integer> right = new LinqingList<>(1, 2, 3);
+
+        //act
+        Queryable<Integer> result = left.union(right).distinct();
+
+        //assert
+        assertThat(result).containsOnly(1,2,3,4,5);
+    }
 }
