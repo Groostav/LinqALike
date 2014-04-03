@@ -5,6 +5,9 @@ import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
 
+import java.util.List;
+import java.util.Objects;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
@@ -48,7 +51,7 @@ public class IntersectionFixture extends QueryFixtureBase {
         LinqingList<Integer> right = new LinqingList<>(3,4);
 
         //act
-        Queryable<Integer> result = left.intersect(right).toList();
+        List<Integer> result = left.intersect(right).toList();
 
         //assert
         assertThat(result).containsOnly(3,4);
@@ -62,7 +65,7 @@ public class IntersectionFixture extends QueryFixtureBase {
         LinqingList<Integer> right = new LinqingList<>();
 
         //act
-        Queryable<Integer> result = left.intersect(right).toList();
+        List<Integer> result = left.intersect(right).toList();
 
         //assert
         assertThat(result).isEmpty();
@@ -75,10 +78,47 @@ public class IntersectionFixture extends QueryFixtureBase {
         LinqingList<Integer> right = new LinqingList<>(4, 5);
 
         //act
-        Queryable<Integer> resultLeft = left.intersect(right).toList();
-        Queryable<Integer> resultRight = right.intersect(left).toList();
+        List<Integer> resultLeft = left.intersect(right).toList();
+        List<Integer> resultRight = right.intersect(left).toList();
 
         //assert
         assertThat(resultLeft.equals(resultRight));
+    }
+
+    @Test
+    public void when_intersecting_two_non_intersecting_sets_should_return_empty_result() {
+        //setup
+        LinqingList<String> left = new LinqingList<>("Copenhagen", "Santiago", "Tokyo", "Tashkent", "Kabul");
+        LinqingList<String> right = new LinqingList<>("Sydney", "Toronto", "Barcelona");
+
+        //act
+        List<String> result = left.intersect(right).toList();
+
+        //assert
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void when_intersecting_two_sets_containing_different_typed_content() {
+        //setup
+        LinqingList<Object> left  = new LinqingList<>("1", 1, 4.3d, 2f, null);
+        LinqingList<Object> right = new LinqingList<>(4.3d, 2, 1L);
+
+        //act
+        List<Object> result = left.intersect(right).toList();
+
+        //assert
+        assertThat(result).containsExactly(4.3d);
+    }
+
+    @Test
+    public void when_intersecting_undetermined() {
+        //setup
+        LinqingList<Object> left = new LinqingList<>("one", "two", "three");
+        LinqingList<Object> right = new LinqingList<>("two");
+
+        //act
+
+        //assert
     }
 }
