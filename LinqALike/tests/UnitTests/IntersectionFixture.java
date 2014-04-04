@@ -3,7 +3,9 @@ package UnitTests;
 import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,6 +16,10 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 public class IntersectionFixture extends QueryFixtureBase {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
     @Test
     public void when_intersecting_a_set_containing_2_members_from_another_set(){
         //setup
@@ -112,13 +118,54 @@ public class IntersectionFixture extends QueryFixtureBase {
     }
 
     @Test
-    public void when_intersecting_undetermined() {
+    public void when_intersecting_three_sets_with_overlapping_elements_in_two_should_return_empty_set() {
         //setup
-        LinqingList<Object> left = new LinqingList<>("one", "two", "three");
-        LinqingList<Object> right = new LinqingList<>("two");
+        LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
+        LinqingList<String> right = new LinqingList<>("two", "four", "eight", "ten");
+	    LinqingList<String> bottom = new LinqingList<>("one", "three", "five", "seven");
 
         //act
+	    List<String> result = left.intersect(right.intersect(bottom)).toList();
 
         //assert
+		assertThat(result).isEmpty();
     }
+
+	@Test
+	public void when_intersecting_three_sets_with_overlapping_elements_in_all_should_return_valid_set() {
+		//setup
+		LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
+		LinqingList<String> right = new LinqingList<>("two", "four", "eight", "ten");
+		LinqingList<String> bottom = new LinqingList<>("one", "two", "three", "five", "seven");
+
+		//act
+		List<String> result = left.intersect(right.intersect(bottom)).toList();
+
+		//assert
+		assertThat(result).containsExactly("two");
+	}
+
+	@Test
+	// Test throws error at compile, "reference to intersect is ambiguous"
+	public void when_intersecting_null_set_should_throw_exception() {
+//		//setup
+//		thrown.expect(IllegalArgumentException.class);
+//		LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
+//
+//		//act
+//		Queryable<String> result = left.intersect(null);
+	}
+
+	@Test
+	public void when_intersecting_one_valid_set_one_empty_set_should_return_empty_set() {
+		//setup
+		LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
+		LinqingList<String> right = new LinqingList<>();
+
+		//act
+		List<String> result = left.intersect(right).toList();
+
+		//assert
+		assertThat(result).isEmpty();
+	}
 }

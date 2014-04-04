@@ -3,7 +3,11 @@ package UnitTests;
 import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -12,6 +16,10 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 public class ExcludingFixture extends QueryFixtureBase {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
     @Test
     public void when_excluding_elements_using_the_default_equality_comparer(){
         //setup
@@ -66,4 +74,15 @@ public class ExcludingFixture extends QueryFixtureBase {
         //assert
         assertThat(flattenedResults).containsExactly("A", "B", "C");
     }
+
+	@Test
+	// Reference to except is ambiguous with null, compilation error
+	public void when_excluding_null_set_should_exception(){
+/*		//setup
+		thrown.expect(IllegalArgumentException.class);
+		LinqingList<String> originalSet = new LinqingList<>("A", "B", "C");
+
+		//act
+		List<String> result = originalSet.except(null).toList();*/
+	}
 }
