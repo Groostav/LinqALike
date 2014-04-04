@@ -63,4 +63,27 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         assertThat(result).containsOnly("Starbucks", 5L, 5, 5.0d);
         assertThat(5.0d).isEqualTo(5);
     }
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void when_calling_distinct_prior_to_adding_values_to_the_source_list_distonct_should_see_newly_added_values(){
+        //setup
+        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        double newValue = 2.5;
+
+        //act
+        Queryable<Double> distinctResult = sourceList.distinct();
+        sourceList.add(newValue);
+
+        //assert
+        assertThat(distinctResult).contains(newValue);
+    }
 }
