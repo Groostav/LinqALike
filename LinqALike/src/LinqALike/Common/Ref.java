@@ -9,6 +9,12 @@ package LinqALike.Common;
  */
 public class Ref<TValue>{
 
+	/*
+	FindBugs flagged this as:
+	Unread public/protected field
+	This field is never read.  The field is public or protected, so perhaps it is intended to be used with classes not seen as part of the analysis. If not, consider removing it from the class.
+
+	Bug kind and pattern: UrF - URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD*/
     public TValue target;
 
     public Ref() {

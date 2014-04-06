@@ -148,12 +148,12 @@ public class IntersectionFixture extends QueryFixtureBase {
 	@Test
 	// Test throws error at compile, "reference to intersect is ambiguous"
 	public void when_intersecting_null_set_should_throw_exception() {
-//		//setup
-//		thrown.expect(IllegalArgumentException.class);
-//		LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
-//
-//		//act
-//		Queryable<String> result = left.intersect(null);
+		//setup
+		thrown.expect(IllegalArgumentException.class);
+		LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
+
+		//act
+		Queryable<String> result = left.intersect(null);
 	}
 
 	@Test
