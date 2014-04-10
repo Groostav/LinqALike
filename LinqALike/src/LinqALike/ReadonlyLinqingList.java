@@ -10,6 +10,12 @@ import static LinqALike.CommonDelegates.NullSafeToString;
 
 public class ReadonlyLinqingList<TElement> extends LinqingList<TElement> {
 
+	/*
+	FindBugs flagged this as:
+	Field isn't final but should be
+	This static field public but not final, and could be changed by malicious code or by accident from another package. The field could be made final to avoid this vulnerability.
+
+	Bug kind and pattern: MS - MS_SHOULD_BE_FINAL*/
     private final Exception origin;
     private Because reasonGiven;
 

@@ -1,3 +1,4 @@
+
 package UnitTests;
 
 import junit.framework.TestCase;
@@ -6,6 +7,7 @@ import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -32,17 +34,18 @@ public class DistinctQueryFixture extends QueryFixtureBase {
     public void eliminate_string_duplicates_in_list() {
         //setup
         LinqingList<String> left = new LinqingList<>("Seoul", "Nagasaki",
-                                                    "Mumbai", "Mumbai", "Amsterdam", "Shaghai", "Dubai", "Dubai");
+                                                    "Mumbai", "Mumbai", "Amsterdam", "Shanghai", "Dubai", "Dubai");
         LinqingList<String> right = new LinqingList<>("Nagasaki", "Anchorage", "Rio de Janeiro", "Cairo");
 
         //act
-        Queryable<String> resultLeft = left.distinct();
-        Queryable<String> resultRight = right.distinct();
-
+        List<String> resultLeft = left.distinct().toList();
+        List<String> resultRight = right.distinct().toList();
 
         //assert
         assertThat(resultLeft).doesNotHaveDuplicates();
         assertThat(resultRight).doesNotHaveDuplicates();
+	    assertThat(resultLeft).containsExactly("Seoul", "Nagasaki", "Mumbai", "Amsterdam", "Shanghai", "Dubai");
+	    assertThat(resultRight).containsExactly("Nagasaki", "Anchorage", "Rio de Janeiro", "Cairo");
     }
 
     @Test
@@ -51,18 +54,26 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         LinqingList<Object> list = new LinqingList<>("Starbucks", 5L, 5, 5.0d, Integer.parseInt("5"));
 
         //act
-        Queryable<Object> result = list.distinct();
+        List<Object> result = list.distinct().toList();
 
         //assert
-
-        //This part is iffy. I don't think 5L and 5 shouldn't be identical
-        //containsOnly is distinguishing between 5L and 5
-        //  but it complains when I remove any of the 5's from the expected output.
-        //Take a look.
         assertThat(result).doesNotHaveDuplicates();
         assertThat(result).containsOnly("Starbucks", 5L, 5, 5.0d);
+	    // This should not be true.
         assertThat(5.0d).isEqualTo(5);
     }
+
+	@Test
+	public void eliminate_duplicates_detects_string_case() {
+		//setup
+		LinqingList<String> cities = new LinqingList<>("Mumbai", "mumbai", "Osaka", "Seattle", "Seattle", "Bavaria", "sEaTTLE");
+
+		//act
+		List<String> result = cities.distinct().toList();
+
+		//assert
+		assertThat(result).containsExactly("Mumbai", "mumbai", "Osaka", "Seattle", "Bavaria", "sEaTTLE");
+	}
 
     @Test
     public void when_calling_distinct_prior_to_adding_values_to_the_source_list_distonct_should_see_newly_added_values(){
