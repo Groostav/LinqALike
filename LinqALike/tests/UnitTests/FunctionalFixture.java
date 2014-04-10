@@ -6,7 +6,7 @@ import LinqALike.Queryable;
 import org.fest.util.VisibleForTesting;
 import org.junit.Test;
 
-import static Assists.Exceptions.verifyThrows;
+import static Assists.Exceptions.assertThrows;
 import static LinqALike.CommonDelegates.Is;
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -68,7 +68,7 @@ public class FunctionalFixture extends QueryFixtureBase{
         };
 
         //act
-        verifyThrows(RuntimeException.class, () -> testSingleOrDefault("four", condition));
+        assertThrows(RuntimeException.class, () -> testSingleOrDefault("four", condition));
 
         //assert
         condition.shouldHaveBeenInvoked(SIX_TIMES);
@@ -94,7 +94,7 @@ public class FunctionalFixture extends QueryFixtureBase{
 
     @Test
     public void when_calling_first_with_unavailable_value() throws Exception{
-        verifyThrows(RuntimeException.class, () -> testFirstExpectingValue("Seven"));
+        assertThrows(RuntimeException.class, () -> testFirstExpectingValue("Seven"));
         conditionUsedForFirstTest.shouldHaveBeenInvoked(FIVE_TIMES);
     }
 

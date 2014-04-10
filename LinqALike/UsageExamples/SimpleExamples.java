@@ -162,42 +162,21 @@ public class SimpleExamples {
                       .collect(groupingBy(Person::getGender,
                                mapping(Person::getName, toList())));
 
-        //with a for-each loop:
-        List<Person> males = new ArrayList<>();
-        List<Person> females = new ArrayList<>();
+        //with a (couple of) for-each loops:
+        Map<Person.Sex, List<String>> namesByGender = new LinkedHashMap<>();
+
+        for(Person.Sex gender : Person.Sex.values()){
+            namesByGender.put(gender, new ArrayList<>());
+        }
+
         for(Person person : roster){
-            if(person.getGender() == Person.Sex.MALE){
-                males.add(person);
-            }
-            else if (person.getGender() == Person.Sex.FEMALE){
-                females.add(person);
-            }
-            else{
-                throw new RuntimeException();
-            }
-        }
-
-        List<String> maleNames = new ArrayList<>();
-        List<String> femaleNames = new ArrayList<>();
-        for(Person p : males){
-            maleNames.add(p.getName());
-        }
-        for(Person p : females){
-            femaleNames.add(p.getName());
-        }
-
-        Map<Person.Sex, String> namesByGender = new LinkedHashMap<>();
-        for(String name : maleNames){
-            namesByGender.put(Person.Sex.MALE, name);
-        }
-        for(String name : femaleNames){
-            namesByGender.put(Person.Sex.FEMALE, name);
+            namesByGender.get(person.getGender()).add(person.getName());
         }
 
         //but if we use linq, we get:
         Queryable<Queryable<String>> namesByGenderFromLinq =
                 roster.groupBy(Person::getGender)
-                      .select(group -> group.select(Person::getName));
+                      .selectFromGroups(Person::getName);
 
         // You'll notice there isn't actually that much in code-savings,
         // but look at the nested-brackets and the use of static methods:

@@ -1,9 +1,12 @@
 package LinqALike;
 
+import LinqALike.Common.QueryableGroupSet;
+import LinqALike.Common.Ref;
 import LinqALike.Delegate.*;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 
-import java.lang.invoke.SerializedLambda;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static LinqALike.LinqBehaviour.first;
 
@@ -19,7 +22,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
                                                 Func2<TAccumulate, TElement, TAccumulate> aggregator){
         return LinqBehaviour.aggregate(this, seed, aggregator);
     }
-
 
     default boolean all(Condition<? super TElement> condition){
         return LinqBehaviour.all(this, condition);
@@ -66,7 +68,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
         return LinqBehaviour.distinct(this);
     }
 
-
     default Queryable<TElement> except(TElement... toExclude){
         return LinqBehaviour.except(this, toExclude);
     }
@@ -99,7 +100,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     default <TComparable>
-    Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> comparableSelector){
+    QueryableGroupSet<TElement> groupBy(Func1<? super TElement, TComparable> comparableSelector){
         return LinqBehaviour.groupBy(this, comparableSelector);
     }
     default Queryable<Queryable<TElement>> groupBy(Func2<? super TElement, ? super TElement, Boolean> equalityComparison){
@@ -168,7 +169,11 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     default <TCompared extends Comparable<TCompared>>
     Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector){
-        return LinqBehaviour.orderBy(this, comparableSelector);
+
+        LinqingList<TElement> ordered = this.toList();
+        Collections.sort(ordered, (left, right) -> (comparableSelector.getFrom(left).compareTo(comparableSelector.getFrom(right))));
+
+        return ordered;
     }
     default Queryable<TElement> orderBy(Func2<? super TElement, ? super TElement, Integer> equalityComparator){
         return LinqBehaviour.orderBy(this, equalityComparator);

@@ -605,9 +605,11 @@ public class LinqBehaviour {
         return size(set) != 0;
     }
 
-    public static <TElement, TComparable> Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
-                                                                                 Func1<? super TElement, TComparable> groupByPropertySelector) {
-        return new GroupByQuery.WithComparable<>(setToGroup, groupByPropertySelector);
+    public static <TElement, TComparable> QueryableGroupSet<TElement> groupBy(Iterable<TElement> setToGroup,
+                                                                              Func1<? super TElement, TComparable> groupByPropertySelector) {
+//        return new GroupByQuery.WithComparable<>(setToGroup, groupByPropertySelector);
+        assert false : "what?";
+        return null;
     }
 
     public static <TElement> Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,

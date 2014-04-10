@@ -64,15 +64,6 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         assertThat(5.0d).isEqualTo(5);
     }
 
-
-
-
-
-
-
-
-
-
     @Test
     public void when_calling_distinct_prior_to_adding_values_to_the_source_list_distonct_should_see_newly_added_values(){
         //setup

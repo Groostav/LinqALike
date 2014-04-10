@@ -29,6 +29,10 @@ public class QueryFixtureBase {
             this.name = name;
         }
 
+        public String getName(){
+            return name;
+        }
+
         public static LinqingList<NamedValue> makeWithEach(String... values) {
             LinqingList<NamedValue> returnable = new LinqingList<>();
             for(String value : values){
@@ -125,12 +129,22 @@ public class QueryFixtureBase {
         protected abstract boolean passesForImpl(TInspected cause);
     }
 
+
     /**
      * serves the same purpose as {@link CountingCondition}
      *
      * @see CountingCondition
      */
     protected static abstract class CountingTransform<TInspected, TResult> extends CountingDelegate implements Func1<TInspected, TResult> {
+
+        public static <TInspected, TResult> CountingTransform<TInspected, TResult> track(Func1<TInspected, TResult> actualTransform){
+            return new CountingTransform<TInspected, TResult>() {
+                @Override
+                protected TResult getFromImpl(TInspected cause) {
+                    return actualTransform.getFrom(cause);
+                }
+            };
+        }
 
         @Override
         public final TResult getFrom(TInspected cause) {

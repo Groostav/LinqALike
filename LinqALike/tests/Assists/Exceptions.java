@@ -12,7 +12,7 @@ import LinqALike.Delegate.Action;
 public class Exceptions {
     private Exceptions(){}
 
-    public static void verifyThrows(Class<? extends Exception> expectedException, Action runnable){
+    public static void assertThrows(Class<? extends Exception> expectedException, Action runnable){
         try{
             runnable.run();
         }

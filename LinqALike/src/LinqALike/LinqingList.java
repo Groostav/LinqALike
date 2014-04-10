@@ -29,6 +29,16 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
         }
     }
 
+    @Override
+    public boolean add(TElement tElement) {
+        return super.add(tElement);
+    }
+
+    @Override @SafeVarargs
+    public final Queryable<TElement> except(TElement... toExclude) {
+        return LinqBehaviour.except(this, toExclude);
+    }
+
     public LinqingList(Class<TElement> elementClass, Object[] initialValues){
         this();
         for(Object object : initialValues){
