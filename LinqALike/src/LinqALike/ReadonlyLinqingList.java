@@ -17,7 +17,7 @@ public class ReadonlyLinqingList<TElement> extends LinqingList<TElement> {
 
 	Bug kind and pattern: MS - MS_SHOULD_BE_FINAL*/
     private final Exception origin;
-    private Because reasonGiven;
+    private final Because reasonGiven;
 
     public enum Because{
         DerivedFromAnotherSet,

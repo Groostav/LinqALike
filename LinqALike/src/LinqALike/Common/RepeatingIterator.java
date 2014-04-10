@@ -25,9 +25,12 @@ public class RepeatingIterator<TElement> implements Iterator<TElement> {
 	/*
 	FindBugs flagged this as:
 	Iterator next() method can't throw NoSuchElementException
-	This class implements the java.util.Iterator interface.  However, its next() method is not capable of throwing java.util.NoSuchElementException.  The next() method should be changed so it throws NoSuchElementException if is called when there are no more elements to return.
+	This class implements the java.util.Iterator interface. 
+	However, its next() method is not capable of throwing java.util.NoSuchElementException. 
+	The next() method should be changed so it throws NoSuchElementException if is called when there are no more elements to return.
 
 	Bug kind and pattern: It - IT_NO_SUCH_ELEMENT*/
+    // wont-fix, this is an infinite ieterator, it simply repeats the same value forever.
     @Override
     public TElement next() {
         return valueToRepeat;

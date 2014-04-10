@@ -1,6 +1,7 @@
 package LinqALike.Common;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayIterator<TElement> implements Iterator<TElement> {
 
@@ -25,6 +26,9 @@ public class ArrayIterator<TElement> implements Iterator<TElement> {
 	Bug kind and pattern: It - IT_NO_SUCH_ELEMENT*/
     @Override
     public TElement next() {
+        if(currentIndex == arrayToIterateOver.length){
+            throw new NoSuchElementException("attempting to iterate past the end of an array");
+        }
         return arrayToIterateOver[currentIndex++];
     }
 
