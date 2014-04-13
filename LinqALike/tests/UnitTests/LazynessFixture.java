@@ -20,9 +20,7 @@ public class LazynessFixture extends QueryFixtureBase {
     public void when_running_a_select_query_it_only_invokes_delegate_when_set_is_iterated(){
         //setup
         List<String> numberValues = Arrays.asList("1", "5", "7", "0");
-        CountingTransform<String, Double> transformToDouble = new CountingTransform<String, Double>() {
-            @Override public Double getFromImpl(String cause) { return Double.parseDouble(cause); }
-        };
+        CountingTransform<String, Double> transformToDouble = CountingTransform.track(Double::parseDouble);
 
         //act
         Queryable<Double> result = LinqBehaviour.select(numberValues, transformToDouble);
@@ -35,9 +33,7 @@ public class LazynessFixture extends QueryFixtureBase {
     public void when_running_a_where_query_it_only_invokes_delegate_when_set_is_iterated(){
         //setup
         List<Integer> numberValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
-        CountingCondition<Integer> greaterThanFive = new CountingCondition<Integer>() {
-            @Override public boolean passesForImpl(Integer cause) { return cause > 5; }
-        };
+        CountingCondition<Integer> greaterThanFive = CountingCondition.track(cause -> cause > 5);
         //act
         Queryable<Integer> result = LinqBehaviour.where(numberValues, greaterThanFive);
 
@@ -51,9 +47,7 @@ public class LazynessFixture extends QueryFixtureBase {
         LinqingList<NamedValue> elements = Factories.asList(new NamedValue("H"), new NamedValue("Hg"), new NamedValue("Li"),
                 new NamedValue("Ne"), new NamedValue("Si"), new NamedValue("He"));
         List<NamedValue> scaryMetals = Arrays.asList(new NamedValue("Li"), new NamedValue("Hg"));
-        CountingTransform<NamedValue, String> getName = new CountingTransform<NamedValue, String>() {
-            public String getFromImpl(NamedValue cause) { return cause.name; }
-        };
+        CountingTransform<NamedValue, String> getName = CountingTransform.track(cause -> cause.name);
 
         //act
         Queryable<NamedValue> result = LinqBehaviour.except(elements, scaryMetals, getName);
@@ -67,9 +61,7 @@ public class LazynessFixture extends QueryFixtureBase {
         //setup
         List<NamedValue> goodUDCourses = NamedValue.makeWithEach("373", "379", "479");
         List<NamedValue> badUDCourses = NamedValue.makeWithEach("307", "483");
-        CountingTransform<NamedValue, String> getName = new CountingTransform<NamedValue, String>() {
-            public String getFromImpl(NamedValue cause) { return cause.name; }
-        };
+        CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
 
         //act
         Queryable<NamedValue> goodAndBadResult = LinqBehaviour.union(goodUDCourses, badUDCourses, getName);
@@ -83,10 +75,7 @@ public class LazynessFixture extends QueryFixtureBase {
         //setup
         List<NamedValue> goodUDCourses = NamedValue.makeWithEach("373", "379", "479");
         List<NamedValue> hardUDCourses = NamedValue.makeWithEach("373", "379", "433");
-        CountingTransform<NamedValue, String> getName = new CountingTransform<NamedValue, String>() {
-            public String getFromImpl(NamedValue cause) { return cause.name; }
-        };
-
+        CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
         //act
         Queryable<NamedValue> goodAndBadResult = LinqBehaviour.intersect(goodUDCourses, hardUDCourses, getName);
 

@@ -1,18 +1,16 @@
 package UnitTests;
 
-import LinqALike.Delegate.Func1;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static UnitTests.QueryFixtureBase.CountingTransform.track;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
- * Created by Geoff on 09/04/14.         b
+ * Created by Geoff on 09/04/14.
  */
 public class OrderByQueryFixture extends QueryFixtureBase{
 
@@ -46,10 +44,22 @@ public class OrderByQueryFixture extends QueryFixtureBase{
         assertThat(comparableSelector.getNumberOfInvocations()).isEqualTo(0);
     }
 
-    //duplicates
+    @Test
+    public void when_ordering_a_bag(){
+        //setup
+        EquatableValue firstDuplicate = new EquatableValue("Sedin");
+        EquatableValue secondDuplicate = new EquatableValue("Sedin");
+        LinqingList<EquatableValue> values = new LinqingList<>(new EquatableValue("Burrows"), firstDuplicate, new EquatableValue("Hamhuis"), secondDuplicate);
 
+        //act
+        List<EquatableValue> ordered = values.orderBy(x -> x.value).toList();
 
-    //negatives
+        //assert
+        assertThat(ordered).containsExactly(values.get(0), values.get(2), firstDuplicate, firstDuplicate);
+        assertThat(ordered.get(2)).isSameAs(firstDuplicate);
+        assertThat(ordered.get(3)).isSameAs(secondDuplicate);
+
+    }
 
     @Test
     public void when_comparing_two_custom_objects_by_a_string_field(){
@@ -85,6 +95,8 @@ public class OrderByQueryFixture extends QueryFixtureBase{
         List<Integer> result = source.orderBy(x -> x < 4).toList();
 
         //assert
+        // interestingly, when we sort by a boolean, "true" is greater than "false",
+        // so the "true" elements are at the end of the list.
         assertThat(result).containsExactly(6, 5, 4, 2, 3, 1);
     }
 

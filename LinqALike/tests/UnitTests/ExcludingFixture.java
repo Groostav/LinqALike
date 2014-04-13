@@ -37,7 +37,7 @@ public class ExcludingFixture extends QueryFixtureBase {
     public void when_excluding_some_elements_including_duplicates_using_a_selector(){
         //setup
         LinqingList<NumberValue> originalSet = Factories.asList(new NumberValue(1), new NumberValue(1), new NumberValue(2), new NumberValue(3), new NumberValue(4));
-        CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
+        CountingTransform<NumberValue, Integer> getValueTransform = CountingTransform.track(x -> x.number);
 
         //act
         Queryable<NumberValue> result = originalSet.except(Factories.asList(new NumberValue(1), new NumberValue(3)), getValueTransform);
@@ -52,7 +52,7 @@ public class ExcludingFixture extends QueryFixtureBase {
     public void when_excluding_elements_from_empty_set(){
         //setup
         LinqingList<NumberValue> originalSet = new LinqingList<>();
-        CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
+        CountingTransform<NumberValue, Integer> getValueTransform = CountingTransform.track(x -> x.number);
 
         //act
         Queryable<NumberValue> result = originalSet.except(Factories.asList(new NumberValue(1), new NumberValue(3)), getValueTransform);

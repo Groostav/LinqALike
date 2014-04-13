@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 import java.util.List;
 import java.util.Objects;
 
+import static Assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
@@ -38,7 +39,7 @@ public class IntersectionFixture extends QueryFixtureBase {
         //setup
         LinqingList<NamedValue> left = Factories.asList(NamedValue.makeWithEach("A", "B", "C"));
         LinqingList<NamedValue> right = Factories.asList(NamedValue.makeWithEach("A"));
-        CountingTransform<NamedValue, String> getName = NamedValue.GetName();
+        CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
 
         //act
         Queryable<NamedValue> result = left.intersect(NamedValue.makeWithEach("B", "C"), getName);
@@ -146,14 +147,12 @@ public class IntersectionFixture extends QueryFixtureBase {
 	}
 
 	@Test
-	// Test throws error at compile, "reference to intersect is ambiguous"
 	public void when_intersecting_null_set_should_throw_exception() {
 		//setup
-		thrown.expect(IllegalArgumentException.class);
 		LinqingList<String> left = new LinqingList<>("one", "two", "three", "four", "five", "six");
 
 		//act
-		Queryable<String> result = left.intersect(null);
+		assertThrows(IllegalArgumentException.class, () -> left.intersect((Iterable<String>) null));
 	}
 
 	@Test

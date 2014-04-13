@@ -15,26 +15,21 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_calling_select() throws Exception {
         //setup
-        LinqingList<NamedValue> testableSet = new LinqingList<NamedValue>(NamedValue.class, new Object[]
+        LinqingList<NamedValue> testableSet = new LinqingList<>(NamedValue.class, new Object[]
                 {new NamedValue("One"), null, new NamedValue("Two"), new NamedValue("Three")});
 
         //act
         LinqingList<String> results = testableSet.select(namedValue -> namedValue == null ? "[null]" : namedValue.name).toList();
 
         //assert
-        assertThat(results).containsExactly("One", "[null]", "Two", "Three");
+        assertThat(results).containsExactly("One", "[null]", "Two", "ThAree");
     }
 
     @Test
     public void when_calling_single() throws Exception {
         //setup
         LinqingList<String> testableSet = new LinqingList<>(null, "one", "two", "two", "three", "three", "three");
-        CountingCondition<String> condition = new CountingCondition<String>() {
-            @Override public boolean passesForImpl(String cause) {
-                return cause != null && cause.equals("one");
-            }
-        };
-
+        CountingCondition<String> condition = CountingCondition.track(cause -> cause != null && cause.equals("one"));
         //act
         String result = testableSet.single(condition);
 
@@ -46,11 +41,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_calling_singleOrDefault_with_existing_value() throws Exception {
         //setup
-        CountingCondition<String> condition = new CountingCondition<String>() {
-            @Override public boolean passesForImpl(String cause) {
-                return cause.equals("one");
-            }
-        };
+        CountingCondition<String> condition = CountingCondition.track(cause -> cause.equals("one"));
 
         //act
         testSingleOrDefault("one", condition);
@@ -61,11 +52,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_calling_singleOrDefault_with_unavailable_value() throws Exception {
         //setup
-        CountingCondition<String> condition = new CountingCondition<String>() {
-            @Override public boolean passesForImpl(String cause) {
-                return cause.equals("four");
-            }
-        };
+        CountingCondition<String> condition = CountingCondition.track(cause -> cause.equals("four"));
 
         //act
         assertThrows(RuntimeException.class, () -> testSingleOrDefault("four", condition));
@@ -108,11 +95,7 @@ public class FunctionalFixture extends QueryFixtureBase{
                 {new NamedValue("One"), new NamedValue("Two"), null, new NamedValue("Two"), new NamedValue("Three")});
 
         //act
-        conditionUsedForFirstTest = new CountingCondition<NamedValue>() {
-            public boolean passesForImpl(NamedValue cause) {
-                return cause != null && cause.name.equals(expected);
-            }
-        };
+        conditionUsedForFirstTest = CountingCondition.track(cause -> cause != null && cause.name.equals(expected));
         NamedValue result = testableSet.first(conditionUsedForFirstTest);
 
         //assert
@@ -125,11 +108,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     public void when_calling_firstOrDefault_with_expected_value() throws Exception {
 
         //setup
-        CountingCondition<NamedValue> condition = new CountingCondition<NamedValue>() {
-            public boolean passesForImpl(NamedValue cause) {
-                return cause == null ? false : cause.name.equals("Two");
-            }
-        };
+        CountingCondition<NamedValue> condition = CountingCondition.track(cause ->  cause != null && cause.name.equals("Two"));
 
         //act
         NamedValue result = testFirstOrDefaultExpectingValue(condition);
@@ -142,13 +121,7 @@ public class FunctionalFixture extends QueryFixtureBase{
     @Test
     public void when_calling_firstOrDefault_with_unavailable_value(){
         //setup
-        CountingCondition<NamedValue> condition = new CountingCondition<NamedValue>() {
-            @Override
-            public boolean passesForImpl(NamedValue cause) {
-                return cause == null ? false : cause.name.equals("Six");
-            }
-        };
-
+        CountingCondition<NamedValue> condition = CountingCondition.track(cause -> cause != null && cause.name.equals("Six"));
         //act
         NamedValue result = testFirstOrDefaultExpectingValue(condition);
 
@@ -175,11 +148,7 @@ public class FunctionalFixture extends QueryFixtureBase{
                 {new NamedValue("One"), new NamedValue("Two"), new NamedValue("Two"), null, new NamedValue("Three")});
 
         //act
-        CountingCondition<NamedValue> condition = new CountingCondition<NamedValue>() {
-            public boolean passesForImpl(NamedValue cause) {
-                return cause.name.equals("Two");
-            }
-        };
+        CountingCondition<NamedValue> condition = CountingCondition.track(cause -> cause.name.equals("Two"));
         boolean setContainsTwo = testableSet.any(condition);
 
         //assert
@@ -192,11 +161,7 @@ public class FunctionalFixture extends QueryFixtureBase{
         //setup
         LinqingList<NumberValue> testableSet = new LinqingList<NumberValue>(NumberValue.class, new Object[]
                 {new NumberValue(1), new NumberValue(2), new NumberValue(2), null, new NumberValue(3)});
-        CountingCondition<NumberValue> condition = new CountingCondition<NumberValue>() {
-            public boolean passesForImpl(NumberValue cause) {
-                return cause != null && cause.number == 20;
-            }
-        };
+        CountingCondition<NumberValue> condition = CountingCondition.track(cause -> cause != null && cause.number == 20);
 
         //act
         boolean setContainsTwenty = testableSet.any(condition);

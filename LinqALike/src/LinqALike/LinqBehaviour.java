@@ -682,9 +682,9 @@ public class LinqBehaviour {
         return extrema(source, valueSelector, Double.POSITIVE_INFINITY, Math::min).getValue();
     }
 
-    public static <TElement, TCompared extends Comparable<TCompared>> Queryable<TElement> orderBy(Queryable<TElement> set, Func1<? super TElement, TCompared> comparableSelector) {
-        assert false;
-        return null;
+    public static <TElement, TCompared extends Comparable<TCompared>> Queryable<TElement> orderBy(Queryable<TElement> set,
+                                                                                                  Func1<? super TElement, TCompared> comparableSelector) {
+        return new OrderByQuery<>(set, comparableSelector);
     }
 
     public static <TElement> Queryable<TElement> orderBy(Queryable<TElement> tElements, Func2<? super TElement, ? super TElement, Integer> equalityComparator) {

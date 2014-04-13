@@ -1,5 +1,6 @@
 package UnitTests;
 
+import LinqALike.Delegate.Condition;
 import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
@@ -35,7 +36,7 @@ public class UnionFixture {
         LinqingList<NamedValue> right = NamedValue.makeWithEach("three", "four");
 
         //act
-        LinqingList<NamedValue> result = left.union(right, NamedValue.GetName()).toList();
+        LinqingList<NamedValue> result = left.union(right, x -> x.name).toList();
 
         //result
         assertThat(result).containsExactly(left.get(0), left.get(1), left.get(2), right.get(0), right.get(1));

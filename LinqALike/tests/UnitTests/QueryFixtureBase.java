@@ -42,15 +42,6 @@ public class QueryFixtureBase {
             return returnable;
         }
 
-        public static CountingTransform<NamedValue, String> GetName() {
-            return new CountingTransform<NamedValue, String>() {
-                @Override
-                protected String getFromImpl(NamedValue cause) {
-                    return cause.name;
-                }
-            };
-        }
-
         @Override
         public String toString(){
             return "NamedValue:" + name;
@@ -63,15 +54,6 @@ public class QueryFixtureBase {
         public NumberValue(int number){
             this.number = number;
         }
-
-        public static CountingTransform<NumberValue, Integer> GetValue(){
-            return new CountingTransform<NumberValue, Integer>() {
-                @Override
-                public Integer getFromImpl(NumberValue cause) {
-                    return cause.number;
-                }
-            };
-        }
     }
 
     protected static class EquatableValue{
@@ -79,6 +61,13 @@ public class QueryFixtureBase {
 
         protected EquatableValue(String value) {
             this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "EquatableValue{" +
+                    "value='" + value + '\'' +
+                    '}';
         }
 
         @Override
@@ -110,23 +99,12 @@ public class QueryFixtureBase {
         public static <TInspected> CountingCondition<TInspected> track(Condition<TInspected> actualCondition){
             return new CountingCondition<TInspected>() {
                 @Override
-                protected boolean passesForImpl(TInspected cause) {
-                    return actualCondition.passesFor(cause);
+                public boolean passesFor(TInspected candidate) {
+                    inspectedElements.add(candidate);
+                    return actualCondition.passesFor(candidate);
                 }
             };
         }
-
-        /**
-         * note: the final is simply to make sure forgetful programmers don't override {@link LinqALike.Delegate.Condition#passesFor(Object)}
-         * instead of {@link #passesForImpl(Object)} (as they should).
-         */
-        @Override
-        public final boolean passesFor(TInspected cause) {
-            inspectedElements.add(cause);
-            return passesForImpl(cause);
-        }
-
-        protected abstract boolean passesForImpl(TInspected cause);
     }
 
 
@@ -140,19 +118,12 @@ public class QueryFixtureBase {
         public static <TInspected, TResult> CountingTransform<TInspected, TResult> track(Func1<TInspected, TResult> actualTransform){
             return new CountingTransform<TInspected, TResult>() {
                 @Override
-                protected TResult getFromImpl(TInspected cause) {
+                public TResult getFrom(TInspected cause) {
+                    inspectedElements.add(cause);
                     return actualTransform.getFrom(cause);
                 }
             };
         }
-
-        @Override
-        public final TResult getFrom(TInspected cause) {
-            inspectedElements.add(cause);
-            return getFromImpl(cause);
-        }
-
-        protected abstract TResult getFromImpl(TInspected cause);
     }
 
     public static abstract class CountingDelegate{

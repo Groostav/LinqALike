@@ -124,15 +124,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
         return LinqBehaviour.intersect(this, toIntersect);
     }
 
-
-    default <TRight, TResult>
-    Queryable<TResult> join(Iterable<? extends TRight> right,
-                            Func2<? super TElement, ? super TRight, TResult> makeResult){
-        assert false : "this one is also a bit difficult, so I'm skipping it for now";
-        return null;
-    }
-
-
     default TElement last(){
         return LinqBehaviour.last(this);
     }
@@ -169,11 +160,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     default <TCompared extends Comparable<TCompared>>
     Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector){
-
-        LinqingList<TElement> ordered = this.toList();
-        Collections.sort(ordered, (left, right) -> (comparableSelector.getFrom(left).compareTo(comparableSelector.getFrom(right))));
-
-        return ordered;
+        return LinqBehaviour.orderBy(this, comparableSelector);
     }
     default Queryable<TElement> orderBy(Func2<? super TElement, ? super TElement, Integer> equalityComparator){
         return LinqBehaviour.orderBy(this, equalityComparator);

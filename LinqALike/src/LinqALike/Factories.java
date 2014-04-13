@@ -1,5 +1,6 @@
 package LinqALike;
 
+import LinqALike.Common.ForkableIterator;
 import LinqALike.Common.IterableCache;
 import LinqALike.Common.QueryAdapter;
 import LinqALike.Common.RepeatingIterator;
@@ -16,7 +17,6 @@ public class Factories {
     public static <TElement> Queryable<TElement> from(Iterable<TElement> elements){
         return new QueryAdapter.Iterable<>(elements);
     }
-
 
     @SafeVarargs
     public static <TElement> LinqingList<TElement> asList(TElement... set){
@@ -79,5 +79,34 @@ public class Factories {
 
     public static <TElement> Queryable<TElement> empty() {
         return new LinqingList<>();
+    }
+
+    public static class ForkingIterator<TElement> implements ForkableIterator<TElement>{
+
+        private final Iterable<TElement> source;
+        private final Iterator<TElement> backingIterator;
+
+        private int seenCount = 0;
+
+        public ForkingIterator(Iterable<TElement> source){
+            this.source = source;
+            backingIterator = source.iterator();
+        }
+
+        @Override
+        public Iterator<TElement> fork() {
+            Queryable<TElement> broughtCurrentCopy = LinqBehaviour.skip(source, seenCount);
+            return new ForkingIterator<>(broughtCurrentCopy);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return backingIterator.hasNext();
+        }
+
+        @Override
+        public TElement next() {
+            return backingIterator.next();
+        }
     }
 }
