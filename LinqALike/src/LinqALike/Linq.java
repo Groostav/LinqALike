@@ -11,9 +11,8 @@ import java.util.*;
 import static LinqALike.CommonDelegates.*;
 import static LinqALike.Factories.firstNotNull;
 import static LinqALike.Factories.from;
-import static LinqALike.Tuple.pair;
 
-public class LinqBehaviour {
+public class Linq {
 
     public static <TBase, TDerived extends TBase> LinqingList<TDerived> ofType(Iterable<TBase> set,
                                                                                Class<TDerived> desiredType) {
@@ -354,18 +353,6 @@ public class LinqBehaviour {
         return returnable;
     }
 
-    public static <TElement> Queryable<TElement> expand(TElement seed, Func1<TElement, TElement> nextValueGetter){
-        assert seed != null;
-        LinqingList<TElement> returnable = Factories.asList(seed);
-        TElement next = seed;
-        do{
-            returnable.add(next);
-            next = nextValueGetter.getFrom(next);
-        }
-        while(next != null);
-
-        return returnable;
-    }
     public static <TElement> boolean isSubsetOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
         LinqingList<? extends TElement> rightFetched = Factories.asList(right);
         for(TElement leftElement : left){
@@ -374,7 +361,6 @@ public class LinqBehaviour {
         }
         return true;
     }
-
 
     public static <TElement> int count(Iterable<TElement> set, Condition<? super TElement> condition) {
         int count = 0;
@@ -386,33 +372,19 @@ public class LinqBehaviour {
         return count;
     }
 
-    public static <TElement, TOther> Queryable<Tuple<TElement, TOther>> cartesianProduct(Iterable<TElement> left, Iterable<TOther> right) {
-        LinqingList<Tuple<TElement, TOther>> product = new LinqingList<>();
-        for(TElement leftElement : left){
-            for(TOther rightElement : right){
-                product.add(pair(leftElement, rightElement));
-            }
-        }
-        return product;
-    }
+    public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
 
-    public static <TElement> boolean containsSingle(LinqingList<TElement> set, Condition<? super TElement> uniqueCondition) {
-        Queryable<TElement> constrainedSet = set.where(uniqueCondition);
-        return set.isSetEquivalentOf(constrainedSet) && constrainedSet.isSingle();
-    }
-
-    public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> left, TElement... toExclude) {
-        return new ExceptQuery.WithNaturalEquality<>(left, from(toExclude));
+        return new ExceptQuery.WithNaturalEquality<>(source, from(toExclude));
     }
 
     public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> left, Iterable<? extends TElement> right) {
         return new ExceptQuery.WithNaturalEquality<>(left, right);
     }
 
-
     public static <TElement, TCompared> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
                                                                    Iterable<? extends TElement> membersToExclude,
                                                                    Func1<? super TElement, TCompared> comparableSelector) {
+
         return new ExceptQuery.WithComparable<>(originalMembers, membersToExclude, comparableSelector);
     }
 
@@ -426,20 +398,26 @@ public class LinqBehaviour {
 
     public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
                                                            Iterable<? extends TElement> right) {
+
         return new IntersectionQuery.WithNaturalEquality<>(left, right);
     }
+
     public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
                                                            TElement... right) {
         return new IntersectionQuery.WithNaturalEquality<>(left, Factories.from(right));
     }
+
     public static <TElement, TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> left,
                                                                       Iterable<? extends TElement> right,
                                                                       Func1<? super TElement, TCompared> comparableSelector) {
+
         return new IntersectionQuery.WithComparable<>(left, right, comparableSelector);
     }
+
     public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
                                                            Iterable<? extends TElement> right,
                                                            Func2<? super TElement, ? super TElement, Boolean> comparableSelector) {
+
         return new IntersectionQuery.WithEqualityComparator<>(left, right, comparableSelector);
     }
 
@@ -480,7 +458,8 @@ public class LinqBehaviour {
      */
     //copied from JavaUtil code, so presumably this is 'safe'.
     @SuppressWarnings({"unchecked", "SuspiciousSystemArraycopy"})
-    public static <TElement, TDesired> TDesired[] toArray(Queryable<TElement> originalSet, TDesired[] arrayTypeIndicator) {
+    public static <TElement, TDesired> TDesired[] toArray(Queryable<TElement> originalSet,
+                                                          TDesired[] arrayTypeIndicator) {
 
         int size = originalSet.size();
         TDesired[] a = arrayTypeIndicator;
@@ -503,7 +482,8 @@ public class LinqBehaviour {
         return new LinqingList<>(set);
     }
 
-    public static <TElement> TElement firstOr(Queryable<TElement> set, TElement alternative) {
+    public static <TElement> TElement firstOr(Queryable<TElement> set,
+                                              TElement alternative) {
         return firstNotNull(set.firstOrDefault(), alternative);
     }
 
@@ -579,7 +559,8 @@ public class LinqBehaviour {
         return null;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    public static <TElement> double average(Iterable<? extends TElement> set, Func1<? super TElement, Double> valueSelector) {
+    public static <TElement> double average(Iterable<? extends TElement> set,
+                                            Func1<? super TElement, Double> valueSelector) {
         cannotBeEmpty(set);
         double sum = 0.0;
         int size = size(set);
@@ -597,7 +578,8 @@ public class LinqBehaviour {
         }
     }
 
-    public static <TElement> boolean containsElement(Iterable<? extends TElement> set, TElement candidate) {
+    public static <TElement> boolean containsElement(Iterable<? extends TElement> set,
+                                                     TElement candidate) {
         return contains(set, candidate);
     }
 
@@ -622,11 +604,13 @@ public class LinqBehaviour {
         return iterator.hasNext() ? iterator.next() : null;
     }
 
-    public static <TElement> TElement last(Iterable<TElement> set, Condition<? super TElement> condition) {
+    public static <TElement> TElement last(Iterable<TElement> set,
+                                           Condition<? super TElement> condition) {
         return reversed(set).first(condition);
     }
 
-    public static <TElement> TElement lastOrDefault(Iterable<TElement> set, Condition<? super TElement> condition) {
+    public static <TElement> TElement lastOrDefault(Iterable<TElement> set,
+                                                    Condition<? super TElement> condition) {
         return reversed(set).firstOrDefault(condition);
     }
     public static <TElement> double min(Queryable<TElement> source, Func1<? super TElement,Double> valueSelector) {
@@ -663,7 +647,10 @@ public class LinqBehaviour {
         return new Tuple<>(currentMax, chosenElement);
     }
 
-    private static <TElement> void throwNPEIfNull(String delegateDescription, Func1<? super TElement, Double> valueSelector, TElement element, Double value) {
+    private static <TElement> void throwNPEIfNull(String delegateDescription,
+                                                  Func1<? super TElement, Double> valueSelector,
+                                                  TElement element,
+                                                  Double value) {
         if(value == null){
             throw new NullPointerException(
                     "The " + delegateDescription + " '" + valueSelector + "' " +
@@ -673,12 +660,14 @@ public class LinqBehaviour {
         }
     }
 
-    public static <TElement> TElement withMax(Queryable<TElement> source, Func1<? super TElement ,Double> valueSelector) {
+    public static <TElement> TElement withMax(Queryable<TElement> source,
+                                              Func1<? super TElement ,Double> valueSelector) {
         return extrema(source, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getValue();
     }
 
 
-    public static <TElement> TElement withMin(Queryable<TElement> source, Func1<? super TElement, Double> valueSelector) {
+    public static <TElement> TElement withMin(Queryable<TElement> source,
+                                              Func1<? super TElement, Double> valueSelector) {
         return extrema(source, valueSelector, Double.POSITIVE_INFINITY, Math::min).getValue();
     }
 
@@ -687,12 +676,14 @@ public class LinqBehaviour {
         return new OrderByQuery<>(set, comparableSelector);
     }
 
-    public static <TElement> Queryable<TElement> orderBy(Queryable<TElement> tElements, Func2<? super TElement, ? super TElement, Integer> equalityComparator) {
+    public static <TElement> Queryable<TElement> orderBy(Queryable<TElement> tElements,
+                                                         Func2<? super TElement, ? super TElement, Integer> equalityComparator) {
         assert false : "not implemented";
         return null;
     }
 
-    public static <TElement> double sum(Queryable<TElement> set, Func1<? super TElement, Double> valueSelector) {
+    public static <TElement> double sum(Queryable<TElement> set,
+                                        Func1<? super TElement, Double> valueSelector) {
         assert false;
         return 0;
     }
@@ -709,12 +700,15 @@ public class LinqBehaviour {
         return new ReadonlyLinqingList<>(source);
     }
 
-    public static <TKey, TElement> LinqingMap<TKey,TElement> toMap(Queryable<TElement> source, Func1<? super TElement,TKey> keySelector) {
+    public static <TKey, TElement> LinqingMap<TKey,TElement> toMap(Queryable<TElement> source,
+                                                                   Func1<? super TElement,TKey> keySelector) {
         assert false;
         return null;
     }
 
-    public static <TKey, TValue, TElement> LinqingMap<TKey,TValue> toMap(Queryable<TElement> tElements, Func1<? super TElement,TKey> keySelector, Func1<? super TElement,TValue> valueSelector) {
+    public static <TKey, TValue, TElement> LinqingMap<TKey,TValue> toMap(Queryable<TElement> tElements,
+                                                                         Func1<? super TElement,TKey> keySelector,
+                                                                         Func1<? super TElement,TValue> valueSelector) {
         assert false;
         return null;
     }
@@ -726,19 +720,21 @@ public class LinqBehaviour {
 
         Iterator<TElement> iterator = source.iterator();
         boolean hasFirst = iterator.hasNext();
-        if ( ! hasFirst) return false;
+        if ( ! hasFirst){
+            return false;
+        }
         iterator.next();
         boolean hasSecond = iterator.hasNext();
         return ! hasSecond;
     }
 
-    public static <TElement> boolean isDistinct(Queryable<TElement> source) {
+    public static <TElement> boolean isDistinct(Iterable<TElement> source) {
 
         if(source instanceof Set || source instanceof QueryableSet){
             return true;
         }
 
-        int size = source.size();
+        int size = size(source);
         HashSet<TElement> set = new HashSet<>(size, 0.90F);
 
         for(TElement element : source){

@@ -1,5 +1,7 @@
 package UnitTests;
 
+import Assists.CountingCondition;
+import Assists.QueryFixtureBase;
 import LinqALike.LinqingList;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,7 +14,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * @author Geoff on 31/10/13
  */
-public class WhereFixture extends QueryFixtureBase {
+public class WhereQueryFixture extends QueryFixtureBase {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

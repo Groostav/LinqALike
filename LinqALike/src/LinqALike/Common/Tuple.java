@@ -1,4 +1,4 @@
-package LinqALike;
+package LinqALike.Common;
 
 import java.util.Map;
 

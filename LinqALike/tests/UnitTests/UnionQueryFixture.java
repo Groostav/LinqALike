@@ -1,6 +1,6 @@
 package UnitTests;
 
-import LinqALike.Delegate.Condition;
+import Assists.QueryFixtureBase;
 import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
@@ -8,13 +8,12 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static UnitTests.QueryFixtureBase.NamedValue;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * @author Geoff on 31/10/13
  */
-public class UnionFixture {
+public class UnionQueryFixture extends QueryFixtureBase {
 
     @Test
     public void when_calling_union_on_two_sets_with_duplicates() throws Exception {
@@ -36,7 +35,7 @@ public class UnionFixture {
         LinqingList<NamedValue> right = NamedValue.makeWithEach("three", "four");
 
         //act
-        LinqingList<NamedValue> result = left.union(right, x -> x.name).toList();
+        LinqingList<NamedValue> result = left.union(right, NamedValue.GetName()).toList();
 
         //result
         assertThat(result).containsExactly(left.get(0), left.get(1), left.get(2), right.get(0), right.get(1));

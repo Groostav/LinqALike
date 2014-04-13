@@ -95,7 +95,7 @@ public class Factories {
 
         @Override
         public Iterator<TElement> fork() {
-            Queryable<TElement> broughtCurrentCopy = LinqBehaviour.skip(source, seenCount);
+            Queryable<TElement> broughtCurrentCopy = Linq.skip(source, seenCount);
             return new ForkingIterator<>(broughtCurrentCopy);
         }
 

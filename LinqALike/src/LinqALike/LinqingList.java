@@ -1,5 +1,6 @@
 package LinqALike;
 
+import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
 
     @Override @SafeVarargs
     public final Queryable<TElement> except(TElement... toExclude) {
-        return LinqBehaviour.except(this, toExclude);
+        return Linq.except(this, toExclude);
     }
 
     public LinqingList(Class<TElement> elementClass, Object[] initialValues){

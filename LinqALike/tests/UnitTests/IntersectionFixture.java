@@ -1,5 +1,7 @@
 package UnitTests;
 
+import Assists.CountingTransform;
+import Assists.QueryFixtureBase;
 import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
@@ -8,7 +10,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.List;
-import java.util.Objects;
 
 import static Assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
@@ -17,9 +18,6 @@ import static org.fest.assertions.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 public class IntersectionFixture extends QueryFixtureBase {
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void when_intersecting_a_set_containing_2_members_from_another_set(){
@@ -108,8 +106,8 @@ public class IntersectionFixture extends QueryFixtureBase {
     @Test
     public void when_intersecting_two_sets_containing_different_typed_content() {
         //setup
-        LinqingList<Object> left  = new LinqingList<>("1", 1, 4.3d, 2f, null);
-        LinqingList<Object> right = new LinqingList<>(4.3d, 2, 1L);
+        LinqingList<Object> left  = new LinqingList<Object>("1", 1, 4.3d, 2f, null);
+        LinqingList<Object> right = new LinqingList<Object>(4.3d, 2, 1L);
 
         //act
         List<Object> result = left.intersect(right).toList();

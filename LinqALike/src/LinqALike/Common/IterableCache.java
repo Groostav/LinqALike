@@ -9,7 +9,7 @@ import java.util.Iterator;
 public class IterableCache<TElement> implements Queryable<TElement> {
 
     private final Iterator<TElement> origin;
-    private Queryable<TElement> cache = Factories.<TElement>empty();
+    private Queryable<TElement> cache = Factories.empty();
 
     public IterableCache(Iterable<TElement> origin){
         this.origin = origin.iterator();

@@ -1,10 +1,10 @@
 package LinqALike;
 
+import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 
 import java.io.File;
-import java.lang.invoke.SerializedLambda;
 
 import static org.apache.commons.lang.StringUtils.join;
 

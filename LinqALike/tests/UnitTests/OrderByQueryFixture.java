@@ -1,18 +1,20 @@
 package UnitTests;
 
+import Assists.CountingTransform;
+import Assists.QueryFixtureBase;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
 
 import java.util.List;
 
-import static UnitTests.QueryFixtureBase.CountingTransform.track;
+import static Assists.CountingTransform.track;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * Created by Geoff on 09/04/14.
  */
-public class OrderByQueryFixture extends QueryFixtureBase{
+public class OrderByQueryFixture extends QueryFixtureBase {
 
     @Test
     public void when_ordering_an_unordered_set_of_integers_by_their_value(){
