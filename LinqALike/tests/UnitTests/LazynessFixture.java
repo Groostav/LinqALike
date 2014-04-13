@@ -1,7 +1,7 @@
 package UnitTests;
 
 import LinqALike.Factories;
-import LinqALike.LinqBehaviour;
+import LinqALike.Linq;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class LazynessFixture extends QueryFixtureBase {
         CountingTransform<String, Double> transformToDouble = CountingTransform.track(Double::parseDouble);
 
         //act
-        Queryable<Double> result = LinqBehaviour.select(numberValues, transformToDouble);
+        Queryable<Double> result = Linq.select(numberValues, transformToDouble);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(transformToDouble, result);
@@ -35,7 +35,7 @@ public class LazynessFixture extends QueryFixtureBase {
         List<Integer> numberValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
         CountingCondition<Integer> greaterThanFive = CountingCondition.track(cause -> cause > 5);
         //act
-        Queryable<Integer> result = LinqBehaviour.where(numberValues, greaterThanFive);
+        Queryable<Integer> result = Linq.where(numberValues, greaterThanFive);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(greaterThanFive, result);
@@ -50,7 +50,7 @@ public class LazynessFixture extends QueryFixtureBase {
         CountingTransform<NamedValue, String> getName = CountingTransform.track(cause -> cause.name);
 
         //act
-        Queryable<NamedValue> result = LinqBehaviour.except(elements, scaryMetals, getName);
+        Queryable<NamedValue> result = Linq.except(elements, scaryMetals, getName);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(getName, result);
@@ -64,7 +64,7 @@ public class LazynessFixture extends QueryFixtureBase {
         CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
 
         //act
-        Queryable<NamedValue> goodAndBadResult = LinqBehaviour.union(goodUDCourses, badUDCourses, getName);
+        Queryable<NamedValue> goodAndBadResult = Linq.union(goodUDCourses, badUDCourses, getName);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(getName, goodAndBadResult);
@@ -77,7 +77,7 @@ public class LazynessFixture extends QueryFixtureBase {
         List<NamedValue> hardUDCourses = NamedValue.makeWithEach("373", "379", "433");
         CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
         //act
-        Queryable<NamedValue> goodAndBadResult = LinqBehaviour.intersect(goodUDCourses, hardUDCourses, getName);
+        Queryable<NamedValue> goodAndBadResult = Linq.intersect(goodUDCourses, hardUDCourses, getName);
 
         //assert
         forceIterationAndAssertInvocationHappenedLazily(getName, goodAndBadResult);

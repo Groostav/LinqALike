@@ -1,15 +1,26 @@
 package LinqALike;
 
 import LinqALike.Delegate.Condition;
+import LinqALike.Queries.DefaultQueryable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class LinqingList<TElement> extends ArrayList<TElement> implements Queryable<TElement> {
+/**
+ * An {@link java.util.ArrayList} decorated with support {@link LinqALike.Queryable}, probably the most
+ * useful instantiable class in this library.
+ *
+ * In relational terms a Java list is an <i>ordered bag</i>, meaning it may contain duplicates, and it maintains
+ * its own (indexed) order.
+ *
+ * @see java.util.ArrayList
+ * @see LinqALike.Queryable
+ * @see LinqALike.Queries.DefaultQueryable
+ */
+public class LinqingList<TElement> extends ArrayList<TElement> implements DefaultQueryable<TElement> {
 
     // Constructors
-
     public LinqingList(){
         super();
     }
@@ -27,16 +38,6 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Querya
         for(TElement element : elements){
             add(element);
         }
-    }
-
-    @Override
-    public boolean add(TElement tElement) {
-        return super.add(tElement);
-    }
-
-    @Override @SafeVarargs
-    public final Queryable<TElement> except(TElement... toExclude) {
-        return LinqBehaviour.except(this, toExclude);
     }
 
     public LinqingList(Class<TElement> elementClass, Object[] initialValues){

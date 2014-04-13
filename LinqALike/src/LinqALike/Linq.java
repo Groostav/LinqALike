@@ -13,7 +13,7 @@ import static LinqALike.Factories.firstNotNull;
 import static LinqALike.Factories.from;
 import static LinqALike.Tuple.pair;
 
-public class LinqBehaviour {
+public class Linq {
 
     public static <TBase, TDerived extends TBase> LinqingList<TDerived> ofType(Iterable<TBase> set,
                                                                                Class<TDerived> desiredType) {
@@ -249,7 +249,7 @@ public class LinqBehaviour {
         return returnable;
     }
 
-    public static <TDerived, TElement> LinqingList<TDerived> cast(Iterable<TElement> set) {
+    public static <TDerived, TElement> Queryable<TDerived> cast(Iterable<TElement> set) {
         LinqingList<TDerived> returnable = new LinqingList<TDerived>();
         for(TElement element : set){
             TDerived castElement;
@@ -261,7 +261,7 @@ public class LinqBehaviour {
             }
             returnable.add(castElement);
         }
-        return returnable.toReadOnly();
+        return (Queryable<TDerived>) returnable;
     }
 
     public static <TElement> boolean all(Iterable<TElement> set, Condition<? super TElement> condition) {
@@ -733,23 +733,7 @@ public class LinqBehaviour {
     }
 
     public static <TElement> boolean isDistinct(Queryable<TElement> source) {
-
-        if(source instanceof Set || source instanceof QueryableSet){
-            return true;
-        }
-
-        int size = source.size();
-        HashSet<TElement> set = new HashSet<>(size, 0.90F);
-
-        for(TElement element : source){
-
-            boolean modified = set.add(element);
-
-            if ( ! modified){
-                return false;
-            }
-        }
-        return true;
+        return ImmediateQueries.isDistinct(source);
     }
 }
 

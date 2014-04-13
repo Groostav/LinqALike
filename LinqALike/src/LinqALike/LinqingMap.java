@@ -21,7 +21,7 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
      * constructors
      */
     public LinqingMap(Iterable<? extends TKey> keys, Iterable<? extends TValue> values) {
-        assert ! LinqBehaviour.containsDuplicates(keys);
+        assert ! Linq.containsDuplicates(keys);
 
         Iterator<? extends TValue> valueIterator = values.iterator();
         for(TKey key : keys){
