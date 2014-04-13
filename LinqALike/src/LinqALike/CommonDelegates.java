@@ -3,6 +3,7 @@ package LinqALike;
 import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
+import LinqALike.Delegate.Func2;
 
 import java.io.File;
 
@@ -12,15 +13,17 @@ public class CommonDelegates {
 
     public static Condition.WithDescription<Iterable> IsEmpty = new Condition.WithDescription<>(
             "set is not empty",
-            (Condition<Iterable>) candidate -> ! candidate.iterator().hasNext()
+            (Condition<Iterable>) candidate -> !candidate.iterator().hasNext()
     );
 
-    public static <TObject> Func1.WithDescription<TObject, TObject> identity(){
+    public static <TObject> Func1.WithDescription<TObject, TObject> identity() {
         return new Func1.WithDescription<>("identity function: object -> object", object -> object);
-    };
+    }
 
-    public static <TInspected> Condition.WithDescription<TInspected> Not(final Condition<TInspected> condition){
-        return new Condition.WithDescription<>("Not:" + condition, candidate -> ! condition.passesFor(candidate));
+    ;
+
+    public static <TInspected> Condition.WithDescription<TInspected> Not(final Condition<TInspected> condition) {
+        return new Condition.WithDescription<>("Not:" + condition, candidate -> !condition.passesFor(candidate));
     }
 
     public static final Condition.WithDescription<Object> IsNull = new Condition.WithDescription<>("Is Null: can -> can == null", can -> can == null);
@@ -33,7 +36,7 @@ public class CommonDelegates {
             "Null Safe ToString: source -> source == null ? \"<null>\" : source.toString()",
             CommonDelegates::nullSafeToString);
 
-    public static Condition<Object> IsInstanceOf(final Class<?> allowed){
+    public static Condition<Object> IsInstanceOf(final Class<?> allowed) {
         return new Condition.WithDescription<>(
                 "is instance of " + allowed + ": candidate -> allowed.isAssignableFrom(candidate.getClass())",
                 (Object candidate) -> allowed.isAssignableFrom(candidate.getClass())
@@ -41,11 +44,11 @@ public class CommonDelegates {
     }
 
 
-    public static Condition<Object> IsInstanceOfAny(final Class... allowedTypes){
+    public static Condition<Object> IsInstanceOfAny(final Class... allowedTypes) {
         return IsInstanceOfAny(Factories.asList(allowedTypes));
     }
 
-    public static Condition<Object> IsInstanceOfAny(final Iterable<Class> allowedTypes){
+    public static Condition<Object> IsInstanceOfAny(final Iterable<Class> allowedTypes) {
         return new Condition.WithDescription<>(
                 "is instance of any " + join(allowedTypes.iterator(), ","),
                 actual -> actual != null &&
@@ -70,7 +73,8 @@ public class CommonDelegates {
 
         return left == null ? right == null : left.equals(right);
     }
-    public static String nullSafeToString(Object source){
+
+    public static String nullSafeToString(Object source) {
         return source == null ? "<null>" : source.toString();
     }
 
@@ -80,4 +84,6 @@ public class CommonDelegates {
                 object -> object.equals(desired)
         );
     }
+
+    public static final Func2<Object, Object, Boolean> referenceEquals = (firstArgument, secondArgument) -> firstArgument == secondArgument;
 }

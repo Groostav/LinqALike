@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.Preconditions;
 import LinqALike.Common.PrefetchingIterator;
 import LinqALike.Delegate.Condition;
 import LinqALike.Queryable;
@@ -11,8 +12,11 @@ public class WhereQuery<TElement> implements Queryable<TElement> {
     private final Iterable<TElement> elements;
     private final Condition<? super TElement> condition;
 
-    public WhereQuery(Iterable<TElement> elements, Condition<? super TElement> condition) {
-        this.elements = elements;
+    public WhereQuery(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+        Preconditions.notNull(sourceElements, "sourceElements");
+        Preconditions.notNull(condition, "condition");
+
+        this.elements = sourceElements;
         this.condition = condition;
     }
 

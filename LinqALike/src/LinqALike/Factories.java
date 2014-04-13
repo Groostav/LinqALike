@@ -4,29 +4,45 @@ import LinqALike.Common.ForkableIterator;
 import LinqALike.Common.IterableCache;
 import LinqALike.Common.QueryAdapter;
 import LinqALike.Common.RepeatingIterator;
+import LinqALike.Delegate.Func1;
 
 import java.util.Iterator;
 
 public class Factories {
 
     @SafeVarargs
-    public static <TElement> Queryable<TElement> from(TElement ... elements){
-        return new QueryAdapter.Array<>(elements);
+    public static <TElement> Queryable<TElement> from(TElement ... sourceElements){
+        return new QueryAdapter.Array<>(sourceElements);
     }
 
-    public static <TElement> Queryable<TElement> from(Iterable<TElement> elements){
-        return new QueryAdapter.Iterable<>(elements);
+    public static <TElement> Queryable<TElement> from(Iterable<TElement> sourceElements){
+        return new QueryAdapter.Iterable<>(sourceElements);
     }
 
     @SafeVarargs
-    public static <TElement> LinqingList<TElement> asList(TElement... set){
-        return new LinqingList<>(set);
+    public static <TElement> LinqingList<TElement> asList(TElement... sourceElements){
+        return new LinqingList<>(sourceElements);
     }
 
-    public static <TElement> LinqingList<TElement> asList(Iterable<TElement> set){
-        return new LinqingList<>(set);
+    public static <TElement> LinqingList<TElement> asList(Iterable<TElement> sourceElements){
+        return new LinqingList<>(sourceElements);
     }
 
+    public static <TKey, TValue>
+    LinqingMap<TKey, TValue> asMap(Iterable<TKey> keys,
+                                   Iterable<TValue> values) {
+        return new LinqingMap<>(keys, values);
+    }
+
+    public static <TKey, TValue, TElement>
+    LinqingMap<TKey, TValue> asMap(Iterable<TElement> sourceElements,
+                                   Func1<? super TElement, TKey> keySelector,
+                                   Func1<? super TElement, TValue> valueSelector) {
+
+        Iterable<TKey> keys = Linq.select(sourceElements, keySelector);
+        Iterable<TValue> values = Linq.select(sourceElements, valueSelector);
+        return new LinqingMap<>(keys, values);
+    }
 
     @SafeVarargs
     public static <TElement> TElement firstNotNullOrDefault(TElement ... set){
@@ -80,6 +96,7 @@ public class Factories {
     public static <TElement> Queryable<TElement> empty() {
         return new LinqingList<>();
     }
+
 
     public static class ForkingIterator<TElement> implements ForkableIterator<TElement>{
 

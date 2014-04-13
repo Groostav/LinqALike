@@ -73,7 +73,7 @@ public class SimpleExamples {
         //that broadly break down as:
 
         // - result availability,   Streams are difficult to convert to the familiar List and Map forms.
-        //                          Queryable's have convenient toList(), toMap(), and toArray(). Wherever
+        //                          Queryable's have convenient toList(), asMap(), and toArray(). Wherever
         //                          possible, Linq-A-Like integrates with the existing Collections framework,
         //                          where the Streams API remains largely separate.
         // - memory profile,        Linq (and thus Linq-A-Like) is lazy. This means that while Streams

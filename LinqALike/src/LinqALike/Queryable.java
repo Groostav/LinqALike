@@ -1,24 +1,14 @@
 package LinqALike;
 
 import LinqALike.Common.QueryableGroupSet;
-import LinqALike.Delegate.*;
-
-import java.util.Collections;
-
-import static LinqALike.Linq.first;
+import LinqALike.Delegate.Condition;
+import LinqALike.Delegate.Func1;
+import LinqALike.Delegate.Func2;
 
 /**
  * @author Geoff on 06/09/13
  */
 public interface Queryable<TElement> extends Iterable<TElement> {
-
-    default TElement aggregate(Func2<TElement, TElement, TElement> aggregator){
-        return Linq.aggregate(this, aggregator);
-    }
-    default <TAccumulate> TAccumulate aggregate(TAccumulate seed,
-                                                Func2<TAccumulate, TElement, TAccumulate> aggregator){
-        return Linq.aggregate(this, seed, aggregator);
-    }
 
     default boolean all(Condition<? super TElement> condition){
         return Linq.all(this, condition);
@@ -167,10 +157,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     default <TCompared extends Comparable<TCompared>>
     Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector){
 
-        LinqingList<TElement> ordered = this.toList();
-        Collections.sort(ordered, (left, right) -> (comparableSelector.getFrom(left).compareTo(comparableSelector.getFrom(right))));
-
-        return ordered;
+        return Linq.orderBy(this, comparableSelector);
     }
     default Queryable<TElement> orderBy(Func2<? super TElement, ? super TElement, Integer> equalityComparator){
         return Linq.orderBy(this, equalityComparator);
@@ -187,7 +174,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
         return Linq.select(this, selector);
     }
     default <TTransformed>
-    LinqingList<TTransformed> selectMany(Func1<? super TElement, ? extends Iterable<TTransformed>> selector){
+    Queryable<TTransformed> selectMany(Func1<? super TElement, ? extends Iterable<TTransformed>> selector){
         return Linq.selectMany(this, selector);
     }
 

@@ -1,11 +1,6 @@
 package Assists;
 
-import Assists.CountingDelegate;
-import Assists.CountingTransform;
-import LinqALike.Delegate.Condition;
 import LinqALike.LinqingList;
-
-import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * @author Geoff on 13/10/13
@@ -94,6 +89,13 @@ public class QueryFixtureBase {
         @Override
         public int hashCode() {
             return value != null ? value.hashCode() : 0;
+        }
+
+        @Override
+        public String toString() {
+            return "EquatableValue{" +
+                    "value='" + value + '\'' +
+                    '}';
         }
     }
 

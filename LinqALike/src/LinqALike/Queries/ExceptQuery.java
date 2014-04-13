@@ -1,7 +1,7 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.Preconditions;
 import LinqALike.Common.PrefetchingIterator;
-import LinqALike.CommonDelegates;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 import LinqALike.LinqingMap;
@@ -14,18 +14,21 @@ import static LinqALike.CommonDelegates.identity;
 
 public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
 
-    protected final Iterable<? extends TElement> leftBasis;
-    protected final Iterable<? extends TElement> rightSetToExclude;
+    protected final Iterable<? extends TElement> left;
+    protected final Iterable<? extends TElement> right;
 
-    protected ExceptQuery(Iterable<? extends TElement> leftBasis, Iterable<? extends TElement> rightSetToExclude){
-        this.leftBasis = leftBasis;
-        this.rightSetToExclude = rightSetToExclude;
+    protected ExceptQuery(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
+        Preconditions.notNull(left, "left");
+        Preconditions.notNull(right, "right");
+
+        this.left = left;
+        this.right = right;
     }
 
     public static class WithNaturalEquality<TElement> extends ExceptQuery<TElement>{
-        public WithNaturalEquality(Iterable<? extends TElement> leftBasis,
-                                   Iterable<? extends TElement> rightSetToExclude){
-            super(leftBasis, rightSetToExclude);
+        public WithNaturalEquality(Iterable<? extends TElement> left,
+                                   Iterable<? extends TElement> right){
+            super(left, right);
         }
 
         @Override
@@ -55,8 +58,8 @@ public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
     public static class WithEquatable<TElement> extends ExceptQuery<TElement>{
 
         private Func2<? super TElement, ? super TElement, Boolean> equalityComparison;
-        private Iterator<? extends TElement> source = leftBasis.iterator();
-        private Iterator<? extends TElement> toExcludes = rightSetToExclude.iterator();
+        private Iterator<? extends TElement> source = left.iterator();
+        private Iterator<? extends TElement> toExcludes = right.iterator();
         private LinqingSet<TElement> toExcludeByTheirChampion = new LinqingSet<>();
 
         public WithEquatable(Iterable<? extends TElement> leftBasis,
@@ -105,8 +108,8 @@ public abstract class ExceptQuery<TElement> implements Queryable<TElement> {
 
     protected class ExcludingWithComparableIterator<TCompared> extends PrefetchingIterator<TElement> implements Iterator<TElement> {
 
-        private Iterator<? extends TElement> source = leftBasis.iterator();
-        private Iterator<? extends TElement> toExcludes = rightSetToExclude.iterator();
+        private Iterator<? extends TElement> source = left.iterator();
+        private Iterator<? extends TElement> toExcludes = right.iterator();
         private LinqingMap<TCompared, TElement> toExcludeByTheirChampion = new LinqingMap<>();
         private final Func1<? super TElement, TCompared> comparable;
 

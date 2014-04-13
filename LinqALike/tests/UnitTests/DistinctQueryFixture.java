@@ -42,7 +42,7 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         assertThat(resultLeft).doesNotHaveDuplicates();
 	    assertThat(resultLeft).containsExactly(
                 "Seoul", "Nagasaki", "Mumbai", "Amsterdam", "Shanghai", "Dubai",
-                "Nagasaki", "Anchorage", "Rio de Janeiro", "Cairo");
+                "Anchorage", "Rio de Janeiro", "Cairo");
     }
 
     @Test

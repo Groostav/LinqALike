@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.Preconditions;
 import LinqALike.Common.QueryableSet;
 import LinqALike.Delegate.Func1;
 import LinqALike.Factories;
@@ -19,11 +20,14 @@ public class UnionQuery<TElement, TCompared> implements Queryable<TElement> {
                       Iterable<? extends TElement> right,
                       Func1<? super TElement, TCompared> comparableSelector) {
 
+        Preconditions.notNull(left, "left");
+        Preconditions.notNull(right, "right");
+        Preconditions.notNull(comparableSelector, "comparableSelector");
+
         this.left = left;
         this.right = right;
         this.comparableSelector = comparableSelector;
     }
-
 
     @Override
     public Iterator<TElement> iterator() {
