@@ -3,6 +3,8 @@ package LanguageSmokeTests;
 
 import org.junit.Test;
 
+import java.util.function.Supplier;
+
 import static org.fest.assertions.Assertions.assertThat;
 
 public class LanguageSmokeTests {
@@ -43,6 +45,13 @@ public class LanguageSmokeTests {
         int result = Boolean.TRUE.compareTo(Boolean.FALSE);
 
         assertThat(result).isEqualTo(1);
+    }
+
+    @Test
+    public void when_getting_class_of_a_lambda(){
+        Supplier<Integer> function = () -> 15;
+
+        Class foundType = function.getClass();
     }
 
 }

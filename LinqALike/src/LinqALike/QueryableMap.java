@@ -5,9 +5,7 @@ import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 import LinqALike.Queries.DefaultQueryable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Map;
 
 public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<TKey, TValue>> {
@@ -79,7 +77,7 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
         assert false : "not implemented";
         return null;
     }
-    @Override default QueryableMap<TKey, TValue> orderBy(Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Integer> equalityComparator){
+    @Override default QueryableMap<TKey, TValue> orderBy(Comparator<? super Map.Entry<TKey, TValue>> equalityComparator){
         assert false : "not implemented";
         return null;
     }
@@ -92,10 +90,6 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
 
 
     @Override default QueryableMap<TKey, TValue> skipWhile(Condition<? super Map.Entry<TKey, TValue>> toExclude){
-        assert false : "not implemented";
-        return null;
-    }
-    @Override default QueryableMap<TKey, TValue> skipUntil(Condition<? super Map.Entry<TKey, TValue>> toInclude){
         assert false : "not implemented";
         return null;
     }

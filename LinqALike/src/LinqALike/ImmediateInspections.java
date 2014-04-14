@@ -270,4 +270,39 @@ public class ImmediateInspections {
                     "or update the valueElementSelector to check for null values, and return a non-null Double instance.");
         }
     }
+
+    public static <TElement> boolean isSetEquivalentOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
+
+        if(size(left) != size(right)){
+            return false;
+        }
+
+        Set<TElement> leftSet = new HashSet<>();
+        for(TElement leftElement : left){
+            leftSet.add(leftElement);
+        }
+
+        return Factories.from(right).all(leftSet::contains);
+    }
+
+    public static <TElement> boolean all(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+
+        for(TElement element : sourceElements){
+            if( ! condition.passesFor(element)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static <TElement> int count(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+        int count = 0;
+        for(TElement element : sourceElements){
+            if(condition.passesFor(element)){
+                count += 1;
+            }
+        }
+        return count;
+    }
 }

@@ -1,22 +1,22 @@
 package LinqALike.Queries;
 
 import LinqALike.CommonDelegates;
-import LinqALike.Delegate.Func1;
 import LinqALike.Queryable;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static LinqALike.Factories.from;
 
-public class OrderByQuery<TElement, TCompared extends Comparable<TCompared>> implements DefaultQueryable<TElement> {
+public class OrderByQuery<TElement> implements DefaultQueryable<TElement> {
 
-    private final Func1<? super TElement, TCompared> comparableSelector;
+    private final Comparator<? super TElement> comparator;
     private final Iterable<TElement> source;
 
-    public OrderByQuery(Iterable<TElement> source, Func1<? super TElement, TCompared> comparableSelector){
+    public OrderByQuery(Iterable<TElement> source, Comparator<? super TElement> comparator){
         this.source = source;
-        this.comparableSelector = comparableSelector;
+        this.comparator = comparator;
     }
 
     @Override
@@ -41,15 +41,11 @@ public class OrderByQuery<TElement, TCompared extends Comparable<TCompared>> imp
             }
 
             TElement currentBest = remaining.first();
-            TCompared currentValue = comparableSelector.getFrom(currentBest);
 
             for(TElement candidate : remaining.skip(1)){
 
-                TCompared candidateValue = comparableSelector.getFrom(candidate);
-
-                if(currentValue.compareTo(candidateValue) > 0){
+                if(comparator.compare(currentBest, candidate) > 0){
                     currentBest = candidate;
-                    currentValue = candidateValue;
                 }
             }
 

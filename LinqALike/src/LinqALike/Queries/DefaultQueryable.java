@@ -1,12 +1,13 @@
 package LinqALike.Queries;
 
 import LinqALike.*;
-import LinqALike.Common.QueryableGroupSet;
 import LinqALike.Delegate.*;
+
+import java.util.Comparator;
 
 
 /**
- * An <i>implementation</i> (by way of default extension-methods) to the {@link LinqALike.Queryable} interface.
+ * An <i>implementation</i> (by way of default extension methods) to the {@link LinqALike.Queryable} interface.
  * For a concise list of what methods this interface offers and documentation on each of the methods,
  * please inspect that interface.
  *
@@ -32,8 +33,11 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     }
 
 
-    @Override default public <TDerived> Queryable<TDerived> cast(){
+    @Override default public <TDerived> Queryable<TDerived> uncheckedCast(){
         return Linq.cast(this);
+    }
+    @Override default public <TDerived> Queryable<TDerived> cast(Class<TDerived> desiredType){
+        return Linq.cast(this, desiredType);
     }
 
 
@@ -93,7 +97,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
 
 
     @Override default public <TComparable>
-    QueryableGroupSet<TElement> groupBy(Func1<? super TElement, TComparable> comparableSelector){
+    Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> comparableSelector){
         return Linq.groupBy(this, comparableSelector);
     }
     @Override default public Queryable<Queryable<TElement>> groupBy(Func2<? super TElement, ? super TElement, Boolean> equalityComparison){
@@ -155,7 +159,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector){
         return Linq.orderBy(this, comparableSelector);
     }
-    @Override default public Queryable<TElement> orderBy(Func2<? super TElement, ? super TElement, Integer> equalityComparator){
+    @Override default public Queryable<TElement> orderBy(Comparator<? super TElement> equalityComparator){
         return Linq.orderBy(this, equalityComparator);
     }
 
@@ -191,9 +195,6 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
 
     @Override default public Queryable<TElement> skipWhile(Condition<? super TElement> toExclude){
         return Linq.skipWhile(this, toExclude);
-    }
-    @Override default public Queryable<TElement> skipUntil(Condition<? super TElement> toInclude){
-        return Linq.skipUntil(this, toInclude);
     }
     @Override default public Queryable<TElement> skip(int numberToSkip){
         return Linq.skip(this, numberToSkip);

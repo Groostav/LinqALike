@@ -1,7 +1,10 @@
 package LinqALike;
 
-import LinqALike.Common.QueryableGroupSet;
-import LinqALike.Delegate.*;
+import LinqALike.Delegate.Condition;
+import LinqALike.Delegate.Func1;
+import LinqALike.Delegate.Func2;
+
+import java.util.Comparator;
 
 /**
  * @author Geoff on 06/09/13
@@ -16,7 +19,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     double average(Func1<? super TElement, Double> valueSelector);
 
 
-    <TDerived> Queryable<TDerived> cast();
+    <TDerived> Queryable<TDerived> uncheckedCast();
+    <TDerived> Queryable<TDerived> cast(Class<TDerived> desiredType);
 
 
     boolean contains(Object candidate);
@@ -47,7 +51,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     <TComparable>
-    QueryableGroupSet<TElement> groupBy(Func1<? super TElement, TComparable> comparableSelector);
+    Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> comparableSelector);
     Queryable<Queryable<TElement>> groupBy(Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
 
 
@@ -77,7 +81,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     <TCompared extends Comparable<TCompared>>
     Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector);
-    Queryable<TElement> orderBy(Func2<? super TElement, ? super TElement, Integer> equalityComparator);
+    Queryable<TElement> orderBy(Comparator<? super TElement> equalityComparator);
 
 
     Queryable<TElement> reversed();
@@ -96,7 +100,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     Queryable<TElement> skipWhile(Condition<? super TElement> toExclude);
-    Queryable<TElement> skipUntil(Condition<? super TElement> toInclude);
     Queryable<TElement> skip(int numberToSkip);
 
 

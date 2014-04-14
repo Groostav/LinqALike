@@ -20,13 +20,13 @@ public abstract class PrefetchingIterator<TElement> implements Iterator<TElement
     private TElement prefetchedValue;
 
     @Override
-    public boolean hasNext() {
+    public final boolean hasNext() {
         updateCache();
         return hasPrefetchedValue();
     }
 
     @Override
-    public TElement next() {
+    public final TElement next() {
 
         updateCache();
 
@@ -47,20 +47,20 @@ public abstract class PrefetchingIterator<TElement> implements Iterator<TElement
      * <p>This method will be called as lazily as possible. It will be forced by either a call to {@link #next()}
      * <b>or a call to {@link #hasNext()}</b>. Once this call has gone through, its result is cached, meaning any
      * further calls to {@link #hasNext()} will not result in a call to this method. Once a successive call to
-     * {@link #next()} has occured, the value set as prefetched (the argument passed to {@link #setPrefetchedValue(Object)}
+     * {@link #next()} has occurred, the value set as prefetched (the argument passed to {@link #setPrefetchedValue(Object)}
      * is invalidated, and the next call to either {@link #next()} or {@link #hasNext()} will force another call to
      * <tt>prefetch()</tt>.</p>
      */
     protected abstract void prefetch();
 
     /**
-     * <p>Allows you to set the prefetched value discovered in a call to {@link #prefetch()}. Unforunately, as far as the
-     * {@link PDOL.Common.Queryable.Queryable} interface-contract is concerned, <tt>null</tt> elements are always legal,
+     * <p>Allows you to set the prefetched value discovered in a call to {@link #prefetch()}. Unfortunately, as far as the
+     * {@link LinqALike.Queryable} interface-contract is concerned, <tt>null</tt> elements are always legal,
      * so we cant simply have the {@link #prefetch()} method return null as a signal to indicate that <i>I cant prefetch
      * another value --we're out.</i> So, instead, we use this method.</p>
      *
      * <p>once called, with any argument, the result of {@link #hasPrefetchedValue()} will be <tt>true</tt> until a call
-     * is made to {@link #next()}, at which point the value suppliede here will be given to the caller of {@link #next()}
+     * is made to {@link #next()}, at which point the value supplied here will be given to the caller of {@link #next()}
      * and {@link #hasPrefetchedValue()} will once again be false (ie, the prefetch cache will be invalidated). </p>
      *
      * <p>You may not invoke <tt>setPrefetchedValue(Object prefetchedValue)</tt> twice without a call to
@@ -88,9 +88,6 @@ public abstract class PrefetchingIterator<TElement> implements Iterator<TElement
     }
 
     private TElement getPrefetchedValue(){
-        if ( ! hasPrefetchedValue()){
-            throw new NoSuchElementException();
-        }
         return prefetchedValue;
     }
 

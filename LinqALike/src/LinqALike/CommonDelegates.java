@@ -2,11 +2,11 @@ package LinqALike;
 
 import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
-import LinqALike.Delegate.Func;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,11 +61,7 @@ public class CommonDelegates {
     }
 
     public static <TLeft, TRight> Condition<Tuple<TLeft, TRight>> EntryIsIn(final QueryableMap<TLeft, ? extends Queryable<TRight>> other) {
-        return new Condition<Tuple<TLeft, TRight>>() {
-            public boolean passesFor(Tuple<TLeft, TRight> candidate) {
-                return other.get(candidate.left).contains(candidate.right);
-            }
-        };
+        return candidate -> other.get(candidate.left).contains(candidate.right);
     }
 
     public static Condition<File> FileExists = new Condition.WithDescription<>("The File exists: File::exists", File::exists);
@@ -89,28 +85,42 @@ public class CommonDelegates {
     public static final Func2<Object, Object, Boolean> referenceEquals = (firstArgument, secondArgument) -> firstArgument == secondArgument;
 
     public static <TSource, TResult> Func1<TSource, TResult> memoized(Func1<TSource, TResult> valueRetrieval){
-
         Map<TSource, TResult> table = new HashMap<>();
-
-        return source -> {
-            if ( ! table.containsKey(source)){
-                TResult result = valueRetrieval.getFrom(source);
-                table.put(source, result);
-                return result;
-            }
-            else{
-                return table.get(source);
-            }
-        };
+        return new Func1.WithDescription<>(
+                "memoized { " + valueRetrieval + " }",
+                source -> {
+                    if (table.containsKey(source)) {
+                        return table.get(source);
+                    }
+                    else{
+                        TResult value = valueRetrieval.getFrom(source);
+                        table.put(source, value);
+                        return value;
+                    }
+                }
+        );
     }
 
     public static <TArgument, TEquated>
     Func2<TArgument, TArgument, Boolean> performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
-        return (left, right) -> {
-            TEquated leftComparable = comparableSelector.getFrom(left);
-            TEquated rightComparable = comparableSelector.getFrom(right);
+        return new Func2.WithDescription<>(
+                "equality on 2 values using the equatable value provided by " + comparableSelector,
+                (left, right) -> {
+                    TEquated leftComparable = comparableSelector.getFrom(left);
+                    TEquated rightComparable = comparableSelector.getFrom(right);
 
-            return leftComparable.equals(rightComparable);
+                    return leftComparable.equals(rightComparable);
+                }
+        );
+    }
+
+    public static <TArgument, TCompared extends Comparable<TCompared>>
+    Comparator<TArgument> performComparisonUsing(final Func1<TArgument, TCompared> comparableSelector){
+        return (left, right) -> {
+            TCompared leftComparable = comparableSelector.getFrom(left);
+            TCompared rightComparable = comparableSelector.getFrom(right);
+
+            return leftComparable.compareTo(rightComparable);
         };
     }
 }

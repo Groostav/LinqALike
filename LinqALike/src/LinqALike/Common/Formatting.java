@@ -1,16 +1,10 @@
 package LinqALike.Common;
 
-import LinqALike.CommonDelegates;
-import LinqALike.Factories;
 import org.apache.commons.lang.StringUtils;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Geoff
- * Date: 19/02/14
- * Time: 5:34 PM
- * To change this template use File | Settings | File Templates.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Formatting {
 
     public static final String NullStringRepresentation = "<null>";
@@ -19,10 +13,35 @@ public class Formatting {
 
     public static <TElement> String verticallyPrintMembers(Iterable<TElement> problemMembers) {
         String newlineIndent = "\n\t";
-        return StringUtils.join(Factories.asList(problemMembers).select(CommonDelegates.NullSafeToString).iterator(), newlineIndent) + "\n";
+        List<String> toStringedMembers = new ArrayList<>();
+        for(TElement member : problemMembers){
+            String toStringdMember = nullSafeToString(member);
+            toStringedMembers.add(toStringdMember);
+        }
+        return StringUtils.join(toStringedMembers.iterator(), newlineIndent) + "\n";
     }
 
     public static String nullSafeToString(Object objectToStringify) {
         return objectToStringify == null ? NullStringRepresentation : objectToStringify.toString();
+    }
+
+    public static String csv(Iterable<String> values) {
+        return StringUtils.join(values.iterator(), ", ");
+    }
+
+    public static String getDebugString(Object value){
+        if(value == null){
+            return NullStringRepresentation;
+        }
+        try{
+            return "'" + value.toString() + "' " + getHumanType(value);
+        }
+        catch(Exception e){
+            return "'[toString() threw " + e.getClass().getSimpleName() + "]' " + getHumanType(value);
+        }
+    }
+
+    private static String getHumanType(Object value) {
+        return "(type " + value.getClass().getSimpleName() + ")";
     }
 }

@@ -1,18 +1,27 @@
 package LinqALike.Queries;
 
-import LinqALike.Queryable;
+import LinqALike.Common.Formatting;
 
 import java.util.Iterator;
 
 /**
- * Created by Geoff on 13/04/2014.
+ * Provides static casting of one generic {@link java.lang.Iterable} to another,
+ * withen the {@link LinqALike.Queryable} class hierarchy. This class does <i>nothing</i>
+ * at run-time.
  */
 public class CastQuery<TOrigin, TCasted> implements DefaultQueryable<TCasted> {
 
     private final Iterable<TOrigin> sourceElements;
+    private final Class minimumExpectedType;
 
     public CastQuery(Iterable<TOrigin> sourceElements){
         this.sourceElements = sourceElements;
+        this.minimumExpectedType = Object.class;
+    }
+
+    public CastQuery(Iterable<TOrigin> sourceElements, Class minimumExpectedType){
+        this.sourceElements = sourceElements;
+        this.minimumExpectedType = minimumExpectedType;
     }
 
     @Override
@@ -20,6 +29,7 @@ public class CastQuery<TOrigin, TCasted> implements DefaultQueryable<TCasted> {
         return new CastingIterator();
     }
 
+    @SuppressWarnings("unchecked")
     private class CastingIterator implements Iterator<TCasted>{
 
         private final Iterator<TOrigin> source = sourceElements.iterator();
@@ -31,7 +41,16 @@ public class CastQuery<TOrigin, TCasted> implements DefaultQueryable<TCasted> {
 
         @Override
         public TCasted next() {
-            return (TCasted) source.next();
+
+            TOrigin element = source.next();
+
+            if( ! minimumExpectedType.isInstance(element)){
+                throw new ClassCastException(
+                        "the element " + Formatting.getDebugString(element) + " " +
+                        "cannot be cast as " + minimumExpectedType.getCanonicalName());
+            }
+
+            return (TCasted) element;
         }
     }
 }

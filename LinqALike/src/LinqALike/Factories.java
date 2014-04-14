@@ -1,12 +1,9 @@
 package LinqALike;
 
-import LinqALike.Common.ForkableIterator;
-import LinqALike.Common.IterableCache;
-import LinqALike.Common.QueryAdapter;
-import LinqALike.Common.RepeatingIterator;
+import LinqALike.Common.*;
 import LinqALike.Delegate.Func1;
 
-import java.util.Iterator;
+import java.lang.reflect.Array;
 
 public class Factories {
 
@@ -59,30 +56,8 @@ public class Factories {
         return from(sets).first(x -> x.iterator().hasNext());
     }
 
-    public static Iterable<Integer> range(final int lowerInclusive, final int upperExclusive) {
-        return new Iterable<Integer>() {
-            @Override
-            public Iterator<Integer> iterator() {
-                return new Iterator<Integer>() {
-                    public int current = lowerInclusive;
-
-                    @Override
-                    public boolean hasNext() {
-                        return current < upperExclusive;
-                    }
-
-                    @Override
-                    public Integer next() {
-                        return current++;
-                    }
-
-                    @Override
-                    public void remove() {
-                        throw new UnsupportedOperationException();
-                    }
-                };
-            }
-        };
+    public static Iterable<Integer> range(int lowerInclusive, int upperExclusive) {
+        return () -> new RangeIterator(lowerInclusive, upperExclusive);
     }
 
     public static <TElement> Iterable<TElement> repeat(final TElement valueToRepeat) {
@@ -105,32 +80,63 @@ public class Factories {
         return new LinqingSet<>(sourceElements);
     }
 
-    public static class ForkingIterator<TElement> implements ForkableIterator<TElement>{
+    @SuppressWarnings("unchecked")
+    public static <TSourceElement, TArrayElement>
+    TArrayElement[] asArray(Iterable<TSourceElement> sourceElements, TArrayElement[] targetArray) {
 
-        private final Iterable<TElement> source;
-        private final Iterator<TElement> backingIterator;
+        Class<?> arrayElementType = targetArray.getClass().getComponentType();
+        int neededSize = Linq.size(sourceElements);
 
-        private int seenCount = 0;
-
-        public ForkingIterator(Iterable<TElement> source){
-            this.source = source;
-            backingIterator = source.iterator();
+        if(neededSize < targetArray.length){
+            copyIntoArray(sourceElements, targetArray, arrayElementType);
+        }
+        else{
+            targetArray = (TArrayElement[]) Array.newInstance(arrayElementType, neededSize);
+            copyIntoArray(sourceElements, targetArray, arrayElementType);
         }
 
-        @Override
-        public Iterator<TElement> fork() {
-            Queryable<TElement> broughtCurrentCopy = Linq.skip(source, seenCount);
-            return new ForkingIterator<>(broughtCurrentCopy);
+        return targetArray;
+    }
+
+    public static <TElement, TDesired> TDesired[] asArray(Iterable<TElement> sourceElements,
+                                                          Func1<Integer, TDesired[]> arrayFactory) {
+        int size = Linq.size(sourceElements);
+        Object[] array = arrayFactory.getFrom(size);
+
+        if(array.length < size){
+            throw new IllegalArgumentException(
+                    "the array factory " + Formatting.getDebugString(arrayFactory) + " " +
+                    "returned an array of size " + array.length + " " +
+                    "when it was asked for an array of size " + size);
         }
 
-        @Override
-        public boolean hasNext() {
-            return backingIterator.hasNext();
+        int index = 0;
+        for(Object element : sourceElements){
+            array[index] = element;
         }
 
-        @Override
-        public TElement next() {
-            return backingIterator.next();
+        return (TDesired[]) array;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <TSourceElement, TArrayElement> void copyIntoArray(Iterable<TSourceElement> sourceElements,
+                                                                      TArrayElement[] targetArray,
+                                                                      Class<?> arrayElementType) {
+        int index = 0;
+        for(TSourceElement element : sourceElements){
+
+            if( ! arrayElementType.isInstance(element)){
+                throw new ClassCastException(
+                        "cannot cast " + Formatting.getDebugString(element) + " " +
+                                "as " + arrayElementType.getCanonicalName());
+            }
+
+            targetArray[index] = (TArrayElement) element;
+            index += 1;
+        }
+
+        if(targetArray.length > index){
+            targetArray[index] = null;
         }
     }
 }

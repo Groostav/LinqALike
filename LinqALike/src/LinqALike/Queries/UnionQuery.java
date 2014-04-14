@@ -43,7 +43,7 @@ public class UnionQuery<TElement, TCompared> implements DefaultQueryable<TElemen
         private boolean rightsWereAvailable = true;
 
         @SuppressWarnings("unchecked")//LinqingList.from consumes its argument in a read-only nature,
-        // making its argument's type parameter covariant. Thus we wont get a run-time exception from this cast
+        // making its argument's type parameter covariant. Thus we wont get a run-time exception from this uncheckedCast
         //now or further on in the program.
         private UnionIterator(){
             rights = left instanceof QueryableSet
