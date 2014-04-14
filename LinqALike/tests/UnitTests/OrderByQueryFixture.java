@@ -66,7 +66,7 @@ public class OrderByQueryFixture extends QueryFixtureBase {
     @Test
     public void when_comparing_two_custom_objects_by_a_string_field(){
         //setup
-        List<NamedValue> origin = NamedValue.makeWithEach(
+        List<NamedValue> origin = NamedValue.forNames(
                 "Uranium", "Einsteinium", "Manganese", "Silicon", "Francium");
         LinqingList<NamedValue> values = new LinqingList<>(origin);
         //act

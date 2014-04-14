@@ -2,9 +2,8 @@ package LinqALike.Queries;
 
 import LinqALike.Common.Preconditions;
 import LinqALike.Common.QueryableSet;
-import LinqALike.Delegate.Func1;
+import LinqALike.Delegate.Func2;
 import LinqALike.Factories;
-import LinqALike.Queryable;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -14,19 +13,19 @@ public class UnionQuery<TElement, TCompared> implements DefaultQueryable<TElemen
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;
-    private final Func1<? super TElement, TCompared> comparableSelector;
+    private final  Func2<? super TElement, ? super TElement, Boolean> equalityComparator;
 
     public UnionQuery(Iterable<? extends TElement> left,
                       Iterable<? extends TElement> right,
-                      Func1<? super TElement, TCompared> comparableSelector) {
+                      Func2<? super TElement, ? super TElement, Boolean> equalityComparator) {
 
         Preconditions.notNull(left, "left");
         Preconditions.notNull(right, "right");
-        Preconditions.notNull(comparableSelector, "comparableSelector");
+        Preconditions.notNull(equalityComparator, "equalityComparator");
 
         this.left = left;
         this.right = right;
-        this.comparableSelector = comparableSelector;
+        this.equalityComparator = equalityComparator;
     }
 
     @Override
@@ -47,7 +46,7 @@ public class UnionQuery<TElement, TCompared> implements DefaultQueryable<TElemen
         //now or further on in the program.
         private UnionIterator(){
             rights = left instanceof QueryableSet
-                    ? Factories.from((Iterable<TElement>) right).except(left, comparableSelector).iterator()
+                    ? Factories.from((Iterable<TElement>) right).except(left, equalityComparator).iterator()
                     : right.iterator();
         }
 

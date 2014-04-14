@@ -5,9 +5,7 @@ import Assists.QueryFixtureBase;
 import LinqALike.Factories;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
@@ -35,12 +33,12 @@ public class IntersectionFixture extends QueryFixtureBase {
     @Test
     public void when_intersecting_a_set_with_specific_comparer(){
         //setup
-        LinqingList<NamedValue> left = Factories.asList(NamedValue.makeWithEach("A", "B", "C"));
-        LinqingList<NamedValue> right = Factories.asList(NamedValue.makeWithEach("A"));
+        LinqingList<NamedValue> left = Factories.asList(NamedValue.forNames("A", "B", "C"));
+        LinqingList<NamedValue> right = Factories.asList(NamedValue.forNames("A"));
         CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
 
         //act
-        Queryable<NamedValue> result = left.intersect(NamedValue.makeWithEach("B", "C"), getName);
+        Queryable<NamedValue> result = left.intersect(NamedValue.forNames("B", "C"), getName);
         LinqingList<NamedValue> flattenedResults = result.toList();
 
         //assert

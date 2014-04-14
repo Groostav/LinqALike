@@ -38,7 +38,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     Queryable<TElement> except(TElement... toExclude);
     Queryable<TElement> except(Iterable<? extends TElement> toExclude);
     Queryable<TElement> except(Iterable<? extends TElement> toExclude,
-                                       Func2<? super TElement,? super TElement, Boolean> equalityComparison);
+                               Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
     <TCompared>
     Queryable<TElement> except(Iterable<? extends TElement> toExclude,
                                Func1<? super TElement, TCompared> comparableSelector);
@@ -128,6 +128,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     <TCompared>
     Queryable<TElement> union(Iterable<? extends TElement> toInclude,
                               Func1<? super TElement, TCompared> comparableSelector);
+    Queryable<TElement> union(Iterable<? extends TElement> toInclude,
+                              Func2<? super TElement, ? super TElement, Boolean> equalityComparator);
 
 
     Queryable<TElement> where(Condition<? super TElement> condition);

@@ -127,12 +127,12 @@ public class Linq {
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return new UnionQuery<>(left, from(toInclude), identity());
+        return new UnionQuery<>(left, from(toInclude), performEqualsUsing(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return new UnionQuery<>(left, right, identity());
+        return new UnionQuery<>(left, right, performEqualsUsing(identity()));
     }
 
     public static <TElement, TCompared>
@@ -140,7 +140,15 @@ public class Linq {
                               Iterable<? extends TElement> right,
                               Func1<? super TElement, TCompared> comparableSelector){
 
-        return new UnionQuery<>(left, right, comparableSelector);
+        return new UnionQuery<>(left, right, performEqualsUsing(memoized(comparableSelector)));
+    }
+
+    public static <TElement>
+    Queryable<TElement> union(Iterable<? extends TElement> left,
+                              Iterable<? extends TElement> right,
+                              Func2<? super TElement, ? super TElement, Boolean> equalsComparator){
+
+        return new UnionQuery<>(left, right, equalsComparator);
     }
 
     public static <TKey, TValue>

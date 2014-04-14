@@ -31,8 +31,8 @@ public class UnionQueryFixture extends QueryFixtureBase {
     @Test
     public void when_calling_union_on_two_sets_where_host_is_list_it_does_not_remove_duplicates(){
         //setup
-        LinqingList<NamedValue> left = NamedValue.makeWithEach("one", "two", "three");
-        LinqingList<NamedValue> right = NamedValue.makeWithEach("three", "four");
+        LinqingList<NamedValue> left = NamedValue.forNames("one", "two", "three");
+        LinqingList<NamedValue> right = NamedValue.forNames("three", "four");
 
         //act
         LinqingList<NamedValue> result = left.union(right, NamedValue.GetName()).toList();

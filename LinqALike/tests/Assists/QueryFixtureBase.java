@@ -26,7 +26,7 @@ public class QueryFixtureBase {
             return name;
         }
 
-        public static LinqingList<NamedValue> makeWithEach(String... values) {
+        public static LinqingList<NamedValue> forNames(String... values) {
             LinqingList<NamedValue> returnable = new LinqingList<>();
             for(String value : values){
                 NamedValue namedValue = new NamedValue(value);

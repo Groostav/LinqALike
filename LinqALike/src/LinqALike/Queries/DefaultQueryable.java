@@ -72,8 +72,8 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.except(this, toExclude);
     }
     @Override default public Queryable<TElement> except(Iterable<? extends TElement> toExclude,
-                                                Func2<? super TElement,? super TElement, Boolean> equalityComparison){
-        return Linq.except(this, toExclude, equalityComparison);
+                                                        Func2<? super TElement, ? super TElement, Boolean> comparator){
+        return Linq.except(this, toExclude, comparator);
     }
     @Override default public <TCompared>
     Queryable<TElement> except(Iterable<? extends TElement> toExclude,
@@ -253,6 +253,11 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     Queryable<TElement> union(Iterable<? extends TElement> toInclude,
                               Func1<? super TElement, TCompared> comparableSelector){
         return Linq.union(this, toInclude, comparableSelector);
+    }
+    @Override default public
+    Queryable<TElement> union(Iterable<? extends TElement> toInclude,
+                              Func2<? super TElement, ? super TElement, Boolean> equalityComparator){
+        return Linq.union(this, toInclude, equalityComparator);
     }
 
 

@@ -25,7 +25,7 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
         return null;
     }
     @Override default QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
-                                                        Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> equalityComparison){
+                                                        Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> comparator){
         assert false : "not implemented";
         return null;
     }
