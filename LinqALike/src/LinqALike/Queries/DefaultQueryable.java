@@ -6,6 +6,12 @@ import LinqALike.Delegate.*;
 
 
 /**
+ * An <i>implementation</i> (by way of default extension-methods) to the {@link LinqALike.Queryable} interface.
+ * For a concise list of what methods this interface offers and documentation on each of the methods,
+ * please inspect that interface.
+ *
+ * <p>All calls are forwarded to their corresponding lifted and widened methods in {@link LinqALike.Linq}.</p>
+ *
  * @author Geoff on 06/09/13
  */
 public interface DefaultQueryable<TElement> extends Queryable<TElement> {
@@ -55,8 +61,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.distinct(this);
     }
 
-    @SafeVarargs
-    @Override default public final Queryable<TElement> except(TElement... toExclude){
+    @Override default public Queryable<TElement> except(TElement... toExclude){
         return Linq.except(this, toExclude);
     }
     @Override default public Queryable<TElement> except(Iterable<? extends TElement> toExclude){

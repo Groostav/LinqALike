@@ -5,7 +5,7 @@ import LinqALike.Queryable;
 
 import java.util.Iterator;
 
-public class SelectQuery<TElement, TResult> implements Queryable<TResult> {
+public class SelectQuery<TElement, TResult> implements DefaultQueryable<TResult> {
 
     private final Iterable<TElement> set;
     private final Func1<? super TElement, TResult> targetSite;

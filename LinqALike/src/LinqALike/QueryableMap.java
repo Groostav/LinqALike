@@ -3,13 +3,14 @@ package LinqALike;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
+import LinqALike.Queries.DefaultQueryable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TValue>>{
+public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<TKey, TValue>> {
 
     public Queryable<TKey> keySet();
     public Queryable<TValue> values();

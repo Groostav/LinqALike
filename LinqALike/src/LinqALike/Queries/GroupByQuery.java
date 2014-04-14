@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import static LinqALike.CommonDelegates.nullSafeEquals;
 
-public abstract class GroupByQuery<TElement> implements Queryable<Queryable<TElement>> {
+public abstract class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TElement>> {
 
     protected final Iterable<? extends TElement> setToGroup;
 

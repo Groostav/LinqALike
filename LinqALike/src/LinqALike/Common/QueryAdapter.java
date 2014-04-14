@@ -1,11 +1,12 @@
 package LinqALike.Common;
 
+import LinqALike.Queries.DefaultQueryable;
 import LinqALike.Queryable;
 import java.util.Iterator;
 
 public abstract class QueryAdapter{
 
-    public static class Array <TElement> implements Queryable<TElement> {
+    public static class Array <TElement> implements DefaultQueryable<TElement> {
         private final TElement[] elements;
 
         public Array(TElement[] elements){
@@ -18,7 +19,7 @@ public abstract class QueryAdapter{
         }
     }
 
-    public static class Iterable<TElement> implements Queryable<TElement> {
+    public static class Iterable<TElement> implements DefaultQueryable<TElement> {
         private final java.lang.Iterable<TElement> elements;
 
         public Iterable(java.lang.Iterable<TElement> elements){
@@ -31,7 +32,7 @@ public abstract class QueryAdapter{
         }
     }
 
-    public static class Iterator_<TElement> implements Queryable<TElement> {
+    public static class Iterator_<TElement> implements DefaultQueryable<TElement> {
 
         public Iterator_(Iterable<TElement> elements){
 

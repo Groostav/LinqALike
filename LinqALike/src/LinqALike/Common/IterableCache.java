@@ -2,14 +2,15 @@ package LinqALike.Common;
 
 
 import LinqALike.Factories;
+import LinqALike.Queries.DefaultQueryable;
 import LinqALike.Queryable;
 
 import java.util.Iterator;
 
-public class IterableCache<TElement> implements Queryable<TElement> {
+public class IterableCache<TElement> implements DefaultQueryable<TElement> {
 
     private final Iterator<TElement> origin;
-    private Queryable<TElement> cache = Factories.<TElement>empty();
+    private Queryable<TElement> cache = Factories.empty();
 
     public IterableCache(Iterable<TElement> origin){
         this.origin = origin.iterator();

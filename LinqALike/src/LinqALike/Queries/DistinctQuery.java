@@ -8,7 +8,7 @@ import LinqALike.Queryable;
 
 import java.util.*;
 
-public abstract class DistinctQuery<TElement> implements Queryable<TElement> {
+public abstract class DistinctQuery<TElement> implements DefaultQueryable<TElement> {
 
     protected final Iterable<? extends TElement> duplicateCandidates;
 

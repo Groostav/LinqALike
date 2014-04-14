@@ -1,5 +1,6 @@
 package LinqALike;
 
+import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
 import LinqALike.Queries.DefaultQueryable;
 

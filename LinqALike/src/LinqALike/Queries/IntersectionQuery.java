@@ -9,7 +9,7 @@ import LinqALike.Queryable;
 
 import java.util.Iterator;
 
-public abstract class IntersectionQuery<TElement> implements Queryable<TElement> {
+public abstract class IntersectionQuery<TElement> implements DefaultQueryable<TElement> {
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;

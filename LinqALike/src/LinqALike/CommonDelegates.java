@@ -1,10 +1,14 @@
 package LinqALike;
 
+import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
+import LinqALike.Delegate.Func;
 import LinqALike.Delegate.Func1;
+import LinqALike.Delegate.Func2;
 
 import java.io.File;
-import java.lang.invoke.SerializedLambda;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.apache.commons.lang.StringUtils.join;
 
@@ -12,15 +16,15 @@ public class CommonDelegates {
 
     public static Condition.WithDescription<Iterable> IsEmpty = new Condition.WithDescription<>(
             "set is not empty",
-            (Condition<Iterable>) candidate -> ! candidate.iterator().hasNext()
+            (Condition<Iterable>) candidate -> !candidate.iterator().hasNext()
     );
 
-    public static <TObject> Func1.WithDescription<TObject, TObject> identity(){
+    public static <TObject> Func1<TObject, TObject> identity() {
         return new Func1.WithDescription<>("identity function: object -> object", object -> object);
-    };
+    }
 
-    public static <TInspected> Condition.WithDescription<TInspected> Not(final Condition<TInspected> condition){
-        return new Condition.WithDescription<>("Not:" + condition, candidate -> ! condition.passesFor(candidate));
+    public static <TInspected> Condition.WithDescription<TInspected> Not(final Condition<TInspected> condition) {
+        return new Condition.WithDescription<>("Not:" + condition, candidate -> !condition.passesFor(candidate));
     }
 
     public static final Condition.WithDescription<Object> IsNull = new Condition.WithDescription<>("Is Null: can -> can == null", can -> can == null);
@@ -33,7 +37,7 @@ public class CommonDelegates {
             "Null Safe ToString: source -> source == null ? \"<null>\" : source.toString()",
             CommonDelegates::nullSafeToString);
 
-    public static Condition<Object> IsInstanceOf(final Class<?> allowed){
+    public static Condition<Object> IsInstanceOf(final Class<?> allowed) {
         return new Condition.WithDescription<>(
                 "is instance of " + allowed + ": candidate -> allowed.isAssignableFrom(candidate.getClass())",
                 (Object candidate) -> allowed.isAssignableFrom(candidate.getClass())
@@ -41,11 +45,11 @@ public class CommonDelegates {
     }
 
 
-    public static Condition<Object> IsInstanceOfAny(final Class... allowedTypes){
+    public static Condition<Object> IsInstanceOfAny(final Class... allowedTypes) {
         return IsInstanceOfAny(Factories.asList(allowedTypes));
     }
 
-    public static Condition<Object> IsInstanceOfAny(final Iterable<Class> allowedTypes){
+    public static Condition<Object> IsInstanceOfAny(final Iterable<Class> allowedTypes) {
         return new Condition.WithDescription<>(
                 "is instance of any " + join(allowedTypes.iterator(), ","),
                 actual -> actual != null &&
@@ -70,7 +74,8 @@ public class CommonDelegates {
 
         return left == null ? right == null : left.equals(right);
     }
-    public static String nullSafeToString(Object source){
+
+    public static String nullSafeToString(Object source) {
         return source == null ? "<null>" : source.toString();
     }
 
@@ -79,5 +84,33 @@ public class CommonDelegates {
                 "Is: object -> object.equals(desired)",
                 object -> object.equals(desired)
         );
+    }
+
+    public static final Func2<Object, Object, Boolean> referenceEquals = (firstArgument, secondArgument) -> firstArgument == secondArgument;
+
+    public static <TSource, TResult> Func1<TSource, TResult> memoized(Func1<TSource, TResult> valueRetrieval){
+
+        Map<TSource, TResult> table = new HashMap<>();
+
+        return source -> {
+            if ( ! table.containsKey(source)){
+                TResult result = valueRetrieval.getFrom(source);
+                table.put(source, result);
+                return result;
+            }
+            else{
+                return table.get(source);
+            }
+        };
+    }
+
+    public static <TArgument, TEquated>
+    Func2<TArgument, TArgument, Boolean> performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
+        return (left, right) -> {
+            TEquated leftComparable = comparableSelector.getFrom(left);
+            TEquated rightComparable = comparableSelector.getFrom(right);
+
+            return leftComparable.equals(rightComparable);
+        };
     }
 }

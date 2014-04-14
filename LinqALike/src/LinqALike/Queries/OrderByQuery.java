@@ -1,15 +1,15 @@
 package LinqALike.Queries;
 
-import LinqALike.Common.ForkableIterator;
+import LinqALike.CommonDelegates;
 import LinqALike.Delegate.Func1;
-import LinqALike.Factories;
 import LinqALike.Queryable;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static LinqALike.Factories.from;
 
-public class OrderByQuery<TElement, TCompared extends Comparable<TCompared>> implements Queryable<TElement> {
+public class OrderByQuery<TElement, TCompared extends Comparable<TCompared>> implements DefaultQueryable<TElement> {
 
     private final Func1<? super TElement, TCompared> comparableSelector;
     private final Iterable<TElement> source;
@@ -53,8 +53,7 @@ public class OrderByQuery<TElement, TCompared extends Comparable<TCompared>> imp
                 }
             }
 
-            remaining = remaining.except(currentBest);
-
+            remaining = remaining.except(from(currentBest), CommonDelegates.referenceEquals);
 
             return currentBest;
         }

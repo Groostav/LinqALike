@@ -32,14 +32,6 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
     public LinqingMap() {
     }
 
-    public LinqingMap(int initialCapacity) {
-        super(initialCapacity);
-    }
-
-    public LinqingMap(int initialCapacity, float loadFactor) {
-        super(initialCapacity, loadFactor);
-    }
-
     public LinqingMap(Map<? extends TKey, ? extends TValue> toCopy) {
         super(toCopy);
     }
