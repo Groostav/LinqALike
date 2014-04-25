@@ -1,6 +1,7 @@
 package LinqALike.Queries;
 
 import LinqALike.*;
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Delegate.*;
 
 import java.util.Comparator;
@@ -57,7 +58,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     @Override default public Queryable<TElement> distinct(){
         return Linq.distinct(this);
     }
-    @Override default public Queryable<TElement> distinct(Func2<? super TElement, ? super TElement, Boolean> equalityComparison){
+    @Override default public Queryable<TElement> distinct(EqualityComparer<? super TElement> equalityComparison){
         return Linq.distinct(this);
     }
     @Override default public <TComparable>
@@ -72,7 +73,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.except(this, toExclude);
     }
     @Override default public Queryable<TElement> except(Iterable<? extends TElement> toExclude,
-                                                        Func2<? super TElement, ? super TElement, Boolean> comparator){
+                                                        EqualityComparer<? super TElement> comparator){
         return Linq.except(this, toExclude, comparator);
     }
     @Override default public <TCompared>
@@ -100,7 +101,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> comparableSelector){
         return Linq.groupBy(this, comparableSelector);
     }
-    @Override default public Queryable<Queryable<TElement>> groupBy(Func2<? super TElement, ? super TElement, Boolean> equalityComparison){
+    @Override default public Queryable<Queryable<TElement>> groupBy(EqualityComparer<? super TElement> equalityComparison){
         return Linq.groupBy(this, equalityComparison);
     }
 
@@ -111,7 +112,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.intersect(this, toInclude, comparableSelector);
     }
     @Override default public Queryable<TElement> intersect(Iterable<? extends TElement> toInclude,
-                                                   Func2<? super TElement, ? super TElement, Boolean> equalityComparison){
+                                                           EqualityComparer<? super TElement> equalityComparison){
         return Linq.intersect(this, toInclude, equalityComparison);
     }
     @Override default public Queryable<TElement> intersect(Iterable<? extends TElement> toInclude){
@@ -256,7 +257,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     }
     @Override default public
     Queryable<TElement> union(Iterable<? extends TElement> toInclude,
-                              Func2<? super TElement, ? super TElement, Boolean> equalityComparator){
+                              EqualityComparer<? super TElement> equalityComparator){
         return Linq.union(this, toInclude, equalityComparator);
     }
 

@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.Preconditions;
 import LinqALike.Delegate.Func2;
 import LinqALike.Queryable;
@@ -13,10 +14,10 @@ import static LinqALike.Factories.from;
 public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TElement>> {
 
     private final Iterable<TElement> sourceElements;
-    private final Func2<? super TElement, ? super TElement, Boolean> groupMembershipComparator;
+    private final EqualityComparer<? super TElement> groupMembershipComparator;
 
     public GroupByQuery(Iterable<TElement> sourceElements,
-                        Func2<? super TElement, ? super TElement, Boolean> groupMembershipComparator) {
+                        EqualityComparer<? super TElement> groupMembershipComparator) {
 
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(groupMembershipComparator, "groupMembershipComparator");
@@ -32,11 +33,11 @@ public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TEleme
 
     private class GroupByWithEqualityComparatorIterator implements Iterator<Queryable<TElement>> {
 
-        private final Func2<? super TElement, ? super TElement, Boolean> membershipTest;
+        private final EqualityComparer<? super TElement> membershipTest;
 
         private Queryable<TElement> ungroupedElements = from(sourceElements);
 
-        public GroupByWithEqualityComparatorIterator(Func2<? super TElement, ? super TElement, Boolean> groupMembershipComparator) {
+        public GroupByWithEqualityComparatorIterator(EqualityComparer<? super TElement> groupMembershipComparator) {
             this.membershipTest = groupMembershipComparator;
         }
 
@@ -55,7 +56,7 @@ public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TEleme
             Queryable<TElement> groupLeader = from(ungroupedElements.first());
             Queryable<TElement> secondaryMembers = ungroupedElements
                     .skip(1)
-                    .where(candidate -> membershipTest.getFrom(groupLeader.single(), candidate));
+                    .where(candidate -> membershipTest.equals(groupLeader.single(), candidate));
 
             Queryable<TElement> members = groupLeader.union(secondaryMembers, referenceEquals);
 

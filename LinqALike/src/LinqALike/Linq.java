@@ -1,8 +1,8 @@
 package LinqALike;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
-import LinqALike.Delegate.Func2;
 import LinqALike.Queries.*;
 
 import java.util.Comparator;
@@ -146,7 +146,7 @@ public class Linq {
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left,
                               Iterable<? extends TElement> right,
-                              Func2<? super TElement, ? super TElement, Boolean> equalsComparator){
+                              EqualityComparer<? super TElement> equalsComparator){
 
         return new UnionQuery<>(left, right, equalsComparator);
     }
@@ -226,7 +226,7 @@ public class Linq {
 
     public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
                                                         Iterable<? extends TElement> membersToExclude,
-                                                        Func2<? super TElement, ? super TElement, Boolean> comparableSelector) {
+                                                        EqualityComparer<? super TElement> comparableSelector) {
 
         return new ExceptQuery<>(originalMembers, membersToExclude, comparableSelector);
     }
@@ -251,7 +251,7 @@ public class Linq {
 
     public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
                                                            Iterable<? extends TElement> right,
-                                                           Func2<? super TElement, ? super TElement, Boolean> comparableSelector) {
+                                                           EqualityComparer<? super TElement> comparableSelector) {
 
         return new IntersectionQuery.WithEqualityComparator<>(left, right, comparableSelector);
     }
@@ -260,16 +260,10 @@ public class Linq {
         return new SkipQuery<>(sourceElements, numberToSkip);
     }
 
-    public static <TElement> Object[] toArray(Queryable<TElement> set) {
-        Object[] copy = new Object[set.size()];
-        int i = 0;
-        for(TElement element : set){
-            copy[i++] = element;
-        }
-        return copy;
+    public static <TElement> Object[] toArray(Queryable<TElement> sourceElements) {
+        return Factories.asArray(sourceElements);
     }
 
-    @SuppressWarnings({"unchecked", "SuspiciousSystemArraycopy"})
     public static <TElement, TDesired> TDesired[] toArray(Queryable<TElement> originalSet,
                                                           TDesired[] targetArray) {
         return Factories.asArray(originalSet, targetArray);
@@ -312,7 +306,7 @@ public class Linq {
 
     public static <TElement>
     Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
-                                           Func2<? super TElement, ? super TElement, Boolean> groupMembershipComparator) {
+                                           EqualityComparer<? super TElement> groupMembershipComparator) {
         return new GroupByQuery<>(setToGroup, groupMembershipComparator);
     }
 
@@ -335,7 +329,7 @@ public class Linq {
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>> Queryable<TElement> orderBy(Queryable<TElement> sourceElements,
-                                                                                                  Func1<? super TElement, TCompared> comparableSelector) {
+                                                                                                 Func1<? super TElement, TCompared> comparableSelector) {
         return new OrderByQuery<>(sourceElements, performComparisonUsing(memoized(comparableSelector)));
     }
 

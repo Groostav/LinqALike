@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.PrefetchingIterator;
 import LinqALike.CommonDelegates;
 import LinqALike.Delegate.Func1;
@@ -38,11 +39,11 @@ public abstract class IntersectionQuery<TElement> implements DefaultQueryable<TE
 
     public static class WithEqualityComparator<TElement> extends IntersectionQuery<TElement>{
 
-        private final Func2<? super TElement, ? super TElement, Boolean> comparator;
+        private final EqualityComparer<? super TElement> comparator;
 
         public WithEqualityComparator(Iterable<? extends TElement> left,
                                       Iterable<? extends TElement> right,
-                                      Func2<? super TElement, ? super TElement, Boolean> comparator) {
+                                      EqualityComparer<? super TElement> comparator) {
             super(left, right);
             this.comparator = comparator;
         }
@@ -64,9 +65,9 @@ public abstract class IntersectionQuery<TElement> implements DefaultQueryable<TE
 
         private final Iterator<? extends TElement> leftIterator = left.iterator();
         private final Queryable<? extends TElement> rightIterator = Factories.cache(right);
-        private final Func2<? super TElement, ? super TElement, Boolean> equalityComparor;
+        private final EqualityComparer<? super TElement> equalityComparor;
 
-        public IntersectionWithEqualityIterator(Func2<? super TElement, ? super TElement, Boolean>  equalityComparor){
+        public IntersectionWithEqualityIterator(EqualityComparer<? super TElement> equalityComparor){
             this.equalityComparor = equalityComparor;
         }
 
@@ -75,7 +76,7 @@ public abstract class IntersectionQuery<TElement> implements DefaultQueryable<TE
             while(leftIterator.hasNext() && ! hasPrefetchedValue()){
                 TElement candidate = leftIterator.next();
 
-                if(rightIterator.any(x -> equalityComparor.getFrom(x, candidate))){
+                if(rightIterator.any(x -> equalityComparor.equals(x, candidate))){
                     setPrefetchedValue(candidate);
                 }
             }

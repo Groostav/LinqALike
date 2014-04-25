@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.Preconditions;
 import LinqALike.Common.PrefetchingIterator;
 import LinqALike.Delegate.Func2;
@@ -11,11 +12,11 @@ public class ExceptQuery<TElement> implements DefaultQueryable<TElement> {
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;
-    private final Func2<? super TElement, ? super TElement, Boolean> comparator;
+    private final EqualityComparer<? super TElement> comparator;
 
     public ExceptQuery(Iterable<? extends TElement> left,
                        Iterable<? extends TElement> right,
-                       Func2<? super TElement, ? super TElement, Boolean> comparator){
+                       EqualityComparer<? super TElement> comparator){
 
         Preconditions.notNull(left, "left");
         Preconditions.notNull(right, "right");
@@ -46,7 +47,7 @@ public class ExceptQuery<TElement> implements DefaultQueryable<TElement> {
 
                 flattenExcludedsUntilFound(candidate);
 
-                if ( ! toExcludeByTheirChampion.any(x -> comparator.getFrom(candidate, x))) {
+                if ( ! toExcludeByTheirChampion.any(x -> comparator.equals(candidate, x))) {
                     setPrefetchedValue(candidate);
                 }
             }
@@ -58,7 +59,7 @@ public class ExceptQuery<TElement> implements DefaultQueryable<TElement> {
                 TElement next = toExcludes.next();
                 toExcludeByTheirChampion.add(next);
 
-                if(comparator.getFrom(next, candidate)){
+                if(comparator.equals(next, candidate)){
                     break;
                 }
             }

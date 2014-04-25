@@ -1,8 +1,8 @@
 package LinqALike;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
-import LinqALike.Delegate.Func2;
 
 import java.util.Comparator;
 
@@ -31,14 +31,14 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     Queryable<TElement> distinct();
-    Queryable<TElement> distinct(Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
-    <TComparable>
-    Queryable<TElement> distinct(Func1<? super TElement, TComparable> comparableSelector);
+    <TCompared>
+    Queryable<TElement> distinct(Func1<? super TElement, TCompared> comparableSelector);
+    Queryable<TElement> distinct(EqualityComparer<? super TElement> equalityComparison);
 
     Queryable<TElement> except(TElement... toExclude);
     Queryable<TElement> except(Iterable<? extends TElement> toExclude);
     Queryable<TElement> except(Iterable<? extends TElement> toExclude,
-                               Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
+                               EqualityComparer<? super TElement> equalityComparison);
     <TCompared>
     Queryable<TElement> except(Iterable<? extends TElement> toExclude,
                                Func1<? super TElement, TCompared> comparableSelector);
@@ -52,14 +52,14 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     <TComparable>
     Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> comparableSelector);
-    Queryable<Queryable<TElement>> groupBy(Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
+    Queryable<Queryable<TElement>> groupBy(EqualityComparer<? super TElement> equalityComparison);
 
 
     <TCompared>
     Queryable<TElement> intersect(Iterable<? extends TElement> toInclude,
                                   Func1<? super TElement, TCompared> comparableSelector);
     Queryable<TElement> intersect(Iterable<? extends TElement> toInclude,
-                                          Func2<? super TElement, ? super TElement, Boolean> equalityComparison);
+                                  EqualityComparer<? super TElement> equalityComparison);
     Queryable<TElement> intersect(Iterable<? extends TElement> toInclude);
     Queryable<TElement> intersect(TElement... toIntersect);
 
@@ -115,7 +115,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     <TKey> LinqingMap<TKey, TElement> toMap(Iterable<TKey> keys);
     <TKey> LinqingMap<TKey, TElement> toMap(Func1<? super TElement, TKey> keySelector);
     <TKey, TValue> LinqingMap<TKey, TValue> toMap(Func1<? super TElement, TKey> keySelector,
-                                                          Func1<? super TElement, TValue> valueSelector);
+                                                  Func1<? super TElement, TValue> valueSelector);
 
 
     <TDesired> TDesired[] toArray(TDesired[] arrayTypeIndicator);
@@ -129,7 +129,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     Queryable<TElement> union(Iterable<? extends TElement> toInclude,
                               Func1<? super TElement, TCompared> comparableSelector);
     Queryable<TElement> union(Iterable<? extends TElement> toInclude,
-                              Func2<? super TElement, ? super TElement, Boolean> equalityComparator);
+                              EqualityComparer<? super TElement> equalityComparator);
 
 
     Queryable<TElement> where(Condition<? super TElement> condition);

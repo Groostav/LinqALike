@@ -1,8 +1,8 @@
 package LinqALike;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
-import LinqALike.Delegate.Func2;
 import LinqALike.Queries.DefaultQueryable;
 
 import java.util.Comparator;
@@ -25,7 +25,7 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
         return null;
     }
     @Override default QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
-                                                        Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> comparator){
+                                                        EqualityComparer<? super Map.Entry<TKey, TValue>> comparator){
         assert false : "not implemented";
         return null;
     }
@@ -58,7 +58,7 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
         return null;
     }
     @Override default QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
-                                                   Func2<? super Map.Entry<TKey, TValue>, ? super Map.Entry<TKey, TValue>, Boolean> equalityComparison){
+                                                           EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison){
         assert false : "not implemented";
         return null;
     }

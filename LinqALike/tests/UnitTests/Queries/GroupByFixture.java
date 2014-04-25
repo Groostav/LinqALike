@@ -1,4 +1,4 @@
-package UnitTests;
+package UnitTests.Queries;
 
 import Assists.QueryFixtureBase;
 import LinqALike.LinqingList;
@@ -100,9 +100,36 @@ public class GroupByFixture extends QueryFixtureBase {
         assertThat(groups).hasSize(6);
     }
 
-    //lazy is updated
-        //new group
-        //new member of existing group
+    @Test
+    public void when_groups_are_found_prior_to_adding_a_new_ungrouped_value_to_the_source_list_query_should_see_newly_added_group(){
+        //setup
+        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        double newValue = 2.5;
+
+        //act
+        Queryable<Queryable<Double>> groups = sourceList.groupBy(x -> x);
+        sourceList.add(newValue);
+
+        //assert
+        LinqingList<Queryable<Double>> result = groups.toList();
+        assertThat(result).hasSize(4);
+        assertThat(result.get(2)).contains(newValue);
+    }
+
+    @Test
+    public void when_groups_are_found_prior_to_adding_a_wouldbe_group_member_to_the_source_list_query_should_see_new_group_member(){
+        //setup
+        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        double newValue = 2.0;
+
+        //act
+        Queryable<Queryable<Double>> groups = sourceList.groupBy(x -> x);
+        sourceList.add(newValue);
+
+        //assert
+        List<Queryable<Double>> result = groups.toList();
+        assertThat(result.get(1).toList()).containsExactly(2.0, 2.0, newValue);
+    }
 
     private void assertNameGroupHas(List<Queryable<NamedValue>> groups, int groupIndex, String expectedName, int expectedSize) {
         LinqingList<NamedValue> group = groups.get(groupIndex).toList();

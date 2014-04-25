@@ -1,9 +1,9 @@
 package LinqALike;
 
+import LinqALike.Common.DescribedEqualityComparer;
 import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
-import LinqALike.Delegate.Func2;
 
 import java.io.File;
 import java.util.Comparator;
@@ -75,26 +75,21 @@ public class CommonDelegates {
         return source == null ? "<null>" : source.toString();
     }
 
-    public static Condition.WithDescription<Object> Is(String desired) {
-        return new Condition.WithDescription<>(
-                "Is: object -> object.equals(desired)",
-                object -> object.equals(desired)
-        );
-    }
-
-    public static final Func2<Object, Object, Boolean> referenceEquals = (firstArgument, secondArgument) -> firstArgument == secondArgument;
+    public static final DescribedEqualityComparer<Object> referenceEquals = new DescribedEqualityComparer<>(
+            "Reference Equality: (firstArgument, secondArgument) -> firstArgument == secondArgument",
+            (firstArgument, secondArgument) -> firstArgument == secondArgument);
 
     public static <TSource, TResult> Func1<TSource, TResult> memoized(Func1<TSource, TResult> valueRetrieval){
-        Map<TSource, TResult> table = new HashMap<>();
+        Map<TSource, TResult> cache = new HashMap<>();
         return new Func1.WithDescription<>(
                 "memoized { " + valueRetrieval + " }",
                 source -> {
-                    if (table.containsKey(source)) {
-                        return table.get(source);
+                    if (cache.containsKey(source)) {
+                        return cache.get(source);
                     }
                     else{
                         TResult value = valueRetrieval.getFrom(source);
-                        table.put(source, value);
+                        cache.put(source, value);
                         return value;
                     }
                 }
@@ -102,9 +97,9 @@ public class CommonDelegates {
     }
 
     public static <TArgument, TEquated>
-    Func2<TArgument, TArgument, Boolean> performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
-        return new Func2.WithDescription<>(
-                "equality on 2 values using the equatable value provided by " + comparableSelector,
+    DescribedEqualityComparer<TArgument> performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
+        return new DescribedEqualityComparer<>(
+                "default equality on values provided by: " + comparableSelector,
                 (left, right) -> {
                     TEquated leftComparable = comparableSelector.getFrom(left);
                     TEquated rightComparable = comparableSelector.getFrom(right);

@@ -1,4 +1,4 @@
-package UnitTests;
+package UnitTests.Queries;
 
 import Assists.QueryFixtureBase;
 import LinqALike.LinqingList;

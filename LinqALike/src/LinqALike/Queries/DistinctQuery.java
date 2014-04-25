@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.PrefetchingIterator;
 import LinqALike.Delegate.Func1;
 import LinqALike.Delegate.Func2;
@@ -88,12 +89,12 @@ public abstract class DistinctQuery<TElement> implements DefaultQueryable<TEleme
         }
     }
 
-    public static class WithEqualityComparable<TElement, TComparable> extends DistinctQuery<TElement>{
+    public static class WithEqualityComparable<TElement> extends DistinctQuery<TElement>{
 
-        private final Func2<? super TElement, ? super TElement, Boolean> comparator;
+        private final EqualityComparer<? super TElement> comparator;
 
         public WithEqualityComparable(Iterable<? extends TElement> duplicateCandidates,
-                                      Func2<? super TElement, ? super TElement, Boolean> equalityComparator){
+                                      EqualityComparer<? super TElement> equalityComparator){
 
             super(duplicateCandidates);
             this.comparator = equalityComparator;
@@ -115,7 +116,7 @@ public abstract class DistinctQuery<TElement> implements DefaultQueryable<TEleme
 
                     TElement candidate = candidates.next();
 
-                    boolean hasDuplicate = found.any(x -> comparator.getFrom(x, candidate));
+                    boolean hasDuplicate = found.any(x -> comparator.equals(x, candidate));
 
                     if(hasDuplicate){
                         continue;

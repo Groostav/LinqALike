@@ -162,16 +162,22 @@ public class SimpleExamples {
                       .collect(groupingBy(Person::getGender,
                                mapping(Person::getName, toList())));
 
-        //with a (couple of) for-each loops:
+        //with a couple of for-each loops:
         Map<Person.Sex, List<String>> namesByGender = new LinkedHashMap<>();
 
         for(Person.Sex gender : Person.Sex.values()){
             namesByGender.put(gender, new ArrayList<>());
         }
-
         for(Person person : roster){
             namesByGender.get(person.getGender()).add(person.getName());
         }
+        //or with a multimap (such as the one here from google's guava),
+        // and use of an initializer, we can get this down to "one line" of code:
+        MultiMap<Person.Sex, String> namesByGenderMM = new HashMultimap<>(){{
+            for(Person person : roster){
+                namesByGenderMM.put(person.getGender(), person.getName());
+            }
+        }}
 
         //but if we use linq, we get:
         Queryable<Queryable<String>> namesByGenderFromLinq =

@@ -1,5 +1,6 @@
 package LinqALike.Queries;
 
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.Preconditions;
 import LinqALike.Common.QueryableSet;
 import LinqALike.Delegate.Func2;
@@ -13,11 +14,11 @@ public class UnionQuery<TElement, TCompared> implements DefaultQueryable<TElemen
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;
-    private final  Func2<? super TElement, ? super TElement, Boolean> equalityComparator;
+    private final EqualityComparer<? super TElement> equalityComparator;
 
     public UnionQuery(Iterable<? extends TElement> left,
                       Iterable<? extends TElement> right,
-                      Func2<? super TElement, ? super TElement, Boolean> equalityComparator) {
+                      EqualityComparer<? super TElement> equalityComparator) {
 
         Preconditions.notNull(left, "left");
         Preconditions.notNull(right, "right");

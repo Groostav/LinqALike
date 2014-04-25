@@ -1,4 +1,4 @@
-package UnitTests;
+package UnitTests.Queries;
 
 import Assists.CountingTransform;
 import Assists.QueryFixtureBase;
@@ -23,22 +23,22 @@ public class IntersectionFixture extends QueryFixtureBase {
         LinqingList<String> original = Factories.asList("A", "B", "C");
 
         //act
-        Queryable<String> result = original.except(Factories.asList("B", "C"));
+        Queryable<String> result = original.intersect(Factories.asList("B", "C"));
         LinqingList<String> flattenedResults = result.toList();
 
         //assert
-        assertThat(flattenedResults).containsExactly("A");
+        assertThat(flattenedResults).containsExactly("B", "C");
     }
 
     @Test
     public void when_intersecting_a_set_with_specific_comparer(){
         //setup
         LinqingList<NamedValue> left = Factories.asList(NamedValue.forNames("A", "B", "C"));
-        LinqingList<NamedValue> right = Factories.asList(NamedValue.forNames("A"));
+        LinqingList<NamedValue> right = NamedValue.forNames("B", "C");
         CountingTransform<NamedValue, String> getName = CountingTransform.track(x -> x.name);
 
         //act
-        Queryable<NamedValue> result = left.intersect(NamedValue.forNames("B", "C"), getName);
+        Queryable<NamedValue> result = left.intersect(right, getName);
         LinqingList<NamedValue> flattenedResults = result.toList();
 
         //assert
@@ -51,7 +51,7 @@ public class IntersectionFixture extends QueryFixtureBase {
     public void when_intersecting_two_sets_with_overlap_should_return_overlapping_elements() {
         //setup
         LinqingList<Integer> left = new LinqingList<>(1,2,3,4,5);
-        LinqingList<Integer> right = new LinqingList<>(3,4);
+        LinqingList<Integer> right = new LinqingList<>(3,4,6);
 
         //act
         List<Integer> result = left.intersect(right).toList();
@@ -122,7 +122,7 @@ public class IntersectionFixture extends QueryFixtureBase {
 	    LinqingList<String> bottom = new LinqingList<>("one", "three", "five", "seven");
 
         //act
-	    List<String> result = left.intersect(right.intersect(bottom)).toList();
+	    List<String> result = left.intersect(right).intersect(bottom).toList();
 
         //assert
 		assertThat(result).isEmpty();
@@ -136,7 +136,7 @@ public class IntersectionFixture extends QueryFixtureBase {
 		LinqingList<String> bottom = new LinqingList<>("one", "two", "three", "five", "seven");
 
 		//act
-		List<String> result = left.intersect(right.intersect(bottom)).toList();
+		List<String> result = left.intersect(right).intersect(bottom).toList();
 
 		//assert
 		assertThat(result).containsExactly("two");

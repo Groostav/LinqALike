@@ -1,4 +1,4 @@
-package UnitTests;
+package UnitTests.Queries;
 
 import Assists.CountingTransform;
 import Assists.QueryFixtureBase;

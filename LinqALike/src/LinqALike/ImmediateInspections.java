@@ -86,6 +86,11 @@ public class ImmediateInspections {
                 found = true;
             }
         }
+
+        if ( ! found){
+            throw new SetIsEmptyException(sourceElements, uniqueCondition);
+        }
+
         return result;
     }
 
@@ -272,6 +277,8 @@ public class ImmediateInspections {
     }
 
     public static <TElement> boolean isSetEquivalentOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        Preconditions.notNull(left, "left");
+        Preconditions.notNull(right, "right");
 
         if(size(left) != size(right)){
             return false;

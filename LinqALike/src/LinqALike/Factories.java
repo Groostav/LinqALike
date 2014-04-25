@@ -80,9 +80,15 @@ public class Factories {
         return new LinqingSet<>(sourceElements);
     }
 
+    public static Object[] asArray(Iterable<?> sourceElements){
+        Object[] array = new Object[ImmediateInspections.size(sourceElements)];
+        copyIntoArray(sourceElements, array, Object.class);
+        return array;
+    }
+
     @SuppressWarnings("unchecked")
     public static <TSourceElement, TArrayElement>
-    TArrayElement[] asArray(Iterable<TSourceElement> sourceElements, TArrayElement[] targetArray) {
+    TArrayElement[] asArray(Iterable<? extends TSourceElement> sourceElements, TArrayElement[] targetArray) {
 
         Class<?> arrayElementType = targetArray.getClass().getComponentType();
         int neededSize = Linq.size(sourceElements);
@@ -98,9 +104,22 @@ public class Factories {
         return targetArray;
     }
 
+    public static <TElement> TElement[] asArray(Iterable<? extends TElement> sourceElements, Class<TElement> arrayElementType){
+        int size = ImmediateInspections.size(sourceElements);
+
+        Object newRawArray = Array.newInstance(arrayElementType, size);
+
+        @SuppressWarnings("unchecked")
+        TElement[] newArray = (TElement[]) newRawArray;
+
+        copyIntoArray(sourceElements, newArray, arrayElementType);
+
+        return newArray;
+    }
+
     public static <TElement, TDesired> TDesired[] asArray(Iterable<TElement> sourceElements,
                                                           Func1<Integer, TDesired[]> arrayFactory) {
-        int size = Linq.size(sourceElements);
+        int size = ImmediateInspections.size(sourceElements);
         Object[] array = arrayFactory.getFrom(size);
 
         if(array.length < size){
@@ -110,15 +129,18 @@ public class Factories {
                     "when it was asked for an array of size " + size);
         }
 
+        //TODO run-time assertion on the element type provided by ArrayFactory,
         int index = 0;
         for(Object element : sourceElements){
             array[index] = element;
         }
 
-        return (TDesired[]) array;
+        @SuppressWarnings("unchecked")
+        TDesired[] returnable = (TDesired[]) array;
+
+        return returnable;
     }
 
-    @SuppressWarnings("unchecked")
     private static <TSourceElement, TArrayElement> void copyIntoArray(Iterable<TSourceElement> sourceElements,
                                                                       TArrayElement[] targetArray,
                                                                       Class<?> arrayElementType) {
@@ -131,7 +153,10 @@ public class Factories {
                                 "as " + arrayElementType.getCanonicalName());
             }
 
-            targetArray[index] = (TArrayElement) element;
+            @SuppressWarnings("unchecked")
+            TArrayElement newElement = (TArrayElement) element;
+
+            targetArray[index] = newElement;
             index += 1;
         }
 
