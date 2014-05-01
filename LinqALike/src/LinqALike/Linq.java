@@ -284,9 +284,21 @@ public class Linq {
         return Factories.asArray(sourceElements, arrayFactory);
     }
 
-    public static <TElement> Queryable<TElement> distinct(Iterable<TElement> candidateWithDuplicates) {
-        return new DistinctQuery.WithNaturalEquality<>(candidateWithDuplicates);
+    public static <TElement> Queryable<TElement> distinct(Iterable<TElement> sourceElements) {
+        return new DistinctQuery.WithNaturalEquality<>(sourceElements);
     }
+
+    public static <TElement> Queryable<TElement> distinct(Iterable<TElement> sourceElements,
+                                                          EqualityComparer<? super TElement> comparer) {
+        return new DistinctQuery.WithEqualityComparable<>(sourceElements, comparer);
+    }
+
+    public static <TElement, TCompared> Queryable<TElement> distinct(Iterable<TElement> sourceElements,
+                                                                     Func1<? super TElement, TCompared> comparableSelector) {
+        return new DistinctQuery.WithComparable<>(sourceElements, comparableSelector);
+    }
+
+
 
     public static <TElement> double average(Iterable<? extends TElement> sourceElements,
                                             Func1<? super TElement, Double> valueSelector) {

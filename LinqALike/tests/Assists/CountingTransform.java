@@ -26,3 +26,4 @@ public abstract class CountingTransform<TInspected, TResult> extends CountingDel
 
     protected abstract TResult getFromImpl(TInspected cause);
 }
+

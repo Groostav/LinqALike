@@ -1,6 +1,8 @@
 
 package UnitTests.Queries;
 
+import Assists.CountingEqualityComparator;
+import Assists.CountingTransform;
 import Assists.QueryFixtureBase;
 import LinqALike.LinqingList;
 import LinqALike.Queryable;
@@ -8,6 +10,7 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static Assists.CountingEqualityComparator.track;
 import static org.fest.assertions.Assertions.assertThat;
 
 
@@ -25,7 +28,7 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         List<Integer> result = list.distinct().toList();
 
         //assert
-        assertThat(result).containsOnly(1,2,3,4,5,6);
+        assertThat(result).containsExactly(1, 2, 3, 4, 5, 6);
     }
 
     @Test
@@ -55,7 +58,7 @@ public class DistinctQueryFixture extends QueryFixtureBase {
 
         //assert
         assertThat(result).doesNotHaveDuplicates();
-        assertThat(result).containsOnly("Starbucks", 5L, 5, 5.0d);
+        assertThat(result).containsExactly("Starbucks", 5L, 5, 5.0d);
 	    // This should not be true.
         assertThat(5.0d).isEqualTo(5);
     }
@@ -72,5 +75,33 @@ public class DistinctQueryFixture extends QueryFixtureBase {
 
         //assert
         assertThat(distinctResult).contains(newValue);
+    }
+
+    @Test
+    public void when_calling_distinct_with_a_comapared_value_selector(){
+        //setup
+        LinqingList<Object> list = new LinqingList<>(1,"1", 2, 2, "3", 3);
+        CountingTransform<Object, String> getStringValue = CountingTransform.track(Object::toString);
+
+        //act
+        List<Object> result = list.distinct(getStringValue).toList();
+
+        //assert
+        assertThat(result).containsExactly(1, 2, "3");
+        assertThat(getStringValue.getNumberOfInvocations()).isEqualTo(list.size());
+    }
+
+    @Test
+    public void when_calling_distinct_with_a_comparator(){
+        //setup
+        LinqingList<Integer> list = new LinqingList<>(1,2,2,2,3,4,5,6,1,2,4,5,3);
+        CountingEqualityComparator<Integer> leftIsSaveEvennessAsRight = track((left, right) -> left%2 == right%2);
+
+        //act
+        List<Integer> result = list.distinct(leftIsSaveEvennessAsRight).toList();
+
+        //assert
+        assertThat(result).containsExactly(1, 2);
+        assertThat(leftIsSaveEvennessAsRight.getNumberOfInvocations()).isEqualTo(list.size());
     }
 }

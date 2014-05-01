@@ -1,0 +1,21 @@
+package Assists;
+
+import LinqALike.Common.EqualityComparer;
+
+public class CountingEqualityComparator<TCompared> extends CountingDelegate implements EqualityComparer<TCompared> {
+
+    private final EqualityComparer<TCompared> baseComparator;
+
+    public static <TCompared> CountingEqualityComparator<TCompared> track(EqualityComparer<TCompared> baseComparator){
+        return new CountingEqualityComparator<>(baseComparator);
+    }
+
+    private CountingEqualityComparator(EqualityComparer<TCompared> baseComparator) {
+        this.baseComparator = baseComparator;
+    }
+
+    @Override
+    public boolean equals(TCompared left, TCompared right) {
+        return false;
+    }
+}
