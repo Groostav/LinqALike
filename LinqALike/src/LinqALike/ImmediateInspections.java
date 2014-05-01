@@ -126,36 +126,24 @@ public class ImmediateInspections {
     }
 
     public static <TElement> TElement last(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
-        return reversed(sourceElements).first(condition);
+
+        if ( ! any(sourceElements, condition)){
+            throw new SetIsEmptyException(sourceElements, condition);
+        }
+
+        ReversedQuery<TElement> reversed = new ReversedQuery<>(sourceElements);
+        return reversed.first(condition);
     }
 
     public static <TElement> TElement lastOrDefault(Iterable<TElement> sourceElements,
                                                     Condition<? super TElement> condition) {
 
-        return reversed(sourceElements).firstOrDefault(condition);
+        ReversedQuery<TElement> reversed = new ReversedQuery<>(sourceElements);
+        return reversed.firstOrDefault(condition);
     }
 
-    public static <TElement> Queryable<TElement> reversed(Iterable<TElement> sourceElements) {
-        if(sourceElements instanceof List){
-            List<TElement> list = (List<TElement>) sourceElements;
-            return new QueryAdapter.Iterable<>(new ListReverser<>(list));
-        }
-        else{
-            return reverseViaStack(sourceElements);
-        }
-    }
-
-    private static <TElement> Queryable<TElement> reverseViaStack(Iterable<TElement> set) {
-        Stack<TElement> stack = new Stack<>();
-
-        for(TElement element : set){
-            stack.push(element);
-        }
-        LinqingList<TElement> returnable = new LinqingList<>();
-        while( ! stack.isEmpty()){
-            returnable.add(stack.pop());
-        }
-        return returnable;
+    public static <TElement> boolean any(Iterable<TElement> sourceElements){
+        return sourceElements.iterator().hasNext();
     }
 
     public static <TElement> boolean any(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
@@ -195,14 +183,14 @@ public class ImmediateInspections {
         return extrema(sourceElements, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getKey();
     }
 
-    public static <TElement> TElement withMax(Queryable<TElement> sourceElements,
-                                              Func1<? super TElement, Double> valueSelector) {
-        return extrema(sourceElements, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getValue();
-    }
-
     public static <TElement> TElement withMin(Queryable<TElement> sourceElements,
                                               Func1<? super TElement, Double> valueSelector) {
         return extrema(sourceElements, valueSelector, Double.POSITIVE_INFINITY, Math::min).getValue();
+    }
+
+    public static <TElement> TElement withMax(Queryable<TElement> sourceElements,
+                                              Func1<? super TElement, Double> valueSelector) {
+        return extrema(sourceElements, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getValue();
     }
 
     public static <TElement> boolean isDistinct(Iterable<TElement> sourceElements){

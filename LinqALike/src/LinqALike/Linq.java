@@ -1,6 +1,7 @@
 package LinqALike;
 
 import LinqALike.Common.EqualityComparer;
+import LinqALike.Common.ReversedQuery;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
 import LinqALike.Queries.*;
@@ -102,7 +103,7 @@ public class Linq {
 
     public static <TElement>
     boolean any(Iterable<? extends TElement> sourceElements) {
-        return any(sourceElements, Tautology);
+        return ImmediateInspections.any(sourceElements);
     }
     public static <TElement>
     boolean any(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
@@ -190,7 +191,7 @@ public class Linq {
 
     public static <TElement>
     Queryable<TElement> reversed(Iterable<TElement> sourceElements) {
-        return ImmediateInspections.reversed(sourceElements);
+        return new ReversedQuery<>(sourceElements);
     }
 
     public static <TElement>
