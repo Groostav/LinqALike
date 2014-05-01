@@ -59,7 +59,7 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.distinct(this);
     }
     @Override default public Queryable<TElement> distinct(EqualityComparer<? super TElement> equalityComparison){
-        return Linq.distinct(this);
+        return Linq.distinct(this, equalityComparison);
     }
     @Override default public <TComparable>
     Queryable<TElement> distinct(Func1<? super TElement, TComparable> comparableSelector){

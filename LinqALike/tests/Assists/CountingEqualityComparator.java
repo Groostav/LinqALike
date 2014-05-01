@@ -1,6 +1,7 @@
 package Assists;
 
 import LinqALike.Common.EqualityComparer;
+import LinqALike.Common.Tuple;
 
 public class CountingEqualityComparator<TCompared> extends CountingDelegate implements EqualityComparer<TCompared> {
 
@@ -16,6 +17,7 @@ public class CountingEqualityComparator<TCompared> extends CountingDelegate impl
 
     @Override
     public boolean equals(TCompared left, TCompared right) {
-        return false;
+        inspectedElements.add(new Tuple<>(left, right));
+        return baseComparator.equals(left, right);
     }
 }

@@ -102,6 +102,6 @@ public class DistinctQueryFixture extends QueryFixtureBase {
 
         //assert
         assertThat(result).containsExactly(1, 2);
-        assertThat(leftIsSaveEvennessAsRight.getNumberOfInvocations()).isEqualTo(list.size());
+        assertThat(leftIsSaveEvennessAsRight.getNumberOfInvocations()).isGreaterThanOrEqualTo(list.size()).isLessThanOrEqualTo(list.size() * list.size());
     }
 }
