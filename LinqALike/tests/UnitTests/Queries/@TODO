@@ -6,3 +6,17 @@ not yet tested:
 - cast
 - contains
 - count
+- exact (with delegates)
+- first/default
+- instersect (with delegates)
+- last/default
+- max/min/withMax/withMin
+- ofType
+- orderBy
+- selectMany
+- skip/while
+- size(?)
+- isSingle
+- isEmpty()
+- isSubset()
+- isDistinct
