@@ -22,7 +22,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="org.apache.commons:com.springsource.org.apache.commons.lang:2.6.0" level="project" />
+    <orderEntry type="library" exported="" name="org.apache.commons:com.springsource.org.apache.commons.lang:2.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="org.easytesting:fest-assert:1.4" level="project" />
   </component>
 </module>

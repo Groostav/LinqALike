@@ -1,5 +1,5 @@
 ## output binaries
-out/*
+/Linq-A-Like/target/*
 temp/*
 
 ## Package Files
