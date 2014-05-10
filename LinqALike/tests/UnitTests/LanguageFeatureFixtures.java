@@ -1,7 +1,6 @@
-package LanguageSmokeTests;
+package UnitTests;
 
 
-import LinqALike.Delegate.Func;
 import LinqALike.Delegate.Func1;
 import org.junit.Test;
 
@@ -10,26 +9,24 @@ import java.util.function.Supplier;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-public class LanguageSmokeTests {
+public class LanguageFeatureFixtures {
 
-    interface FirstInterface{
-        default public String DoSomething(){
-            return "first";
-        }
-    }
-    interface SecondInterface{
-        default public String DoSomething(){
-            return "second";
-        }
-    }
+    interface FirstInterface{ default public String doSomething(){ return "first"; } }
+    interface SecondInterface{ default public String doSomething(){ return "second"; } }
 
-    class FirstAndSecondImpl implements FirstInterface, SecondInterface{
+    @Test
+    public void when_two_interfaces_have_signature_collision_java_resolves_an_impl(){
+
+        class FirstAndSecondImpl implements FirstInterface, SecondInterface{
 //        compile-time exception. Ok.
 
-        @Override
-        public String DoSomething() {
-            return FirstInterface.super.DoSomething();
+            @Override
+            public String doSomething() {
+                return FirstInterface.super.doSomething();
+            }
         }
+
+        assertThat(new FirstAndSecondImpl().doSomething()).isEqualTo("first");
     }
 
     @Test
@@ -44,28 +41,29 @@ public class LanguageSmokeTests {
     }
 
     @Test
-    public void when_comparing_doubles(){
+    public void when_comparing_booleans(){
         int result = Boolean.TRUE.compareTo(Boolean.FALSE);
 
         assertThat(result).isEqualTo(1);
     }
 
     @Test
-    public void when_getting_class_of_a_lambda(){
+    public void when_getting_class_of_a_lambda() throws NoSuchMethodException {
         Supplier<Integer> function = () -> 15;
 
         Class foundType = function.getClass();
+
+        assertThat(foundType.getMethod("get").getReturnType()).isEqualTo(Object.class);
     }
 
     @Test
     public void when_asking_for_the_return_type_of_a_generic_instance() throws NoSuchMethodException {
         Func1<Integer, Double> doubleArrayMaker = Double::new;
-        Class arrayConstructorContainer = null;
+        Class arrayConstructorContainer = doubleArrayMaker.getClass();
 
-        //my debugger really doesnt like this. Fix your stuff IntelliJ >:|
         Method arrayConstructor = arrayConstructorContainer.getMethod("getFrom", Object.class);
 
-        //damn, lambda instances dont know their interface. Thats really annoying. WTF erasure.
+        //erasure is getting pretty old.
         assertThat(arrayConstructor.getReturnType()).isEqualTo(Object.class);
     }
 
