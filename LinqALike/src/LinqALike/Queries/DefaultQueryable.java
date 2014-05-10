@@ -45,8 +45,8 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     @Override default public boolean contains(Object candidate){
         return Linq.contains(this, candidate);
     }
-    @Override default public boolean containsElement(TElement element){
-        return Linq.containsElement(this, element);
+    @Override default public boolean containsElement(TElement candidate){
+        return Linq.containsElement(this, candidate);
     }
 
 
