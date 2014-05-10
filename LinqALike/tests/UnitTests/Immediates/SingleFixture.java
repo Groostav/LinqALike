@@ -46,7 +46,7 @@ public class SingleFixture extends QueryFixtureBase{
         LinqingList<Integer> empty = new LinqingList<>();
 
         //act & assert
-        assertThrows(SingletonSetContainsMultipleElementsException.class, empty::single);
+        assertThrows(SetIsEmptyException.class, empty::single);
     }
 
     @Test

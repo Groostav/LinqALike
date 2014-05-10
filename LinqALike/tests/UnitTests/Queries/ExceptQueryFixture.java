@@ -1,5 +1,6 @@
 package UnitTests.Queries;
 
+import Assists.CountingEqualityComparator;
 import Assists.CountingTransform;
 import Assists.QueryFixtureBase;
 import LinqALike.Factories;
@@ -97,6 +98,38 @@ public class ExceptQueryFixture extends QueryFixtureBase {
 
         //assert
         assertThat(result.contains(newValue));
+    }
+
+    @Test
+    public void when_calling_except_with_comparable_selector(){
+        //setup
+        LinqingList<NumberValue> primes = new LinqingList<>(new NumberValue(7), new NumberValue(11), new NumberValue(13));
+        LinqingList<NumberValue> palindromes = new LinqingList<>(new NumberValue(11), new NumberValue(1001), new NumberValue(1331));
+        CountingTransform<NumberValue, Integer> getNumberValue = CountingTransform.track(x -> x.number);
+
+        //act
+        List<NumberValue> result = primes.except(palindromes, getNumberValue).toList();
+
+        //assert
+        assertThat(result).containsExactly(primes.first(), primes.last());
+        getNumberValue.shouldHaveBeenInvoked(primes.size() + palindromes.size());
+    }
+
+    @Test
+    public void when_calling_except_with_equality_comparor(){
+        //setup
+        LinqingList<String> boys = new LinqingList<>("Ed", "Ken", "Jesse");
+        LinqingList<String> girls = new LinqingList<>("Ellen", "Eireen");
+        CountingEqualityComparator<String> haveEsInSamePlace = CountingEqualityComparator.track(
+                (left, right) -> left.toLowerCase().indexOf("e") == right.toLowerCase().indexOf("e")
+        );
+
+        //act
+        List<String> result = boys.except(girls, haveEsInSamePlace).toList();
+
+        //assert
+        assertThat(result).containsExactly("Ken", "Jesse");
+        haveEsInSamePlace.shouldHaveBeenInvoked(1 + 2 + 2);
     }
 
     @Test

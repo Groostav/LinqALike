@@ -229,7 +229,7 @@ public class Linq {
                                                         Iterable<? extends TElement> membersToExclude,
                                                         EqualityComparer<? super TElement> comparableSelector) {
 
-        return new ExceptQuery<>(originalMembers, membersToExclude, comparableSelector);
+        return new ExceptQuery<>(originalMembers, membersToExclude, memoized(comparableSelector));
     }
 
     public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,

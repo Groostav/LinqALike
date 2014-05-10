@@ -3,7 +3,6 @@ package LinqALike.Queries;
 import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.Preconditions;
 import LinqALike.Common.PrefetchingIterator;
-import LinqALike.Delegate.Func2;
 import LinqALike.LinqingSet;
 
 import java.util.Iterator;
@@ -47,7 +46,7 @@ public class ExceptQuery<TElement> implements DefaultQueryable<TElement> {
 
                 flattenExcludedsUntilFound(candidate);
 
-                if ( ! toExcludeByTheirChampion.any(x -> comparator.equals(candidate, x))) {
+                if ( ! toExcludeByTheirChampion.any(x -> comparator.equals(x, candidate))) {
                     setPrefetchedValue(candidate);
                 }
             }

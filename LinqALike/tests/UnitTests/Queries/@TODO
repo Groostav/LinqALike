@@ -1,12 +1,7 @@
 not yet tested:
-- all
-- any
-- average
 - unchecked cast
 - cast
-- contains
 - count
-- exact (with delegates)
 - first/default
 - instersect (with delegates)
 - last/default

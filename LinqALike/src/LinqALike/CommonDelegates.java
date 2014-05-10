@@ -1,6 +1,7 @@
 package LinqALike;
 
 import LinqALike.Common.DescribedEqualityComparer;
+import LinqALike.Common.EqualityComparer;
 import LinqALike.Common.Tuple;
 import LinqALike.Delegate.Condition;
 import LinqALike.Delegate.Func1;
@@ -94,6 +95,21 @@ public class CommonDelegates {
                     }
                 }
         );
+    }
+
+    public static <TEquated> EqualityComparer<TEquated> memoized(EqualityComparer<TEquated> valueRetreval){
+        Map<Tuple<TEquated, TEquated>, Boolean> cache = new HashMap<>();
+        return (left, right) -> {
+            Tuple<TEquated, TEquated> key = new Tuple<>(left, right);
+            if(cache.containsKey(key)){
+                return cache.get(key);
+            }
+            else{
+                boolean value = valueRetreval.equals(left, right);
+                cache.put(key, value);
+                return value;
+            }
+        };
     }
 
     public static <TArgument, TEquated>
