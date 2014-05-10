@@ -35,7 +35,7 @@ public class ExceptQuery<TElement> implements DefaultQueryable<TElement> {
 
         private Iterator<? extends TElement> source = left.iterator();
         private Iterator<? extends TElement> toExcludes = right.iterator();
-        private LinqingList<TElement> discoveredExcludedElements = new LinqingList<>(right);
+        private LinqingList<TElement> discoveredExcludedElements = new LinqingList<>();
 
         @Override
         protected void prefetch() {
@@ -50,24 +50,24 @@ public class ExceptQuery<TElement> implements DefaultQueryable<TElement> {
             }
         }
 
-        private boolean isTobeExcluded(TElement undesired) {
+        private boolean isTobeExcluded(TElement unknown) {
 
-            for(TElement element : discoveredExcludedElements){
-                boolean isExcluded = comparator.equals(element, undesired);
+            for(TElement excludedElement : discoveredExcludedElements){
+                boolean isExcluded = comparator.equals(excludedElement, unknown);
                 if(isExcluded){
                     return true;
                 }
             }
 
-//            while(toExcludes.hasNext()){
-//                TElement candidate = toExcludes.next();
-//                discoveredExcludedElements.add(candidate);
-//
-//                boolean isExcluded = comparator.equals(candidate, undesired);
-//                if(isExcluded){
-//                    return true;
-//                }
-//            }
+            while(toExcludes.hasNext()){
+                TElement excludedElement = toExcludes.next();
+                discoveredExcludedElements.add(excludedElement);
+
+                boolean isExcluded = comparator.equals(excludedElement, unknown);
+                if(isExcluded){
+                    return true;
+                }
+            }
 
             return false;
         }

@@ -1,6 +1,4 @@
-package com.EmpowerOperations.LinqALike.Common;
-
-import com.EmpowerOperations.LinqALike.Queries.DefaultQueryable;
+package com.EmpowerOperations.LinqALike.Queries;
 
 import java.util.*;
 

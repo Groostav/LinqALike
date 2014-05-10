@@ -1,7 +1,7 @@
 package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
-import com.EmpowerOperations.LinqALike.Common.ReversedQuery;
+import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import com.EmpowerOperations.LinqALike.Queries.*;

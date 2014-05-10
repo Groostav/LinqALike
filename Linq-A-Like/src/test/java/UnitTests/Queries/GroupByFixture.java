@@ -103,7 +103,6 @@ public class GroupByFixture extends QueryFixtureBase {
     }
 
     @Test
-    @Ignore("Waiting on solution to same-ref-exclusion problem")
     public void when_groups_are_found_prior_to_adding_a_new_ungrouped_value_to_the_source_list_query_should_see_newly_added_group(){
         //setup
         LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);

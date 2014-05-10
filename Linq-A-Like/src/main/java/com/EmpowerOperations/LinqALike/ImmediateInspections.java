@@ -4,6 +4,7 @@ import com.EmpowerOperations.LinqALike.Common.*;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import com.EmpowerOperations.LinqALike.Delegate.Func2;
+import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
 
 import java.util.*;
 import java.util.function.Supplier;

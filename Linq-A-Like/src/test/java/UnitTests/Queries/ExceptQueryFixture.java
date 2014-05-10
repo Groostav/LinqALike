@@ -79,7 +79,7 @@ public class ExceptQueryFixture extends QueryFixtureBase {
     }
 
 	@Test
-	public void when_excluding_null_set_should_exception(){
+	public void when_excluding_null_call_should_throw_exception(){
 		//setup
 		LinqingList<String> originalSet = new LinqingList<>("A", "B", "C");
 
