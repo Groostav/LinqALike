@@ -53,7 +53,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * Returns a cast of this collection as the desired type.
      *
      * <p><b>This method may lead to heap pollution</b> as it is equivalent to
-     * <code>(Queryable&ltTDerived&gt)source}</code>
+     * <code>(Queryable&ltTDesired&gt)source}</code>
      * This method should only be called if, by some means not known to the static type system,
      * the caller is <i>certain</i> that this collection only contains members that implement
      * <tt>TSuper</tt>. If they do not, a {@link java.lang.ClassCastException} will be thrown
@@ -64,11 +64,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * </code>
      * to avoid heap pollution.
      *
-     * @param desiredType the type to cast the element to
-     * @return a Queryable parameterized to the specified type.
+     * @return a Queryable statically parameterized to the specified type. No run-time type checking is performed.
      */
-    <TSuper> Queryable<TSuper> cast(Class<? super TElement> desiredType);
-
+    <TDesired> Queryable<TDesired> cast();
 
     /**
      * Determines if this Queryable contains the supplied candidate element.

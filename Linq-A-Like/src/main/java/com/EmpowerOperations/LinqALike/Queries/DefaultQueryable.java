@@ -34,12 +34,8 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.average(this, valueSelector);
     }
 
-
-    @Override default public <TDerived> Queryable<TDerived> uncheckedCast(){
+    @Override default public <TDerived> Queryable<TDerived> cast(){
         return Linq.cast(this);
-    }
-    @Override default public <TDerived> Queryable<TDerived> cast(Class<TDerived> desiredType){
-        return Linq.cast(this, desiredType);
     }
 
 

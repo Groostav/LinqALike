@@ -21,7 +21,7 @@ public class CastQuery extends QueryFixtureBase{
         LinqingList<Number> numbers = new LinqingList<>(1.0d, 2.0d, 3.0d, 4.0d);
 
         //act
-        List<Double> castNumbers = numbers.cast(Double.class).toList();
+        List<Double> castNumbers = numbers.<Double>cast().toList();
 
         //assert
         assertThat(castNumbers).containsExactly(1.0d, 2.0d, 3.0d, 4.0d);
@@ -33,10 +33,10 @@ public class CastQuery extends QueryFixtureBase{
         LinqingList<Number> numbers = new LinqingList<>(1.0d, 2.0, 3.0f);
 
         //act
-        Queryable<Double> castNumbers = numbers.cast(Double.class);
-        //so is this heap pollution? Its not if you understand intrinsically Queryable's lazy nature.
+        Queryable<Double> castNumbers = numbers.<Double>cast();
+        //polluted heap :(
 
         //closing act & assert
-        assertThrows(ClassCastException.class, () -> castNumbers.toList());
+        assertThrows(ClassCastException.class, castNumbers::toList);
     }
 }
