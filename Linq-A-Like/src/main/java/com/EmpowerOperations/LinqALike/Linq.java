@@ -1,6 +1,7 @@
 package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
 import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
@@ -157,19 +158,16 @@ public class Linq {
         return Factories.asMap(keys, values);
     }
 
-    public static <TDerived, TElement>
-    Queryable<TDerived> cast(Iterable<TElement> sourceElements) {
+    @SuppressWarnings("unchecked") //callers must be certain that their domain logic ensures
+                                   //every element in the set is of the desired type!
+    public static <TDesired, TElement>
+    Queryable<TDesired> cast(Iterable<TElement> sourceElements) {
         if(sourceElements instanceof Queryable){
-            return (Queryable<TDerived>) sourceElements;
+            return (Queryable) sourceElements;
         }
         else {
-            return new CastQuery<>(sourceElements, Object.class);
+            return new QueryAdapter.Iterable<TDesired>((Iterable)sourceElements);
         }
-    }
-
-    public static <TDerived, TElement>
-    Queryable<TDerived> cast(Iterable<TElement> sourceElements, Class<TDerived> desiredType) {
-        return new CastQuery<>(sourceElements, desiredType);
     }
 
     public static <TElement>

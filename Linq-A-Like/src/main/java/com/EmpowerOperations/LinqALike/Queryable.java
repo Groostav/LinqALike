@@ -50,33 +50,24 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     /**
-     * Returns a potentially polluted cast of this collection as the desired type.
-     *
-     * <p>Functionally equivalent to <code>(Queryable&ltTDerived&gt)source}</code>
-     * This method should only be called if, by some means not known to the static type system,
-     * the caller is <i>certain</i> that this collection only contains members that implement
-     * <tt>TDerived</tt> If the type
-     * of <tt>TDerived</tt> is known statically (that is, it's {@link java.lang.Class} can
-     * be retrieved through <code>Something.class</code> or <code>someVariable.getClass()</code>
-     * then you should use the type-guaranteeing {@link #cast(Class)}. This method exists for
-     * places where the class cannot be retrieved in such a fashion. The danger in not doing so is
-     * that with this method a <code>Queryable&ltTDerived&gt</code> can contain elements that
-     * <i>are not</i> subtypes of <tt>TDerived</tt>. <b>This fact, combined with the lazy
-     * nature of Linq can lead to wholley unintuivide {@link java.lang.ClassCastException}s</b>
-     * Consider using {@link #ofType(Class)} or {@link #cast(Class)} if at all possible.</p>
-     *
-     * @param <TDerived> The desired element type
-     * @return this item, statically cast to a Queryable of the <tt>TDerived</tt>
-     */
-    <TDerived> Queryable<TDerived> uncheckedCast();
-
-    /**
      * Returns a cast of this collection as the desired type.
      *
+     * <p><b>This method may lead to heap pollution</b> as it is equivalent to
+     * <code>(Queryable&ltTDerived&gt)source}</code>
+     * This method should only be called if, by some means not known to the static type system,
+     * the caller is <i>certain</i> that this collection only contains members that implement
+     * <tt>TSuper</tt>. If they do not, a {@link java.lang.ClassCastException} will be thrown
+     * when the problem member is iterated to. Please consider using {@link #ofType(Class)} or
+     * doing a check to ensure this cast is safe with
+     * <code>
+     * collection.all(desiredType::isInstance)
+     * </code>
+     * to avoid heap pollution.
+     *
      * @param desiredType the type to cast the element to
-     * @return a Queryable that casts the elements of this collection to the desired type.
+     * @return a Queryable parameterized to the specified type.
      */
-    <TDerived> Queryable<TDerived> cast(Class<TDerived> desiredType);
+    <TSuper> Queryable<TSuper> cast(Class<? super TElement> desiredType);
 
 
     /**

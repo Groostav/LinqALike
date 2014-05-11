@@ -32,17 +32,4 @@ public abstract class QueryAdapter{
         }
     }
 
-    public static class Iterator_<TElement> implements DefaultQueryable<TElement> {
-
-        public Iterator_(Iterable<TElement> elements){
-
-        }
-
-        @Override
-        public Iterator<TElement> iterator() {
-            assert false : "not implemented";
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
-        }
-    }
-
 }
