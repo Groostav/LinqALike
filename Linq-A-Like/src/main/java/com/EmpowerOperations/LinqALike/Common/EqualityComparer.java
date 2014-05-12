@@ -8,27 +8,9 @@ public interface EqualityComparer<TCompared> {
 
     boolean equals(TCompared left, TCompared right);
 
-
-    public static class WithDescription<TCompared> implements EqualityComparer<TCompared>{
-
-        private final EqualityComparer<TCompared> base;
-        private final String description;
-
-        public WithDescription(String description, EqualityComparer<TCompared> base){
-            this.base = base;
-            this.description = description;
-        }
-
-        @Override
-        public boolean equals(TCompared left, TCompared right) {
-            return base.equals(left, right);
-        }
-
-        @Override
-        public String toString() {
-            return description;
-        }
+    default public int hashCode(TCompared object){
+        return 0;
     }
 
-
+    public static interface Untyped extends EqualityComparer<Object>{}
 }

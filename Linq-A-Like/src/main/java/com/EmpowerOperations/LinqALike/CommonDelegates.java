@@ -2,6 +2,7 @@ package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.DescribedEqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.EqualityComparerWithDescription;
 import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
@@ -19,9 +20,8 @@ public class CommonDelegates {
             "set is not empty",
             (Condition<Iterable>) candidate -> !candidate.iterator().hasNext()
     );
-    public static EqualityComparer<Object> DefaultEquals = new EqualityComparer.WithDescription<>(
-            "default equality, (left, right) -> left == null ? right == null : left.equals(right)",
-                               (left, right) -> left == null ? right == null : left.equals(right));
+    public static final EqualityComparer.Untyped DefaultEquals = new DefaultEqualityComparer();
+    public static final EqualityComparer.Untyped ReferenceEquals = new ReferenceEqualityComparer();
 
     public static <TObject> Func1<TObject, TObject> identity() {
         return new Func1.WithDescription<>("identity function: object -> object", object -> object);
@@ -79,9 +79,6 @@ public class CommonDelegates {
         return source == null ? "<null>" : source.toString();
     }
 
-    public static final DescribedEqualityComparer<Object> ReferenceEquals = new DescribedEqualityComparer<>(
-            "Reference Equality: (firstArgument, secondArgument) -> firstArgument == secondArgument",
-            (firstArgument, secondArgument) -> firstArgument == secondArgument);
 
     public static <TSource, TResult> Func1<TSource, TResult> memoized(Func1<TSource, TResult> valueRetrieval){
         Map<TSource, TResult> cache = new HashMap<>();
@@ -102,7 +99,7 @@ public class CommonDelegates {
 
     public static <TEquated> EqualityComparer<TEquated> memoized(EqualityComparer<TEquated> valueRetreval){
         Map<Tuple<TEquated, TEquated>, Boolean> cache = new HashMap<>();
-        return new EqualityComparer.WithDescription<>(
+        return new EqualityComparerWithDescription<>(
                 "memoized { " + valueRetreval + " }",
                 (left, right) -> {
                     Tuple<TEquated, TEquated> key = Tuple.withEqualityComparator(left, right, CommonDelegates.ReferenceEquals);
@@ -119,7 +116,7 @@ public class CommonDelegates {
     }
 
     public static <TArgument, TEquated>
-    DescribedEqualityComparer<TArgument> performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
+    DescribedEqualityComparer<TArgument> equalsBySelector(final Func1<TArgument, TEquated> comparableSelector){
         return new DescribedEqualityComparer<>(
                 "default equality on values provided by: " + comparableSelector,
                 (left, right) -> {

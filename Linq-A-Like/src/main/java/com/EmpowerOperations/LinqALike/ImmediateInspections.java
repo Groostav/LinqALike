@@ -301,4 +301,15 @@ public class ImmediateInspections {
         }
         return count;
     }
+
+    public static <TElement> boolean contains(Iterable<? extends TElement> sourceElements,
+                                              TElement candidate,
+                                              EqualityComparer<? super TElement> comparer) {
+        for(TElement element : sourceElements){
+            if(comparer.equals(candidate, element)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -120,6 +120,24 @@ public class Linq {
     boolean contains(Iterable<? extends TElement> sourceElemens, Object candidate) {
         return ImmediateInspections.contains(sourceElemens, candidate);
     }
+    public static <TElement, TEquated>
+    boolean containsElement(Iterable<? extends TElement> sourceElements,
+                            TElement candidate,
+                            Func1<? super TElement, TEquated> equatableSelector) {
+        return ImmediateInspections.contains(sourceElements, candidate, equalsBySelector(equatableSelector));
+    }
+    public static <TElement>
+    boolean containsElement(Iterable<? extends TElement> sourceElements,
+                            TElement candidate,
+                            EqualityComparer<? super TElement> comparer){
+        return ImmediateInspections.contains(sourceElements, candidate, comparer);
+    }
+    public static <TElement>
+    boolean containsElement(Iterable<? extends TElement> sourceElements,
+                            TElement candidate){
+        return ImmediateInspections.contains(sourceElements, candidate, CommonDelegates.DefaultEquals);
+    }
+
 
     public static <TTransformed, TElement>
     Queryable<TTransformed> selectMany(Iterable<TElement> set,
@@ -129,12 +147,12 @@ public class Linq {
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return new UnionQuery<>(left, from(toInclude), performEqualsUsing(identity()));
+        return new UnionQuery<>(left, from(toInclude), equalsBySelector(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return new UnionQuery<>(left, right, performEqualsUsing(identity()));
+        return new UnionQuery<>(left, right, equalsBySelector(identity()));
     }
 
     public static <TElement, TCompared>
@@ -142,7 +160,7 @@ public class Linq {
                               Iterable<? extends TElement> right,
                               Func1<? super TElement, TCompared> comparableSelector){
 
-        return new UnionQuery<>(left, right, performEqualsUsing(memoized(comparableSelector)));
+        return new UnionQuery<>(left, right, equalsBySelector(memoized(comparableSelector)));
     }
 
     public static <TElement>
@@ -205,14 +223,14 @@ public class Linq {
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
 
-        return new ExceptQuery<>(source, from(toExclude), performEqualsUsing(identity()));
+        return new ExceptQuery<>(source, from(toExclude), equalsBySelector(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> left,
                                Iterable<? extends TElement> right) {
 
-        return new ExceptQuery<>(left, right, performEqualsUsing(CommonDelegates.<TElement>identity()));
+        return new ExceptQuery<>(left, right, equalsBySelector(CommonDelegates.<TElement>identity()));
     }
 
     public static <TElement, TCompared>
@@ -220,7 +238,7 @@ public class Linq {
                                Iterable<? extends TElement> membersToExclude,
                                Func1<? super TElement, TCompared> comparableSelector) {
 
-        return new ExceptQuery<>(originalMembers, membersToExclude, performEqualsUsing(memoized(comparableSelector)));
+        return new ExceptQuery<>(originalMembers, membersToExclude, equalsBySelector(memoized(comparableSelector)));
     }
 
     public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
@@ -304,15 +322,10 @@ public class Linq {
         return ImmediateInspections.average(sourceElements, valueSelector);
     }
 
-    public static <TElement> boolean containsElement(Iterable<? extends TElement> set,
-                                                     TElement candidate) {
-        return contains(set, candidate);
-    }
-
     public static <TElement, TComparable>
     Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
                                            Func1<? super TElement, TComparable> groupByPropertySelector) {
-        return new GroupByQuery<>(setToGroup, performEqualsUsing(memoized(groupByPropertySelector)));
+        return new GroupByQuery<>(setToGroup, equalsBySelector(memoized(groupByPropertySelector)));
     }
 
     public static <TElement>
