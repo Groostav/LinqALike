@@ -25,6 +25,9 @@
         <module name="Linq-A-Like" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Linq-A-Like" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
 

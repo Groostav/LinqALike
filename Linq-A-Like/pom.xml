@@ -2,33 +2,46 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-		 
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.EmpowerOperations</groupId>
     <artifactId>LinqALike</artifactId>
     <version>0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <packaging>jar</packaging>
 
-	<name>Linq-A-Like</name>
-	<description>A simpler implementation of the Streams API that is similar to C#'s LINQ</description>
-	<url>https://github.com/Groostav/LinqALike</url>
-	
-	<licenses>
-		<license>
+    <name>Linq-A-Like</name>
+    <description>A simpler implementation of the Streams API that is similar to C#'s LINQ</description>
+    <url>https://github.com/Groostav/LinqALike</url>
+
+    <licenses>
+        <license>
             <name>The New BSD License</name>
             <url>http://www.opensource.org/licenses/bsd-license.html</url>
-			<distribution>repo</distribution>
+            <distribution>repo</distribution>
         </license>
-	</licenses>
-	
-	<scm>
-		<url>https://github.com/Groostav/LinqALike.git</url>
-	</scm>
-	
-	<organization>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/Groostav/LinqALike</url>
+        <connection>scm:git:https://github.com/Groostav/LinqALike.git</connection>
+    </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+    </dependencies>
+
+    <organization>
         <name>Empower Operations</name>
-        <url>http://empowerops.com</url>
+        <url>http://empoweroperations.com</url>
     </organization>
 
-	
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
 </project>

@@ -2,7 +2,6 @@ package com.EmpowerOperations.LinqALike.Common;
 
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import com.EmpowerOperations.LinqALike.Linq;
-import com.sun.istack.internal.NotNull;
 
 import java.util.*;
 
@@ -79,7 +78,7 @@ public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> impl
     }
 
     @Override
-    public boolean retainAll(@NotNull Collection<?> allowedElements) {
+    public boolean retainAll(Collection<?> allowedElements) {
         boolean hasChanged = false;
         for(TElement element : this){
             if( ! equalitySafeContains(allowedElements, element, "retainAllElements(Iterable<? extends TElement> allowedElements")){
@@ -101,7 +100,7 @@ public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> impl
     }
 
     @Override
-    public boolean removeAll(@NotNull Collection<?> existingElements) {
+    public boolean removeAll(Collection<?> existingElements) {
         boolean hasChanged = false;
         for(Object existingElement : existingElements){
             hasChanged |= attemptRuntimeTypeRestrictedAction(existingElements, backingSet::remove, "removeAllElements(Iterable<? extends TElement> existingElements");
