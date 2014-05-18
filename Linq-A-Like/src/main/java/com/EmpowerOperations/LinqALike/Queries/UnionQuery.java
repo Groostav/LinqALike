@@ -1,15 +1,14 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
+import com.EmpowerOperations.LinqALike.Common.ComparingSet;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.Preconditions;
-import com.EmpowerOperations.LinqALike.Common.QueryableSet;
-import com.EmpowerOperations.LinqALike.Factories;
+import com.EmpowerOperations.LinqALike.Common.PrefetchingIterator;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 
-public class UnionQuery<TElement, TCompared> implements DefaultQueryable<TElement> {
+public class UnionQuery<TElement> implements DefaultQueryable<TElement> {
 
     private final Iterable<? extends TElement> left;
     private final Iterable<? extends TElement> right;
@@ -33,46 +32,48 @@ public class UnionQuery<TElement, TCompared> implements DefaultQueryable<TElemen
         return new UnionIterator();
     }
 
-    private class UnionIterator implements Iterator<TElement>{
+    private class UnionIterator extends PrefetchingIterator<TElement> {
+
+        private final ComparingSet<TElement> setSoFar = new ComparingSet<>(equalityComparator);
 
         private final Iterator<? extends TElement> lefts = left.iterator();
-        private final Iterator<? extends TElement> rights;
+        private final Iterator<? extends TElement> rights = right.iterator();
 
         private boolean leftsWereAvailable = true;
         private boolean rightsWereAvailable = true;
 
-        @SuppressWarnings("unchecked")//LinqingList.from consumes its argument in a read-only nature,
-        // making its argument's type parameter covariant. Thus we wont get a run-time exception from this uncheckedCast
-        //now or further on in the program.
-        private UnionIterator(){
-            rights = left instanceof QueryableSet
-                    ? Factories.from((Iterable<TElement>) right).except(left, equalityComparator).iterator()
-                    : right.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return lefts.hasNext() || rights.hasNext();
-        }
-
-        @Override
-        public TElement next() {
-            leftsWereAvailable = leftsWereAvailable && lefts.hasNext();
-            if(leftsWereAvailable){
-                return lefts.next();
-            }
-
-            rightsWereAvailable = rightsWereAvailable && rights.hasNext();
-            if(rightsWereAvailable){
-                return rights.next();
-            }
-
-            throw new NoSuchElementException();
-        }
-
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
+        }
+
+        @Override
+        protected void prefetch() {
+            while(leftIsAvailble()){
+                TElement nextValue = lefts.next();
+                boolean isNewElement = setSoFar.add(nextValue);
+                if(isNewElement){
+                    setPrefetchedValue(nextValue);
+                    return;
+                }
+            }
+
+            while(rightIsAvailble()){
+                TElement nextValue = rights.next();
+                boolean isNewElement = setSoFar.add(nextValue);
+                if(isNewElement){
+                    setPrefetchedValue(nextValue);
+                    return;
+                }
+            }
+        }
+
+        private boolean leftIsAvailble() {
+            return leftsWereAvailable = leftsWereAvailable && lefts.hasNext();
+        }
+
+        private boolean rightIsAvailble() {
+            return rightsWereAvailable = rightsWereAvailable && rights.hasNext();
         }
     }
 }

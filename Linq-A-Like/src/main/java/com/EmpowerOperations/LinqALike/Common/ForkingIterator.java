@@ -1,9 +1,10 @@
 package com.EmpowerOperations.LinqALike.Common;
 
-import com.EmpowerOperations.LinqALike.Common.CountSkipIterator;
-import com.EmpowerOperations.LinqALike.Common.ForkableIterator;
+import com.EmpowerOperations.LinqALike.Queryable;
 
 import java.util.Iterator;
+
+import static com.EmpowerOperations.LinqALike.Linq.skip;
 
 /**
 * Created by Geoff on 13/04/2014.
@@ -21,9 +22,13 @@ public class ForkingIterator<TElement> implements ForkableIterator<TElement> {
     }
 
     @Override
-    public Iterator<TElement> fork() {
-        Iterable<TElement> broughtCurrentCopy = () -> new CountSkipIterator<>(source, seenCount);
-        return new ForkingIterator<>(broughtCurrentCopy);
+    public ForkableIterator<TElement> fork() {
+        return new ForkingIterator<>(remaining());
+    }
+
+    @Override
+    public Queryable<TElement> remaining() {
+        return skip(source, seenCount);
     }
 
     @Override
@@ -33,6 +38,7 @@ public class ForkingIterator<TElement> implements ForkableIterator<TElement> {
 
     @Override
     public TElement next() {
+        seenCount += 1;
         return backingIterator.next();
     }
 }

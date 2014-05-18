@@ -1,18 +1,19 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
+import com.EmpowerOperations.LinqALike.Common.ComparingSet;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.Preconditions;
+import com.EmpowerOperations.LinqALike.Common.PrefetchingIterator;
 import com.EmpowerOperations.LinqALike.Queryable;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.List;
 
-import static com.EmpowerOperations.LinqALike.CommonDelegates.ReferenceEquals;
 import static com.EmpowerOperations.LinqALike.Factories.from;
 
 public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TElement>> {
 
-    private final Iterable<TElement> sourceElements;
+    private final Queryable<TElement> sourceElements;
     private final EqualityComparer<? super TElement> groupMembershipComparator;
 
     public GroupByQuery(Iterable<TElement> sourceElements,
@@ -21,48 +22,32 @@ public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TEleme
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(groupMembershipComparator, "groupMembershipComparator");
 
-        this.sourceElements = sourceElements;
+        this.sourceElements = from(sourceElements);
         this.groupMembershipComparator = groupMembershipComparator;
     }
 
     @Override
     public Iterator<Queryable<TElement>> iterator() {
-        return new GroupByWithEqualityComparatorIterator(groupMembershipComparator);
+        return new GroupByWithEqualityComparatorIterator();
     }
 
-    private class GroupByWithEqualityComparatorIterator implements Iterator<Queryable<TElement>> {
+    private class GroupByWithEqualityComparatorIterator extends PrefetchingIterator<Queryable<TElement>> {
 
-        private final EqualityComparer<? super TElement> membershipTest;
-
-        private Queryable<TElement> ungroupedElements = from(sourceElements);
-
-        public GroupByWithEqualityComparatorIterator(EqualityComparer<? super TElement> groupMembershipComparator) {
-            this.membershipTest = groupMembershipComparator;
-        }
+        private ComparingSet<TElement> alreadySeenElements = new ComparingSet<>(groupMembershipComparator);
 
         @Override
-        public boolean hasNext() {
-            return ungroupedElements.any();
-        }
+        protected void prefetch() {
+            for(TElement candidateLeader : sourceElements){
 
-        @Override
-        public Queryable<TElement> next() {
+                boolean hasChange = alreadySeenElements.add(candidateLeader);
+                if ( ! hasChange) { continue; }
 
-            if(ungroupedElements.isEmpty()){
-                throw new NoSuchElementException();
+                Queryable<TElement> group = sourceElements.where(groupCandidate -> groupMembershipComparator.equals(candidateLeader, groupCandidate));
+                List<TElement> flattened = group.toList();
+
+                setPrefetchedValue(group);
+                return;
             }
-
-            Queryable<TElement> groupLeader = from(ungroupedElements.first());
-            Queryable<TElement> secondaryMembers = ungroupedElements
-                    .skip(1)
-                    .where(candidate -> membershipTest.equals(groupLeader.single(), candidate));
-
-            Queryable<TElement> members = groupLeader.union(secondaryMembers, ReferenceEquals);
-
-            //what if you have a same-reference entry that needs to be in 2 groups?
-            //one solution is to wait until
-            ungroupedElements = ungroupedElements.except(members, ReferenceEquals);
-            return members;
         }
     }
 }

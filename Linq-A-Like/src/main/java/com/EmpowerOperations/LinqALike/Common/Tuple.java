@@ -13,7 +13,7 @@ public class Tuple<TLeftMember, TRightMember> implements Map.Entry<TLeftMember, 
     public Tuple(TLeftMember left, TRightMember right){
         this.left = left;
         this.right = right;
-        this.equalityComparator = CommonDelegates.DefaultEquals;
+        this.equalityComparator = CommonDelegates.DefaultEquality;
     }
 
     public static <TCompared, TLeftMember extends TCompared, TRightMember extends TCompared>

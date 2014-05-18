@@ -1,5 +1,7 @@
 package com.EmpowerOperations.LinqALike.Common;
 
+import com.EmpowerOperations.LinqALike.CommonDelegates;
+
 /**
  * This class is effectively a double pointer, allowing you to ether modify
  * something by reference, or escape javas 'members in a closure must be final'
@@ -7,20 +9,42 @@ package com.EmpowerOperations.LinqALike.Common;
  *
  * @author Geoff on 24/07/13
  */
-public class Ref<TValue>{
+public final class Ref<TValue>{
 
-	/*
-	FindBugs flagged this as:
-	Unread public/protected field
-	This field is never read.  The field is public or protected, so perhaps it is intended to be used with classes not seen as part of the analysis. If not, consider removing it from the class.
+    public final EqualityComparer<? super TValue> equalityComparer;
 
-	Bug kind and pattern: UrF - URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD*/
-    //FindBugs is wrong, this is used in several places including the LinqBehaviours.
-    public TValue target;
+    public TValue val;
 
     public Ref() {
+        equalityComparer = CommonDelegates.DefaultEquality;
     }
     public Ref(TValue value){
-        this.target = value;
+        this.val = value;
+        equalityComparer = CommonDelegates.DefaultEquality;
+    }
+    public Ref(TValue value, EqualityComparer<? super TValue> equalityComparer){
+        this.val = value;
+        this.equalityComparer = equalityComparer;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object right) {
+        if (this == right) { return true; }
+        if (right == null || getClass() != right.getClass()) { return false; }
+
+        Ref rightRef = (Ref) right;
+        if(rightRef.val != null && val != null
+                && ! val.getClass().isInstance(rightRef.val)){
+            //type param miss-match, you've called stringRef.equals(intRef).
+            return false;
+        }
+
+        return equalityComparer.equals(val, (TValue) rightRef.val);
+    }
+
+    @Override
+    public int hashCode() {
+        return val.hashCode();
     }
 }

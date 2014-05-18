@@ -88,7 +88,6 @@ public class GroupByFixture extends QueryFixtureBase {
     }
 
     @Test
-    @Ignore("Waiting on solution to same-ref-exclusion problem")
     public void when_grouping_a_bag_containing_ref_equals_entries_that_are_in_different_groups(){
         //setup
         NumberValue duplicate = new NumberValue(1);
@@ -97,7 +96,8 @@ public class GroupByFixture extends QueryFixtureBase {
                 duplicate, new NumberValue(883), new NumberValue(887));
 
         //act
-        List<Queryable<NumberValue>> groups = values.groupBy((x, y) -> false).toList();
+        Queryable<Queryable<NumberValue>> groups = values.groupBy((x, y) -> false);
+        Object flattened = fetch(groups);
 
         assertThat(groups).hasSize(6);
     }
@@ -110,12 +110,14 @@ public class GroupByFixture extends QueryFixtureBase {
 
         //act
         Queryable<Queryable<Double>> groups = sourceList.groupBy(x -> x);
+        Object beforeAddition = fetch(groups);
         sourceList.add(newValue);
+        Object afterAddition = fetch(groups);
 
         //assert
         LinqingList<Queryable<Double>> result = groups.toList();
         assertThat(result).hasSize(4);
-        assertThat(result.get(2)).contains(newValue);
+        assertThat(result.get(3)).contains(newValue);
     }
 
     @Test
@@ -147,5 +149,9 @@ public class GroupByFixture extends QueryFixtureBase {
         for(NumberValue numberValue : group){
             assertThat(numberValue.number).isEqualTo(expectedValue);
         }
+    }
+
+    private <TElement> LinqingList<LinqingList<TElement>> fetch(Queryable<Queryable<TElement>> queries){
+        return queries.select(Queryable::toList).toList();
     }
 }

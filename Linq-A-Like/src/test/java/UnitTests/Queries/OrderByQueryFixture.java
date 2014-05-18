@@ -10,6 +10,7 @@ import java.util.List;
 
 import static Assists.CountingTransform.track;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * Created by Geoff on 09/04/14.
@@ -114,4 +115,22 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         //assert
         assertThat(distinctResult).contains(newValue);
     }
+
+    @Test
+    public void when_calling_order_by_on_a_set_containing_a_duplicate_by_default_equality_but_not_by_a_specified_comparable_selector(){
+        //setup
+        EquatableValue city = new EquatableValue("New York");
+        EquatableValue state = new EquatableValue("New York");
+        LinqingList<EquatableValue> cityAndState = new LinqingList<>(city, state);
+        assumeTrue(cityAndState.first() == city && cityAndState.last() == state);
+
+        //act
+        List<EquatableValue> stateFirst = cityAndState.orderBy(x -> x == state ? 0 : 1).toList();
+
+        //assert
+        //cant use containsExactly since EquatableValue overrides Equals
+        assertThat(stateFirst.get(0)).isSameAs(state);
+        assertThat(stateFirst.get(1)).isSameAs(city);
+    }
+
 }

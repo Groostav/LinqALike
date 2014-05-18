@@ -2,7 +2,7 @@ package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.DescribedEqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
-import com.EmpowerOperations.LinqALike.Common.EqualityComparerWithDescription;
+import com.EmpowerOperations.LinqALike.Common.Ref;
 import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
@@ -79,18 +79,18 @@ public class CommonDelegates {
         return source == null ? "<null>" : source.toString();
     }
 
-
     public static <TSource, TResult> Func1<TSource, TResult> memoized(Func1<TSource, TResult> valueRetrieval){
-        Map<TSource, TResult> cache = new HashMap<>();
+        Map<Ref<TSource>/*TSource*/, TResult> cache = new HashMap<>();
         return new Func1.WithDescription<>(
                 "memoized { " + valueRetrieval + " }",
                 source -> {
-                    if (cache.containsKey(source)) {
-                        return cache.get(source);
+                    Ref<TSource> key = new Ref<>(source, CommonDelegates.ReferenceEquality);
+                    if (cache.containsKey(key)) {
+                        return cache.get(key);
                     }
                     else{
                         TResult value = valueRetrieval.getFrom(source);
-                        cache.put(source, value);
+                        cache.put(key, value);
                         return value;
                     }
                 }
@@ -102,7 +102,7 @@ public class CommonDelegates {
         return new EqualityComparerWithDescription<>(
                 "memoized { " + valueRetreval + " }",
                 (left, right) -> {
-                    Tuple<TEquated, TEquated> key = Tuple.withEqualityComparator(left, right, CommonDelegates.ReferenceEquals);
+                    Tuple<TEquated, TEquated> key = Tuple.withEqualityComparator(left, right, CommonDelegates.ReferenceEquality);
                     if(cache.containsKey(key)){
                         return cache.get(key);
                     }
@@ -123,7 +123,9 @@ public class CommonDelegates {
                     TEquated leftComparable = comparableSelector.getFrom(left);
                     TEquated rightComparable = comparableSelector.getFrom(right);
 
-                    return leftComparable.equals(rightComparable);
+                    return leftComparable == null
+                            ? rightComparable == null
+                            : leftComparable.equals(rightComparable);
                 }
         );
     }

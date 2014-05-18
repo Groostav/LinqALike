@@ -1,7 +1,7 @@
 package com.EmpowerOperations.LinqALike;
 
+import com.EmpowerOperations.LinqALike.Common.AdaptQuery;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
-import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
 import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
@@ -184,7 +184,7 @@ public class Linq {
             return (Queryable) sourceElements;
         }
         else {
-            return new QueryAdapter.Iterable<TDesired>((Iterable)sourceElements);
+            return new AdaptQuery.FromIterable<TDesired>((Iterable)sourceElements);
         }
     }
 
@@ -287,7 +287,7 @@ public class Linq {
     }
 
     public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
-        return Factories.asList(set);
+        return Factories.asListWithExplicitIterationForDebugging(set);
     }
 
     public static <TElement> int size(Iterable<TElement> sourceElements) {

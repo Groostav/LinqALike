@@ -4,16 +4,21 @@ import com.EmpowerOperations.LinqALike.Common.*;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 
 import java.lang.reflect.Array;
+import java.util.Iterator;
 
 public class Factories {
 
     @SafeVarargs
     public static <TElement> Queryable<TElement> from(TElement... sourceElements){
-        return new QueryAdapter.Array<>(sourceElements);
+        return new AdaptQuery.FromArray<>(sourceElements);
     }
 
     public static <TElement> Queryable<TElement> from(Iterable<TElement> sourceElements){
-        return new QueryAdapter.Iterable<>(sourceElements);
+        return new AdaptQuery.FromIterable<>(sourceElements);
+    }
+
+    public static <TElement> Queryable<TElement> from(Iterator<TElement> sourceElements){
+        return new AdaptQuery.FromIterator<>(sourceElements);
     }
 
     @SafeVarargs
@@ -23,6 +28,20 @@ public class Factories {
 
     public static <TElement> LinqingList<TElement> asList(Iterable<TElement> sourceElements){
         return new LinqingList<>(sourceElements);
+    }
+    /**
+     * this code is identical to the {@link #asList(Iterable)} method above, except it makes explciit calls to
+     * {@link java.util.Iterator#next()} and {@link java.util.Iterator#hasNext()} for easier debugging.
+     */
+    @SuppressWarnings("WhileLoopReplaceableByForEach")
+    static <TElement> LinqingList<TElement> asListWithExplicitIterationForDebugging(Iterable<TElement> sourceElements){
+        LinqingList<TElement> copy = new LinqingList<>();
+        Iterator<TElement> iterator = sourceElements.iterator();
+        while(iterator.hasNext()){
+            TElement next = iterator.next();
+            copy.add(next);
+        }
+        return copy;
     }
 
     public static <TKey, TValue>

@@ -2,7 +2,6 @@ package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.QueryableSet;
 
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

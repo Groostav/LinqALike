@@ -1,13 +1,11 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
-import com.EmpowerOperations.LinqALike.CommonDelegates;
-import com.EmpowerOperations.LinqALike.Queryable;
+import com.EmpowerOperations.LinqALike.ImmediateInspections;
+import com.EmpowerOperations.LinqALike.LinqingList;
 
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import static com.EmpowerOperations.LinqALike.Factories.from;
+import java.util.List;
 
 public class OrderByQuery<TElement> implements DefaultQueryable<TElement> {
 
@@ -26,32 +24,29 @@ public class OrderByQuery<TElement> implements DefaultQueryable<TElement> {
 
     public class OrderByIterator implements Iterator<TElement>{
 
-        private Queryable<TElement> remaining = from(source);
+        private Iterator<TElement> sortedIterator;
 
         @Override
         public boolean hasNext() {
-            return remaining.any();
+            return sortedIterator == null
+                    ? ImmediateInspections.any(source)
+                    : sortedIterator.hasNext();
         }
 
         @Override
         public TElement next() {
+            ensureListIsSorted();
+            return sortedIterator.next();
+        }
 
-            if(remaining.isEmpty()){
-                throw new NoSuchElementException();
+        private void ensureListIsSorted() {
+            if(sortedIterator != null){
+                return;
             }
 
-            TElement currentBest = remaining.first();
-
-            for(TElement candidate : remaining.skip(1)){
-
-                if(comparator.compare(currentBest, candidate) > 0){
-                    currentBest = candidate;
-                }
-            }
-
-            remaining = remaining.except(from(currentBest), CommonDelegates.ReferenceEquals);
-
-            return currentBest;
+            List<TElement> sorted = new LinqingList<>(source);
+            sorted.sort(comparator);
+            sortedIterator = sorted.iterator();
         }
     }
 }

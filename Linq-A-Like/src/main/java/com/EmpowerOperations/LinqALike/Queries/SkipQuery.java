@@ -17,15 +17,14 @@ public class SkipQuery<TElement> implements DefaultQueryable<TElement> {
 
     public SkipQuery(Iterable<TElement> sourceElements, Condition<? super TElement> excludingCondition) {
         this.sourceElements = sourceElements;
-        this.excludingCondition = excludingCondition;
 
+        this.excludingCondition = excludingCondition;
         this.numberToSkip = -1;
     }
 
     public SkipQuery(Iterable<TElement> sourceElements, int numberToSkip){
         this.sourceElements = sourceElements;
         this.numberToSkip = numberToSkip;
-
         this.excludingCondition = null;
     }
 

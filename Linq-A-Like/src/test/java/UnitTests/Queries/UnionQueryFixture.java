@@ -3,7 +3,6 @@ package UnitTests.Queries;
 import Assists.QueryFixtureBase;
 import com.EmpowerOperations.LinqALike.Factories;
 import com.EmpowerOperations.LinqALike.LinqingList;
-import com.EmpowerOperations.LinqALike.Queryable;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,20 +15,26 @@ import static org.fest.assertions.Assertions.assertThat;
 public class UnionQueryFixture extends QueryFixtureBase {
 
     @Test
-    public void when_calling_union_on_two_sets_with_duplicates() throws Exception {
+    public void when_calling_union_on_two_disjoint_sets_the_result_should_be_the_simple_sum(){
         //setup
-        LinqingList<Integer> left = Factories.asList(1, 2, 3);
-        LinqingList<Integer> right = Factories.asList(2, 3, 4, 6);
+        LinqingList<String> goodWesternTeams = new LinqingList<>("Colorado", "Minnesota", "St. Louis", "Chicago",
+                                                                 "Anaheim", "Dallas", "San Jose", "Los Angeles");
+        LinqingList<String> badWesternTeams = new LinqingList<>("Phoenix", "Nashville", "Winnipeg", "Vancouver", // T_T
+                                                                "Calgary", "Edmonton");
 
         //act
-        LinqingList<Integer> result = left.union(right).toList();
+        LinqingList<String> westernConference = goodWesternTeams.union(badWesternTeams).toList();
 
         //assert
-        assertThat(result).containsExactly(1, 2, 3, 2, 3, 4, 6);
+        assertThat(westernConference).containsExactly(
+                "Colorado", "Minnesota", "St. Louis", "Chicago",
+                "Anaheim", "Dallas", "San Jose", "Los Angeles",
+                "Phoenix", "Nashville", "Winnipeg", "Vancouver",
+                "Calgary", "Edmonton");
     }
 
     @Test
-    public void when_calling_union_on_two_sets_where_host_is_list_it_does_not_remove_duplicates(){
+    public void when_calling_union_on_two_sets_where_the_summation_contains_a_duplicate_the_dupliace_should_be_removed(){
         //setup
         LinqingList<NamedValue> left = NamedValue.forNames("one", "two", "three");
         LinqingList<NamedValue> right = NamedValue.forNames("three", "four");
@@ -38,7 +43,7 @@ public class UnionQueryFixture extends QueryFixtureBase {
         LinqingList<NamedValue> result = left.union(right, NamedValue.GetName()).toList();
 
         //result
-        assertThat(result).containsExactly(left.get(0), left.get(1), left.get(2), right.get(0), right.get(1));
+        assertThat(result).containsExactly(left.get(0), left.get(1), left.get(2), right.get(1));
     }
 
     @Test
@@ -55,6 +60,19 @@ public class UnionQueryFixture extends QueryFixtureBase {
     }
 
     @Test
+    public void when_calling_union_on_two_set_identical_sets_the_result_should_be_identical_to_the_arguments(){
+        //setup
+        LinqingList<Integer> left = new LinqingList<>(1, 2, 3, 4);
+        LinqingList<Integer> right = new LinqingList<>(4, 3, 2, 1);
+
+        //act
+        List<Integer> result = left.union(right).toList();
+
+        //assert
+        assertThat(result).containsExactly(1, 2, 3, 4);
+    }
+
+    @Test
     public void when_calling_union_on_two_sets_both_with_nulls(){
         //setup
         LinqingList<String> left = Factories.asList("one", null, "two", "three");
@@ -64,11 +82,11 @@ public class UnionQueryFixture extends QueryFixtureBase {
         LinqingList<String> result = left.union(right).toList();
 
         //assert
-        assertThat(result).containsExactly("one", null, "two", "three", null, "four", "five");
+        assertThat(result).containsExactly("one", null, "two", "three", "four", "five");
     }
 
     @Test
-    public void when_calling_union_on_two_valid_sets_should_return_valid_output() {
+    public void when_calling_union_on_a_subset_result_should_appear_identical() {
         //setup
         LinqingList<Integer> left = new LinqingList<>(1, 2, 3, 4, 5, 6, 7, 8, 9);
         LinqingList<Integer> right = new LinqingList<>(4, 5, 6);
@@ -77,19 +95,19 @@ public class UnionQueryFixture extends QueryFixtureBase {
         List<Integer> result = left.union(right).toList();
 
         //assert
-        assertThat(result).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6);
+        assertThat(result).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     @Test
-    public void when_calling_union_on_two_valid_sets_with_duplicate_elements_should_return_unique() {
+    public void when_calling_union_on_a_set_already_containing_duplicates_the_duplicates_should_be_removed(){
         //setup
-        LinqingList<Integer> left = new LinqingList<>(1, 2, 3, 4, 5);
-        LinqingList<Integer> right = new LinqingList<>(1, 2, 3);
+        LinqingList<Integer> left = new LinqingList<>(1, 2, 2, 3);
+        LinqingList<Integer> right = new LinqingList<>(4);
 
         //act
-        Queryable<Integer> result = left.union(right).distinct();
+        List<Integer> result = left.union(right).toList();
 
         //assert
-        assertThat(result).containsOnly(1,2,3,4,5);
+        assertThat(result).containsExactly(1, 2, 3, 4);
     }
 }

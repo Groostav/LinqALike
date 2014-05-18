@@ -3,6 +3,7 @@ package UnitTests.Queries;
 import Assists.CountingEqualityComparator;
 import Assists.CountingTransform;
 import Assists.QueryFixtureBase;
+import com.EmpowerOperations.LinqALike.Common.Ref;
 import com.EmpowerOperations.LinqALike.CommonDelegates;
 import com.EmpowerOperations.LinqALike.Factories;
 import com.EmpowerOperations.LinqALike.LinqingList;
@@ -150,14 +151,29 @@ public class ExceptQueryFixture extends QueryFixtureBase {
     }
 
     @Test
-    public void when_excluding_something_that_would_otherwise_be_duplicates(){
+    public void when_excluding_something_that_is_a_duplicate_by_default_equality_but_not_by_a_specified_equality_comparator(){
         //setup
         EquatableValue firstDuplicate = new EquatableValue("Sedin");
         EquatableValue secondDuplicate = new EquatableValue("Sedin");
         LinqingList<EquatableValue> brothers = new LinqingList<>(firstDuplicate, secondDuplicate);
 
         //act
-        List<EquatableValue> results = brothers.except(from(firstDuplicate), CommonDelegates.ReferenceEquals).toList();
+        List<EquatableValue> results = brothers.except(from(firstDuplicate), CommonDelegates.ReferenceEquality).toList();
+
+        //assert
+        assertThat(results).containsExactly(secondDuplicate);
+    }
+
+    @Test
+    public void when_excluding_something_that_is_a_duplicate_by_default_equality_but_not_by_a_specified_comparable_selector(){
+        //setup
+        EquatableValue firstDuplicate = new EquatableValue("Sedin");
+        EquatableValue secondDuplicate = new EquatableValue("Sedin");
+        LinqingList<EquatableValue> brothers = new LinqingList<>(firstDuplicate, secondDuplicate);
+        Ref<Integer> counter = new Ref<>(0);
+
+        //act
+        List<EquatableValue> results = brothers.except(from(firstDuplicate), System::identityHashCode).toList();
 
         //assert
         assertThat(results).containsExactly(secondDuplicate);

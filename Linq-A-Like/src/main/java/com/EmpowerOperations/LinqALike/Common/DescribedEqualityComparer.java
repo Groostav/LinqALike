@@ -19,6 +19,11 @@ public class DescribedEqualityComparer<TCompared> implements EqualityComparer<TC
     }
 
     @Override
+    public int hashCode(TCompared object) {
+        return base.hashCode(object);
+    }
+
+    @Override
     public String toString() {
         return description;
     }
