@@ -10,15 +10,11 @@ public class Factories {
 
     @SafeVarargs
     public static <TElement> Queryable<TElement> from(TElement... sourceElements){
-        return new AdaptQuery.FromArray<>(sourceElements);
+        return new QueryAdapter.FromArray<>(sourceElements);
     }
 
     public static <TElement> Queryable<TElement> from(Iterable<TElement> sourceElements){
-        return new AdaptQuery.FromIterable<>(sourceElements);
-    }
-
-    public static <TElement> Queryable<TElement> from(Iterator<TElement> sourceElements){
-        return new AdaptQuery.FromIterator<>(sourceElements);
+        return new QueryAdapter.FromIterable<>(sourceElements);
     }
 
     @SafeVarargs

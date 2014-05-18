@@ -2,14 +2,15 @@ package com.EmpowerOperations.LinqALike.Common;
 
 import com.EmpowerOperations.LinqALike.Queries.DefaultQueryable;
 
+import java.lang.Iterable;
 import java.util.Iterator;
 
 public abstract class QueryAdapter{
 
-    public static class Array <TElement> implements DefaultQueryable<TElement> {
+    public static class FromArray<TElement> implements DefaultQueryable<TElement> {
         private final TElement[] elements;
 
-        public Array(TElement[] elements){
+        public FromArray(TElement[] elements){
             this.elements = elements;
         }
 
@@ -19,10 +20,10 @@ public abstract class QueryAdapter{
         }
     }
 
-    public static class Iterable<TElement> implements DefaultQueryable<TElement> {
-        private final java.lang.Iterable<TElement> elements;
+    public static class FromIterable<TElement> implements DefaultQueryable<TElement> {
+        private final Iterable<TElement> elements;
 
-        public Iterable(java.lang.Iterable<TElement> elements){
+        public FromIterable(Iterable<TElement> elements){
             this.elements = elements;
         }
 

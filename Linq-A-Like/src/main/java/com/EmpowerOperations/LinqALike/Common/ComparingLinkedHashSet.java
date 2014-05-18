@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> implements Set<TElement> {
 
-    private final LinkedHashSet<EquatableReference<TElement>> backingSet = new LinkedHashSet<>();
+    private final LinkedHashSet<Reference<TElement>> backingSet = new LinkedHashSet<>();
     private final EqualityComparer<? super TElement> equalityComparer;
     private final Class<? super TElement> widestEquatableType;
 
@@ -35,7 +35,7 @@ public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> impl
     @Override
     public Iterator<TElement> iterator() {
         return new Iterator<TElement>() {
-            Iterator<EquatableReference<TElement>> backingIterator = backingSet.iterator();
+            Iterator<Reference<TElement>> backingIterator = backingSet.iterator();
 
             @Override
             public boolean hasNext() {
@@ -117,7 +117,8 @@ public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> impl
     }
 
     @SuppressWarnings("unchecked")
-    private <TResult> TResult attemptRuntimeTypeRestrictedAction(Object item, Func1<EquatableReference<TElement>, TResult> transform, final String alternativeTypeSafeMethodName) {
+    private <TResult> TResult attemptRuntimeTypeRestrictedAction(Object item,
+                                                                 Func1<Reference<TElement>, TResult> transform, final String alternativeTypeSafeMethodName) {
         if (widestEquatableType != null && widestEquatableType.isInstance(item)){
             return transform.getFrom(makeEquatable((TElement) item));
         }
@@ -151,7 +152,7 @@ public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> impl
         return isContained;
     }
 
-    private EquatableReference<TElement> makeEquatable(TElement existingElement) {
-        return new EquatableReference<>(existingElement, equalityComparer);
+    private Reference<TElement> makeEquatable(TElement existingElement) {
+        return Reference.withSpecificEquals(existingElement, (Class) widestEquatableType, equalityComparer);
     }
 }

@@ -1,6 +1,6 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
-import com.EmpowerOperations.LinqALike.Common.ComparingSet;
+import com.EmpowerOperations.LinqALike.Common.ComparingLinkedHashSet;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.Preconditions;
 import com.EmpowerOperations.LinqALike.Common.PrefetchingIterator;
@@ -33,7 +33,7 @@ public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TEleme
 
     private class GroupByWithEqualityComparatorIterator extends PrefetchingIterator<Queryable<TElement>> {
 
-        private ComparingSet<TElement> alreadySeenElements = new ComparingSet<>(groupMembershipComparator);
+        private ComparingLinkedHashSet<TElement> alreadySeenElements = new ComparingLinkedHashSet<>(groupMembershipComparator);
 
         @Override
         protected void prefetch() {

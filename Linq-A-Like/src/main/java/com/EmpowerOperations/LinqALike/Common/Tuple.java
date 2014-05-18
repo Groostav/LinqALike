@@ -8,40 +8,87 @@ import static com.EmpowerOperations.LinqALike.CommonDelegates.nullSafeToString;
 
 public class Tuple<TLeftMember, TRightMember> implements Map.Entry<TLeftMember, TRightMember> {
 
-    private final EqualityComparer<Object> equalityComparator;
+    private final EqualityComparer<? super TLeftMember> leftEqualityComparator;
+    private final EqualityComparer<? super TRightMember> rightEqualityComparator;
 
-    public Tuple(TLeftMember left, TRightMember right){
-        this.left = left;
-        this.right = right;
-        this.equalityComparator = CommonDelegates.DefaultEquality;
-    }
-
-    public static <TCompared, TLeftMember extends TCompared, TRightMember extends TCompared>
-    Tuple<TLeftMember, TRightMember> withEqualityComparator(TLeftMember left, TRightMember right, EqualityComparer<TCompared> equalityComparator){
-        return new Tuple<>(left, right, equalityComparator);
-    }
-
-    @SuppressWarnings("unchecked")
-    // We've statically satisfied these constraints one,
-    // continuing to satisfy them would yield no benefit to the consumer and would require us to keep another type parameter.
-    // Since we've already got problems inferring the two types, I'm not going to compound the problem further,
-    // so we're just going to use the raw type of the equality comparer.
-    private Tuple(TLeftMember left, TRightMember right, EqualityComparer<?> equalityComparator){
-        this.left = left;
-        this.right = right;
-        this.equalityComparator = (EqualityComparer) equalityComparator;
-    }
+    private final Class<? super TLeftMember> leftEquatingSuperClass;
+    private final Class<? super TRightMember> rightEquatingSuperClass;
 
     public final TLeftMember left;
     public final TRightMember right;
 
-    //static factories:
-    public static <TLeft, TRight>
-    Tuple<TLeft, TRight> pair(TLeft left, TRight right){
-        return new Tuple<>(left, right);
+    public Tuple(TLeftMember left, TRightMember right){
+        this(
+                left,
+                Object.class,
+                CommonDelegates.DefaultEquality,
+                right,
+                Object.class,
+                CommonDelegates.DefaultEquality);
     }
 
-    //equals and toString
+    public Tuple(TLeftMember left, EqualityComparer<TLeftMember> leftEqualityComparator,
+                 TRightMember right, EqualityComparer<TRightMember> rightEqualityComparator){
+
+        Preconditions.notNull(left, "left");
+        Preconditions.notNull(right, "right");
+
+        this.left = left;
+        this.leftEquatingSuperClass = (Class) left.getClass();
+        this.leftEqualityComparator = leftEqualityComparator;
+        this.right = right;
+        this.rightEquatingSuperClass = (Class) right.getClass();
+        this.rightEqualityComparator = rightEqualityComparator;
+
+    }
+
+    public Tuple(TLeftMember left, EqualityComparer.Untyped leftEqualityComparator,
+                 TRightMember right, EqualityComparer.Untyped rightEqualityComparator){
+        this(
+                left,
+                Object.class,
+                leftEqualityComparator,
+                right,
+                Object.class,
+                rightEqualityComparator);
+    }
+
+    public Tuple(TLeftMember left, TRightMember right, EqualityComparer.Untyped universalEqualityComparer) {
+        this(left, Object.class, universalEqualityComparer, right, Object.class, universalEqualityComparer);
+    }
+
+
+    //thank god for java type inference...
+    public static <TLeftEquated, TLeftMember extends TLeftEquated, TRightEquated, TRightMember extends TRightEquated>
+    Tuple<TLeftMember, TRightMember> withPreciseEquality(TLeftMember left,
+                                                         Class<TLeftEquated> leftEquatingSuperClass,
+                                                         EqualityComparer<TLeftEquated> leftEqualityComparator,
+                                                         TRightMember right,
+                                                         Class<TRightEquated> rightEquatingSuperClass,
+                                                         EqualityComparer<TRightEquated> rightEqualityComparator){
+        return new Tuple<>(left,
+                leftEquatingSuperClass,
+                leftEqualityComparator,
+                right,
+                rightEquatingSuperClass,
+                rightEqualityComparator);
+    }
+
+    private Tuple(TLeftMember left,
+                  Class<? super TLeftMember> leftEquatingSuperClass,
+                  EqualityComparer<? super TLeftMember> leftEqualityComparator,
+                  TRightMember right,
+                  Class<? super TRightMember> rightEquatingSuperClass,
+                  EqualityComparer<? super TRightMember> rightEqualityComparator){
+
+        this.left = left;
+        this.leftEquatingSuperClass = leftEquatingSuperClass;
+        this.leftEqualityComparator = leftEqualityComparator;
+        this.right = right;
+        this.rightEquatingSuperClass = rightEquatingSuperClass;
+        this.rightEqualityComparator = rightEqualityComparator;
+
+    }
 
     @Override
     public String toString() {
@@ -63,12 +110,30 @@ public class Tuple<TLeftMember, TRightMember> implements Map.Entry<TLeftMember, 
         throw new UnsupportedOperationException();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tuple)) return false;
 
-        return equalityComparator.equals(left, right);
+        Tuple otherTuple = (Tuple) o;
+
+        if ( ! isCompatableType(this.left, leftEquatingSuperClass, otherTuple.left)) return false;
+        if ( ! isCompatableType(this.right, rightEquatingSuperClass, otherTuple.right)) return false;
+
+        Tuple<TLeftMember, TRightMember> typedOther = otherTuple;
+
+        return leftEqualityComparator.equals(left, typedOther.left)
+                && rightEqualityComparator.equals(right, typedOther.right);
+    }
+
+    private boolean isCompatableType(Object thisComponent, Class thisComponentEquatingType, Object otherComponent) {
+        if(otherComponent != null && thisComponent != null
+                && ! thisComponentEquatingType.isInstance(otherComponent)){
+            // type miss-match on the arguments.
+            return false;
+        }
+        return true;
     }
 
     @Override

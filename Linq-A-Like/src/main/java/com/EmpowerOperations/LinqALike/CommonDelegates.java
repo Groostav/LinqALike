@@ -1,9 +1,6 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.DescribedEqualityComparer;
-import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
-import com.EmpowerOperations.LinqALike.Common.Ref;
-import com.EmpowerOperations.LinqALike.Common.Tuple;
+import com.EmpowerOperations.LinqALike.Common.*;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 
@@ -20,8 +17,8 @@ public class CommonDelegates {
             "set is not empty",
             (Condition<Iterable>) candidate -> !candidate.iterator().hasNext()
     );
-    public static final EqualityComparer.Untyped DefaultEquals = new DefaultEqualityComparer();
-    public static final EqualityComparer.Untyped ReferenceEquals = new ReferenceEqualityComparer();
+    public static final EqualityComparer.Untyped DefaultEquality = new DefaultEqualityComparer();
+    public static final EqualityComparer.Untyped ReferenceEquality = new ReferenceEqualityComparer();
 
     public static <TObject> Func1<TObject, TObject> identity() {
         return new Func1.WithDescription<>("identity function: object -> object", object -> object);
@@ -80,11 +77,11 @@ public class CommonDelegates {
     }
 
     public static <TSource, TResult> Func1<TSource, TResult> memoized(Func1<TSource, TResult> valueRetrieval){
-        Map<Ref<TSource>/*TSource*/, TResult> cache = new HashMap<>();
+        Map<Reference<TSource>, TResult> cache = new HashMap<>();
         return new Func1.WithDescription<>(
                 "memoized { " + valueRetrieval + " }",
                 source -> {
-                    Ref<TSource> key = new Ref<>(source, CommonDelegates.ReferenceEquality);
+                    Reference<TSource> key = new Reference<>(source, CommonDelegates.ReferenceEquality);
                     if (cache.containsKey(key)) {
                         return cache.get(key);
                     }
@@ -97,12 +94,24 @@ public class CommonDelegates {
         );
     }
 
+    @SuppressWarnings("unchecked")
+    public static <TEquated> EqualityComparer.Untyped typedEquality(Class<TEquated> miniumAllowedType, EqualityComparer<TEquated> equalityComparerToBeFiltered){
+        return new EqualityComparer.Untyped() {
+            @Override
+            public boolean equals(Object left, Object right) {
+                return miniumAllowedType.isInstance(left)
+                        && miniumAllowedType.isInstance(right)
+                        && equalityComparerToBeFiltered.equals((TEquated) left, (TEquated) right);
+            }
+        };
+    }
+
     public static <TEquated> EqualityComparer<TEquated> memoized(EqualityComparer<TEquated> valueRetreval){
         Map<Tuple<TEquated, TEquated>, Boolean> cache = new HashMap<>();
         return new EqualityComparerWithDescription<>(
                 "memoized { " + valueRetreval + " }",
                 (left, right) -> {
-                    Tuple<TEquated, TEquated> key = Tuple.withEqualityComparator(left, right, CommonDelegates.ReferenceEquality);
+                    Tuple<TEquated, TEquated> key = new Tuple<>(left, right, CommonDelegates.ReferenceEquality);
                     if(cache.containsKey(key)){
                         return cache.get(key);
                     }

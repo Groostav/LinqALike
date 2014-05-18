@@ -1,6 +1,6 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
-import com.EmpowerOperations.LinqALike.Common.ComparingSet;
+import com.EmpowerOperations.LinqALike.Common.ComparingLinkedHashSet;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.Preconditions;
 import com.EmpowerOperations.LinqALike.Common.PrefetchingIterator;
@@ -34,7 +34,7 @@ public class UnionQuery<TElement> implements DefaultQueryable<TElement> {
 
     private class UnionIterator extends PrefetchingIterator<TElement> {
 
-        private final ComparingSet<TElement> setSoFar = new ComparingSet<>(equalityComparator);
+        private final ComparingLinkedHashSet<TElement> setSoFar = new ComparingLinkedHashSet<>(equalityComparator);
 
         private final Iterator<? extends TElement> lefts = left.iterator();
         private final Iterator<? extends TElement> rights = right.iterator();

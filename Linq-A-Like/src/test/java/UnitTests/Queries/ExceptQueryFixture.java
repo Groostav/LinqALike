@@ -3,7 +3,6 @@ package UnitTests.Queries;
 import Assists.CountingEqualityComparator;
 import Assists.CountingTransform;
 import Assists.QueryFixtureBase;
-import com.EmpowerOperations.LinqALike.Common.Ref;
 import com.EmpowerOperations.LinqALike.CommonDelegates;
 import com.EmpowerOperations.LinqALike.Factories;
 import com.EmpowerOperations.LinqALike.LinqingList;
@@ -170,7 +169,6 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         EquatableValue firstDuplicate = new EquatableValue("Sedin");
         EquatableValue secondDuplicate = new EquatableValue("Sedin");
         LinqingList<EquatableValue> brothers = new LinqingList<>(firstDuplicate, secondDuplicate);
-        Ref<Integer> counter = new Ref<>(0);
 
         //act
         List<EquatableValue> results = brothers.except(from(firstDuplicate), System::identityHashCode).toList();

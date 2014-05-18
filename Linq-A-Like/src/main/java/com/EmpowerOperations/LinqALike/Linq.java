@@ -1,7 +1,7 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.AdaptQuery;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
 import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
@@ -135,7 +135,7 @@ public class Linq {
     public static <TElement>
     boolean containsElement(Iterable<? extends TElement> sourceElements,
                             TElement candidate){
-        return ImmediateInspections.contains(sourceElements, candidate, CommonDelegates.DefaultEquals);
+        return ImmediateInspections.contains(sourceElements, candidate, CommonDelegates.DefaultEquality);
     }
 
 
@@ -184,7 +184,7 @@ public class Linq {
             return (Queryable) sourceElements;
         }
         else {
-            return new AdaptQuery.FromIterable<TDesired>((Iterable)sourceElements);
+            return new QueryAdapter.FromIterable<TDesired>((Iterable)sourceElements);
         }
     }
 
