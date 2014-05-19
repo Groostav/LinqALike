@@ -110,14 +110,12 @@ public class GroupByFixture extends QueryFixtureBase {
 
         //act
         Queryable<Queryable<Double>> groups = sourceList.groupBy(x -> x);
-        Object beforeAddition = fetch(groups);
         sourceList.add(newValue);
-        Object afterAddition = fetch(groups);
 
         //assert
         LinqingList<Queryable<Double>> result = groups.toList();
         assertThat(result).hasSize(4);
-        assertThat(result.get(3)).contains(newValue);
+        assertThat(result.get(3)).containsOnly(newValue);
     }
 
     @Test
