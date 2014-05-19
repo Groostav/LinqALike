@@ -3,7 +3,6 @@ package UnitTests.Queries;
 import Assists.QueryFixtureBase;
 import com.EmpowerOperations.LinqALike.LinqingList;
 import com.EmpowerOperations.LinqALike.Queryable;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Iterator;
