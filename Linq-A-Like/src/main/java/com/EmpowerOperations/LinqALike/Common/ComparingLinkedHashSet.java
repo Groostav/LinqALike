@@ -22,7 +22,7 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
     private final EqualityComparer<? super TElement> equalityComparer;
     private final Class<? super TElement> widestEquatableType;
 
-    public ComparingLinkedHashSet(EqualityComparer.Untyped equalityComparer){
+    public ComparingLinkedHashSet(EqualityComparer<? super TElement> equalityComparer){
         this.equalityComparer = equalityComparer;
         this.widestEquatableType = Object.class;
     }
@@ -52,6 +52,14 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
 
     public boolean add(TElement element) {
         return backingSet.add(makeEquatable(element));
+    }
+
+    public boolean addAll(Iterable<TElement> newItems) {
+        boolean madeChange = false;
+        for(TElement element : newItems){
+            madeChange |= add(element);
+        }
+        return madeChange;
     }
 
     public boolean contains(TElement canddiate){

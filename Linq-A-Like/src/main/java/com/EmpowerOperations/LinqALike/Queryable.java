@@ -71,17 +71,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Determines if this Queryable contains the supplied candidate element.
      *
-     * <p>consider using {@link #containsElement(Object)}</p> as a typed alternative.</p>
-     *
-     * @param candidate element whose presence in this collection is to be determined
-     * @return true of the supplied candidate is in this collection
-     * @see java.util.Collection#contains(Object)
-     * @see #containsElement(Object)
-     */
-    boolean contains(Object candidate);
-    /**
-     * Determines if this Queryable contains the supplied candidate element.
-     *
      * This method is a typed <code>contains</code> method that will likely protect users from common
      * wrong argument bugs relating to the {@link java.util.Collection#contains(Object)}
      * method.
@@ -90,6 +79,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @return true of the supplied candidate is in this collection
      */
     boolean containsElement(TElement candidate);
+
+    boolean containsElement(TElement candidateLeader, EqualityComparer<? super TElement> equalityComparer);
 
 
     /**

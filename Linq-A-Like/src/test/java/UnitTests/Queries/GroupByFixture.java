@@ -11,6 +11,7 @@ import java.util.List;
 
 import static com.EmpowerOperations.LinqALike.CommonDelegates.identity;
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * Created by Geoff on 14/04/2014.
@@ -97,7 +98,6 @@ public class GroupByFixture extends QueryFixtureBase {
 
         //act
         Queryable<Queryable<NumberValue>> groups = values.groupBy((x, y) -> false);
-        Object flattened = fetch(groups);
 
         assertThat(groups).hasSize(6);
     }
@@ -133,6 +133,20 @@ public class GroupByFixture extends QueryFixtureBase {
         //assert
         List<Queryable<Double>> result = groups.toList();
         assertThat(result.get(1).toList()).containsExactly(2.0, 2.0, newValue);
+    }
+
+    @Test
+    public void when_adding_a_member_to_a_group_already_resolved_by_a_group_by_query_group_should_contain_new_element(){
+        //setup
+        LinqingList<Integer> sourceNumbers = new LinqingList<>(1, 2);
+        Queryable<Integer> firstNumGroup = sourceNumbers.groupBy(x -> x).first();
+        assumeTrue(firstNumGroup.containsElement(1) && firstNumGroup.isSingle());
+
+        //act
+        sourceNumbers.add(1);
+
+        //assert
+        assertThat(firstNumGroup).containsOnly(1, 1);
     }
 
     private void assertNameGroupHas(List<Queryable<NamedValue>> groups, int groupIndex, String expectedName, int expectedSize) {

@@ -124,7 +124,7 @@ public class Linq {
     boolean containsElement(Iterable<? extends TElement> sourceElements,
                             TElement candidate,
                             Func1<? super TElement, TEquated> equatableSelector) {
-        return ImmediateInspections.contains(sourceElements, candidate, equalsBySelector(equatableSelector));
+        return ImmediateInspections.contains(sourceElements, candidate, defaultEqualsBySelector(equatableSelector));
     }
     public static <TElement>
     boolean containsElement(Iterable<? extends TElement> sourceElements,
@@ -147,12 +147,12 @@ public class Linq {
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return new UnionQuery<>(left, from(toInclude), equalsBySelector(identity()));
+        return new UnionQuery<>(left, from(toInclude), defaultEqualsBySelector(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return new UnionQuery<>(left, right, equalsBySelector(identity()));
+        return new UnionQuery<>(left, right, defaultEqualsBySelector(identity()));
     }
 
     public static <TElement, TCompared>
@@ -160,7 +160,7 @@ public class Linq {
                               Iterable<? extends TElement> right,
                               Func1<? super TElement, TCompared> comparableSelector){
 
-        return new UnionQuery<>(left, right, equalsBySelector(memoized(comparableSelector)));
+        return new UnionQuery<>(left, right, defaultEqualsBySelector(memoized(comparableSelector)));
     }
 
     public static <TElement>
@@ -223,14 +223,14 @@ public class Linq {
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
 
-        return new ExceptQuery<>(source, from(toExclude), equalsBySelector(identity()));
+        return new ExceptQuery<>(source, from(toExclude), defaultEqualsBySelector(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> left,
                                Iterable<? extends TElement> right) {
 
-        return new ExceptQuery<>(left, right, equalsBySelector(CommonDelegates.<TElement>identity()));
+        return new ExceptQuery<>(left, right, defaultEqualsBySelector(CommonDelegates.<TElement>identity()));
     }
 
     public static <TElement, TCompared>
@@ -238,7 +238,7 @@ public class Linq {
                                Iterable<? extends TElement> membersToExclude,
                                Func1<? super TElement, TCompared> comparableSelector) {
 
-        return new ExceptQuery<>(originalMembers, membersToExclude, equalsBySelector(memoized(comparableSelector)));
+        return new ExceptQuery<>(originalMembers, membersToExclude, defaultEqualsBySelector(memoized(comparableSelector)));
     }
 
     public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
@@ -325,7 +325,7 @@ public class Linq {
     public static <TElement, TComparable>
     Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
                                            Func1<? super TElement, TComparable> groupByPropertySelector) {
-        return new GroupByQuery<>(setToGroup, equalsBySelector(memoized(groupByPropertySelector)));
+        return new GroupByQuery<>(setToGroup, defaultEqualsBySelector(memoized(groupByPropertySelector)));
     }
 
     public static <TElement>

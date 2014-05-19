@@ -39,13 +39,14 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     }
 
 
-    @Override default public boolean contains(Object candidate){
-        return Linq.contains(this, candidate);
-    }
     @Override default public boolean containsElement(TElement candidate){
         return Linq.containsElement(this, candidate);
     }
 
+    @Override default boolean containsElement(TElement candidateLeader,
+                                              EqualityComparer<? super TElement> equalityComparer){
+        return Linq.containsElement(this, candidateLeader, equalityComparer);
+    }
 
     @Override default public int count(Condition<? super TElement> condition){
         return Linq.count(this, condition);

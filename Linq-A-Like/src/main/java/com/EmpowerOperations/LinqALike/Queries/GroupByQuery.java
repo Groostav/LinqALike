@@ -7,8 +7,9 @@ import com.EmpowerOperations.LinqALike.Common.PrefetchingIterator;
 import com.EmpowerOperations.LinqALike.Queryable;
 
 import java.util.Iterator;
-import java.util.List;
 
+import static com.EmpowerOperations.LinqALike.CommonDelegates.FalsehoodEquality;
+import static com.EmpowerOperations.LinqALike.CommonDelegates.ReferenceEquality;
 import static com.EmpowerOperations.LinqALike.Factories.from;
 
 public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TElement>> {
@@ -34,16 +35,21 @@ public class GroupByQuery<TElement> implements DefaultQueryable<Queryable<TEleme
     private class GroupByWithEqualityComparatorIterator extends PrefetchingIterator<Queryable<TElement>> {
 
         private ComparingLinkedHashSet<TElement> alreadySeenElements = new ComparingLinkedHashSet<>(groupMembershipComparator);
+        private Iterator<TElement> unseenElements = sourceElements.iterator();
 
         @Override
         protected void prefetch() {
-            for(TElement candidateLeader : sourceElements){
+            while(unseenElements.hasNext()){
+                TElement candidateLeader = unseenElements.next();
 
-                boolean hasChange = alreadySeenElements.add(candidateLeader);
-                if ( ! hasChange) { continue; }
+                boolean isNewElement = alreadySeenElements.add(candidateLeader);
+                if ( ! isNewElement) { continue; }
 
                 Queryable<TElement> group = sourceElements.where(groupCandidate -> groupMembershipComparator.equals(candidateLeader, groupCandidate));
-                List<TElement> flattened = group.toList();
+
+                if( ! group.containsElement(candidateLeader, ReferenceEquality)){
+                    group = from(candidateLeader).union(group, FalsehoodEquality);
+                }
 
                 setPrefetchedValue(group);
                 return;

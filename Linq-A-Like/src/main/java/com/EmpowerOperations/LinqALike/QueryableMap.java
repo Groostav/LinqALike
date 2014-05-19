@@ -14,10 +14,10 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
     public Queryable<TValue> values();
 
     default boolean containsTKey(TKey candidateKey){
-        return keySet().contains(candidateKey);
+        return keySet().containsElement(candidateKey);
     }
     default boolean containsTValue(TValue candidateValue){
-        return values().contains(candidateValue);
+        return values().containsElement(candidateValue);
     }
 
     @Override default QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> toExclude){

@@ -14,11 +14,27 @@ import static org.apache.commons.lang3.StringUtils.join;
 public class CommonDelegates {
 
     public static Condition.WithDescription<Iterable> IsEmpty = new Condition.WithDescription<>(
-            "set is not empty",
-            (Condition<Iterable>) candidate -> !candidate.iterator().hasNext()
+            "set is empty",
+            candidate -> ! candidate.iterator().hasNext()
     );
     public static final EqualityComparer.Untyped DefaultEquality = new DefaultEqualityComparer();
     public static final EqualityComparer.Untyped ReferenceEquality = new ReferenceEqualityComparer();
+    public static final EqualityComparer.Untyped FalsehoodEquality = new DescribedUntypedEqualityComparer(
+            "never-true equaity, equals(left, right) -> false, hashcode(object) -> counter++",
+            new EqualityComparer.Untyped() {
+                private int counter = 0;
+
+                @Override
+                public boolean equals(Object left, Object right) {
+                    return false;
+                }
+
+                @Override
+                public int hashCode(Object object) {
+                    counter = (counter + 1) % Integer.MAX_VALUE; //mod prevents integer overflow
+                    return counter;
+                }
+            });
 
     public static <TObject> Func1<TObject, TObject> identity() {
         return new Func1.WithDescription<>("identity function: object -> object", object -> object);

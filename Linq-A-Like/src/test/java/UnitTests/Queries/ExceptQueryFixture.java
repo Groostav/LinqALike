@@ -99,7 +99,7 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         left.add(newValue);
 
         //assert
-        assertThat(result.contains(newValue));
+        assertThat(result.toList()).contains(newValue);
     }
 
     @Test
