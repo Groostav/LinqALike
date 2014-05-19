@@ -169,7 +169,7 @@ public class ImmediateInspections {
     public static <TElement> boolean isSubsetOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
         Queryable<TElement> leftFetched = from(left).fetch();
         for(TElement rightElement : right){
-            if ( ! leftFetched.contains(rightElement)) {
+            if ( ! leftFetched.containsElement(rightElement)) {
                 return false;
             }
         }

@@ -1,9 +1,9 @@
 package com.EmpowerOperations.LinqALike.Common;
 
-import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import com.EmpowerOperations.LinqALike.Linq;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 /**
  * This class is a hack to allow caller-defined {@link #hashCode()} and {@link #equals(Object)} built
@@ -16,21 +16,18 @@ import java.util.*;
  *
  * Created by Geoff on 2014-05-11.
  */
-public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> implements Set<TElement> {
+public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> {
 
     private final LinkedHashSet<Reference<TElement>> backingSet = new LinkedHashSet<>();
     private final EqualityComparer<? super TElement> equalityComparer;
     private final Class<? super TElement> widestEquatableType;
 
-    public ComparingLinkedHashSet(EqualityComparer<? super TElement> equalityComparer){
+    public ComparingLinkedHashSet(EqualityComparer.Untyped equalityComparer){
         this.equalityComparer = equalityComparer;
-        this.widestEquatableType = null;
+        this.widestEquatableType = Object.class;
     }
 
-    public ComparingLinkedHashSet(EqualityComparer<? super TElement> equalityComparer, Class<? super TElement> widestEquatableType){
-        this.equalityComparer = equalityComparer;
-        this.widestEquatableType = widestEquatableType;
-    }
+    //TODO other constructors.
 
     @Override
     public Iterator<TElement> iterator() {
@@ -49,109 +46,81 @@ public class ComparingLinkedHashSet<TElement> extends AbstractSet<TElement> impl
         };
     }
 
-    @Override
     public int size() {
         return backingSet.size();
     }
 
-    @Override
     public boolean add(TElement element) {
         return backingSet.add(makeEquatable(element));
     }
 
-    @Override
-    public boolean contains(Object candidate) {
-        return attemptRuntimeTypeRestrictedAction(candidate, backingSet::contains, "containsElement(TElement candidate)");
-    }
-
-    public boolean containsElement(TElement canddiate){
+    public boolean contains(TElement canddiate){
         return backingSet.contains(makeEquatable(canddiate));
     }
 
-    @Override
-    public boolean remove(Object item) {
-        return attemptRuntimeTypeRestrictedAction(item, backingSet::remove, "removeElement(TElement existingElement");
-    }
-
-    public boolean removeElement(TElement existingElement){
+    public boolean remove(TElement existingElement){
         return backingSet.remove(makeEquatable(existingElement));
     }
 
-    @Override
-    public boolean retainAll(Collection<?> allowedElements) {
-        boolean hasChanged = false;
-        for(TElement element : this){
-            if( ! equalitySafeContains(allowedElements, element, "retainAllElements(Iterable<? extends TElement> allowedElements")){
-                hasChanged |= removeElement(element);
-            }
-        }
-
-        return hasChanged;
-    }
-
-    public boolean retainAllElements(Iterable<? extends TElement> allowedElements){
+    public boolean retainAll(Iterable<? extends TElement> allowedElements){
         boolean hasChanged = false;
         for(TElement element : this){
             if( ! Linq.containsElement(allowedElements, element, equalityComparer)){
-                hasChanged |= removeElement(element);
+                hasChanged |= remove(element);
             }
         }
         return hasChanged;
     }
 
-    @Override
-    public boolean removeAll(Collection<?> existingElements) {
-        boolean hasChanged = false;
-        for(Object existingElement : existingElements){
-            hasChanged |= attemptRuntimeTypeRestrictedAction(existingElements, backingSet::remove, "removeAllElements(Iterable<? extends TElement> existingElements");
-        }
-        return hasChanged;
-    }
-
-    public boolean removeAllElements(Iterable<? extends TElement> existingElements) {
+    public boolean removeAll(Iterable<? extends TElement> existingElements) {
         boolean hasChanged = false;
         for(TElement existingElement : existingElements){
-            hasChanged |= removeElement(existingElement);
+            hasChanged |= remove(existingElement);
         }
         return hasChanged;
     }
 
+    //TODO remove, refactor, or re-introduce this. Might be post 1.0.
+
+//    @SuppressWarnings("unchecked")
+//    private <TResult> TResult attemptRuntimeTypeRestrictedAction(Object item,
+//                                                                 Func1<Reference<TElement>, TResult> transform,
+//                                                                 final String alternativeTypeSafeMethodName) {
+//        if (widestEquatableType != null && widestEquatableType.isInstance(item)){
+//            return transform.getFrom(makeEquatable((TElement) item));
+//        }
+//        else if ( widestEquatableType != null){
+//            throw new IllegalArgumentException("the supplied argument cannot be tested for equality since it's not of a type that the equality comparer will accept");
+//        }
+//        else if(equalityComparer instanceof EqualityComparer.Untyped){
+//            return transform.getFrom(makeEquatable((TElement) item));
+//        }
+//        else{
+//            throw new UnsupportedOperationException(
+//                    "Cannot determine a safe way to cast the argument such that it may be tested by this set's custom equality comparer '" + equalityComparer + ".\n" +
+//                            "Consider\n " +
+//                            "\tA) supplying either an " + "EqualityComparer.Untyped instance" + ", \n" +
+//                            "\tB) supplying the constructor with the 'widestEquatableType' parameter, or \n" +
+//                            "\tC) using the '" + alternativeTypeSafeMethodName + "' method."
+//            );
+//        }
+//    }
+//
+//    private boolean equalitySafeContains(Collection<?> allowedElements, TElement element, String alternativeTypeSafeMethodName) {
+//        boolean isContained = false;
+//        for(Object allowed : allowedElements){
+//            isContained = attemptRuntimeTypeRestrictedAction(
+//                    allowed,
+//                    x -> equalityComparer.equals((TElement)allowed, element),
+//                    alternativeTypeSafeMethodName);
+//            if(isContained){
+//                break;
+//            }
+//        }
+//        return isContained;
+//    }
+
     @SuppressWarnings("unchecked")
-    private <TResult> TResult attemptRuntimeTypeRestrictedAction(Object item,
-                                                                 Func1<Reference<TElement>, TResult> transform, final String alternativeTypeSafeMethodName) {
-        if (widestEquatableType != null && widestEquatableType.isInstance(item)){
-            return transform.getFrom(makeEquatable((TElement) item));
-        }
-        else if ( widestEquatableType != null){
-            throw new IllegalArgumentException("the supplied argument cannot be tested for equality since it's not of a type that the equality comparer will accept");
-        }
-        else if(equalityComparer instanceof EqualityComparer.Untyped){
-            return transform.getFrom(makeEquatable((TElement) item));
-        }
-        else{
-            throw new UnsupportedOperationException(
-                    "Cannot determine a safe way to cast the argument such that it may be tested by this set's custom equality comparer '" + equalityComparer + ".\n" +
-                            "Consider\n " +
-                            "\tA) supplying either an " + "EqualityComparer.Untyped instance" + ", \n" +
-                            "\tB) supplying the constructor with the 'widestEquatableType' parameter, or \n" +
-                            "\tC) using the '" + alternativeTypeSafeMethodName + "' method."
-            );
-        }
-    }
-
-    private boolean equalitySafeContains(Collection<?> allowedElements, TElement element, String alternativeTypeSafeMethodName) {
-        boolean isContained = false;
-        for(Object allowed : allowedElements){
-            isContained = attemptRuntimeTypeRestrictedAction(allowed,
-                    x -> equalityComparer.equals((TElement)allowed, element),
-                    alternativeTypeSafeMethodName);
-            if(isContained){
-                break;
-            }
-        }
-        return isContained;
-    }
-
     private Reference<TElement> makeEquatable(TElement existingElement) {
         return Reference.withSpecificEquals(existingElement, (Class) widestEquatableType, equalityComparer);
     }

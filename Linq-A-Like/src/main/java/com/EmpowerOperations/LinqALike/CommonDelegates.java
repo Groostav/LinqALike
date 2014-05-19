@@ -62,7 +62,7 @@ public class CommonDelegates {
     }
 
     public static <TLeft, TRight> Condition<Tuple<TLeft, TRight>> EntryIsIn(final QueryableMap<TLeft, ? extends Queryable<TRight>> other) {
-        return candidate -> other.get(candidate.left).contains(candidate.right);
+        return candidate -> other.get(candidate.left).containsElement(candidate.right);
     }
 
     public static Condition<File> FileExists = new Condition.WithDescription<>("The File exists: File::exists", File::exists);
@@ -106,17 +106,17 @@ public class CommonDelegates {
         };
     }
 
-    public static <TEquated> EqualityComparer<TEquated> memoized(EqualityComparer<TEquated> valueRetreval){
+    public static <TEquated> EqualityComparer<TEquated> memoized(EqualityComparer<TEquated> valueRetrieval){
         Map<Tuple<TEquated, TEquated>, Boolean> cache = new HashMap<>();
         return new EqualityComparerWithDescription<>(
-                "memoized { " + valueRetreval + " }",
+                "memoized { " + valueRetrieval + " }",
                 (left, right) -> {
                     Tuple<TEquated, TEquated> key = new Tuple<>(left, right, CommonDelegates.ReferenceEquality);
                     if(cache.containsKey(key)){
                         return cache.get(key);
                     }
                     else{
-                        boolean value = valueRetreval.equals(left, right);
+                        boolean value = valueRetrieval.equals(left, right);
                         cache.put(key, value);
                         return value;
                     }
@@ -125,12 +125,13 @@ public class CommonDelegates {
     }
 
     public static <TArgument, TEquated>
-    DescribedEqualityComparer<TArgument> equalsBySelector(final Func1<TArgument, TEquated> comparableSelector){
-        return new DescribedEqualityComparer<>(
+    EqualityComparer.Untyped defaultEqualsBySelector(final Func1<TArgument, TEquated> comparableSelector){
+        return new DescribedUntypedEqualityComparer(
                 "default equality on values provided by: " + comparableSelector,
                 (left, right) -> {
-                    TEquated leftComparable = comparableSelector.getFrom(left);
-                    TEquated rightComparable = comparableSelector.getFrom(right);
+                    //TODO investigate, maybe split Queryable and Collections further?
+                    TEquated leftComparable = comparableSelector.getFrom((TArgument)left);
+                    TEquated rightComparable = comparableSelector.getFrom((TArgument)right);
 
                     return leftComparable == null
                             ? rightComparable == null

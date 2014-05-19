@@ -101,7 +101,7 @@ public abstract class IntersectionQuery<TElement> implements DefaultQueryable<TE
                 TElement candidate = leftIterator.next();
                 TCompared candidateComparable = comparableSelector.getFrom(candidate);
 
-                if (rights.contains(candidateComparable)) {
+                if (rights.containsElement(candidateComparable)) {
                     setPrefetchedValue(candidate);
                 }
             }

@@ -9,15 +9,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * An {@link java.util.ArrayList} decorated with support {@link LinqALike.Queryable}, probably the most
+ * An {@link java.util.ArrayList} decorated with support {@link com.EmpowerOperations.LinqALike.Queryable}, probably the most
  * useful instantiable class in this library.
  *
  * In relational terms a Java list is an <i>ordered bag</i>, meaning it may contain duplicates, and it maintains
  * its own (indexed) order.
  *
  * @see java.util.ArrayList
- * @see LinqALike.Queryable
- * @see LinqALike.Queries.DefaultQueryable
+ * @see com.EmpowerOperations.LinqALike.Queryable
+ * @see com.EmpowerOperations.LinqALike.Queries.DefaultQueryable
  */
 public class LinqingList<TElement> extends ArrayList<TElement> implements DefaultQueryable<TElement> {
 
