@@ -10,8 +10,12 @@ import java.util.Map;
 
 public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<TKey, TValue>> {
 
-    public Queryable<TKey> keySet();
-    public Queryable<TValue> values();
+    default public Queryable<TKey> keySet(){
+        return new LinqingSet<>(this.select(Map.Entry::getKey));
+    }
+    default public Queryable<TValue> values(){
+        return new LinqingList<>(this.select(Map.Entry::getValue));
+    }
 
     default boolean containsTKey(TKey candidateKey){
         return keySet().containsElement(candidateKey);
@@ -37,7 +41,7 @@ public interface QueryableMap<TKey, TValue> extends DefaultQueryable<Map.Entry<T
     }
 
 
-    default TValue get(TKey key){
+    default TValue getForKey(TKey key){
         assert false : "not implemented";
         return null;
     }

@@ -1,12 +1,9 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.Tuple;
-import com.EmpowerOperations.LinqALike.Delegate.Condition;
-import com.EmpowerOperations.LinqALike.Queries.DefaultQueryable;
+import com.EmpowerOperations.LinqALike.Delegate.*;
+import com.EmpowerOperations.LinqALike.Queries.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * An {@link java.util.ArrayList} decorated with support {@link com.EmpowerOperations.LinqALike.Queryable}, probably the most
@@ -104,9 +101,9 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
         this.addAll(intersection);
     }
 
-    public void replaceAll(Queryable<Tuple<TElement, TElement>> changedItems) {
-        for(Tuple<TElement, TElement> pair : changedItems){
-            this.replace(pair.left, pair.right);
+    public void replaceAll(Queryable<? extends Map.Entry<TElement, TElement>> changedItems) {
+        for(Map.Entry<TElement, TElement> pair : changedItems){
+            this.replace(pair.getKey(), pair.getValue());
         }
     }
 

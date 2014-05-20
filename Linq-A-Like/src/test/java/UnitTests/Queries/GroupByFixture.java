@@ -161,8 +161,4 @@ public class GroupByFixture extends QueryFixtureBase {
             assertThat(numberValue.number).isEqualTo(expectedValue);
         }
     }
-
-    private <TElement> LinqingList<LinqingList<TElement>> fetch(Queryable<Queryable<TElement>> queries){
-        return queries.select(Queryable::toList).toList();
-    }
 }

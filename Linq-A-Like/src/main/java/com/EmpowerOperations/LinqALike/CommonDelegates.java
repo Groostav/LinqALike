@@ -78,7 +78,7 @@ public class CommonDelegates {
     }
 
     public static <TLeft, TRight> Condition<Tuple<TLeft, TRight>> EntryIsIn(final QueryableMap<TLeft, ? extends Queryable<TRight>> other) {
-        return candidate -> other.get(candidate.left).containsElement(candidate.right);
+        return candidate -> other.getForKey(candidate.left).containsElement(candidate.right);
     }
 
     public static Condition<File> FileExists = new Condition.WithDescription<>("The File exists: File::exists", File::exists);
