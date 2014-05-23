@@ -10,6 +10,15 @@ import java.util.Map;
 
 public interface DefaultQueryableMap<TKey, TValue> extends QueryableMap<TKey, TValue>, DefaultQueryable<Map.Entry<TKey, TValue>> {
 
+    @Override default public TValue getValueFor(TKey key){
+        return Linq.getFor(this, key);
+    }
+
+    @Override
+    public default Queryable<TValue> getAll(Iterable<? extends TKey> keys){
+        return Linq.MapSpecific.getAll(this, keys);
+    }
+
     @Override default public Queryable<TKey> keySet(){
         return new LinqingSet<>(this.select(Map.Entry::getKey));
     }

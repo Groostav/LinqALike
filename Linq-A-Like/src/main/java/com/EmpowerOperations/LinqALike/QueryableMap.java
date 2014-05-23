@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TValue>> {
 
-    public TValue getFor(TKey key);
+    public TValue getValueFor(TKey key);
 
     public Queryable<TKey> keySet();
     public Queryable<TValue> values();
@@ -18,4 +18,6 @@ public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TV
     public LinqingMap<TKey, TValue> toMap();
 
     public QueryableMap<TValue, TKey> inverted();
+
+    public Queryable<TValue> getAll(Iterable<? extends TKey> keys);
 }

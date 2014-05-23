@@ -49,7 +49,7 @@ public abstract class QueryAdapter{
         }
 
         @Override
-        public TValue getFor(TKey key) {
+        public TValue getValueFor(TKey key) {
             return Linq.getFor(sourceQuery, key);
         }
     }

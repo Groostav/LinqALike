@@ -16,10 +16,10 @@ public class UsageTests extends QueryFixtureBase {
     public void when_using_a_few_methods_on_linqing_map(){
         LinqingMap<String, NamedValue> map = new LinqingMap<>(new Tuple<>("Bob", new NamedValue("Bob")));
 
-        NamedValue value = map.getFor("Bob");
+        NamedValue value = map.getValueFor("Bob");
 
         assertThat(value).isSameAs(map.first().getValue());
 
-        assertThat(map.inverted().getFor(map.first().getValue())).isEqualTo("Bob");
+        assertThat(map.inverted().getValueFor(map.first().getValue())).isEqualTo("Bob");
     }
 }

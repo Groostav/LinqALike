@@ -57,7 +57,7 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
     }
 
     @Override
-    public TValue getFor(TKey key) {
+    public TValue getValueFor(TKey key) {
         return get(key);
     }
 

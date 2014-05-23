@@ -22,7 +22,7 @@ public class InvertMapQuery<TOldKey, TNewKey> implements DefaultQueryableMap<TNe
     }
 
     @Override
-    public TOldKey getFor(TNewKey key) {
+    public TOldKey getValueFor(TNewKey key) {
         return ImmediateInspections.getFor(this, key);
     }
 

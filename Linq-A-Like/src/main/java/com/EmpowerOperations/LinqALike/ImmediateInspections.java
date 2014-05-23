@@ -331,5 +331,4 @@ public class ImmediateInspections {
     public static <TKey, TValue> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
         return ImmediateInspections.firstOrDefault(sourceEntries, kvp -> nullSafeEquals(key, kvp.getKey())).getValue();
     }
-
 }
