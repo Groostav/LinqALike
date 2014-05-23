@@ -6,20 +6,8 @@ import java.util.*;
 
 public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements DefaultQueryableMap<TKey, TValue> {
 
-    /*
-     * Static factories
-     */
-    public static <TKey, TValue> LinqingMap<TKey, TValue> bind(Map<TKey, TValue> existingMap){
-        return new LinqingMap<>(existingMap);
+    public LinqingMap() {
     }
-    public static <TKey, TValue> LinqingMap<TKey, TValue> bind(Iterable<TKey> keys, Iterable<TValue> values) {
-        return new LinqingMap<>(keys, values);
-    }
-
-
-    /*
-     * constructors
-     */
     public LinqingMap(Iterable<? extends TKey> keys, Iterable<? extends TValue> values) {
         assert Linq.isDistinct(keys);
 
@@ -27,13 +15,6 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
         for(TKey key : keys){
             put(key, valueIterator.next());
         }
-    }
-
-    public LinqingMap() {
-    }
-
-    public LinqingMap(Map<? extends TKey, ? extends TValue> toCopy) {
-        super(toCopy);
     }
 
     public LinqingMap(Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> initialValues){

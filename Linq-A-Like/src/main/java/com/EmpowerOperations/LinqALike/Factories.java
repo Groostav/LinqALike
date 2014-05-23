@@ -1,10 +1,14 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.*;
+import com.EmpowerOperations.LinqALike.Common.Formatting;
+import com.EmpowerOperations.LinqALike.Common.IterableCache;
+import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
+import com.EmpowerOperations.LinqALike.Common.RangeIterator;
+import com.EmpowerOperations.LinqALike.Common.RepeatingIterator;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 
 import java.lang.reflect.Array;
-import java.util.Iterator;
+import java.util.Map;
 
 public class Factories {
 
@@ -12,48 +16,48 @@ public class Factories {
     public static <TElement> Queryable<TElement> from(TElement... sourceElements){
         return new QueryAdapter.FromArray<>(sourceElements);
     }
-
     public static <TElement> Queryable<TElement> from(Iterable<TElement> sourceElements){
         return new QueryAdapter.FromIterable<>(sourceElements);
     }
 
     @SafeVarargs
-    public static <TElement> LinqingList<TElement> asList(TElement... sourceElements){
-        return new LinqingList<>(sourceElements);
+    public static <TElement> LinqingList<TElement> asList(TElement... initialElements) {
+        return new LinqingList<>(initialElements);
     }
 
-    public static <TElement> LinqingList<TElement> asList(Iterable<TElement> sourceElements){
-        return new LinqingList<>(sourceElements);
-    }
-    /**
-     * this code is identical to the {@link #asList(Iterable)} method above, except it makes explciit calls to
-     * {@link java.util.Iterator#next()} and {@link java.util.Iterator#hasNext()} for easier debugging.
-     */
-    @SuppressWarnings("WhileLoopReplaceableByForEach")
-    static <TElement> LinqingList<TElement> asListWithExplicitIterationForDebugging(Iterable<TElement> sourceElements){
-        LinqingList<TElement> copy = new LinqingList<>();
-        Iterator<TElement> iterator = sourceElements.iterator();
-        while(iterator.hasNext()){
-            TElement next = iterator.next();
-            copy.add(next);
-        }
-        return copy;
+    public static <TElement> LinqingList<TElement> asList(Iterable<TElement> initialElements){
+        return new LinqingList<>(initialElements);
     }
 
+    @SafeVarargs
+    public static <TKey, TValue>
+    LinqingMap<TKey, TValue> asMap(Map.Entry<TKey, TValue>... initialEntries){
+        return new LinqingMap<>(initialEntries);
+    }
+    public static <TKey, TValue>
+    LinqingMap<TKey, TValue> asMap(Iterable<? extends Map.Entry<TKey, TValue>> initialElements){
+        return new LinqingMap<>(initialElements);
+    }
     public static <TKey, TValue>
     LinqingMap<TKey, TValue> asMap(Iterable<TKey> keys,
                                    Iterable<TValue> values) {
         return new LinqingMap<>(keys, values);
     }
-
     public static <TKey, TValue, TElement>
-    LinqingMap<TKey, TValue> asMap(Iterable<TElement> sourceElements,
+    LinqingMap<TKey, TValue> asMap(Iterable<TElement> initialElements,
                                    Func1<? super TElement, TKey> keySelector,
                                    Func1<? super TElement, TValue> valueSelector) {
 
-        Iterable<TKey> keys = Linq.select(sourceElements, keySelector);
-        Iterable<TValue> values = Linq.select(sourceElements, valueSelector);
+        Iterable<TKey> keys = Linq.select(initialElements, keySelector);
+        Iterable<TValue> values = Linq.select(initialElements, valueSelector);
         return new LinqingMap<>(keys, values);
+    }
+    public static <TKey, TValue>
+    LinqingMap<TKey, TValue> asMap(Iterable<TValue> initialValues,
+                                   Func1<? super TValue, TKey> keySelector) {
+
+        Iterable<TKey> keys = Linq.select(initialValues, keySelector);
+        return new LinqingMap<>(keys, initialValues);
     }
 
     @SafeVarargs
@@ -68,7 +72,7 @@ public class Factories {
 
     @SafeVarargs
     public static <TSet extends Iterable<?>> TSet firstNotEmpty(TSet ... sets){
-        return from(sets).first(x -> x.iterator().hasNext());
+        return from(sets).first(Linq::any);
     }
 
     public static Iterable<Integer> range(int lowerInclusive, int upperExclusive) {
@@ -87,54 +91,54 @@ public class Factories {
         return new LinqingList<>();
     }
 
-    public static <TElement> ReadonlyLinqingList<TElement> asReadonlyList(Iterable<TElement> sourceElements) {
-        return new ReadonlyLinqingList<>(sourceElements);
+    public static <TElement> ReadonlyLinqingList<TElement> asReadonlyList(Iterable<TElement> initialElements) {
+        return new ReadonlyLinqingList<>(initialElements);
     }
 
-    public static <TElement> LinqingSet<TElement> asSet(Iterable<TElement> sourceElements) {
-        return new LinqingSet<>(sourceElements);
+    public static <TElement> LinqingSet<TElement> asSet(Iterable<TElement> initialElements) {
+        return new LinqingSet<>(initialElements);
     }
 
-    public static Object[] asArray(Iterable<?> sourceElements){
-        Object[] array = new Object[ImmediateInspections.size(sourceElements)];
-        copyIntoArray(sourceElements, array, Object.class);
+    public static Object[] asArray(Iterable<?> initialElements){
+        Object[] array = new Object[ImmediateInspections.size(initialElements)];
+        copyIntoArray(initialElements, array, Object.class);
         return array;
     }
 
     @SuppressWarnings("unchecked")
     public static <TSourceElement, TArrayElement>
-    TArrayElement[] asArray(Iterable<? extends TSourceElement> sourceElements, TArrayElement[] targetArray) {
+    TArrayElement[] asArray(Iterable<? extends TSourceElement> initialElements, TArrayElement[] targetArray) {
 
         Class<?> arrayElementType = targetArray.getClass().getComponentType();
-        int neededSize = Linq.size(sourceElements);
+        int neededSize = Linq.size(initialElements);
 
         if(neededSize < targetArray.length){
-            copyIntoArray(sourceElements, targetArray, arrayElementType);
+            copyIntoArray(initialElements, targetArray, arrayElementType);
         }
         else{
             targetArray = (TArrayElement[]) Array.newInstance(arrayElementType, neededSize);
-            copyIntoArray(sourceElements, targetArray, arrayElementType);
+            copyIntoArray(initialElements, targetArray, arrayElementType);
         }
 
         return targetArray;
     }
 
-    public static <TElement> TElement[] asArray(Iterable<? extends TElement> sourceElements, Class<TElement> arrayElementType){
-        int size = ImmediateInspections.size(sourceElements);
+    public static <TElement> TElement[] asArray(Iterable<? extends TElement> initialElements, Class<TElement> arrayElementType){
+        int size = ImmediateInspections.size(initialElements);
 
         Object newRawArray = Array.newInstance(arrayElementType, size);
 
         @SuppressWarnings("unchecked")
         TElement[] newArray = (TElement[]) newRawArray;
 
-        copyIntoArray(sourceElements, newArray, arrayElementType);
+        copyIntoArray(initialElements, newArray, arrayElementType);
 
         return newArray;
     }
 
-    public static <TElement, TDesired> TDesired[] asArray(Iterable<TElement> sourceElements,
+    public static <TElement, TDesired> TDesired[] asArray(Iterable<TElement> initialElements,
                                                           Func1<Integer, TDesired[]> arrayFactory) {
-        int size = ImmediateInspections.size(sourceElements);
+        int size = ImmediateInspections.size(initialElements);
         Object[] array = arrayFactory.getFrom(size);
 
         if(array.length < size){
@@ -146,7 +150,7 @@ public class Factories {
 
         //TODO run-time assertion on the element type provided by ArrayFactory,
         int index = 0;
-        for(Object element : sourceElements){
+        for(Object element : initialElements){
             array[index] = element;
         }
 

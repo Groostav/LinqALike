@@ -3,7 +3,6 @@ package UnitTests.Queries;
 import Assists.CountingCondition;
 import Assists.QueryFixtureBase;
 import com.EmpowerOperations.LinqALike.LinqingList;
-import com.EmpowerOperations.LinqALike.Queryable;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,9 +13,7 @@ import static org.fest.assertions.Assertions.assertThat;
 /**
  * @author Geoff on 31/10/13
  */
-public abstract class WhereQueryFixture extends QueryFixtureBase {
-
-    public abstract <TElement> Queryable<TElement> makeSetFor(TElement ... elements);
+public class WhereQueryFixture extends QueryFixtureBase {
 
     @Test
     public void when_filtering_on_number_list_by_evenness_it_should_return_even_values(){

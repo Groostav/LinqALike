@@ -286,7 +286,7 @@ public class Linq {
     }
 
     public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
-        return Factories.asListWithExplicitIterationForDebugging(set);
+        return Factories.asList(set);
     }
 
     public static <TElement> int size(Iterable<TElement> sourceElements) {
@@ -466,7 +466,7 @@ public class Linq {
         QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
                                           Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
                                           Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
-            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, CommonDelegates.performEqualsUsing(comparableSelector)));
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, performEqualsUsing(memoized(comparableSelector))));
         }
 
 
@@ -474,7 +474,7 @@ public class Linq {
         QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
                                              Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
                                              Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
-            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithComparable<>(sourceEntries, toInclude, comparableSelector));
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithComparable<>(sourceEntries, toInclude, memoized(comparableSelector)));
         }
         public static <TKey, TValue>
         QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
@@ -497,7 +497,7 @@ public class Linq {
         public static <TKey, TValue, TCompared extends Comparable<TCompared>>
         QueryableMap<TKey, TValue> orderBy(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
                                            Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
-            return new QueryAdapter.ToQueryableMap<>(new OrderByQuery<>(sourceEntries, performComparisonUsing(comparableSelector)));
+            return new QueryAdapter.ToQueryableMap<>(new OrderByQuery<>(sourceEntries, performComparisonUsing(memoized(comparableSelector))));
         }
         public static <TKey, TValue>
         QueryableMap<TKey, TValue> orderBy(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
