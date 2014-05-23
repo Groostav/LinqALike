@@ -4,7 +4,7 @@ import com.EmpowerOperations.LinqALike.Delegate.*;
 
 import java.util.*;
 
-public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements QueryableMap<TKey, TValue> {
+public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements DefaultQueryableMap<TKey, TValue> {
 
     /*
      * Static factories
@@ -75,9 +75,14 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
         }
     }
 
+    @Override
+    public TValue getFor(TKey key) {
+        return get(key);
+    }
+
     /*
-     * Queryable to Util.Collections signature coalescing.
-     */
+         * Queryable to Util.Collections signature coalescing.
+         */
     @Override
     public LinqingSet<TKey> keySet() {
         return new LinqingSet<>(super.keySet());

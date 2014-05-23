@@ -3,21 +3,20 @@ package UnitTests.Queries;
 import Assists.CountingCondition;
 import Assists.QueryFixtureBase;
 import com.EmpowerOperations.LinqALike.LinqingList;
-import org.junit.Rule;
+import com.EmpowerOperations.LinqALike.Queryable;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
+import static Assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
  * @author Geoff on 31/10/13
  */
-public class WhereQueryFixture extends QueryFixtureBase {
+public abstract class WhereQueryFixture extends QueryFixtureBase {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    public abstract <TElement> Queryable<TElement> makeSetFor(TElement ... elements);
 
     @Test
     public void when_filtering_on_number_list_by_evenness_it_should_return_even_values(){
@@ -37,11 +36,10 @@ public class WhereQueryFixture extends QueryFixtureBase {
     @Test
     public void when_filtering_on_number_list_by_null_it_should_throw_argumentexception() {
         //setup
-        thrown.expect(IllegalArgumentException.class);
         LinqingList<Integer> numbers = new LinqingList<>(1, 2, 3, 4, 5, 6, 7, 8);
 
         //act
-        numbers.where(null);
+        assertThrows(IllegalArgumentException.class, () -> numbers.where(null));
     }
 
     @Test

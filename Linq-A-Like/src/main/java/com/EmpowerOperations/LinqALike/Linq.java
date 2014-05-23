@@ -1,18 +1,17 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
-import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
-import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
-import com.EmpowerOperations.LinqALike.Delegate.Condition;
-import com.EmpowerOperations.LinqALike.Delegate.Func1;
+import com.EmpowerOperations.LinqALike.Common.*;
+import com.EmpowerOperations.LinqALike.Delegate.*;
 import com.EmpowerOperations.LinqALike.Queries.*;
 
-import java.util.Comparator;
+import java.util.*;
 
 import static com.EmpowerOperations.LinqALike.CommonDelegates.*;
 import static com.EmpowerOperations.LinqALike.Factories.from;
 
 public class Linq {
+
+    private Linq(){}
 
     public static <TBase, TDerived extends TBase>
     Queryable<TDerived> ofType(Iterable<TBase> sourceElements,
@@ -124,7 +123,7 @@ public class Linq {
     boolean containsElement(Iterable<? extends TElement> sourceElements,
                             TElement candidate,
                             Func1<? super TElement, TEquated> equatableSelector) {
-        return ImmediateInspections.contains(sourceElements, candidate, defaultEqualsBySelector(equatableSelector));
+        return ImmediateInspections.contains(sourceElements, candidate, performEqualsUsing(equatableSelector));
     }
     public static <TElement>
     boolean containsElement(Iterable<? extends TElement> sourceElements,
@@ -147,12 +146,12 @@ public class Linq {
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return new UnionQuery<>(left, from(toInclude), defaultEqualsBySelector(identity()));
+        return new UnionQuery<>(left, from(toInclude), performEqualsUsing(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return new UnionQuery<>(left, right, defaultEqualsBySelector(identity()));
+        return new UnionQuery<>(left, right, performEqualsUsing(identity()));
     }
 
     public static <TElement, TCompared>
@@ -160,7 +159,7 @@ public class Linq {
                               Iterable<? extends TElement> right,
                               Func1<? super TElement, TCompared> comparableSelector){
 
-        return new UnionQuery<>(left, right, defaultEqualsBySelector(memoized(comparableSelector)));
+        return new UnionQuery<>(left, right, performEqualsUsing(memoized(comparableSelector)));
     }
 
     public static <TElement>
@@ -223,14 +222,14 @@ public class Linq {
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
 
-        return new ExceptQuery<>(source, from(toExclude), defaultEqualsBySelector(identity()));
+        return new ExceptQuery<>(source, from(toExclude), performEqualsUsing(identity()));
     }
 
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> left,
                                Iterable<? extends TElement> right) {
 
-        return new ExceptQuery<>(left, right, defaultEqualsBySelector(CommonDelegates.<TElement>identity()));
+        return new ExceptQuery<>(left, right, performEqualsUsing(CommonDelegates.<TElement>identity()));
     }
 
     public static <TElement, TCompared>
@@ -238,7 +237,7 @@ public class Linq {
                                Iterable<? extends TElement> membersToExclude,
                                Func1<? super TElement, TCompared> comparableSelector) {
 
-        return new ExceptQuery<>(originalMembers, membersToExclude, defaultEqualsBySelector(memoized(comparableSelector)));
+        return new ExceptQuery<>(originalMembers, membersToExclude, performEqualsUsing(memoized(comparableSelector)));
     }
 
     public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
@@ -325,7 +324,7 @@ public class Linq {
     public static <TElement, TComparable>
     Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
                                            Func1<? super TElement, TComparable> groupByPropertySelector) {
-        return new GroupByQuery<>(setToGroup, defaultEqualsBySelector(memoized(groupByPropertySelector)));
+        return new GroupByQuery<>(setToGroup, performEqualsUsing(memoized(groupByPropertySelector)));
     }
 
     public static <TElement>
@@ -397,6 +396,168 @@ public class Linq {
 
     public static <TElement> boolean isDistinct(Iterable<TElement> source) {
         return ImmediateInspections.isDistinct(source);
+    }
+
+
+    public static <TValue, TKey> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
+        if(sourceEntries instanceof Map){
+            //so what if its a queryable map of one thing, and a util.map of another?
+            //no, because you'd get a signature collision in keySet() and values(). So that's impossible. Thank god.
+            return ((Map<TKey, TValue>)sourceEntries).get(key);
+        }
+        if(sourceEntries instanceof QueryableMap){
+            return ((QueryableMap<TKey, TValue>) sourceEntries).getFor(key);
+        }
+
+        return ImmediateInspections.getFor(sourceEntries, key);
+    }
+
+    public static class MapSpecific {
+        private MapSpecific(){}
+
+
+        public static <TValue, TKey>
+        QueryableMap<TValue, TKey> inverted(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return new InvertMapQuery<>(sourceEntries);
+        }
+        public static <TKey, TValue> Queryable<TKey> keySet(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return select(sourceEntries, Map.Entry<TKey, TValue>::getKey);
+        }
+        public static <TValue, TKey> Queryable<TValue> values(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return select(sourceEntries, Map.Entry<TKey, TValue>::getValue);
+        }
+        public static <TKey, TValue> LinqingMap<TKey, TValue> toMap(Iterable<? extends Map.Entry<TKey, TValue>> entries) {
+            return new LinqingMap<>(entries);
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> distinct(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return new QueryAdapter.ToQueryableMap<>(new DistinctQuery.WithNaturalEquality<>(sourceEntries));
+        }
+        public static <TCompared, TKey, TValue>
+        QueryableMap<TKey, TValue> distinct(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                            Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new DistinctQuery.WithComparable<>(sourceEntries, comparableSelector));
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> distinct(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                            EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison) {
+            return new QueryAdapter.ToQueryableMap<>(new DistinctQuery.WithEqualityComparable<>(sourceEntries, equalityComparison));
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceElements,
+                                          Map.Entry<TKey, TValue>... toExclude) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceElements, from(toExclude), CommonDelegates.DefaultEquality));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                          Iterable<? extends Map.Entry<TKey, TValue>> toExclude) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, CommonDelegates.DefaultEquality));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                          Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
+                                          EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, equalityComparison));
+        }
+        public static <TKey, TValue, TCompared>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                          Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
+                                          Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, CommonDelegates.performEqualsUsing(comparableSelector)));
+        }
+
+
+        public static <TKey, TValue, TCompared>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                             Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithComparable<>(sourceEntries, toInclude, comparableSelector));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                             EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithEqualityComparator<>(sourceEntries, toInclude, equalityComparison));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Iterable<? extends Map.Entry<TKey, TValue>> toInclude) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithNaturalEquality<>(sourceEntries, toInclude));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Map.Entry<TKey, TValue>... toIntersect) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithNaturalEquality<>(sourceEntries, from(toIntersect)));
+        }
+
+
+        public static <TKey, TValue, TCompared extends Comparable<TCompared>>
+        QueryableMap<TKey, TValue> orderBy(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                           Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new OrderByQuery<>(sourceEntries, performComparisonUsing(comparableSelector)));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> orderBy(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                           Comparator<? super Map.Entry<TKey, TValue>> equalityComparator) {
+            return new QueryAdapter.ToQueryableMap<>(new OrderByQuery<>(sourceEntries, equalityComparator));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> reversed(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return new QueryAdapter.ToQueryableMap<>(new ReversedQuery<>(sourceEntries));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> skipWhile(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Condition<? super Map.Entry<TKey, TValue>> toExclude) {
+            return new QueryAdapter.ToQueryableMap<>(new SkipQuery<>(sourceEntries, toExclude));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> skip(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                        int numberToSkip) {
+            return new QueryAdapter.ToQueryableMap<>(new SkipQuery<>(sourceEntries, numberToSkip));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Map.Entry<TKey, TValue>... entries) {
+            return new QueryAdapter.ToQueryableMap<>(new UnionQuery<>(sourceEntries, from(entries), CommonDelegates.DefaultEquality));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Iterable<? extends Map.Entry<TKey, TValue>> toInclude) {
+            return new QueryAdapter.ToQueryableMap<>(new UnionQuery<>(sourceEntries, toInclude, CommonDelegates.DefaultEquality));
+        }
+        public static <TCompared, TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                         Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new UnionQuery<>(sourceEntries, toInclude, performEqualsUsing(comparableSelector)));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                         EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparator) {
+            return new QueryAdapter.ToQueryableMap<>(
+                    new UnionQuery<>(sourceEntries, toInclude, equalityComparator)
+            );
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> where(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Condition<? super Map.Entry<TKey, TValue>> condition) {
+            return new QueryAdapter.ToQueryableMap<>(
+                    new WhereQuery<>(sourceEntries, condition)
+            );
+        }
     }
 }
 

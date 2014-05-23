@@ -97,7 +97,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
     }
 
     public void addAllNew(Iterable<TElement> setContainingNewAndExistingElements) {
-        Queryable<TElement> intersection = Factories.asList(setContainingNewAndExistingElements).except(this.intersect(setContainingNewAndExistingElements));
+        Queryable<TElement> intersection = Factories.from(setContainingNewAndExistingElements).except(this.intersect(setContainingNewAndExistingElements)).fetch();
         this.addAll(intersection);
     }
 

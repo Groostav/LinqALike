@@ -1,12 +1,20 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.*;
+import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.Preconditions;
+import com.EmpowerOperations.LinqALike.Common.SetIsEmptyException;
+import com.EmpowerOperations.LinqALike.Common.SingletonSetContainsMultipleElementsException;
+import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import com.EmpowerOperations.LinqALike.Delegate.Func2;
 import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import static com.EmpowerOperations.LinqALike.CommonDelegates.nullSafeEquals;
@@ -60,15 +68,25 @@ public class ImmediateInspections {
     }
 
     public static <TElement> TElement singleOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
-
-        if ( ! sourceElements.iterator().hasNext()) {
-            return null;
-        }
-
-        return single(sourceElements, uniqueCondition);
+        return singleOr(sourceElements, uniqueCondition, () -> null, x -> null);
     }
 
     public static <TElement> TElement single(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
+        Supplier<TElement> resultOnNotFound = () -> {
+            throw new SetIsEmptyException(sourceElements, uniqueCondition);
+        };
+        Func1<Queryable<TElement>, TElement> resultOnMultipleFound = multiples -> {
+            throw new SingletonSetContainsMultipleElementsException(sourceElements, multiples, uniqueCondition);
+        };
+
+        return singleOr(sourceElements, uniqueCondition, resultOnNotFound, resultOnMultipleFound);
+    }
+
+    //Expose this? retrofit something similar into everything? Thanks to lambda's, this would be convenient...
+    private static <TElement> TElement singleOr(Iterable<TElement> sourceElements,
+                                                Condition<? super TElement> uniqueCondition,
+                                                Supplier<TElement> resultOnNotFound,
+                                                Func1<Queryable<TElement>, TElement> resultOnMultipleFound){
 
         boolean found = false;
         TElement result = null;
@@ -80,7 +98,7 @@ public class ImmediateInspections {
             }
 
             if(found){
-                throw new SingletonSetContainsMultipleElementsException(sourceElements, from(current, result), uniqueCondition);
+                return resultOnMultipleFound.getFrom(from(current, result));
             }
             else{
                 result = current;
@@ -88,11 +106,8 @@ public class ImmediateInspections {
             }
         }
 
-        if ( ! found){
-            throw new SetIsEmptyException(sourceElements, uniqueCondition);
-        }
+        return found ? result : resultOnNotFound.get();
 
-        return result;
     }
 
     public static <TElement> TElement first(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
@@ -312,4 +327,9 @@ public class ImmediateInspections {
         }
         return false;
     }
+
+    public static <TKey, TValue> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
+        return ImmediateInspections.firstOrDefault(sourceEntries, kvp -> nullSafeEquals(key, kvp.getKey())).getValue();
+    }
+
 }

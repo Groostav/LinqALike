@@ -7,7 +7,7 @@ import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import java.util.Comparator;
 import java.util.Map;
 
-public interface QueryableMultiMap<TKey, TValue> extends QueryableMap<TKey, Queryable<TValue>>{
+public interface QueryableMultiMap<TKey, TValue> extends DefaultQueryableMap<TKey, Queryable<TValue>> {
 
     public Queryable<TValue> flatValues();
 

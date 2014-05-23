@@ -77,8 +77,8 @@ public class CommonDelegates {
         );
     }
 
-    public static <TLeft, TRight> Condition<Tuple<TLeft, TRight>> EntryIsIn(final QueryableMap<TLeft, ? extends Queryable<TRight>> other) {
-        return candidate -> other.getForKey(candidate.left).containsElement(candidate.right);
+    public static <TLeft, TRight> Condition<Tuple<TLeft, TRight>> EntryIsIn(final DefaultQueryableMap<TLeft, ? extends Queryable<TRight>> other) {
+        return candidate -> other.getFor(candidate.left).containsElement(candidate.right);
     }
 
     public static Condition<File> FileExists = new Condition.WithDescription<>("The File exists: File::exists", File::exists);
@@ -141,7 +141,7 @@ public class CommonDelegates {
     }
 
     public static <TArgument, TEquated>
-    EqualityComparer.Untyped defaultEqualsBySelector(final Func1<TArgument, TEquated> comparableSelector){
+    EqualityComparer.Untyped performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
         return new DescribedUntypedEqualityComparer(
                 "default equality on values provided by: " + comparableSelector,
                 (left, right) -> {
