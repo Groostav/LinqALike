@@ -191,6 +191,31 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
         return Linq.singleOrDefault(this, uniqueConstraint);
     }
 
+    @Override default public boolean setEquals(Iterable<? extends TElement> otherSet){
+        return Linq.setEquals(this, otherSet);
+    }
+    @Override default public <TCompared>
+    boolean setEquals(Iterable<? extends TElement> otherSet,
+                      Func1<? super TElement, TCompared> comparableSelector){
+        return Linq.setEquals(this, otherSet, comparableSelector);
+    }
+    @Override default public boolean setEquals(Iterable<? extends TElement> otherSet,
+                                               EqualityComparer<? super TElement> equalityComparer){
+        return Linq.setEquals(this, otherSet, equalityComparer);
+    }
+    @Override default boolean sequenceEquals(Iterable<? extends TElement> otherOrderedSet){
+        return Linq.sequenceEquals(this, otherOrderedSet);
+    }
+    @Override default public <TCompared>
+    boolean sequenceEquals(Iterable<? extends TElement> otherOrderedSet,
+                           Func1<? super TElement, TCompared> comparableSelector){
+        return Linq.sequenceEquals(this, otherOrderedSet, comparableSelector);
+    }
+    @Override default public boolean sequenceEquals(Iterable<? extends TElement> otherOrderedSet,
+                                                    EqualityComparer<? super TElement> equalityComparer){
+        return Linq.sequenceEquals(this, otherOrderedSet, equalityComparer);
+    }
+
 
     @Override default public Queryable<TElement> skipWhile(Condition<? super TElement> toExclude){
         return Linq.skipWhile(this, toExclude);
@@ -275,9 +300,6 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     }
     @Override default public boolean isEmpty(){
         return Linq.isEmpty(this);
-    }
-    @Override default public boolean isSetEquivalentOf(Iterable<? extends TElement> otherSet){
-        return Linq.isSetEquivalentOf(this, otherSet);
     }
     @Override default public boolean isSubsetOf(Iterable<? extends TElement> otherSet){
         return Linq.isSubsetOf(this, otherSet);

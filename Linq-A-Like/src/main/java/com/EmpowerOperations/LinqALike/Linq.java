@@ -1,10 +1,24 @@
 package com.EmpowerOperations.LinqALike;
 
-import com.EmpowerOperations.LinqALike.Common.*;
-import com.EmpowerOperations.LinqALike.Delegate.*;
-import com.EmpowerOperations.LinqALike.Queries.*;
+import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
+import com.EmpowerOperations.LinqALike.Delegate.Condition;
+import com.EmpowerOperations.LinqALike.Delegate.Func1;
+import com.EmpowerOperations.LinqALike.Queries.DistinctQuery;
+import com.EmpowerOperations.LinqALike.Queries.ExceptQuery;
+import com.EmpowerOperations.LinqALike.Queries.GroupByQuery;
+import com.EmpowerOperations.LinqALike.Queries.IntersectionQuery;
+import com.EmpowerOperations.LinqALike.Queries.InvertMapQuery;
+import com.EmpowerOperations.LinqALike.Queries.OrderByQuery;
+import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
+import com.EmpowerOperations.LinqALike.Queries.SelectManyQuery;
+import com.EmpowerOperations.LinqALike.Queries.SelectQuery;
+import com.EmpowerOperations.LinqALike.Queries.SkipQuery;
+import com.EmpowerOperations.LinqALike.Queries.UnionQuery;
+import com.EmpowerOperations.LinqALike.Queries.WhereQuery;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Map;
 
 import static com.EmpowerOperations.LinqALike.CommonDelegates.*;
 import static com.EmpowerOperations.LinqALike.Factories.from;
@@ -193,8 +207,36 @@ public class Linq {
     }
 
     public static <TElement>
-    boolean isSetEquivalentOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
-        return ImmediateInspections.isSetEquivalentOf(left, right);
+    boolean setEquals(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        return ImmediateInspections.setEquals(left, right, DefaultEquality);
+    }
+
+    public static <TElement, TCompared> boolean setEquals(Iterable<TElement> left,
+                                                          Iterable<? extends TElement> right,
+                                                          Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.setEquals(left, right, performEqualsUsing(memoized(comparableSelector)));
+    }
+
+    public static <TElement> boolean setEquals(Iterable<TElement> left,
+                                               Iterable<? extends TElement> right,
+                                               EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.setEquals(left, right, equalityComparer);
+    }
+
+    public static <TElement> boolean sequenceEquals(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        return ImmediateInspections.sequenceEquals(left, right, DefaultEquality);
+    }
+
+    public static <TElement, TCompared> boolean sequenceEquals(Iterable<TElement> left,
+                                                               Iterable<? extends TElement> right,
+                                                               Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.sequenceEquals(left, right, performEqualsUsing(memoized(comparableSelector)));
+    }
+
+    public static <TElement> boolean sequenceEquals(Iterable<TElement> left,
+                                                    Iterable<? extends TElement> right,
+                                                    EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.sequenceEquals(left, right, equalityComparer);
     }
 
     public static <TElement>
@@ -211,7 +253,19 @@ public class Linq {
 
     public static <TElement>
     boolean isSubsetOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
-        return ImmediateInspections.isSubsetOf(left, right);
+        return ImmediateInspections.isSubsetOf(left, right, CommonDelegates.DefaultEquality);
+    }
+    public static <TElement, TCompared>
+    boolean isSubsetOf(Iterable<TElement> left,
+                       Iterable<? extends TElement> right,
+                       Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.isSubsetOf(left, right, performEqualsUsing(memoized(comparableSelector)));
+    }
+    public static <TElement>
+    boolean isSubsetOf(Iterable<TElement> left,
+                       Iterable<? extends TElement> right,
+                       EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.isSubsetOf(left, right, equalityComparer);
     }
 
     public static <TElement>

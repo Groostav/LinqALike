@@ -1,5 +1,6 @@
 package com.EmpowerOperations.LinqALike;
 
+import com.EmpowerOperations.LinqALike.Common.ComparingLinkedHashSet;
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.Preconditions;
 import com.EmpowerOperations.LinqALike.Common.SetIsEmptyException;
@@ -68,7 +69,11 @@ public class ImmediateInspections {
     }
 
     public static <TElement> TElement singleOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
-        return singleOr(sourceElements, uniqueCondition, () -> null, x -> null);
+        Func1<Queryable<TElement>, TElement> resultOnMultipleFound = problems -> {
+            throw new SingletonSetContainsMultipleElementsException(sourceElements, problems, uniqueCondition);
+        };
+
+        return singleOr(sourceElements, uniqueCondition, () -> null, resultOnMultipleFound);
     }
 
     public static <TElement> TElement single(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
@@ -181,10 +186,15 @@ public class ImmediateInspections {
         return false;
     }
 
-    public static <TElement> boolean isSubsetOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
-        Queryable<TElement> leftFetched = from(left).fetch();
-        for(TElement rightElement : right){
-            if ( ! leftFetched.containsElement(rightElement)) {
+    public static <TElement> boolean isSubsetOf(Iterable<TElement> left,
+                                                Iterable<? extends TElement> right,
+                                                EqualityComparer<? super TElement> equalityComparer) {
+
+        ComparingLinkedHashSet<TElement> candidateSuperset = new ComparingLinkedHashSet<>(equalityComparer, right);
+
+        for(TElement leftMember : left){
+            boolean changed = candidateSuperset.add(leftMember);
+            if(changed){
                 return false;
             }
         }
@@ -280,7 +290,7 @@ public class ImmediateInspections {
         }
     }
 
-    public static <TElement> boolean isSetEquivalentOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
+    public static <TElement> boolean setEquals(Iterable<TElement> left, Iterable<? extends TElement> right) {
         Preconditions.notNull(left, "left");
         Preconditions.notNull(right, "right");
 
@@ -330,5 +340,39 @@ public class ImmediateInspections {
 
     public static <TKey, TValue> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
         return ImmediateInspections.firstOrDefault(sourceEntries, kvp -> nullSafeEquals(key, kvp.getKey())).getValue();
+    }
+
+    public static <TElement> boolean sequenceEquals(Iterable<TElement> left,
+                                                    Iterable<? extends TElement> right,
+                                                    EqualityComparer<? super TElement> equalityComparer) {
+
+        if(size(left) != size(right)) { return false; }
+
+        Iterator<? extends TElement> rightMembers = right.iterator();
+        for(TElement leftMember : left){
+            if( ! equalityComparer.equals(leftMember, rightMembers.next())){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static <TElement> boolean setEquals(Iterable<TElement> left,
+                                               Iterable<? extends TElement> right,
+                                               EqualityComparer<? super TElement> equalityComparer) {
+
+        if(size(left) != size(right)) { return false; }
+
+        ComparingLinkedHashSet<TElement> set = new ComparingLinkedHashSet<>(equalityComparer, left);
+
+        for(TElement element : right){
+            boolean hasChange = set.add(element);
+            if(hasChange){
+                return false;
+            }
+        }
+
+        return true;
     }
 }

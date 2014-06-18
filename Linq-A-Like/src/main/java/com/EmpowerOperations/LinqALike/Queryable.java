@@ -190,6 +190,17 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     TElement singleOrDefault(Condition<? super TElement> uniqueConstraint);
 
 
+    boolean setEquals(Iterable<? extends TElement> otherSet);
+    <TCompared>
+    boolean setEquals(Iterable<? extends TElement> otherSet, Func1<? super TElement, TCompared> comparableSelector);
+    boolean setEquals(Iterable<? extends TElement> otherSet, EqualityComparer<? super TElement> equalityComparer);
+
+    boolean sequenceEquals(Iterable<? extends TElement> otherOrderedSet);
+    <TCompared>
+    boolean sequenceEquals(Iterable<? extends TElement> otherOrderedSet, Func1<? super TElement, TCompared> comparableSelector);
+    boolean sequenceEquals(Iterable<? extends TElement> otherOrderedSet, EqualityComparer<? super TElement> equalityComparer);
+
+
     Queryable<TElement> skipWhile(Condition<? super TElement> toExclude);
     Queryable<TElement> skip(int numberToSkip);
 
@@ -231,7 +242,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     boolean isSingle();
     boolean isEmpty();
-    boolean isSetEquivalentOf(Iterable<? extends TElement> otherSet);
+
     boolean isSubsetOf(Iterable<? extends TElement> otherSet);
     boolean isDistinct();
 }

@@ -18,7 +18,7 @@ public class IsSetEquivalentFixture {
         LinqingList<Integer> right = new LinqingList<>(2, 3, 4);
 
         //act
-        boolean result = left.isSetEquivalentOf(right);
+        boolean result = left.setEquals(right);
 
         //assert
         assertThat(result).isFalse();
@@ -31,7 +31,7 @@ public class IsSetEquivalentFixture {
         LinqingList<Integer> right = new LinqingList<>(1, 2, 3, 4);
 
         //act
-        boolean result = left.isSetEquivalentOf(right);
+        boolean result = left.setEquals(right);
 
         //assert
         assertThat(result).isTrue();
@@ -45,7 +45,7 @@ public class IsSetEquivalentFixture {
         LinqingList<Integer> right = left;
 
         //act
-        boolean result = left.isSetEquivalentOf(right);
+        boolean result = left.setEquals(right);
 
         //assert
         assertThat(result).isTrue();
@@ -57,6 +57,6 @@ public class IsSetEquivalentFixture {
         LinqingList<Integer> left = new LinqingList<Integer>();
 
         //act & assert
-        assertThrows(IllegalArgumentException.class, () -> left.isSetEquivalentOf(null));
+        assertThrows(IllegalArgumentException.class, () -> left.setEquals(null));
     }
 }

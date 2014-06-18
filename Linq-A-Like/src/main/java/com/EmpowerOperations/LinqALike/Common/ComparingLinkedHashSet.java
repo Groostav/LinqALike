@@ -5,6 +5,8 @@ import com.EmpowerOperations.LinqALike.Linq;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import static com.EmpowerOperations.LinqALike.Factories.from;
+
 /**
  * This class is a hack to allow caller-defined {@link #hashCode()} and {@link #equals(Object)} built
  * on top of the already well hacked {@link java.util.LinkedHashSet}.
@@ -23,8 +25,16 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
     private final Class<? super TElement> widestEquatableType;
 
     public ComparingLinkedHashSet(EqualityComparer<? super TElement> equalityComparer){
+        this(equalityComparer, from());
+    }
+
+    public ComparingLinkedHashSet(EqualityComparer<? super TElement> equalityComparer, Iterable<? extends TElement> initialValues) {
         this.equalityComparer = equalityComparer;
         this.widestEquatableType = Object.class;
+
+        for(TElement element : initialValues){
+            backingSet.add(addEqualsInterceptor(element));
+        }
     }
 
     //TODO other constructors.
@@ -51,7 +61,7 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
     }
 
     public boolean add(TElement element) {
-        return backingSet.add(makeEquatable(element));
+        return backingSet.add(addEqualsInterceptor(element));
     }
 
     public boolean addAll(Iterable<TElement> newItems) {
@@ -63,11 +73,11 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
     }
 
     public boolean contains(TElement canddiate){
-        return backingSet.contains(makeEquatable(canddiate));
+        return backingSet.contains(addEqualsInterceptor(canddiate));
     }
 
     public boolean remove(TElement existingElement){
-        return backingSet.remove(makeEquatable(existingElement));
+        return backingSet.remove(addEqualsInterceptor(existingElement));
     }
 
     public boolean retainAll(Iterable<? extends TElement> allowedElements){
@@ -95,13 +105,13 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
 //                                                                 Func1<Reference<TElement>, TResult> transform,
 //                                                                 final String alternativeTypeSafeMethodName) {
 //        if (widestEquatableType != null && widestEquatableType.isInstance(item)){
-//            return transform.getFrom(makeEquatable((TElement) item));
+//            return transform.getFrom(addEqualsInterceptor((TElement) item));
 //        }
 //        else if ( widestEquatableType != null){
 //            throw new IllegalArgumentException("the supplied argument cannot be tested for equality since it's not of a type that the equality comparer will accept");
 //        }
 //        else if(equalityComparer instanceof EqualityComparer.Untyped){
-//            return transform.getFrom(makeEquatable((TElement) item));
+//            return transform.getFrom(addEqualsInterceptor((TElement) item));
 //        }
 //        else{
 //            throw new UnsupportedOperationException(
@@ -129,7 +139,7 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
 //    }
 
     @SuppressWarnings("unchecked")
-    private Reference<TElement> makeEquatable(TElement existingElement) {
+    private Reference<TElement> addEqualsInterceptor(TElement existingElement) {
         return Reference.withSpecificEquals(existingElement, (Class) widestEquatableType, equalityComparer);
     }
 }
