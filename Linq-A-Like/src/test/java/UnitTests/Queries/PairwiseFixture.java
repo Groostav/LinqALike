@@ -1,11 +1,13 @@
 package UnitTests.Queries;
 
+import Assists.CountingFactory;
 import Assists.QueryFixtureBase;
 import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.LinqingList;
 import com.EmpowerOperations.LinqALike.Queryable;
 import org.junit.Test;
-import org.omg.CORBA.NamedValue;
+
+import java.util.List;
 
 import static com.EmpowerOperations.LinqALike.Factories.asList;
 import static org.fest.assertions.Assertions.assertThat;
@@ -81,4 +83,28 @@ public class PairwiseFixture extends QueryFixtureBase{
                 new Tuple<>(null, null)
         );
     }
+
+    @Test
+    public void when_calling_pairwise_with_a_default_factory_the_factory_should_be_called_twice(){
+        //setup
+        LinqingList<EquatableValue> cafes = new LinqingList<>(
+                new EquatableValue("Starbucks"),
+                new EquatableValue("Blenz"),
+                new EquatableValue("Woods")
+        );
+        CountingFactory<EquatableValue> factory = CountingFactory.track(() -> new EquatableValue("Tim Hortans"));
+
+        //act
+        List<Tuple<EquatableValue, EquatableValue>> pairs = cafes.pairwise(factory).toList();
+
+        //assert
+        factory.shouldHaveBeenInvoked(TWICE);
+        assertThat(pairs).containsExactly(
+                new Tuple<>(new EquatableValue("Tim Hortans"),  new EquatableValue("Starbucks")),
+                new Tuple<>(new EquatableValue("Starbucks"),    new EquatableValue("Blenz")),
+                new Tuple<>(new EquatableValue("Blenz"),        new EquatableValue("Woods")),
+                new Tuple<>(new EquatableValue("Woods"),        new EquatableValue("Tim Hortans"))
+        );
+    }
 }
+

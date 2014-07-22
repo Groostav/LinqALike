@@ -3,7 +3,6 @@ package com.EmpowerOperations.LinqALike.Common;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
 import com.EmpowerOperations.LinqALike.Factories;
 import com.EmpowerOperations.LinqALike.Linq;
-import com.EmpowerOperations.LinqALike.LinqingList;
 import com.EmpowerOperations.LinqALike.Queryable;
 
 /**
@@ -31,12 +30,13 @@ public class Preconditions {
         }
     }
 
-    public static <TElement> void hasExactlyOneMatching(Iterable<TElement> sourceElements,
+    public static <TElement> void hasExactlyOneMatching(Iterable<? extends TElement> sourceElements,
                                                         Condition<? super TElement> condition,
                                                         String parameterName) {
-        Queryable<TElement> where = Factories.from(sourceElements).where(condition).toList();
+        Queryable<? extends TElement> where = Factories.from(sourceElements).where(condition).toList();
         if ( ! where.isSingle()) {
             throw new IllegalArgumentException(parameterName);
         }
     }
+
 }

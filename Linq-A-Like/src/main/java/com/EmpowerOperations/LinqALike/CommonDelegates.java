@@ -2,6 +2,7 @@ package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.*;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
+import com.EmpowerOperations.LinqALike.Delegate.Func;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 
 import java.io.File;
@@ -35,6 +36,9 @@ public class CommonDelegates {
                     return counter;
                 }
             });
+    public static <T> Func<? extends T> NullFactory(){
+        return () -> null;
+    }
 
     public static <TObject> Func1<TObject, TObject> identity() {
         return new Func1.WithDescription<>("identity function: object -> object", object -> object);
@@ -164,5 +168,10 @@ public class CommonDelegates {
 
             return leftComparable.compareTo(rightComparable);
         };
+    }
+
+    public static <TElement>
+    Condition<TElement> isEqualTo(TElement desired, EqualityComparer<? super TElement> equalityComparer){
+        return actual -> equalityComparer.equals(actual, desired);
     }
 }

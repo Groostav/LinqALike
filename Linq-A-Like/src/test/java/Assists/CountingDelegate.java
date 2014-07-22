@@ -13,6 +13,7 @@ import static org.fest.assertions.Assertions.assertThat;
 * To change this template use File | Settings | File Templates.
 */
 public abstract class CountingDelegate {
+
     protected List<Object> inspectedElements = new ArrayList<>();
 
     public void shouldHaveBeenInvoked(int numberOfTimes){

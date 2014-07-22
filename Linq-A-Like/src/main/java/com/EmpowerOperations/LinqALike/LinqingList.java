@@ -1,11 +1,21 @@
 package com.EmpowerOperations.LinqALike;
 
+import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.Preconditions;
 import com.EmpowerOperations.LinqALike.Common.Tuple;
-import com.EmpowerOperations.LinqALike.Delegate.*;
-import com.EmpowerOperations.LinqALike.Queries.*;
+import com.EmpowerOperations.LinqALike.Delegate.Condition;
+import com.EmpowerOperations.LinqALike.Delegate.Func;
+import com.EmpowerOperations.LinqALike.Delegate.Func1;
+import com.EmpowerOperations.LinqALike.Queries.DefaultQueryable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
+
+import static com.EmpowerOperations.LinqALike.CommonDelegates.isEqualTo;
+import static com.EmpowerOperations.LinqALike.CommonDelegates.memoized;
+import static com.EmpowerOperations.LinqALike.CommonDelegates.performEqualsUsing;
 
 /**
  * An {@link java.util.ArrayList} decorated with support {@link com.EmpowerOperations.LinqALike.Queryable}, probably the most
@@ -60,10 +70,6 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
      * List-based Mutators
      */
 
-    public boolean addIfNew(TElement element){
-        return containsElement(element) ? false : add(element);
-    }
-
     /**
      * <p>adds all elements in the supplied ellipses set to this list, starting from the last current index, and adding them
      * left-to-right.</p>
@@ -72,20 +78,13 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
      * @return  true if the list changed as a result of this call.
      */
     public boolean addAll(TElement... valuesToBeAdded){
-        boolean modified = false;
-        for(TElement element : valuesToBeAdded){
-            modified |= add(element);
-        }
-        return modified;
+        return addAll(Factories.asList(valuesToBeAdded));
     }
 
     public boolean addAll(Iterable<? extends TElement> valuesToBeAdded) {
-        boolean modified = false;
-        for(TElement element : valuesToBeAdded){
-            modified |= add(element);
-        }
-        return modified;
+        return addAll(Factories.asList(valuesToBeAdded));
     }
+
     public boolean removeElement(TElement element){
         return remove(element);
     }
@@ -99,11 +98,14 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
         this.remove(element);
     }
 
-
     public void addIfNotNull(TElement element) {
         if(element != null){
             add(element);
         }
+    }
+
+    public boolean addIfNew(TElement element){
+        return containsElement(element) ? false : add(element);
     }
 
     public void addAllNew(Iterable<TElement> setContainingNewAndExistingElements) {
@@ -129,30 +131,87 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
         this.remove(oldItem);
     }
 
+    public void move(int fromIndex, int toIndex){
+
+    }
+
+    public void move(TElement elementToMove, Condition<? super Tuple<TElement, TElement>> positionCondition){
+        move(elementToMove, positionCondition, () -> null);
+    }
+
+    public void move(TElement elementToMove,
+                     EqualityComparer<? super TElement> equalityComparer,
+                     Condition<? super Tuple<TElement, TElement>> positionCondition){
+        move(elementToMove, equalityComparer, positionCondition, () -> null);
+    }
+
+    public <TCompared> void move(TElement elementToMove,
+                                 Func1<? super TElement, TCompared> equatableSelector,
+                                 Condition<? super Tuple<TElement, TElement>> positionCondition){
+        move(elementToMove, equatableSelector, positionCondition, () -> null);
+    }
+
+    public void move(Condition<? super TElement> elementsToMove,
+                     Condition<? super Tuple<TElement, TElement>> positionCondition){
+        move(elementsToMove, positionCondition, () -> null);
+    }
+
     /**
+     * Moves the specified element from its current location in the list to the specified location.
      *
      * @param elementToMove The element that may be moved into a new position.
-     * @param positionCondition Condition that gives the would-be right neighbour of elementToMove. */
+     * @param positionCondition Condition that gives the would-be right neighbour of elementToMove.
+     */
     public void move(TElement elementToMove,
                      Condition<? super Tuple<TElement, TElement>> positionCondition,
                      Func<? extends TElement> defaultFactory){
 
-        Preconditions.contains(this , elementToMove, "elementToMove");
-        LinqingList<TElement> sourceWithoutElement = this.toList();
-        sourceWithoutElement.remove(elementToMove);
-        Preconditions.hasExactlyOneMatching(sourceWithoutElement.pairwise(defaultFactory), positionCondition, "positionCondition");
+        move(isEqualTo(elementToMove, CommonDelegates.DefaultEquality), positionCondition, defaultFactory);
+    }
+
+    public void move(TElement elementToMove,
+                     EqualityComparer<? super TElement> equalityComparer,
+                     Condition<? super Tuple<TElement, TElement>> positionCondition,
+                     Func<? extends TElement> defaultFactory){
+
+        Preconditions.notNull(equalityComparer, "equalityComparer");
+
+        move(isEqualTo(elementToMove, equalityComparer), positionCondition, defaultFactory);
+    }
+
+    public <TCompared> void move(TElement elementToMove,
+                                 Func1<? super TElement, TCompared> equatableSelector,
+                                 Condition<? super Tuple<TElement, TElement>> positionCondition,
+                                 Func<? extends TElement> defaultFactory){
+
+        Preconditions.notNull(equatableSelector, "equatableSelector");
+
+        move(isEqualTo(elementToMove, performEqualsUsing(memoized(equatableSelector))), positionCondition, defaultFactory);
+    }
+
+    public void move(Condition<? super TElement> elementsToMove,
+                     Condition<? super Tuple<TElement, TElement>> positionCondition,
+                     Func<? extends TElement> defaultFactory){
+
+        Preconditions.notNull(elementsToMove, "elementsToMove");
+        Preconditions.notNull(positionCondition, "positionCondition");
+        Preconditions.notNull(defaultFactory, "defaultFactory");
+
+        Queryable<TElement> valuesToMove = this.where(elementsToMove);
+        Queryable<TElement> listWithoutNomads = this.except(valuesToMove);
+        Queryable<Tuple<TElement, TElement>> locationPairs = listWithoutNomads.pairwise(defaultFactory);
+
+        Preconditions.hasExactlyOneMatching(locationPairs, positionCondition, "positionCondition");
 
         int leftNeighbourIndex = -1;
-        this.remove(elementToMove);
 
-        for (Tuple<TElement, TElement> pair : this.pairwise(defaultFactory)) {
+        for (Tuple<TElement, TElement> pair : locationPairs) {
             if (positionCondition.passesFor(pair)) {
-                this.add(leftNeighbourIndex + 1, elementToMove);
+                this.addAll(leftNeighbourIndex + 1, valuesToMove.toList());
                 break;
             }
             leftNeighbourIndex += 1;
         }
-
     }
 }
 
