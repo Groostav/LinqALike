@@ -2,6 +2,8 @@ package Assists;
 
 import com.EmpowerOperations.LinqALike.Delegate.Action;
 
+import static org.junit.Assert.fail;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Geoff
@@ -15,6 +17,7 @@ public class Exceptions {
     public static void assertThrows(Class<? extends Exception> expectedException, Action runnable){
         try{
             runnable.run();
+            fail("expected action to throw " + expectedException.getSimpleName() + " but it did not.");
         }
         catch(Exception e){
             if ( ! expectedException.isAssignableFrom(e.getClass())) {

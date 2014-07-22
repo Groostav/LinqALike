@@ -1,5 +1,7 @@
 package com.EmpowerOperations.LinqALike;
 
+import com.EmpowerOperations.LinqALike.Common.Preconditions;
+import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.*;
 import com.EmpowerOperations.LinqALike.Queries.*;
 
@@ -117,6 +119,32 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
         assert index != -1 : oldItem + " is not contained in " + this;
         this.add(index, newItem);
         this.remove(oldItem);
+    }
+
+    /**
+     *
+     * @param elementToMove The element that may be moved into a new position.
+     * @param positionCondition Condition that gives the would-be right neighbour of elementToMove. */
+    public void move(TElement elementToMove,
+                     Condition<? super Tuple<TElement, TElement>> positionCondition,
+                     Func<? extends TElement> defaultFactory){
+
+        Preconditions.contains(this , elementToMove, "elementToMove");
+        LinqingList<TElement> sourceWithoutElement = this.toList();
+        sourceWithoutElement.remove(elementToMove);
+        Preconditions.hasExactlyOneMatching(sourceWithoutElement.pairwise(defaultFactory), positionCondition, "positionCondition");
+
+        int leftNeighbourIndex = -1;
+        this.remove(elementToMove);
+
+        for (Tuple<TElement, TElement> pair : this.pairwise(defaultFactory)) {
+            if (positionCondition.passesFor(pair)) {
+                this.add(leftNeighbourIndex + 1, elementToMove);
+                break;
+            }
+            leftNeighbourIndex += 1;
+        }
+
     }
 }
 

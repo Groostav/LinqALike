@@ -21,10 +21,10 @@ public class WhereQuery<TElement> implements DefaultQueryable<TElement> {
 
     @Override
     public Iterator<TElement> iterator() {
-        return new SelectIterator();
+        return new WhereIterator();
     }
 
-    private class SelectIterator extends PrefetchingIterator<TElement> {
+    private class WhereIterator extends PrefetchingIterator<TElement> {
 
         private final Iterator<TElement> previousIterator = elements.iterator();
 
