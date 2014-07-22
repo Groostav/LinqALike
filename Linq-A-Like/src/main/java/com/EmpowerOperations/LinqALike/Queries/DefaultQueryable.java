@@ -1,7 +1,9 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
+import com.EmpowerOperations.LinqALike.Delegate.Func;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 import com.EmpowerOperations.LinqALike.*;
 
@@ -160,6 +162,14 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     }
     @Override default public Queryable<TElement> orderBy(Comparator<? super TElement> equalityComparator){
         return Linq.orderBy(this, equalityComparator);
+    }
+
+
+    @Override default public Queryable<Tuple<TElement, TElement>> pairwise(){
+        return Linq.pairwise(this);
+    }
+    @Override default public Queryable<Tuple<TElement, TElement>> pairwise(Func<? extends TElement> defaultFactory){
+        return Linq.pairwise(this, defaultFactory);
     }
 
 

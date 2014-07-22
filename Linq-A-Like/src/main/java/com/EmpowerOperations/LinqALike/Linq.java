@@ -2,20 +2,11 @@ package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
 import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
+import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
+import com.EmpowerOperations.LinqALike.Delegate.Func;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
-import com.EmpowerOperations.LinqALike.Queries.DistinctQuery;
-import com.EmpowerOperations.LinqALike.Queries.ExceptQuery;
-import com.EmpowerOperations.LinqALike.Queries.GroupByQuery;
-import com.EmpowerOperations.LinqALike.Queries.IntersectionQuery;
-import com.EmpowerOperations.LinqALike.Queries.InvertMapQuery;
-import com.EmpowerOperations.LinqALike.Queries.OrderByQuery;
-import com.EmpowerOperations.LinqALike.Queries.ReversedQuery;
-import com.EmpowerOperations.LinqALike.Queries.SelectManyQuery;
-import com.EmpowerOperations.LinqALike.Queries.SelectQuery;
-import com.EmpowerOperations.LinqALike.Queries.SkipQuery;
-import com.EmpowerOperations.LinqALike.Queries.UnionQuery;
-import com.EmpowerOperations.LinqALike.Queries.WhereQuery;
+import com.EmpowerOperations.LinqALike.Queries.*;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -464,6 +455,15 @@ public class Linq {
         }
 
         return ImmediateInspections.getFor(sourceEntries, key);
+    }
+
+    public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements) {
+        return new PairwiseQuery<>(sourceElements, () -> null);
+    }
+
+    public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements,
+                                                                           Func<? extends TElement> defaultFactory) {
+        return new PairwiseQuery<>(sourceElements, defaultFactory);
     }
 
     public static class MapSpecific {

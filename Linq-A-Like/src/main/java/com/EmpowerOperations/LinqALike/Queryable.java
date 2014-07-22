@@ -1,7 +1,9 @@
 package com.EmpowerOperations.LinqALike;
 
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.Tuple;
 import com.EmpowerOperations.LinqALike.Delegate.Condition;
+import com.EmpowerOperations.LinqALike.Delegate.Func;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
 
 import java.util.Comparator;
@@ -173,6 +175,10 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     <TCompared extends Comparable<TCompared>>
     Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector);
     Queryable<TElement> orderBy(Comparator<? super TElement> equalityComparator);
+
+
+    Queryable<Tuple<TElement, TElement>> pairwise();
+    Queryable<Tuple<TElement, TElement>> pairwise(Func<? extends TElement> defaultFactory);
 
 
     Queryable<TElement> reversed();
