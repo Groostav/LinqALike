@@ -60,6 +60,10 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
      * List-based Mutators
      */
 
+    public boolean addIfNew(TElement element){
+        return containsElement(element) ? false : add(element);
+    }
+
     /**
      * <p>adds all elements in the supplied ellipses set to this list, starting from the last current index, and adding them
      * left-to-right.</p>
@@ -82,8 +86,12 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements Defaul
         }
         return modified;
     }
-    public void removeAll(Iterable<TElement> values) {
-        super.removeAll(new LinqingList<>(values));
+    public boolean removeElement(TElement element){
+        return remove(element);
+    }
+
+    public boolean removeAll(Iterable<? extends TElement> values) {
+        return super.removeAll(Factories.asList(values));
     }
 
     public void removeSingle(Condition<? super TElement> condition){
