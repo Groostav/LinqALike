@@ -148,15 +148,21 @@ public class CommonDelegates {
     EqualityComparer.Untyped performEqualsUsing(final Func1<TArgument, TEquated> comparableSelector){
         return new DescribedUntypedEqualityComparer(
                 "default equality on values provided by: " + comparableSelector,
-                (left, right) -> {
-                    //TODO investigate, maybe split Queryable and Collections further?
-                    TEquated leftComparable = comparableSelector.getFrom((TArgument)left);
-                    TEquated rightComparable = comparableSelector.getFrom((TArgument)right);
+                EqualityComparer.Untyped.make(
+                    (left, right) -> {
+                        //TODO investigate, maybe split Queryable and Collections further?
+                        TEquated leftComparable = comparableSelector.getFrom((TArgument)left);
+                        TEquated rightComparable = comparableSelector.getFrom((TArgument)right);
 
-                    return leftComparable == null
-                            ? rightComparable == null
-                            : leftComparable.equals(rightComparable);
-                }
+                        return leftComparable == null
+                                ? rightComparable == null
+                                : leftComparable.equals(rightComparable);
+                    },
+                    argToHash -> {
+                        TEquated hashable = comparableSelector.getFrom((TArgument) argToHash);
+                        return hashable == null ? 0 : hashable.hashCode();
+                    }
+                )
         );
     }
 

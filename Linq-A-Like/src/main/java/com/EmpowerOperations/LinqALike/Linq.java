@@ -440,8 +440,19 @@ public class Linq {
     }
 
     public static <TElement> boolean isDistinct(Iterable<TElement> source) {
-        return ImmediateInspections.isDistinct(source);
+        return ImmediateInspections.isDistinct(source, performEqualsUsing(identity()));
     }
+
+    public static <TElement, TCompared> boolean isDistinct(Iterable<TElement> sourceElements,
+                                                           Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.isDistinct(sourceElements, performEqualsUsing(memoized(comparableSelector)));
+    }
+
+    public static <TElement> boolean isDistinct(Iterable<TElement> sourceElements,
+                                                EqualityComparer<? super TElement> equalityComparator) {
+        return ImmediateInspections.isDistinct(sourceElements, equalityComparator);
+    }
+
 
 
     public static <TValue, TKey> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {

@@ -205,7 +205,8 @@ public class ImmediateInspections {
         return extrema(sourceElements, valueSelector, Double.POSITIVE_INFINITY, Math::min).getKey();
     }
 
-    public static <TElement> double max(Iterable<TElement> sourceElements, Func1<? super TElement, Double> valueSelector) {
+    public static <TElement> double max(Iterable<TElement> sourceElements,
+                                        Func1<? super TElement, Double> valueSelector) {
         return extrema(sourceElements, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getKey();
     }
 
@@ -219,12 +220,13 @@ public class ImmediateInspections {
         return extrema(sourceElements, valueSelector, Double.NEGATIVE_INFINITY, Math::max).getValue();
     }
 
-    public static <TElement> boolean isDistinct(Iterable<TElement> sourceElements){
+    public static <TElement> boolean isDistinct(Iterable<TElement> sourceElements,
+                                                EqualityComparer<? super TElement> equalityComparer){
         if(sourceElements instanceof Set){
             return true;
         }
 
-        HashSet<TElement> set = new HashSet<>();
+        ComparingLinkedHashSet<TElement> set = new ComparingLinkedHashSet<>(equalityComparer);
 
         for(TElement element : sourceElements){
 
@@ -236,7 +238,8 @@ public class ImmediateInspections {
         return true;
     }
 
-    public static <TElement> double sum(Iterable<TElement> sourceElements, Func1<? super TElement, Double> valueSelector) {
+    public static <TElement> double sum(Iterable<TElement> sourceElements,
+                                        Func1<? super TElement, Double> valueSelector) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(valueSelector, "valueSelector");
 

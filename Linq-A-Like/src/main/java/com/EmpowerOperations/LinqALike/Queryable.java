@@ -250,5 +250,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     boolean isEmpty();
 
     boolean isSubsetOf(Iterable<? extends TElement> otherSet);
+
     boolean isDistinct();
+    <TCompared>
+    boolean isDistinct(Func1<? super TElement, TCompared> comparableSelector);
+    boolean isDistinct(EqualityComparer<? super TElement> equalityComparator);
 }

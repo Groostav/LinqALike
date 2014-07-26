@@ -314,7 +314,15 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     @Override default public boolean isSubsetOf(Iterable<? extends TElement> otherSet){
         return Linq.isSubsetOf(this, otherSet);
     }
+
     @Override default public boolean isDistinct(){
         return Linq.isDistinct(this);
+    }
+    @Override default public <TCompared>
+    boolean isDistinct(Func1<? super TElement, TCompared> comparableSelector){
+        return Linq.isDistinct(this, comparableSelector);
+    }
+    @Override default public boolean isDistinct(EqualityComparer<? super TElement> equalityComparator){
+        return Linq.isDistinct(this, equalityComparator);
     }
 }
