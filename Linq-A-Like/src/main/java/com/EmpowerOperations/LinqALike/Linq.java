@@ -321,6 +321,10 @@ public class Linq {
         return new SkipQuery<>(sourceElements, numberToSkip);
     }
 
+    public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
+        return Factories.asList(set);
+    }
+
     public static <TElement> Object[] toArray(Queryable<TElement> sourceElements) {
         return Factories.asArray(sourceElements);
     }
@@ -328,10 +332,6 @@ public class Linq {
     public static <TElement, TDesired> TDesired[] toArray(Queryable<TElement> originalSet,
                                                           TDesired[] targetArray) {
         return Factories.asArray(originalSet, targetArray);
-    }
-
-    public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
-        return Factories.asList(set);
     }
 
     public static <TElement> int size(Iterable<TElement> sourceElements) {
@@ -475,6 +475,46 @@ public class Linq {
     public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements,
                                                                            Func<? extends TElement> defaultFactory) {
         return new PairwiseQuery<>(sourceElements, defaultFactory);
+    }
+
+    public static <TElement> boolean[] toBooleanArray(Iterable<TElement> sourceElements,
+                                                      Func1<? super TElement, Boolean> converter) {
+        return PrimitiveArrayFactories.asBooleanArray(sourceElements, converter);
+    }
+
+    public static <TElement> byte[] toByteArray(Iterable<TElement> sourceElements,
+                                                Func1<? super TElement, Byte> converter) {
+        return PrimitiveArrayFactories.asByteArray(sourceElements, converter);
+    }
+
+    public static <TElement> char[] toCharArray(Iterable<TElement> sourceElements,
+                                                Func1<? super TElement, Character> converter) {
+        return PrimitiveArrayFactories.asCharArray(sourceElements, converter);
+    }
+
+    public static <TElement> short[] toShortArray(Iterable<TElement> sourceElements,
+                                                  Func1<? super TElement, Short> converter) {
+        return PrimitiveArrayFactories.asShortArray(sourceElements, converter);
+    }
+
+    public static <TElement> int[] toIntArray(Iterable<TElement> sourceElements,
+                                              Func1<? super TElement, Integer> converter) {
+        return PrimitiveArrayFactories.asIntArray(sourceElements, converter);
+    }
+
+    public static <TElement> long[] toLongArray(Iterable<TElement> sourceElements,
+                                                Func1<? super TElement, Long> converter) {
+        return PrimitiveArrayFactories.asLongArray(sourceElements, converter);
+    }
+
+    public static <TElement> float[] toFloatArray(Iterable<TElement> sourceElements,
+                                                  Func1<? super TElement, Float> converter) {
+        return PrimitiveArrayFactories.asFloatArray(sourceElements, converter);
+    }
+
+    public static <TElement> double[] toDoubleArray(DefaultQueryable<TElement> sourceElements,
+                                                    Func1<? super TElement, Double> converter) {
+        return PrimitiveArrayFactories.asDoubleArray(sourceElements, converter);
     }
 
     public static class MapSpecific {

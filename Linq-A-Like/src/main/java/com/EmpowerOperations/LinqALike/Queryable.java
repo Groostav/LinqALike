@@ -227,9 +227,20 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     <TDesired> TDesired[] toArray(TDesired[] arrayTypeIndicator);
-    //note, we dont provide a method with a factory, if you need one, you should do .select(factory).toArray(Desired::new)
+    //note, we dont provide a method with a factory, if you need one, you should do .select(factory).toArray(Desired[]::new)
     <TDesired> TDesired[] toArray(Func1<Integer, TDesired[]> arrayFactory);
     Object[] toArray();
+
+    //as this library's author, +1 for type unification. Ok here we go:
+    boolean[] toBooleanArray(Func1<? super TElement, Boolean> converter);
+    byte[] toByteArray(Func1<? super TElement, Byte> converter);
+    char[] toCharArray(Func1<? super TElement, Character> converter);
+    short[] toShortArray(Func1<? super TElement, Short> converter);
+    int[] toIntArray(Func1<? super TElement, Integer> converter);
+    long[] toLongArray(Func1<? super TElement, Long> converter);
+    float[] toFloatArray(Func1<? super TElement, Float> converter);
+    double[] toDoubleArray(Func1<? super TElement, Double> converter);
+
 
     Queryable<TElement> union(TElement... elements);
     Queryable<TElement> union(Iterable<? extends TElement> toInclude);

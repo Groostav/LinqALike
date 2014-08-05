@@ -276,6 +276,30 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     @Override default public Object[] toArray(){
         return Linq.toArray(this);
     }
+    @Override default boolean[] toBooleanArray(Func1<? super TElement, Boolean> converter){
+        return Linq.toBooleanArray(this, converter);
+    }
+    @Override default byte[] toByteArray(Func1<? super TElement, Byte> converter){
+        return Linq.toByteArray(this, converter);
+    }
+    @Override default char[] toCharArray(Func1<? super TElement, Character> converter){
+        return Linq.toCharArray(this, converter);
+    }
+    @Override default short[] toShortArray(Func1<? super TElement, Short> converter){
+        return Linq.toShortArray(this, converter);
+    }
+    @Override default int[] toIntArray(Func1<? super TElement, Integer> converter){
+        return Linq.toIntArray(this, converter);
+    }
+    @Override default long[] toLongArray(Func1<? super TElement, Long> converter){
+        return Linq.toLongArray(this, converter);
+    }
+    @Override default float[] toFloatArray(Func1<? super TElement, Float> converter){
+        return Linq.toFloatArray(this, converter);
+    }
+    @Override default double[] toDoubleArray(Func1<? super TElement, Double> converter){
+        return Linq.toDoubleArray(this, converter);
+    }
 
     @Override default public Queryable<TElement> union(TElement... elements){
         return Linq.union(this, elements);

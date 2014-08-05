@@ -6,6 +6,7 @@ import com.EmpowerOperations.LinqALike.Common.QueryAdapter;
 import com.EmpowerOperations.LinqALike.Common.RangeIterator;
 import com.EmpowerOperations.LinqALike.Common.RepeatingIterator;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
+import com.EmpowerOperations.LinqALike.Queries.DefaultQueryable;
 
 import java.lang.reflect.Array;
 import java.util.Map;
@@ -75,12 +76,12 @@ public class Factories {
         return from(sets).first(Linq::any);
     }
 
-    public static Iterable<Integer> range(int lowerInclusive, int upperExclusive) {
-        return () -> new RangeIterator(lowerInclusive, upperExclusive);
+    public static Queryable<Integer> range(int lowerInclusive, int upperExclusive) {
+        return (DefaultQueryable<Integer>) () -> new RangeIterator(lowerInclusive, upperExclusive);
     }
 
-    public static <TElement> Iterable<TElement> repeat(final TElement valueToRepeat) {
-        return () -> new RepeatingIterator<>(valueToRepeat);
+    public static <TElement> Queryable<TElement> repeat(final TElement valueToRepeat) {
+        return (DefaultQueryable<TElement>) () -> new RepeatingIterator<>(valueToRepeat);
     }
 
     public static <TElement> Queryable<TElement> cache(Iterable<TElement> origin){
@@ -160,6 +161,7 @@ public class Factories {
         return returnable;
     }
 
+
     private static <TSourceElement, TArrayElement> void copyIntoArray(Iterable<TSourceElement> sourceElements,
                                                                       TArrayElement[] targetArray,
                                                                       Class<?> arrayElementType) {
@@ -184,3 +186,4 @@ public class Factories {
         }
     }
 }
+
