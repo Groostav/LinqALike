@@ -59,11 +59,7 @@ public class Linq {
         return ImmediateInspections.first(sourceElements, condition);
     }
     public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count){
-        return first(sourceElements, count, Tautology);
-    }
-
-    public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count, Condition<? super TElement> condition){
-        return new FirstElementsQuery<>(sourceElements, count, condition);
+        return new FirstElementsQuery<>(sourceElements, count);
     }
     public static <TElement>
     TElement firstOrDefault(Iterable<TElement> sourceElements) {

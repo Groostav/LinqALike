@@ -1,19 +1,15 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
-import com.EmpowerOperations.LinqALike.Delegate.Condition;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import static com.EmpowerOperations.LinqALike.Factories.from;
 
 public class FirstElementsQuery<TElement> implements DefaultQueryable<TElement>{
 
     private final Iterable<TElement> sourceElements;
     private final int maxToReturn;
 
-    public FirstElementsQuery(Iterable<TElement> sourceElements, int maxToReturn, Condition<? super TElement> condition) {
-        this.sourceElements = from(sourceElements).where(condition);
+    public FirstElementsQuery(Iterable<TElement> sourceElements, int maxToReturn) {
+        this.sourceElements = sourceElements;
         this.maxToReturn = maxToReturn;
     }
 
@@ -38,6 +34,7 @@ public class FirstElementsQuery<TElement> implements DefaultQueryable<TElement>{
                 throw new NoSuchElementException();
             }
 
+            nReturned += 1;
             return sourceStream.next();
         }
     }
