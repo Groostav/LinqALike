@@ -139,6 +139,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     TElement first();
     TElement first(Condition<? super TElement> condition);
+    Queryable<TElement> first(int count);
     TElement firstOrDefault();
     TElement firstOrDefault(Condition<? super TElement> condition);
 
@@ -158,6 +159,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
     TElement last();
     TElement last(Condition<? super TElement> condition);
+    Queryable<TElement> last(int count);
     TElement lastOrDefault();
     TElement lastOrDefault(Condition<? super TElement> condition);
 

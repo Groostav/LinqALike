@@ -58,7 +58,13 @@ public class Linq {
 
         return ImmediateInspections.first(sourceElements, condition);
     }
+    public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count){
+        return first(sourceElements, count, Tautology);
+    }
 
+    public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count, Condition<? super TElement> condition){
+        return new FirstElementsQuery<>(sourceElements, count, condition);
+    }
     public static <TElement>
     TElement firstOrDefault(Iterable<TElement> sourceElements) {
 
@@ -80,6 +86,10 @@ public class Linq {
     TElement last(Iterable<TElement> sourceElements,
                   Condition<? super TElement> condition) {
         return ImmediateInspections.last(sourceElements, condition);
+    }
+    public static <TElement> Queryable<TElement> last(Iterable<TElement> sourceElements, int count){
+        int size = size(sourceElements);
+        return from(sourceElements).skip(size - Math.min(count, size));
     }
 
     public static <TElement> TElement lastOrDefault(Iterable<TElement> sourceElements) {

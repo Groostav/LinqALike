@@ -89,6 +89,9 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     @Override default public TElement first(Condition<? super TElement> condition){
         return Linq.first(this, condition);
     }
+    @Override default public Queryable<TElement> first(int count){
+        return Linq.first(this, count);
+    }
     @Override default public TElement firstOrDefault(){
         return Linq.firstOrDefault(this);
     }
@@ -127,6 +130,9 @@ public interface DefaultQueryable<TElement> extends Queryable<TElement> {
     }
     @Override default public TElement last(Condition<? super TElement> condition){
         return Linq.last(this, condition);
+    }
+    @Override default public Queryable<TElement> last(int count){
+        return Linq.last(this, count);
     }
     @Override default public TElement lastOrDefault(){
         return Linq.lastOrDefault(this);
