@@ -64,7 +64,7 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
         return backingSet.add(addEqualsInterceptor(element));
     }
 
-    public boolean addAll(Iterable<TElement> newItems) {
+    public boolean addAll(Iterable<? extends TElement> newItems) {
         boolean madeChange = false;
         for(TElement element : newItems){
             madeChange |= add(element);
@@ -141,5 +141,9 @@ public class ComparingLinkedHashSet<TElement> implements QueryableSet<TElement> 
     @SuppressWarnings("unchecked")
     private Reference<TElement> addEqualsInterceptor(TElement existingElement) {
         return Reference.withSpecificEquals(existingElement, (Class) widestEquatableType, equalityComparer);
+    }
+
+    public void clear() {
+        backingSet.clear();
     }
 }

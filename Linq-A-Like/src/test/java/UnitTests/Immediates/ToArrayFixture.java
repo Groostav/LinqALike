@@ -20,11 +20,11 @@ public class ToArrayFixture extends QueryFixtureBase{
                 new EquatableValue("Oak"));
 
         //act
-        NamedValue[] result = woodTypes.toArray(NamedValue[]::new);
+        EquatableValue[] result = woodTypes.toArray(EquatableValue[]::new);
 
         //assert
         assertThat(result.getClass().isArray()).isTrue();
-        assertThat(result.getClass()).isEqualTo(NamedValue[].class);
+        assertThat(result.getClass()).isEqualTo(EquatableValue[].class);
     }
 
     @Test

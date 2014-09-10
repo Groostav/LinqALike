@@ -58,6 +58,8 @@ public class ImmediateInspections {
     }
 
     public static <TElement> double average(Iterable<? extends TElement> sourceElements, Func1<? super TElement, Double> valueSelector) {
+        Preconditions.cannotBeEmpty(sourceElements);
+
         double sum = 0.0;
         int size = size(sourceElements);
 
@@ -364,12 +366,22 @@ public class ImmediateInspections {
     public static <TElement> boolean setEquals(Iterable<TElement> left,
                                                Iterable<? extends TElement> right,
                                                EqualityComparer<? super TElement> equalityComparer) {
-
-        if(size(left) != size(right)) { return false; }
+        Preconditions.notNull(left, "left");
+        Preconditions.notNull(right, "right");
 
         ComparingLinkedHashSet<TElement> set = new ComparingLinkedHashSet<>(equalityComparer, left);
 
         for(TElement element : right){
+            boolean hasChange = set.add(element);
+            if(hasChange){
+                return false;
+            }
+        }
+
+        set.clear();
+        set.addAll(right);
+
+        for(TElement element : left){
             boolean hasChange = set.add(element);
             if(hasChange){
                 return false;

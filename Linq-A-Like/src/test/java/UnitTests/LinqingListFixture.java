@@ -1,6 +1,7 @@
 package UnitTests;
 
 import com.EmpowerOperations.LinqALike.LinqingList;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static Assists.Exceptions.assertThrows;
@@ -11,6 +12,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class LinqingListFixture {
     @Test
+    @Ignore
     public void when_moving_an_element_in_the_list(){
         //Setup
         LinqingList<Integer> favoritePlayers = new LinqingList<>(8,23,13,99,1,21);
@@ -23,6 +25,7 @@ public class LinqingListFixture {
     }
 
     @Test
+    @Ignore
     public void when_moving_to_yourself_move_call_should_do_nothing() {
         //Setup
         LinqingList<Double> shoeSizes = new LinqingList<>(5d, 13d, 10.5, 11.5, 25d);
@@ -35,6 +38,7 @@ public class LinqingListFixture {
     }
 
     @Test
+    @Ignore
     public void when_moving_through_bag_element_should_move_appropriately(){
         //Setup
         LinqingList<String> names = new LinqingList<>("Justin", "Geoff", "Vincent", "Gary", "Geoff", "George");
@@ -47,6 +51,7 @@ public class LinqingListFixture {
     }
 
     @Test
+    @Ignore
     public void when_moving_between_duplicates_in_a_bag_move_should_act_appropriately(){
         //Setup
         LinqingList<String> names = new LinqingList<>("Justin", "Vincent", "Gary", "Josh", "Geoff", "Geoff", "George");

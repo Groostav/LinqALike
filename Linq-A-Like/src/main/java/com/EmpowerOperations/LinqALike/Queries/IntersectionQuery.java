@@ -1,6 +1,7 @@
 package com.EmpowerOperations.LinqALike.Queries;
 
 import com.EmpowerOperations.LinqALike.Common.EqualityComparer;
+import com.EmpowerOperations.LinqALike.Common.Preconditions;
 import com.EmpowerOperations.LinqALike.Common.PrefetchingIterator;
 import com.EmpowerOperations.LinqALike.CommonDelegates;
 import com.EmpowerOperations.LinqALike.Delegate.Func1;
@@ -15,6 +16,9 @@ public abstract class IntersectionQuery<TElement> implements DefaultQueryable<TE
     private final Iterable<? extends TElement> right;
 
     protected IntersectionQuery(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
+        Preconditions.notNull(left, "left");
+        Preconditions.notNull(right, "right");
+
         this.left = left;
         this.right = right;
     }
