@@ -1,6 +1,5 @@
 ## output binaries
-/Linq-A-Like/target/*
-temp/*
+build/*
 
 ## Package Files
 *.war
