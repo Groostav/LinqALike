@@ -1,0 +1,776 @@
+package com.empowerops.linqalike;
+
+import com.empowerops.linqalike.common.*;
+import com.empowerops.linqalike.delegate.*;
+import com.empowerops.linqalike.queries.*;
+
+import java.io.InputStream;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
+
+import static com.empowerops.linqalike.CommonDelegates.*;
+import static com.empowerops.linqalike.Factories.from;
+
+/**
+ * Widened and made-static implementation of {@link Queryable} and {@link QueryableMap}.
+ *
+ * <p>This interface allows Linq-A-Like users to use older static-method style invocation
+ * against older standard collections framework objects (namely {@link java.lang.Iterable})</p>
+ */
+public class Linq {
+
+    private Linq(){}
+
+    public static <TElement> TElement aggregate(Iterable<TElement> sourceElements,
+                                                Func2<? super TElement, ? super TElement, ? extends TElement> aggregator) {
+        return ImmediateInspections.aggregate(sourceElements, aggregator);
+    }
+    public static <TAccumulate, TElement> TAccumulate aggregate(Iterable<TElement> sourceElements,
+                                                                TAccumulate seed,
+                                                                Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator) {
+        return ImmediateInspections.aggregate(sourceElements, seed, aggregator);
+    }
+
+
+    /**
+     * Static implementation of {@link Queryable#ofType(Class)}, forwards to {@link Linq#cast(Iterable)} and
+     * {@link Linq#where(Iterable, Condition)}
+     */
+    public static <TBase, TDerived extends TBase>
+    Queryable<TDerived> ofType(Iterable<TBase> sourceElements,
+                               Class<TDerived> desiredType) {
+
+        return cast(where(sourceElements, desiredType::isInstance));
+    }
+
+    /**
+     * Static implementation of {@link com.empowerops.linqalike.Queryable#single()}.
+     * Forwards to {@link ImmediateInspections#single(Iterable, com.empowerops.linqalike.delegate.Condition)}
+     */
+    public static <TElement>
+    TElement single(Iterable<TElement> elements) {
+        return single(elements, Tautology);
+    }
+
+    /**
+     * Static implementation of {@link Queryable#single(com.empowerops.linqalike.delegate.Condition)}.
+     * Forwards to {@link ImmediateInspections#single(Iterable, com.empowerops.linqalike.delegate.Condition)}
+     */
+    public static <TElement>
+    TElement single(Iterable<TElement> elements,
+                    Condition<? super TElement> uniqueCondition) {
+        return ImmediateInspections.single(elements, uniqueCondition);
+    }
+
+    public static <TElement>
+    TElement singleOrDefault(Iterable<TElement> sourceElements) {
+        return singleOrDefault(sourceElements, Tautology);
+    }
+
+    public static <TElement>
+    TElement singleOrDefault(Iterable<TElement> sourceElements,
+                             Condition<? super TElement> uniqueCondition) {
+        return ImmediateInspections.singleOrDefault(sourceElements, uniqueCondition);
+    }
+
+    public static <TElement>
+    TElement first(Iterable<TElement> elements) {
+        return first(elements, Tautology);
+    }
+
+    public static <TElement>
+    TElement first(Iterable<TElement> sourceElements,
+                   Condition<? super TElement> condition) {
+
+        return ImmediateInspections.first(sourceElements, condition);
+    }
+    public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count){
+        return new FirstElementsQuery<>(sourceElements, count);
+    }
+    public static <TElement>
+    TElement firstOrDefault(Iterable<TElement> sourceElements) {
+        return ImmediateInspections.firstOrDefault(sourceElements, Tautology);
+    }
+
+    public static <TElement>
+    TElement firstOrDefault(Iterable<TElement> sourceElements,
+                            Condition<? super TElement> condition) {
+        return ImmediateInspections.firstOrDefault(sourceElements, condition);
+    }
+
+    public static <TElement>
+    TElement second(Iterable<TElement> sourceElements){
+        return second(sourceElements, Tautology);
+    }
+    public static <TElement>
+    TElement second(Iterable<TElement> sourceElements, Condition<? super TElement> condition){
+        Queryable<TElement> filtered = from(sourceElements).where(condition).skip(1);
+        return filtered.any() ? filtered.first() : Formatting.otherwiseThrow(new SetIsEmptyException(sourceElements, condition));
+    }
+    public static <TElement>
+    TElement secondOrDefault(Iterable<TElement> sourceElements){
+        return secondOrDefault(sourceElements, Tautology);
+    }
+    public static <TElement>
+    TElement secondOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> condition){
+        return from(sourceElements).where(condition).skip(1).firstOrDefault();
+    }
+
+    public static <TElement>
+    TElement last(Iterable<TElement> sourceElements){
+        return last(sourceElements, Tautology);
+    }
+    public static <TElement>
+    TElement last(Iterable<TElement> sourceElements,
+                  Condition<? super TElement> condition) {
+        return ImmediateInspections.last(sourceElements, condition);
+    }
+    public static <TElement> Queryable<TElement> last(Iterable<TElement> sourceElements, int count){
+        return new LastElementsQuery<>(sourceElements, count);
+    }
+
+    public static <TElement> TElement lastOrDefault(Iterable<TElement> sourceElements) {
+        return lastOrDefault(sourceElements, Tautology);
+    }
+
+    public static <TElement>
+    TElement lastOrDefault(Iterable<TElement> sourceElements,
+                           Condition<? super TElement> condition) {
+
+        return ImmediateInspections.lastOrDefault(sourceElements, condition);
+    }
+
+    public static <TElement>
+    Queryable<TElement> where(Iterable<TElement> sourceElements,
+                              Condition<? super TElement> condition) {
+
+        return new WhereQuery<>(sourceElements, condition);
+    }
+
+    public static <TElement, TResult>
+    Queryable<TResult> select(Iterable<TElement> sourceElements,
+                              Func1<? super TElement, TResult> targetSite) {
+        return new SelectQuery<>(sourceElements, targetSite);
+    }
+
+    public static <TElement>
+    boolean any(Iterable<? extends TElement> sourceElements) {
+        return ImmediateInspections.any(sourceElements);
+    }
+    public static <TElement>
+    boolean any(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+        return ImmediateInspections.any(sourceElements, condition);
+    }
+
+    public static <TElement>
+    boolean isEmpty(Iterable<TElement> sourceElements) {
+        return ! ImmediateInspections.any(sourceElements, Tautology);
+    }
+
+    public static <TElement, TEquated>
+    boolean containsElement(Iterable<? extends TElement> sourceElements,
+                            TElement candidate,
+                            Func1<? super TElement, TEquated> equatableSelector) {
+        return ImmediateInspections.contains(sourceElements, candidate, performEqualsUsing(equatableSelector));
+    }
+    public static <TElement>
+    boolean containsElement(Iterable<? extends TElement> sourceElements,
+                            TElement candidate,
+                            EqualityComparer<? super TElement> comparer){
+        return ImmediateInspections.contains(sourceElements, candidate, comparer);
+    }
+    public static <TElement>
+    boolean containsElement(Iterable<? extends TElement> sourceElements,
+                            TElement candidate){
+        return ImmediateInspections.contains(sourceElements, candidate, CommonDelegates.DefaultEquality);
+    }
+
+
+    public static <TTransformed, TElement>
+    Queryable<TTransformed> selectMany(Iterable<TElement> set,
+                                         Func1<? super TElement, ? extends Iterable<TTransformed>> selector) {
+        return new SelectManyQuery<>(set, selector);
+    }
+    public static <TTransformed, TElement>
+    Queryable<TTransformed> selectMany(Iterable<TElement> set,
+                                         Func1.Array<? super TElement, TTransformed> selector) {
+        return new SelectManyQuery<>(set, x -> from(selector.getFrom(x)));
+    }
+
+    public static <TElement>
+    Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
+        return new UnionQuery<>(left, from(toInclude), performEqualsUsing(identity()));
+    }
+
+    public static <TElement>
+    Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
+        return new UnionQuery<>(left, right, performEqualsUsing(identity()));
+    }
+
+    public static <TElement, TCompared>
+    Queryable<TElement> union(Iterable<? extends TElement> left,
+                              Iterable<? extends TElement> right,
+                              Func1<? super TElement, TCompared> comparableSelector){
+
+        return new UnionQuery<>(left, right, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement>
+    Queryable<TElement> union(Iterable<? extends TElement> left,
+                              Iterable<? extends TElement> right,
+                              EqualityComparer<? super TElement> equalsComparator){
+
+        return new UnionQuery<>(left, right, equalsComparator);
+    }
+
+    public static <TKey, TValue>
+    LinqingMap<TKey,TValue> toMap(Iterable<TKey> keys, Iterable<TValue> values) {
+        return Factories.asMap(keys, values);
+    }
+
+    @SuppressWarnings("unchecked") //callers must be certain that their domain logic ensures
+                                   //every element in the set is of the desired type!
+    public static <TDesired, TElement>
+    Queryable<TDesired> cast(Iterable<TElement> sourceElements) {
+        if(sourceElements instanceof Queryable){
+            return (Queryable) sourceElements;
+        }
+        else {
+            return new QueryAdapter.FromIterable<TDesired>((Iterable)sourceElements);
+        }
+    }
+    public static <TDesired, TElement>
+    Queryable<TDesired> cast(Iterable<TElement> sourceElements, Class<TDesired> desiredType) {
+        return new CastQuery<>(sourceElements, desiredType);
+    }
+
+    public static <TElement>
+    boolean all(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+        return ImmediateInspections.all(sourceElements, condition);
+    }
+
+    public static <TElement>
+    boolean setEquals(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        return ImmediateInspections.setEquals(left, right, DefaultEquality);
+    }
+
+    public static <TElement, TCompared> boolean setEquals(Iterable<TElement> left,
+                                                          Iterable<? extends TElement> right,
+                                                          Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.setEquals(left, right, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement> boolean setEquals(Iterable<TElement> left,
+                                               Iterable<? extends TElement> right,
+                                               EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.setEquals(left, right, equalityComparer);
+    }
+
+    public static <TElement> boolean sequenceEquals(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        return ImmediateInspections.sequenceEquals(left, right, DefaultEquality);
+    }
+
+    public static <TElement, TCompared> boolean sequenceEquals(Iterable<TElement> left,
+                                                               Iterable<? extends TElement> right,
+                                                               Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.sequenceEquals(left, right, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement> boolean sequenceEquals(Iterable<TElement> left,
+                                                    Iterable<? extends TElement> right,
+                                                    EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.sequenceEquals(left, right, equalityComparer);
+    }
+
+    public static <TElement>
+    Queryable<TElement> skipWhile(Iterable<TElement> sourceElements,
+                                                           Condition<? super TElement> excludingCondition) {
+
+        return new SkipQuery<>(sourceElements, excludingCondition);
+    }
+
+    public static <TElement>
+    Queryable<TElement> reversed(Iterable<TElement> sourceElements) {
+        return new ReversedQuery<>(sourceElements);
+    }
+
+    public static <TElement>
+    boolean isSubsetOf(Iterable<TElement> left, Iterable<? extends TElement> right) {
+        return ImmediateInspections.isSubsetOf(left, right, CommonDelegates.DefaultEquality);
+    }
+    public static <TElement, TCompared>
+    boolean isSubsetOf(Iterable<TElement> left,
+                       Iterable<? extends TElement> right,
+                       Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.isSubsetOf(left, right, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+    public static <TElement>
+    boolean isSubsetOf(Iterable<TElement> left,
+                       Iterable<? extends TElement> right,
+                       EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.isSubsetOf(left, right, equalityComparer);
+    }
+
+
+    public static <TElement> boolean isSupersetOf(Iterable<TElement> sourceElements,
+                                                  Iterable<? extends TElement> possibleSubset) {
+        return ImmediateInspections.isSubsetOf(possibleSubset, sourceElements, CommonDelegates.DefaultEquality);
+    }
+    public static <TElement> boolean isSubsequenceOf(Iterable<TElement> sourceElements,
+                                                     Iterable<? extends TElement> possibleSupersequence) {
+        return ImmediateInspections.isSubsequenceOf(sourceElements, possibleSupersequence, CommonDelegates.DefaultEquality);
+    }
+    public static <TElement> boolean isSupersequenceOf(Iterable<TElement> sourceElements,
+                                                       Iterable<? extends TElement> possibleSubsequence) {
+        return ImmediateInspections.isSubsequenceOf(possibleSubsequence, sourceElements, CommonDelegates.DefaultEquality)
+                || ImmediateInspections.sequenceEquals(sourceElements, possibleSubsequence, CommonDelegates.DefaultEquality);
+    }
+
+    public static <TElement>
+    int count(Iterable<TElement> sourceElements){
+        return ImmediateInspections.count(sourceElements, CommonDelegates.Tautology);
+    }
+
+    public static <TElement>
+    int count(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+        return ImmediateInspections.count(sourceElements, condition);
+    }
+
+    public static <TElement>
+    Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
+
+        return new ExceptQuery<>(source, from(toExclude), performEqualsUsing(identity()));
+    }
+
+    public static <TElement>
+    Queryable<TElement> except(Iterable<? extends TElement> left,
+                               Iterable<? extends TElement> right) {
+
+        return new ExceptQuery<>(left, right, performEqualsUsing(CommonDelegates.<TElement>identity()));
+    }
+
+    public static <TElement, TCompared>
+    Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
+                               Iterable<? extends TElement> membersToExclude,
+                               Func1<? super TElement, TCompared> comparableSelector) {
+
+        return new ExceptQuery<>(originalMembers, membersToExclude, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement> Queryable<TElement> except(Iterable<? extends TElement> originalMembers,
+                                                        Iterable<? extends TElement> membersToExclude,
+                                                        EqualityComparer<? super TElement> comparableSelector) {
+
+        return new ExceptQuery<>(originalMembers, membersToExclude, memoized(comparableSelector));
+    }
+
+    public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                           Iterable<? extends TElement> right) {
+
+        return new IntersectionQuery.WithNaturalEquality<>(left, right);
+    }
+
+    public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                           TElement... right) {
+        return new IntersectionQuery.WithNaturalEquality<>(left, Factories.from(right));
+    }
+
+    public static <TElement, TCompared> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                                      Iterable<? extends TElement> right,
+                                                                      Func1<? super TElement, TCompared> comparableSelector) {
+
+        return new IntersectionQuery.WithComparable<>(left, right, comparableSelector);
+    }
+
+    public static <TElement> Queryable<TElement> intersect(Iterable<? extends TElement> left,
+                                                           Iterable<? extends TElement> right,
+                                                           EqualityComparer<? super TElement> comparableSelector) {
+
+        return new IntersectionQuery.WithEqualityComparator<>(left, right, comparableSelector);
+    }
+
+    public static <TElement> Queryable<TElement> skip(Iterable<TElement> sourceElements, int numberToSkip) {
+        return new SkipQuery<>(sourceElements, numberToSkip);
+    }
+
+    public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
+        return Factories.asList(set);
+    }
+
+    public static <TElement> InputStream toInputStream(DefaultedQueryable<TElement> sourceElements,
+                                                       Func1<? super TElement, Integer> converter) {
+        return Factories.asInputStream(sourceElements, converter);
+    }
+
+    public static <TElement> Object[] toArray(Queryable<TElement> sourceElements) {
+        return Factories.asArray(sourceElements);
+    }
+
+    public static <TElement, TDesired> TDesired[] toArray(Queryable<TElement> originalSet,
+                                                          TDesired[] targetArray) {
+        return Factories.asArray(originalSet, targetArray);
+    }
+
+    public static <TElement> int size(Iterable<TElement> sourceElements) {
+        return ImmediateInspections.size(sourceElements);
+    }
+
+    public static <TElement, TDesired> TDesired[] toArray(Iterable<TElement> sourceElements,
+                                                          Func1<Integer, TDesired[]> arrayFactory) {
+
+        return Factories.asArray(sourceElements, arrayFactory);
+    }
+
+    public static <TElement> Queryable<TElement> distinct(Iterable<TElement> sourceElements) {
+        return new DistinctQuery.WithNaturalEquality<>(sourceElements);
+    }
+
+    public static <TElement> Queryable<TElement> distinct(Iterable<TElement> sourceElements,
+                                                          EqualityComparer<? super TElement> comparer) {
+        return new DistinctQuery.WithEqualityComparable<>(sourceElements, comparer);
+    }
+
+    public static <TElement, TCompared> Queryable<TElement> distinct(Iterable<TElement> sourceElements,
+                                                                     Func1<? super TElement, TCompared> comparableSelector) {
+        return new DistinctQuery.WithComparable<>(sourceElements, comparableSelector);
+    }
+
+
+
+    public static <TElement> double average(Iterable<? extends TElement> sourceElements,
+                                            Func1<? super TElement, Double> valueSelector) {
+
+        return ImmediateInspections.average(sourceElements, valueSelector);
+    }
+
+    public static <TElement, TComparable>
+    Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
+                                           Func1<? super TElement, TComparable> groupByPropertySelector) {
+        return new GroupByQuery<>(setToGroup, performEqualsUsing(memoizedSelector(groupByPropertySelector)));
+    }
+
+    public static <TElement>
+    Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
+                                           EqualityComparer<? super TElement> groupMembershipComparator) {
+        return new GroupByQuery<>(setToGroup, groupMembershipComparator);
+    }
+
+    public static <TElement, TCompared extends Comparable<TCompared>>
+    TCompared min(Iterable<TElement> sourceElements,
+                  Func1<? super TElement, TCompared> valueSelector) {
+        return ImmediateInspections.min(sourceElements, valueSelector);
+    }
+    public static <TElement, TCompared extends Comparable<TCompared>>
+    TCompared max(Iterable<TElement> sourceElements,
+                  Func1<? super TElement, TCompared> valueSelector) {
+        return ImmediateInspections.max(sourceElements, valueSelector);
+    }
+    public static <TElement, TCompared extends Comparable<TCompared>>
+    TElement withMin(Queryable<TElement> sourceElements,
+                     Func1<? super TElement, TCompared> valueSelector) {
+        return ImmediateInspections.withMin(sourceElements, valueSelector);
+    }
+    public static <TElement, TCompared extends Comparable<TCompared>>
+    TElement withMax(Queryable<TElement> sourceElements,
+                     Func1<? super TElement, TCompared> valueSelector) {
+        return ImmediateInspections.withMax(sourceElements, valueSelector);
+    }
+
+    public static <TElement, TCompared extends Comparable<TCompared>>
+    Queryable<TElement> orderBy(Queryable<TElement> sourceElements,
+                                Func1<? super TElement, TCompared> comparableSelector) {
+
+        return new OrderByQuery<>(sourceElements, performComparisonUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement> Queryable<TElement> orderBy(Iterable<TElement> sourceElements,
+                                                         Comparator<? super TElement> equalityComparator) {
+        return new OrderByQuery<>(sourceElements, equalityComparator);
+    }
+
+
+    public static <TElement> double sum(Iterable<TElement> set,
+                                        Func1<? super TElement, Double> valueSelector) {
+        return ImmediateInspections.sum(set, valueSelector);
+    }
+
+    public static <TElement> ReadonlyLinqingList<TElement> toReadOnly(Iterable<TElement> source) {
+        return Factories.asReadonlyList(source);
+    }
+    public static <TElement> ReadonlyLinqingSet<TElement> toReadonlySet(Iterable<TElement> sourceElements) {
+        return Factories.asReadonlySet(sourceElements);
+    }
+
+
+    public static <TElement> LinqingSet<TElement> toSet(Iterable<TElement> source) {
+        return Factories.asSet(source);
+    }
+
+    public static <TElement> Queryable<TElement> immediately(Iterable<TElement> source) {
+        return source instanceof Set ? Factories.asReadonlySet(source) : Factories.asReadonlyList(source);
+    }
+
+    public static <TKey, TElement> LinqingMap<TKey,TElement> toMap(Iterable<TElement> sourceElements,
+                                                                   Func1<? super TElement,TKey> keySelector) {
+        return Factories.asMap(sourceElements, keySelector, identity());
+    }
+
+    public static <TKey, TValue, TElement> LinqingMap<TKey,TValue> toMap(Iterable<TElement> sourceElements,
+                                                                         Func1<? super TElement,TKey> keySelector,
+                                                                         Func1<? super TElement,TValue> valueSelector) {
+        return Factories.asMap(sourceElements, keySelector, valueSelector);
+    }
+
+    public static <TElement> boolean isSingle(Iterable<TElement> source) {
+        return ImmediateInspections.isSingle(source);
+    }
+
+    public static <TElement> boolean isMany(Iterable<TElement> sourceElements) {
+        return ImmediateInspections.any(sourceElements) && ! ImmediateInspections.isSingle(sourceElements);
+    }
+
+    public static <TElement> boolean isDistinct(Iterable<TElement> source) {
+        return ImmediateInspections.isDistinct(source, performEqualsUsing(identity()));
+    }
+
+    public static <TElement, TCompared> boolean isDistinct(Iterable<TElement> sourceElements,
+                                                           Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.isDistinct(sourceElements, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement> boolean isDistinct(Iterable<TElement> sourceElements,
+                                                EqualityComparer<? super TElement> equalityComparator) {
+        return ImmediateInspections.isDistinct(sourceElements, equalityComparator);
+    }
+
+
+
+    public static <TValue, TKey> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
+        if(sourceEntries instanceof Map){
+            //so what if its a queryable map of one thing, and a util.map of another?
+            //no, because you'd get a signature collision in keySet() and values(). So that's impossible. Thank god.
+            return ((Map<TKey, TValue>)sourceEntries).get(key);
+        }
+
+        return ImmediateInspections.getFor(sourceEntries, key);
+    }
+
+    public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements) {
+        return new PairwiseQuery<>(sourceElements, () -> null);
+    }
+
+    public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements,
+                                                                           Func<? extends TElement> defaultFactory) {
+        return new PairwiseQuery<>(sourceElements, defaultFactory);
+    }
+
+    public static <TElement> boolean[] toBooleanArray(Iterable<TElement> sourceElements,
+                                                      Func1<? super TElement, Boolean> converter) {
+        return PrimitiveArrayFactories.asBooleanArray(sourceElements, converter);
+    }
+
+    public static <TElement> byte[] toByteArray(Iterable<TElement> sourceElements,
+                                                Func1<? super TElement, Byte> converter) {
+        return PrimitiveArrayFactories.asByteArray(sourceElements, converter);
+    }
+
+    public static <TElement> char[] toCharArray(Iterable<TElement> sourceElements,
+                                                Func1<? super TElement, Character> converter) {
+        return PrimitiveArrayFactories.asCharArray(sourceElements, converter);
+    }
+
+    public static <TElement> short[] toShortArray(Iterable<TElement> sourceElements,
+                                                  Func1<? super TElement, Short> converter) {
+        return PrimitiveArrayFactories.asShortArray(sourceElements, converter);
+    }
+
+    public static <TElement> int[] toIntArray(Iterable<TElement> sourceElements,
+                                              Func1<? super TElement, Integer> converter) {
+        return PrimitiveArrayFactories.asIntArray(sourceElements, converter);
+    }
+
+    public static <TElement> long[] toLongArray(Iterable<TElement> sourceElements,
+                                                Func1<? super TElement, Long> converter) {
+        return PrimitiveArrayFactories.asLongArray(sourceElements, converter);
+    }
+
+    public static <TElement> float[] toFloatArray(Iterable<TElement> sourceElements,
+                                                  Func1<? super TElement, Float> converter) {
+        return PrimitiveArrayFactories.asFloatArray(sourceElements, converter);
+    }
+
+    public static <TElement> double[] toDoubleArray(DefaultedQueryable<TElement> sourceElements,
+                                                    Func1<? super TElement, Double> converter) {
+        return PrimitiveArrayFactories.asDoubleArray(sourceElements, converter);
+    }
+    public static <TLeft, TRight, TJoined> Queryable<TJoined> zip(Iterable<TLeft> sourceElements,
+                                                                  Iterable<TRight> rightElements,
+                                                                  Func2<? super TLeft, ? super TRight, TJoined> resultSelector) {
+        return new ZipQuery<>(sourceElements, rightElements, resultSelector);
+    }
+    public static <TElement, TRight> void forEachWith(Iterable<TElement> leftElements,
+                                                      Iterable<TRight> rightElements,
+                                                      Action2<? super TElement, ? super TRight> tupleConsumer) {
+        ImmediateInspections.forEachWith(leftElements, rightElements, tupleConsumer);
+    }
+    public static <TElement> Span span(Iterable<TElement> sourceElements, Func1<? super TElement, Double> scalarSelector) {
+        return new Span(select(sourceElements, scalarSelector));
+    }
+
+
+    public static class MapSpecific {
+        private MapSpecific(){}
+
+
+        public static <TKey, TValue> Queryable<TValue> getAll(Iterable<? extends Map.Entry<TKey, TValue>> entries,
+                                                              Iterable<? extends TKey> keys) {
+            return where(entries, x -> containsElement(keys, x.getKey())).values();
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TValue, TKey> inverted(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return new InvertMapQuery<>(sourceEntries);
+        }
+        public static <TKey, TValue> Queryable<TKey> keySet(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return select(sourceEntries, Map.Entry<TKey, TValue>::getKey);
+        }
+        public static <TValue, TKey> Queryable<TValue> values(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return select(sourceEntries, Map.Entry<TKey, TValue>::getValue);
+        }
+        public static <TKey, TValue> LinqingMap<TKey, TValue> toMap(Iterable<? extends Map.Entry<TKey, TValue>> entries) {
+            return new LinqingMap<>(entries);
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> distinct(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return new QueryAdapter.ToQueryableMap<>(new DistinctQuery.WithNaturalEquality<>(sourceEntries));
+        }
+        public static <TCompared, TKey, TValue>
+        QueryableMap<TKey, TValue> distinct(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                            Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new DistinctQuery.WithComparable<>(sourceEntries, comparableSelector));
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> distinct(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                            EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison) {
+            return new QueryAdapter.ToQueryableMap<>(new DistinctQuery.WithEqualityComparable<>(sourceEntries, equalityComparison));
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceElements,
+                                          Map.Entry<TKey, TValue>... toExclude) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceElements, from(toExclude), CommonDelegates.DefaultEquality));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                          Iterable<? extends Map.Entry<TKey, TValue>> toExclude) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, CommonDelegates.DefaultEquality));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                          Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
+                                          EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, equalityComparison));
+        }
+        public static <TKey, TValue, TCompared>
+        QueryableMap<TKey, TValue> except(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                          Iterable<? extends Map.Entry<TKey, TValue>> toExclude,
+                                          Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new ExceptQuery<>(sourceEntries, toExclude, performEqualsUsing(memoizedSelector(comparableSelector))));
+        }
+
+
+        public static <TKey, TValue, TCompared>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                             Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithComparable<>(sourceEntries, toInclude, memoizedSelector(comparableSelector)));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                             EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparison) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithEqualityComparator<>(sourceEntries, toInclude, equalityComparison));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Iterable<? extends Map.Entry<TKey, TValue>> toInclude) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithNaturalEquality<>(sourceEntries, toInclude));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> intersect(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Map.Entry<TKey, TValue>... toIntersect) {
+            return new QueryAdapter.ToQueryableMap<>(new IntersectionQuery.WithNaturalEquality<>(sourceEntries, from(toIntersect)));
+        }
+
+
+        public static <TKey, TValue, TCompared extends Comparable<TCompared>>
+        QueryableMap<TKey, TValue> orderBy(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                           Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new OrderByQuery<>(sourceEntries, performComparisonUsing(memoizedSelector(comparableSelector))));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> orderBy(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                           Comparator<? super Map.Entry<TKey, TValue>> equalityComparator) {
+            return new QueryAdapter.ToQueryableMap<>(new OrderByQuery<>(sourceEntries, equalityComparator));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> reversed(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
+            return new QueryAdapter.ToQueryableMap<>(new ReversedQuery<>(sourceEntries));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> skipWhile(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                             Condition<? super Map.Entry<TKey, TValue>> toExclude) {
+            return new QueryAdapter.ToQueryableMap<>(new SkipQuery<>(sourceEntries, toExclude));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> skip(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                        int numberToSkip) {
+            return new QueryAdapter.ToQueryableMap<>(new SkipQuery<>(sourceEntries, numberToSkip));
+        }
+
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Map.Entry<TKey, TValue>... entries) {
+            return new QueryAdapter.ToQueryableMap<>(new UnionQuery<>(sourceEntries, from(entries), CommonDelegates.DefaultEquality));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Iterable<? extends Map.Entry<TKey, TValue>> toInclude) {
+            return new QueryAdapter.ToQueryableMap<>(new UnionQuery<>(sourceEntries, toInclude, CommonDelegates.DefaultEquality));
+        }
+        public static <TCompared, TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                         Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector) {
+            return new QueryAdapter.ToQueryableMap<>(new UnionQuery<>(sourceEntries, toInclude, performEqualsUsing(comparableSelector)));
+        }
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
+                                         EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparator) {
+            return new QueryAdapter.ToQueryableMap<>(
+                    new UnionQuery<>(sourceEntries, toInclude, equalityComparator)
+            );
+        }
+
+        public static <TKey, TValue>
+        QueryableMap<TKey, TValue> where(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
+                                         Condition<? super Map.Entry<TKey, TValue>> condition) {
+            return new QueryAdapter.ToQueryableMap<>(
+                    new WhereQuery<>(sourceEntries, condition)
+            );
+        }
+    }
+}
+
