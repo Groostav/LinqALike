@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.empowerops.linqalike.SortedLinqingSetFixture" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.003">
-  <properties/>
-  <testcase name="when_getting_a_symbol_from_a_sorted_set_should_find_appropriate_element" classname="com.empowerops.linqalike.SortedLinqingSetFixture" time="0.003"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

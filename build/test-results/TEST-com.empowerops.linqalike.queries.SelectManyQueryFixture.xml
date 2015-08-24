@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.empowerops.linqalike.queries.SelectManyQueryFixture" tests="3" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.005">
-  <properties/>
-  <testcase name="when_selecting_on_a_group_of_multi_child_elements_select_many_should_simply_flatten" classname="com.empowerops.linqalike.queries.SelectManyQueryFixture" time="0.004"/>
-  <testcase name="when_selecting_many_on_groups_containing_no_elements_they_should_simply_be_skipped" classname="com.empowerops.linqalike.queries.SelectManyQueryFixture" time="0.0"/>
-  <testcase name="when_selecting_many_on_only_empty_groups" classname="com.empowerops.linqalike.queries.SelectManyQueryFixture" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

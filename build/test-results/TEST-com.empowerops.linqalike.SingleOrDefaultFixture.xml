@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.empowerops.linqalike.SingleOrDefaultFixture" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.001">
-  <properties/>
-  <testcase name="when_calling_single_or_default_with_a_condition_on_a_set_containing_no_elements_matching_that_condition_the_result_should_be_null" classname="com.empowerops.linqalike.SingleOrDefaultFixture" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

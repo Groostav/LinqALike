@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.empowerops.linqalike.AllFixture" tests="3" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:40" hostname="Batou" time="0.006">
-  <properties/>
-  <testcase name="when_calling_all_on_a_set_of_passing_objects_all_should_return_true" classname="com.empowerops.linqalike.AllFixture" time="0.004"/>
-  <testcase name="when_calling_all_on_the_empty_set_result_should_be_true" classname="com.empowerops.linqalike.AllFixture" time="0.0"/>
-  <testcase name="when_calling_all_on_a_group_containing_one_failing_element_all_should_return_false" classname="com.empowerops.linqalike.AllFixture" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
