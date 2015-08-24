@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.8
-version = '0.9.65.199'
+version = '1.0.64.200'
 
 jar {
     manifest {
@@ -16,6 +16,10 @@ repositories {
     mavenCentral()
 }
 
+signing {
+    sign configurations.archives
+}
+
 dependencies {
     compile     group: 'org.apache.commons',       name: 'commons-lang3',  version: '3.4'
     compile     group: 'com.google.code.findbugs', name: 'jsr305',         version: '3.0.0'
@@ -26,6 +30,22 @@ dependencies {
 
 test {
 }
+
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
 
 uploadArchives {
     repositories {
@@ -46,6 +66,7 @@ uploadArchives {
                 name 'Linq-A-Like'
                 packaging 'jar'
                 url 'https://github.com/Groostav/LinqALike'
+                description 'Linq for Java using Java-8 Delegates'
 
                 scm {
                     connection              'scm:git:https://github.com/Groostav/LinqALike'
@@ -70,18 +91,4 @@ uploadArchives {
             }
         }
     }
-}
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
 }
