@@ -1,7 +1,10 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
-version = '1.0'
+version = '0.9.65.199'
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'Linq-A-Like',
@@ -14,16 +17,71 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.apache.commons',        name: 'commons-lang3',  version: '3.4'
-    compile group: 'com.google.code.findbugs',  name: 'jsr305',         version: '3.0.0'
-    testCompile group: 'org.easytesting',       name: 'fest-assert',    version: '1.4'
-    testCompile group: 'org.easytesting',       name: 'fest-util',      version: '1.1.6'
-    testCompile group: 'junit',                 name: 'junit',          version: '4.12'
+    compile     group: 'org.apache.commons',       name: 'commons-lang3',  version: '3.4'
+    compile     group: 'com.google.code.findbugs', name: 'jsr305',         version: '3.0.0'
+    testCompile group: 'org.easytesting',          name: 'fest-assert',    version: '1.4'
+    testCompile group: 'org.easytesting',          name: 'fest-util',      version: '1.1.6'
+    testCompile group: 'junit',                    name: 'junit',          version: '4.12'
 }
-
 
 test {
 }
 
 uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/com/empowerops/LinqALike/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/com/empowerops/LinqALike/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.groupId = 'com.empowerops'
+            pom.artifactId = 'LinqALike'
+            pom.project {
+                name 'Linq-A-Like'
+                packaging 'jar'
+                url 'https://github.com/Groostav/LinqALike'
+
+                scm {
+                    connection              'scm:git:https://github.com/Groostav/LinqALike'
+                    developerConnection     'scm:git:https://github.com/Groostav/LinqALike'
+                    url                     'https://github.com/Groostav/LinqALike'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'groostav'
+                        name 'Geoff Groos'
+                        email 'geoff.groos@empowerops.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
 }

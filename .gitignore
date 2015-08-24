@@ -1,5 +1,6 @@
 ## output binaries
-build/*
+build/**
+.gradle/**
 
 ## Package Files
 *.war
