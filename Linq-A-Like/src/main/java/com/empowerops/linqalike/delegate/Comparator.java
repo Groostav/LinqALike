@@ -4,8 +4,6 @@ import com.empowerops.linqalike.CommonDelegates;
 
 import java.io.Serializable;
 
-import static com.empowerops.common.ReflectionUtilities.getSimpleHumanReadableName;
-
 //class exists so Xstream will flag the comparators as serializable
 @FunctionalInterface
 public interface Comparator<TCompared> extends java.util.Comparator<TCompared>, Serializable {
@@ -29,7 +27,7 @@ public interface Comparator<TCompared> extends java.util.Comparator<TCompared>, 
         }
 
         private static String makeComparatorTypeMessageFor(Class type, Comparator delegate) {
-            String humanReadableType = getSimpleHumanReadableName(type);
+            String humanReadableType = type.getSimpleName();
             return "Type bounded Comparator: " +
                     "(left, right) -> " + humanReadableType + ".isInstance(left) && " + humanReadableType + ".isInstance(right) " +
                     "? {" + delegate + "}.compare(left, right) " +

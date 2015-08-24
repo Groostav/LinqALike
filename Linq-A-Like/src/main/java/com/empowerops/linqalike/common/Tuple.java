@@ -1,6 +1,5 @@
 package com.empowerops.linqalike.common;
 
-import com.empowerops.common.documentation.Immutable;
 import com.empowerops.linqalike.CommonDelegates;
 
 import java.util.Map;

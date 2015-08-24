@@ -1,6 +1,5 @@
 package com.empowerops.linqalike.common;
 
-import com.empowerops.common.ReflectionUtilities;
 import com.empowerops.linqalike.delegate.Condition;
 
 public class SetIsEmptyException extends QueryDelegateException {
@@ -10,7 +9,7 @@ public class SetIsEmptyException extends QueryDelegateException {
                 + "The visible members were:\n\t"
                 + Formatting.verticallyPrintMembers(problemSet)
                 + "And the condition was:\n"
-                + ReflectionUtilities.describeObjectByReflection(condition, 1)
+                + condition.toString()
                 + "\n");
     }
     public SetIsEmptyException(){

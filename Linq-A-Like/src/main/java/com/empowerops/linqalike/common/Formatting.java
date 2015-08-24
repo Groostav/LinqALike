@@ -1,19 +1,12 @@
 package com.empowerops.linqalike.common;
-
-import com.empowerops.common.exceptions.RuntimeIOException;
 import com.empowerops.linqalike.Factories;
-import com.google.common.base.Strings;
-import org.joda.time.DateTime;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.empowerops.common.BootstrappingUtilities.getEnvInt;
 import static com.empowerops.linqalike.Linq.any;
-import static java.lang.Math.round;
 
 //------------------------------------------------------------
 // Copy-pasted code from com.empowerops.common
@@ -26,22 +19,12 @@ public class Formatting {
 
     public static final String NullStringRepresentation = "<null>";
 
-    public static final int ProgressBarCharColumns = getEnvInt(Formatting.class, "ProgressBarCharColumns")
-            .orElse(18);
-
     /**
      * the number of character-coulmns the elipsis character "…" is assumed to take up.
      *
      * It is one character, but for spacing its assumed to be 2.
      */
     private static final int    PresumedElipsisColumns = 2;
-    /**
-     * a sequence of 80 space charaters
-     *
-     * <p>80 being the IBM standard for a punchcard
-     * http://programmers.stackexchange.com/questions/148677/why-is-80-characters-the-standard-limit-for-code-width
-     */
-    public static final  String ClearLine              = Strings.repeat(" ", 80);
 
     private Formatting() {
     }
@@ -216,18 +199,6 @@ public class Formatting {
         }
     }
 
-    public static String getHourOfDayTimestamp(DateTime dateTime) {
-        StringBuilder builder = new StringBuilder();
-
-        append(builder,
-                twoDigits(dateTime.getHourOfDay()),
-                ".",
-                twoDigits(dateTime.getMinuteOfHour()),
-                ".",
-                twoDigits(dateTime.getSecondOfMinute()));
-
-        return builder.toString();
-    }
 
     private static StringBuilder append(StringBuilder builder, Object... args){
         for(Object object : args){
@@ -236,30 +207,5 @@ public class Formatting {
         return builder;
     }
 
-    private static String twoDigits(int number) {
-        return String.format("%02d", number);
-    }
-
-    public static String safeToString(Object source) {
-        try{
-            return source == null ? "<null>" : source.toString();
-        }
-        catch(Exception exception){
-            return "toString() on " + source.getClass().getSimpleName() + " hashcode '" + source.hashCode() + "' threw:\n " + exception;
-        }
-    }
-
-
-    public static void appendProgressBar(Appendable buiilder, double percentageCompleted) {
-        double epsilon = 0.00000001;
-        try {
-            buiilder.append('[');
-            buiilder.append(Strings.repeat("=", (int) round((percentageCompleted + epsilon) * ProgressBarCharColumns)));
-            buiilder.append('>');
-            buiilder.append(Strings.repeat(" ", (int) round((1.0 - percentageCompleted - epsilon) * ProgressBarCharColumns)));
-            buiilder.append(']');
-        }
-        catch (IOException e) { throw new RuntimeIOException(e); }
-    }
 
 }

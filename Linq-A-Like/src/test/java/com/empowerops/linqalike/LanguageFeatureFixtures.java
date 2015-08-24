@@ -1,7 +1,6 @@
 package com.empowerops.linqalike;
 
 
-import com.empowerops.common.BootstrappingUtilities;
 import com.empowerops.linqalike.delegate.Func1;
 import org.junit.Test;
 
@@ -12,7 +11,6 @@ import java.util.function.Supplier;
 
 import static com.empowerops.assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assume.assumeTrue;
 
 public class LanguageFeatureFixtures {
 
@@ -104,7 +102,6 @@ public class LanguageFeatureFixtures {
     @Test
     public void when_asking_java_for_the_environment_variables(){
         //setup
-        assumeTrue(BootstrappingUtilities.isWindows());
         Map<String, String> environmentVariables = System.getenv();
 
         //act

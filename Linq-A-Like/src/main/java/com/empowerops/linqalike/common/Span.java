@@ -1,6 +1,6 @@
 package com.empowerops.linqalike.common;
 
-import com.empowerops.common.documentation.Immutable;
+import javax.annotation.concurrent.Immutable;
 
 import static com.empowerops.linqalike.CommonDelegates.identity;
 import static com.empowerops.linqalike.Factories.from;

@@ -1,6 +1,5 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.common.documentation.FixMe;
 import org.junit.Test;
 
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
@@ -35,8 +34,6 @@ public class AggregateFixture {
     }
 
     @Test
-    @FixMe(description = "Regarding the explicit types on the lambda parameters:" +
-            "http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8056038", issueNo = 8056038)
     public void when_performing_product_with_aggregate_and_seed(){
         //seutup
         LinqingList<Integer> primes = new LinqingList<>(5, 7, 11, 13, 17);
@@ -49,8 +46,6 @@ public class AggregateFixture {
     }
 
     @Test
-    @FixMe(description = "Regarding the explicit types on the lambda parameters:" +
-            "http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8056038", issueNo = 8056038)
     public void when_aggregating_on_dispirate_type(){
         //setup
         LinqingList<String> zombieHunters = new LinqingList<>("Bill", "Francis", "Louis", "Zoey");
@@ -63,8 +58,6 @@ public class AggregateFixture {
     }
 
     @Test
-    @FixMe(description = "Regarding the explicit types on the lambda parameters:" +
-            "http://bugs.java.com/bugdatabase/view_bug.do?bug_id=8056038", issueNo = 8056038)
     public void when_aggregating_an_empty_set_with_seed_should_return_seed(){
         //setup
         LinqingList<Double> emptySet = new LinqingList<>();
