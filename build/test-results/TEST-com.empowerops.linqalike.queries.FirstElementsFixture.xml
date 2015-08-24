@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.queries.FirstElementsFixture" tests="3" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.002">
+  <properties/>
+  <testcase name="when_asking_for_the_first_three_letters_in_the_alphabet" classname="com.empowerops.linqalike.queries.FirstElementsFixture" time="0.002"/>
+  <testcase name="when_asking_for_the_first_elements_the_result_should_be_lazy" classname="com.empowerops.linqalike.queries.FirstElementsFixture" time="0.0"/>
+  <testcase name="when_asking_for_the_first_4_elements_of_a_3_element_list" classname="com.empowerops.linqalike.queries.FirstElementsFixture" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

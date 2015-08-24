@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.IsSetEquivalentFixture" tests="4" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:40" hostname="Batou" time="0.004">
+  <properties/>
+  <testcase name="when_asking_if_the_null_is_equivalent_the_query_should_throw" classname="com.empowerops.linqalike.IsSetEquivalentFixture" time="0.001"/>
+  <testcase name="when_asking_if_two_equal_sets_are_equivalent" classname="com.empowerops.linqalike.IsSetEquivalentFixture" time="0.0"/>
+  <testcase name="when_asking_if_two_non_equal_sets_are_equivalent" classname="com.empowerops.linqalike.IsSetEquivalentFixture" time="0.0"/>
+  <testcase name="when_asking_if_the_same_sets_are_set_equivalent" classname="com.empowerops.linqalike.IsSetEquivalentFixture" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

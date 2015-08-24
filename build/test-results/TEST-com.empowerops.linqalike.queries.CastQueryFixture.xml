@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.queries.CastQueryFixture" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.009">
+  <properties/>
+  <testcase name="when_retrieving_a_value_from_a_polluted_list" classname="com.empowerops.linqalike.queries.CastQueryFixture" time="0.003"/>
+  <testcase name="when_performing_a_safe_cast_with_a_specific_supplied_runtime_type" classname="com.empowerops.linqalike.queries.CastQueryFixture" time="0.002"/>
+  <testcase name="when_using_cast_with_explicit_type_cast_exception_should_be_raised_earlier_than_assignment_but_still_lazily" classname="com.empowerops.linqalike.queries.CastQueryFixture" time="0.002"/>
+  <testcase name="when_performing_a_safe_cast_with_a_inferred_type" classname="com.empowerops.linqalike.queries.CastQueryFixture" time="0.0"/>
+  <testcase name="when_performing_operations_on_a_polluted_list_as_long_as_those_operations_are_generic_there_is_no_problem" classname="com.empowerops.linqalike.queries.CastQueryFixture" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

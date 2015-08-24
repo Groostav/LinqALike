@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.SingleFixture" tests="6" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.01">
+  <properties/>
+  <testcase name="when_called_on_a_list_containing_one_element_that_element_should_be_returned" classname="com.empowerops.linqalike.SingleFixture" time="0.002"/>
+  <testcase name="when_called_on_an_empty_list_single_should_throw" classname="com.empowerops.linqalike.SingleFixture" time="0.003"/>
+  <testcase name="when_called_with_a_condition_that_passes_exactly_one_element" classname="com.empowerops.linqalike.SingleFixture" time="0.001"/>
+  <testcase name="when_called_on_a_set_containing_multiple_elements_single_should_throw" classname="com.empowerops.linqalike.SingleFixture" time="0.001"/>
+  <testcase name="when_called_with_a_condition_that_passes_no_elements_of_the_set" classname="com.empowerops.linqalike.SingleFixture" time="0.002"/>
+  <testcase name="when_called_with_a_condition_that_passes_two_elements_of_the_set" classname="com.empowerops.linqalike.SingleFixture" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

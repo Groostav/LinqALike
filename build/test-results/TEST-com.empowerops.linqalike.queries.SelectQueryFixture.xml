@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.queries.SelectQueryFixture" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.002">
+  <properties/>
+  <testcase name="when_using_select_to_apply_a_transform_across_the_origin_set" classname="com.empowerops.linqalike.queries.SelectQueryFixture" time="0.0"/>
+  <testcase name="when_calling_select_prior_to_adding_values_to_the_source_list_select_query_should_see_newly_added_values" classname="com.empowerops.linqalike.queries.SelectQueryFixture" time="0.001"/>
+  <testcase name="when_running_select_over_a_set_containing_null" classname="com.empowerops.linqalike.queries.SelectQueryFixture" time="0.0"/>
+  <testcase name="when_calling_select_on_an_objects_field_result_is_projected" classname="com.empowerops.linqalike.queries.SelectQueryFixture" time="0.001"/>
+  <testcase name="when_running_select_over_a_bag" classname="com.empowerops.linqalike.queries.SelectQueryFixture" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

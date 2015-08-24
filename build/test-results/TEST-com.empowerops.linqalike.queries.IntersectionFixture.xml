@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.queries.IntersectionFixture" tests="11" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.008">
+  <properties/>
+  <testcase name="when_intersecting_two_sets_with_overlap_should_return_overlapping_elements" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.005"/>
+  <testcase name="when_intersecting_a_set_with_specific_comparer" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.001"/>
+  <testcase name="when_intersecting_two_non_intersecting_sets_should_return_empty_result" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_a_set_containing_2_members_from_another_set" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_two_empty_sets_should_return_empty_set" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_null_set_should_throw_exception" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_three_sets_with_overlapping_elements_in_two_should_return_empty_set" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_three_sets_with_overlapping_elements_in_all_should_return_valid_set" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_two_sets_containing_different_typed_content" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_two_sets_should_not_matter_order_by_which_intersect_is_applied" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <testcase name="when_intersecting_one_valid_set_one_empty_set_should_return_empty_set" classname="com.empowerops.linqalike.queries.IntersectionFixture" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

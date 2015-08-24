@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Linq-A-Like/Linq-A-Like.iml" filepath="$PROJECT_DIR$/Linq-A-Like/Linq-A-Like.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LinqALike.iml" filepath="$PROJECT_DIR$/LinqALike.iml" />
     </modules>
   </component>
 </project>
-

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.AggregateFixture" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:40" hostname="Batou" time="0.037">
+  <properties/>
+  <testcase name="when_concatinating_a_nonempty_list_of_names_the_result_should_be_a_string_join" classname="com.empowerops.linqalike.AggregateFixture" time="0.03"/>
+  <testcase name="when_aggregating_an_empty_set_with_seed_should_return_seed" classname="com.empowerops.linqalike.AggregateFixture" time="0.004"/>
+  <testcase name="when_aggregating_on_dispirate_type" classname="com.empowerops.linqalike.AggregateFixture" time="0.001"/>
+  <testcase name="when_performing_product_with_aggregate_and_seed" classname="com.empowerops.linqalike.AggregateFixture" time="0.0"/>
+  <testcase name="when_aggregating_an_empty_set_without_seed_should_throw" classname="com.empowerops.linqalike.AggregateFixture" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

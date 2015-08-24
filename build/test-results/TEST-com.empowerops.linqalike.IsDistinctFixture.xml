@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.IsDistinctFixture" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:40" hostname="Batou" time="0.012">
+  <properties/>
+  <testcase name="when_asking_if_set_is_distinct" classname="com.empowerops.linqalike.IsDistinctFixture" time="0.007"/>
+  <testcase name="when_asking_if_bag_with_comparator_is_distinct" classname="com.empowerops.linqalike.IsDistinctFixture" time="0.001"/>
+  <testcase name="when_asking_if_empty_set_is_distinct" classname="com.empowerops.linqalike.IsDistinctFixture" time="0.0"/>
+  <testcase name="when_asking_if_bag_is_distinct" classname="com.empowerops.linqalike.IsDistinctFixture" time="0.0"/>
+  <testcase name="when_asking_if_set_with_comparable_is_distinct" classname="com.empowerops.linqalike.IsDistinctFixture" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

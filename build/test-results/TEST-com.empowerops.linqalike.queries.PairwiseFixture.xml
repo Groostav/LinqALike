@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.queries.PairwiseFixture" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.005">
+  <properties/>
+  <testcase name="when_calling_pairwise_on_a_singleton_list_of_null_it_should_get_two_empty_pairs" classname="com.empowerops.linqalike.queries.PairwiseFixture" time="0.002"/>
+  <testcase name="when_calling_pairwise_on_an_empty_list_should_get_a_single_null_null_pair" classname="com.empowerops.linqalike.queries.PairwiseFixture" time="0.0"/>
+  <testcase name="when_calling_pairwise_with_a_default_factory_the_factory_should_be_called_twice" classname="com.empowerops.linqalike.queries.PairwiseFixture" time="0.001"/>
+  <testcase name="when_calling_pairwise_on_a_singleton_list_should_get_two_pairs_each_with_a_null" classname="com.empowerops.linqalike.queries.PairwiseFixture" time="0.0"/>
+  <testcase name="when_calling_pairwise_on_some_sensible_data" classname="com.empowerops.linqalike.queries.PairwiseFixture" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

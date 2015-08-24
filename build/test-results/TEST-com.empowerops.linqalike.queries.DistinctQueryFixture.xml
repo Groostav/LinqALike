@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.empowerops.linqalike.queries.DistinctQueryFixture" tests="6" skipped="0" failures="0" errors="0" timestamp="2015-08-24T08:23:42" hostname="Batou" time="0.015">
+  <properties/>
+  <testcase name="when_calling_distinct_with_a_comapared_value_selector" classname="com.empowerops.linqalike.queries.DistinctQueryFixture" time="0.005"/>
+  <testcase name="when_calling_distinct_on_a_list_containing_string_duplicates" classname="com.empowerops.linqalike.queries.DistinctQueryFixture" time="0.005"/>
+  <testcase name="when_calling_distinct_with_a_comparator" classname="com.empowerops.linqalike.queries.DistinctQueryFixture" time="0.004"/>
+  <testcase name="when_calling_distinct_on_a_list_containing_objects_of_dispirate_types" classname="com.empowerops.linqalike.queries.DistinctQueryFixture" time="0.0"/>
+  <testcase name="when_calling_distinct_on_a_list_containing_several_integer_duplicates" classname="com.empowerops.linqalike.queries.DistinctQueryFixture" time="0.0"/>
+  <testcase name="when_calling_distinct_prior_to_adding_values_to_the_source_list_distinct_should_see_newly_added_values" classname="com.empowerops.linqalike.queries.DistinctQueryFixture" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
