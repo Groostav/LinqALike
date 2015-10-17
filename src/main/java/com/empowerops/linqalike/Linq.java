@@ -7,6 +7,7 @@ import com.empowerops.linqalike.queries.*;
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.empowerops.linqalike.CommonDelegates.*;
@@ -457,13 +458,13 @@ public class Linq {
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TCompared min(Iterable<TElement> sourceElements,
+    Optional<TCompared> min(Iterable<TElement> sourceElements,
                   Func1<? super TElement, TCompared> valueSelector) {
         return ImmediateInspections.min(sourceElements, valueSelector);
     }
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TCompared max(Iterable<TElement> sourceElements,
-                  Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TCompared> max(Iterable<TElement> sourceElements,
+                            Func1<? super TElement, TCompared> valueSelector) {
         return ImmediateInspections.max(sourceElements, valueSelector);
     }
     public static <TElement, TCompared extends Comparable<TCompared>>
@@ -614,10 +615,6 @@ public class Linq {
                                                       Action2<? super TElement, ? super TRight> tupleConsumer) {
         ImmediateInspections.forEachWith(leftElements, rightElements, tupleConsumer);
     }
-    public static <TElement> Span span(Iterable<TElement> sourceElements, Func1<? super TElement, Double> scalarSelector) {
-        return new Span(select(sourceElements, scalarSelector));
-    }
-
 
     public static class MapSpecific {
         private MapSpecific(){}

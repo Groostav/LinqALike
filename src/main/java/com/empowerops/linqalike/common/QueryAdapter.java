@@ -3,6 +3,7 @@ package com.empowerops.linqalike.common;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.DefaultedQueryableMap;
 import com.empowerops.linqalike.Linq;
+import com.empowerops.linqalike.QueryableMap;
 import com.empowerops.linqalike.delegate.Condition;
 import com.empowerops.linqalike.delegate.Func1;
 
@@ -247,4 +248,29 @@ public abstract class QueryAdapter{
         }
     }
 
+    public static class FromMap<TKey, TValue> implements DefaultedQueryableMap<TKey, TValue> {
+
+        private final Map<TKey, TValue> source;
+
+        public FromMap(Map<TKey, TValue> source) {
+            this.source = source;
+        }
+
+        @Override public int size() {
+            return source.size();
+        }
+        @Override public boolean containsTKey(TKey candidateKey) {
+            return source.containsKey(candidateKey);
+        }
+        @Override public boolean containsTValue(TValue candidateValue) {
+            return source.containsValue(candidateValue);
+        }
+        @Override public Iterator<Map.Entry<TKey, TValue>> iterator() {
+            return source.entrySet().iterator();
+        }
+
+        @Override public TValue getValueFor(TKey key) {
+            return source.get(key);
+        }
+    }
 }

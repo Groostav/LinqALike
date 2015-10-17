@@ -181,24 +181,24 @@ public class ImmediateInspections {
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TCompared min(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TCompared> min(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
 
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(valueSelector, "valueSelector");
-        Preconditions.cannotBeEmpty(sourceElements, "sourceElements");
+        if(Linq.isEmpty(sourceElements)) { return Optional.empty(); }
 
         TElement result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, LowerIsBetter));
-        return valueSelector.getFrom(result);
+        return Optional.of(valueSelector.getFrom(result));
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TCompared max(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TCompared> max(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(valueSelector, "valueSelector");
-        Preconditions.cannotBeEmpty(sourceElements, "sourceElements");
+        if(Linq.isEmpty(sourceElements)) { return Optional.empty(); }
 
         TElement result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, HigherIsBetter));
-        return valueSelector.getFrom(result);
+        return Optional.of(valueSelector.getFrom(result));
     }
 
 
@@ -337,9 +337,15 @@ public class ImmediateInspections {
 
         if (size(left) != size(right)) { return false; }
 
-        ComparingLinkedHashSet<TElement> set = new ComparingLinkedHashSet<>(equalityComparer, left);
+        // order chosen to main equals left-associativity
+        // (ie, if you say someSet.setEquals(anotherSet), then you would expect that
+        // someSet[0].equals(anotherSet[0]) to be the first call,
+        // *not* anotherSet[1].equals(someSet[0]).
+        // This is done as a debugging aide, not for functionality.
+        // It would be nuts to rely on this!
+        ComparingLinkedHashSet<TElement> set = new ComparingLinkedHashSet<>(equalityComparer, right);
 
-        for (TElement element : right) {
+        for (TElement element : left) {
             boolean hasChange = set.add(element);
             if (hasChange) {
                 return false;

@@ -1,15 +1,13 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.*;
-import com.empowerops.linqalike.delegate.Comparator;
-import com.empowerops.linqalike.delegate.Condition;
-import com.empowerops.linqalike.delegate.Func;
-import com.empowerops.linqalike.delegate.Func1;
+import com.empowerops.linqalike.delegate.*;
 import com.sun.javafx.binding.ObjectConstant;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.empowerops.linqalike.Factories.from;
 
@@ -121,7 +119,16 @@ public class CommonDelegates {
     public static Condition<File> FileExists = new Condition.WithDescription<>("The File exists: File::exists", File::exists);
 
     public static <TElement> boolean nullSafeEquals(TElement left, TElement right) {
-        return left == null ? right == null : left.equals(right);
+        return left == null ? right == null :
+                right != null && left.equals(right);
+    }
+
+    public static <TElement> boolean nullSafeEquals(TElement left, TElement right, Comparator<? super TElement> comparator){
+        return left == null ? right == null : comparator.compare(left, right) == 0;
+    }
+
+    public static <TElement> boolean nullSafeEquals(TElement left, TElement right, EqualityComparer<? super TElement> comparer){
+        return left == null ? right == null : right != null && comparer.equals(left, right);
     }
 
     public static int nullSafeHashCode(Object object) {
@@ -252,5 +259,23 @@ public class CommonDelegates {
     }
     public static boolean notNullOrNan(Double aDouble) {
         return aDouble != null && ! aDouble.isNaN();
+    }
+    public static boolean isNull(Object obj){
+        return obj == null;
+    }
+    public static boolean isNullOrNan(Double aDouble){
+        return aDouble == null || aDouble.isNaN();
+    }
+
+    public static <T> Optional<Boolean> ifBothPresent(Optional<T> left, Optional<T> right, Func2<T, T, Boolean> condition){
+        if(left.isPresent() && right.isPresent()){
+            return Optional.of(condition.getFrom(left.get(), right.get()));
+        }
+        else{
+            return Optional.empty();
+        }
+    }
+    public static boolean HasBeenGarbageCollected(java.lang.ref.Reference<?> reference) {
+        return reference.get() == null;
     }
 }

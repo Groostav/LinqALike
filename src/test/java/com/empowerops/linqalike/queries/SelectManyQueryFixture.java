@@ -6,6 +6,8 @@ import org.junit.*;
 
 import java.util.*;
 
+import static com.empowerops.linqalike.Factories.asSet;
+import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
@@ -54,5 +56,23 @@ public class SelectManyQueryFixture extends QueryFixtureBase {
 
         //assert
         assertThat(numbers).isEmpty();
+    }
+
+    public static class Parent {
+
+        public Parent(Set<Integer> children){
+            this.children = children;
+        }
+
+        public Set<Integer> children;
+    }
+
+    @Test
+    public void when_selecting_many_and_selector_returns_null_should_get_nice_exception(){
+        //setup
+        LinqingList<Parent> groups = new LinqingList<>(new Parent(new HashSet<>()), new Parent(asSet(1, 2, 3)), new Parent(null));
+
+        //act
+        assertThrows(IllegalArgumentException.class, () -> groups.selectMany(parent -> parent.children).toList());
     }
 }

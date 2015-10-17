@@ -146,6 +146,18 @@ public class GroupByFixture extends QueryFixtureBase {
         assertThat(firstNumGroup).containsOnly(1, 1);
     }
 
+    @Test
+    public void when_using_group_by_to_find_duplicates(){
+        //setup
+        LinqingList<String> names = new LinqingList<>("Brian", "Justin", "Jeff", "Vincent", "Jeff", "George");
+
+        //act
+        Queryable<String> duplicates = names.groupBy(name -> name).where(group -> group.count() > 1).selectMany(x -> x).distinct();
+
+        //assert
+        assertThat(duplicates.toList()).containsExactly("Jeff");
+    }
+
     private void assertNameGroupHas(List<Queryable<NamedValue>> groups, int groupIndex, String expectedName, int expectedSize) {
         LinqingList<NamedValue> group = groups.get(groupIndex).toList();
         assertThat(group).hasSize(expectedSize);

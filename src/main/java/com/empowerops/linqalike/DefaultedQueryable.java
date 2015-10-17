@@ -1,12 +1,12 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.EqualityComparer;
-import com.empowerops.linqalike.common.Span;
 import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
 import java.io.InputStream;
 import java.util.Comparator;
+import java.util.Optional;
 
 /**
  * An <i>implementation</i> (by way of default extension methods) to the {@link com.empowerops.linqalike.Queryable} interface.
@@ -203,7 +203,7 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
-    TCompared max(Func1<? super TElement, TCompared> valueSelector){
+    Optional<TCompared> max(Func1<? super TElement, TCompared> valueSelector){
         return Linq.max(this, valueSelector);
     }
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
@@ -211,7 +211,7 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.withMax(this, valueSelector);
     }
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
-    TCompared min(Func1<? super TElement, TCompared> valueSelector){
+    Optional<TCompared> min(Func1<? super TElement, TCompared> valueSelector){
         return Linq.min(this, valueSelector);
     }
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
@@ -509,10 +509,5 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     /** {@inheritDoc} */ @Override default public <TRight>
     void forEachWith(Iterable<TRight> rightElements, Action2<? super TElement, ? super TRight> tupleConsumer){
         Linq.forEachWith(this, rightElements, tupleConsumer);
-    }
-
-    /** {@inheritDoc} */ @Override default public
-    Span span(Func1<? super TElement, Double> scalarSelector){
-        return Linq.span(this, scalarSelector);
     }
 }

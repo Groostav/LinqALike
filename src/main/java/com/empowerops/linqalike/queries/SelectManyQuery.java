@@ -44,6 +44,13 @@ public class SelectManyQuery<TSource, TTransformed> implements DefaultedQueryabl
             while( ! innerIterator.hasNext() && outerIterator.hasNext()) {
                 TSource next = outerIterator.next();
                 Iterable<TTransformed> nextBatch = selector.getFrom(next);
+                if(nextBatch == null) {
+                    throw new IllegalArgumentException(
+                            "selector -- the selector returned null when it was called to select the group from the following object\n" +
+                                "selector: \n" + selector + "\n" +
+                                "supplied object:\n" + next + "\n"
+                    );
+                }
                 innerIterator = nextBatch.iterator();
             }
         }

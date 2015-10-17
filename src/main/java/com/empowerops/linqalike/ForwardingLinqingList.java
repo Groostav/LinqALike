@@ -1,10 +1,7 @@
 package com.empowerops.linqalike;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -105,4 +102,3 @@ public final class ForwardingLinqingList<TElement> implements QueryableList<TEle
         return source.removeIf(filter);
     }
 }
-

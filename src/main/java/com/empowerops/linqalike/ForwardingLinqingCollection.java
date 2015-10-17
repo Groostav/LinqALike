@@ -8,7 +8,8 @@ import java.util.function.Predicate;
 /**
  * Created by Geoff on 2015-04-11.
  */
-public final class ForwardingLinqingCollection<TElement> implements java.util.Collection<TElement>,
+public final class ForwardingLinqingCollection<TElement> implements Collection<TElement>,
+                                                                    QueryableCollection<TElement>,
                                                                     WritableCollection<TElement>,
                                                                     DefaultedQueryable<TElement>{
 

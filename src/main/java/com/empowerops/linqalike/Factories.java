@@ -54,6 +54,9 @@ public class Factories {
     public static <TElement> Queryable<TElement> from(TElement... sourceElements){
         return new QueryAdapter.FromArray<>(sourceElements);
     }
+    public static <TKey, TValue> QueryableMap<TKey, TValue> fromMap(Map<TKey, TValue> source){
+        return new QueryAdapter.FromMap<>(source);
+    }
     public static Queryable<Character> fromString(CharSequence sourceCharacter){
         return new QueryAdapter.FromCharacterSequence(sourceCharacter);
     }
@@ -109,8 +112,8 @@ public class Factories {
     }
 
     @SafeVarargs
-    public static <TElement> TElement firstNotNull(TElement ... set){
-        return from(set).first(CommonDelegates.NotNull);
+    public static <TElement> TElement firstNotNull(TElement... sourceElements){
+        return from(sourceElements).first(CommonDelegates.NotNull);
     }
 
     public static <TNeeded> TNeeded firstNotNull(TNeeded usedIfNotNull, Func<TNeeded> alternativeIfNull) {

@@ -14,16 +14,18 @@ import static org.junit.Assert.fail;
 public class Exceptions {
     private Exceptions(){}
 
-    public static void assertThrows(Class<? extends Throwable> expectedException, Action runnable){
+    public static <TException extends Throwable> TException assertThrows(Class<TException> expectedException, Action runnable){
         assert ! expectedException.equals(AssertionError.class) : "cant assert on assertion errors since thats how we fail a test!";
         try{
             runnable.run();
             fail("expected action to throw " + expectedException.getSimpleName() + " but it did not.");
+            return null;
         }
-        catch(Throwable e){
-            if ( ! expectedException.isInstance(e)) {
-                throw e;
+        catch(Throwable exception){
+            if ( ! expectedException.isInstance(exception)) {
+                throw exception;
             }
+            return expectedException.cast(exception);
         }
     }
 

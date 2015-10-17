@@ -5,6 +5,7 @@ import com.empowerops.linqalike.delegate.*;
 
 import java.io.InputStream;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -461,11 +462,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *         new Person(){{age = 23; name = "Ben";}},
      *         new Person(){{age = 42; name = "Elizabeth"}},
      *         new Person(){{age = 25; name = "Tom";}});
-     *     int age = people.max(person -> person.age);
+     *     int oldest = people.max(person -> person.age);
      * }</pre>
-     * the value for <code>age</code> would be <code>42</code>
-     *
-     * <p><code>max</code> returns {@link Double#NaN} for the maximum value of the empty set.</p>
+     * the value for <code>oldest</code> would be <code>42</code>
      *
      * <p>a more general version of <code>max</code> is {@link #aggregate(Func2)}},
      * which <code>max</code> delegates to.</p>
@@ -473,15 +472,15 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * <p>for a method that returns the element with that value rather than simply the value itself,
      * use {@link #withMax(com.empowerops.linqalike.delegate.Func1)}
      *
-     * @param valueSelector a transform that gets a scalar value from each element in this queryable
+     * @param valueSelector a transform that gets a comparable value from each element in this queryable
      * @return the maximum value in this queryable as per the value provided by applying <code>valueSelector</code>
-     * to each element
+     * to each element, or an {@link Optional#empty()} iff <tt>this</tt> queryable is empty
      */
      <TCompared extends Comparable<TCompared>>
-     TCompared max(Func1<? super TElement, TCompared> valueSelector);
+     Optional<TCompared> max(Func1<? super TElement, TCompared> valueSelector);
 
     /**
-     * @param valueSelector a transform that gets a scalar value from each element in this queryable
+     * @param valueSelector a transform that gets a comparable value from each element in this queryable
      * @return the element with the maximum value in this queryable as per the value provided by
      * applying <code>valueSelector</code>
      */
@@ -491,17 +490,25 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * Gets the minimum of the value provided by the <code>valueSelector</code> against each of the elements in
      * this queryable.
      *
-     * <p><code>min</code> returns {@link Double#NaN} for the minimum value of the empty set.</p>
+     * <p>for example, for:
+     * <pre>{@code
+     *     List<Person> people = arrays.asList(
+     *         new Person(){{age = 23; name = "Ben";}},
+     *         new Person(){{age = 42; name = "Elizabeth"}},
+     *         new Person(){{age = 25; name = "Tom";}});
+     *     int youngest = people.min(person -> person.age);
+     * }</pre>
+     * the value for <code>youngest</code> would be <code>23</code>
      *
      * <p>a more general version of <code>min</code> is {@link #aggregate(Func2)}},
      * which <code>min</code> delegates to.</p>
      *
-     * @param valueSelector a transform that gets a scalar value from each element in this queryable
+     * @param valueSelector a transform that gets a comparable value from each element in this queryable
      * @return the minimum value in this queryable as per the value provided by applying <code>valueSelector</code>
-     * to each element
+     * to each element, or an {@link Optional#empty()} iff <tt>this</tt> queryable is empty
      */
      <TCompared extends Comparable<TCompared>>
-     TCompared min(Func1<? super TElement, TCompared> valueSelector);
+     Optional<TCompared> min(Func1<? super TElement, TCompared> valueSelector);
     /**
      * @param valueSelector a transform that gets a scalar value from each element in this queryable
      * @return the element with the minimum value in this queryable as per the value provided by
@@ -1067,7 +1074,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
      boolean isSubsetOf(Iterable<? extends TElement> possibleSuperset);
     /**
-     * Determines if this queryable is a superset of the supplied set
+     * Determines if this queryable is a superset of the supplied collection
      *
      * <p>A is a superset of B if all of the elements in B are contained in A.
      * <ul>
@@ -1207,8 +1214,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
     <TRight>
     void forEachWith(Iterable<TRight> rightElements, Action2<? super TElement, ? super TRight> zippedConsumer);
-
-    Span span(Func1<? super TElement, Double> scalarSelector);
 }
 
 
