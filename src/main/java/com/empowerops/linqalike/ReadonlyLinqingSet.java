@@ -1,7 +1,7 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.common.Immutable;
 import javax.annotation.Nonnull;
-import javax.annotation.concurrent.Immutable;
 
 import java.util.Collection;
 import java.util.Iterator;
