@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.8
-version = '1.0.64.200'
+version = '1.0.64.207'
 
 jar {
     manifest {
@@ -50,28 +50,33 @@ artifacts {
 uploadArchives {
     repositories {
         mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            beforeDeployment {
+                MavenDeployment deployment -> signing.signPom(deployment)
+            }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/com/empowerops/LinqALike/") {
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                // The credentials are in ~/.gradle/gradle.properties
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/com/empowerops/LinqALike/") {
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                // The credentials are in ~/.gradle/gradle.properties
                 authentication(userName: ossrhUsername, password: ossrhPassword)
             }
 
-            pom.groupId = 'com.empowerops'
-            pom.artifactId = 'LinqALike'
             pom.project {
+
                 name 'Linq-A-Like'
                 packaging 'jar'
-                url 'https://github.com/Groostav/LinqALike'
                 description 'Linq for Java using Java-8 Delegates'
+                url 'https://github.com/Groostav/LinqALike'
+                groupId = 'com.empowerops'
+                artifactId = 'LinqALike'
 
                 scm {
-                    connection              'scm:git:https://github.com/Groostav/LinqALike'
-                    developerConnection     'scm:git:https://github.com/Groostav/LinqALike'
-                    url                     'https://github.com/Groostav/LinqALike'
+                    connection           'scm:git:https://github.com/Groostav/LinqALike'
+                    developerConnection  'scm:git:https://github.com/Groostav/LinqALike'
+                    url                  'https://github.com/Groostav/LinqALike'
                 }
 
                 licenses {

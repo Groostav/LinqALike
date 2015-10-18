@@ -3,13 +3,11 @@ package com.empowerops.linqalike.common;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.Linq;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
 import static com.empowerops.linqalike.Factories.empty;
 import static com.empowerops.linqalike.Factories.from;
-import static com.empowerops.linqalike.common.OnFailureToGaurenteeConvertableType.BEST_EFFORT;
 
 /**
  * This class is a hack to allow caller-defined {@link #hashCode()} and {@link #equals(Object)} built
@@ -23,10 +21,6 @@ import static com.empowerops.linqalike.common.OnFailureToGaurenteeConvertableTyp
  * Created by Geoff on 2014-05-11.
  */
 public class ComparingLinkedHashSet<TElement> implements DefaultedQueryable<TElement> {
-
-    public static final OnFailureToGaurenteeConvertableType typeResolve = OnFailureToGaurenteeConvertableType.get();
-
-    private final HashSet<Class<?>> typePool = typeResolve == BEST_EFFORT ? new HashSet<>() : null;
 
     private final LinkedHashSet<Reference<TElement>> backingSet = new LinkedHashSet<>();
     private final EqualityComparer<? super TElement> equalityComparer;
