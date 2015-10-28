@@ -440,6 +440,22 @@ public class ImmediateInspections {
         return sourceElements instanceof Collection ? ((Collection) sourceElements).size() : -1;
     }
 
+    public static <TElement> int indexOf(Iterable<? extends TElement> sourceElements,
+                                         TElement elementToFind,
+                                         EqualityComparer<? super TElement> equalityComparer) {
+
+        int index = 0;
+        for(TElement element : sourceElements){
+            if(equalityComparer.equals(elementToFind, element)){
+                return index;
+            }
+
+            index += 1;
+        }
+
+        return -1;
+    }
+
     public static class ComparingChooser<TOrigin, TCompared extends Comparable<TCompared>>
             implements Func2<TOrigin, TOrigin, TOrigin>{
 

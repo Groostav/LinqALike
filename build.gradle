@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.8
-version = '1.0.64.207'
+version = '1.0.70.208'
 
 jar {
     manifest {
@@ -47,53 +47,53 @@ artifacts {
 }
 
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment {
-                MavenDeployment deployment -> signing.signPom(deployment)
-            }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                // The credentials are in ~/.gradle/gradle.properties
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                // The credentials are in ~/.gradle/gradle.properties
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-
-                name 'Linq-A-Like'
-                packaging 'jar'
-                description 'Linq for Java using Java-8 Delegates'
-                url 'https://github.com/Groostav/LinqALike'
-                groupId = 'com.empowerops'
-                artifactId = 'LinqALike'
-
-                scm {
-                    connection           'scm:git:https://github.com/Groostav/LinqALike'
-                    developerConnection  'scm:git:https://github.com/Groostav/LinqALike'
-                    url                  'https://github.com/Groostav/LinqALike'
-                }
-
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'groostav'
-                        name 'Geoff Groos'
-                        email 'geoff.groos@empowerops.com'
-                    }
-                }
-            }
-        }
-    }
-}
+//uploadArchives {
+//    repositories {
+//        mavenDeployer {
+//            beforeDeployment {
+//                MavenDeployment deployment -> signing.signPom(deployment)
+//            }
+//
+//            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                // The credentials are in ~/.gradle/gradle.properties
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+//                // The credentials are in ~/.gradle/gradle.properties
+//                authentication(userName: ossrhUsername, password: ossrhPassword)
+//            }
+//
+//            pom.project {
+//
+//                name 'Linq-A-Like'
+//                packaging 'jar'
+//                description 'Linq for Java using Java-8 Delegates'
+//                url 'https://github.com/Groostav/LinqALike'
+//                groupId = 'com.empowerops'
+//                artifactId = 'LinqALike'
+//
+//                scm {
+//                    connection           'scm:git:https://github.com/Groostav/LinqALike'
+//                    developerConnection  'scm:git:https://github.com/Groostav/LinqALike'
+//                    url                  'https://github.com/Groostav/LinqALike'
+//                }
+//
+//                licenses {
+//                    license {
+//                        name 'The Apache License, Version 2.0'
+//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//
+//                developers {
+//                    developer {
+//                        id 'groostav'
+//                        name 'Geoff Groos'
+//                        email 'geoff.groos@empowerops.com'
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}

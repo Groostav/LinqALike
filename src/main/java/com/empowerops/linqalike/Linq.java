@@ -616,6 +616,30 @@ public class Linq {
         ImmediateInspections.forEachWith(leftElements, rightElements, tupleConsumer);
     }
 
+    public static <TElement> int indexOf(Iterable<? extends TElement> sourceElements,
+                                         TElement elementToFind,
+                                         EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.indexOf(sourceElements, elementToFind, equalityComparer);
+    }
+
+    public static <TElement> int lastIndexOf(Iterable<TElement> sourceElements,
+                                             TElement elementToFind,
+                                             EqualityComparer<? super TElement> equalityComparer) {
+        return ImmediateInspections.indexOf(reversed(sourceElements), elementToFind, equalityComparer);
+    }
+
+    public static <TElement, TCompared> int indexOf(Iterable<? extends TElement> sourceElements,
+                                                    TElement elementToFind,
+                                                    Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.indexOf(sourceElements, elementToFind, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    public static <TElement, TCompared> int lastIndexOf(Iterable<TElement> sourceElements,
+                                                        TElement elementToFind,
+                                                        Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.indexOf(reversed(sourceElements), elementToFind, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
     public static class MapSpecific {
         private MapSpecific(){}
 

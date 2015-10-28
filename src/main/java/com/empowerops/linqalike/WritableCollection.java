@@ -1,5 +1,7 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.common.EqualityComparer;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +89,10 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         addAll(newItems);
     }
 
+    default void replace(TElement oldItem, TElement newItem) {
+        replace(oldItem, newItem, CommonDelegates.DefaultEquality);
+    }
+
     /**
      * Removes the old item and adds the new item
      * at the same index as the old item if <tt>this</tt> is a {@link List}.
@@ -104,14 +110,13 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
     // which is forbidden by java, since there'd be signature collisions.
     // (ie, that class would have to implement both replace(TElement, TElement) and replace(TBad, TBad),
     // which both erase to replace(Object, Object) -> collision
-    public default void replace(TElement oldItem, TElement newItem) {
+    default void replace(TElement oldItem, TElement newItem, EqualityComparer<? super TElement> comparer) {
 
         if(this instanceof List) {
             List thisActual = (List) this;
-            int index = thisActual.indexOf(oldItem);
+            int index = Linq.indexOf(thisActual, oldItem, comparer);
             if (index == -1){ throw new IllegalArgumentException("this does not contain '" + oldItem + "'"); }
-            thisActual.add(index, newItem);
-            this.removeElement(oldItem);
+            thisActual.set(index, newItem);
         }
         else {
             // its a set, which means we're not breaking indexes,
