@@ -4,7 +4,7 @@ import com.empowerops.linqalike.DefaultedQueryable;
 
 import java.util.*;
 
-public class ReversedQuery<TElement> implements DefaultedQueryable<TElement> {
+public class ReversedQuery<TElement> implements DefaultedQueryable<TElement>, FastSize {
 
     private Iterable<TElement> source;
 
@@ -20,6 +20,11 @@ public class ReversedQuery<TElement> implements DefaultedQueryable<TElement> {
         else {
             return new ReversingIterator<>(source);
         }
+    }
+
+    @Override
+    public int size() {
+        return Accessors.vSize(source);
     }
 
     public static class ReversedListIterator<TElement> implements Iterator<TElement> {

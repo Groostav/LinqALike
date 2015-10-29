@@ -35,7 +35,26 @@ public class ImmediateInspections {
         return ! hasSecond;
     }
 
-    public static <TElement> int size(Iterable<TElement> sourceElements) {
+
+    public static int cappedCount(Iterable<?> sourceElements, int maxToReturn) {
+        Preconditions.notNull(sourceElements, "sourceElements");
+
+        if(hasFastSize(sourceElements)){
+            return fastSizeIfAvailable(sourceElements);
+        }
+
+        int size = 0;
+        for(Object ignored : sourceElements){
+            size += 1;
+
+            if(size == maxToReturn) {
+                break;
+            }
+        }
+        return size;
+    }
+
+    public static int size(Iterable<?> sourceElements) {
         Preconditions.notNull(sourceElements, "sourceElements");
 
         if(hasFastSize(sourceElements)){

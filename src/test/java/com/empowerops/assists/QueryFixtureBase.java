@@ -2,13 +2,14 @@ package com.empowerops.assists;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.LinqingSet;
+import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.queries.DefaultedCollection;
 import org.junit.experimental.theories.DataPoint;
 
 /**
  * @author Geoff on 13/10/13
  */
-public class QueryFixtureBase {
+public abstract class QueryFixtureBase {
     protected static final int NEVER = 0;
     protected static final int ONCE = 1;
     protected static final int TWICE = 2;
@@ -106,5 +107,11 @@ public class QueryFixtureBase {
         }
     }
 
+    @SuppressWarnings("unchecked") //purpose of the method
+    protected <TElement, TQuery extends Queryable<TElement>>
+    TQuery asTypeUnderTest(Queryable<TElement> cast){
+        return (TQuery) (getTypeUnderTest() == null ? cast : getTypeUnderTest().cast(cast));
+    }
 
+    protected Class<? extends Queryable> getTypeUnderTest(){ return null; }
 }

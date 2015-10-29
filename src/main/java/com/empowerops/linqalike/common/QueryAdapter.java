@@ -3,7 +3,6 @@ package com.empowerops.linqalike.common;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.DefaultedQueryableMap;
 import com.empowerops.linqalike.Linq;
-import com.empowerops.linqalike.QueryableMap;
 import com.empowerops.linqalike.delegate.Condition;
 import com.empowerops.linqalike.delegate.Func1;
 

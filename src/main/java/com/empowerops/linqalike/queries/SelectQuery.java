@@ -6,7 +6,7 @@ import com.empowerops.linqalike.delegate.Func1;
 
 import java.util.Iterator;
 
-public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResult> {
+public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResult>, FastSize {
 
     private final Iterable<TElement>               sourceElements;
     private final Func1<? super TElement, TResult> targetSite;
@@ -54,7 +54,7 @@ public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResul
     @Override
     //performance critical
     public int size() {
-        return Linq.size(sourceElements);
+        return Accessors.vSize(sourceElements);
     }
 }
 

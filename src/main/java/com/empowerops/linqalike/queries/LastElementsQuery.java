@@ -1,6 +1,7 @@
 package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.DefaultedQueryable;
+import com.empowerops.linqalike.ImmediateInspections;
 import com.empowerops.linqalike.Linq;
 
 import java.util.Iterator;
@@ -8,7 +9,7 @@ import java.util.List;
 
 import static com.empowerops.linqalike.Factories.from;
 
-public class LastElementsQuery<TElement> implements DefaultedQueryable<TElement> {
+public class LastElementsQuery<TElement> implements DefaultedQueryable<TElement>, FastSize {
     private final Iterable<TElement> sourceElements;
     private final int maxToReturn;
 
@@ -29,6 +30,12 @@ public class LastElementsQuery<TElement> implements DefaultedQueryable<TElement>
             int size = Linq.size(sourceElements);
             return from(sourceElements).skip(size - Math.min(maxToReturn, size)).iterator();
         }
+    }
 
+    @Override
+    public int size() {
+        return sourceElements instanceof FastSize
+                ? Accessors.vSize(sourceElements)
+                : ImmediateInspections.cappedCount(sourceElements, maxToReturn);
     }
 }

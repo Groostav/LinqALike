@@ -15,8 +15,11 @@ import java.util.NoSuchElementException;
 public class DefaultedCollection<T> implements WritableCollection<T>, DefaultedQueryable<T> {
 
     public static final int TestCollectionMaxCapacity = 50;
+    public static final Object EMPTY = new Object();
 
     private final Object[] data = new Object[TestCollectionMaxCapacity];
+    { for (int i = 0; i < data.length; i++) { data[i] = EMPTY; } }
+
     private int lastUsedIndex = -1;
 
     @Override public boolean add(T newElement) {
@@ -30,7 +33,7 @@ public class DefaultedCollection<T> implements WritableCollection<T>, DefaultedQ
 
         for(int i = 0; i < data.length; i++){
             if(data[i] == toRemove){
-                data[i] = null;
+                data[i] = EMPTY;
                 modified = true;
                 break;
             }
@@ -40,10 +43,10 @@ public class DefaultedCollection<T> implements WritableCollection<T>, DefaultedQ
     }
 
     @Override public Iterator<T> iterator() {
-        return new ArrayIterator<>();
+        return new ArrayIterator();
     }
 
-    private final class ArrayIterator<T> implements Iterator<T>{
+    private final class ArrayIterator implements Iterator<T>{
 
         int currentIndex = 0;
 
@@ -56,7 +59,6 @@ public class DefaultedCollection<T> implements WritableCollection<T>, DefaultedQ
         @Override public T next() {
             bringCurrentIndexUp();
 
-
             if ( ! hasNext()){
                 throw new NoSuchElementException();
             }
@@ -67,7 +69,7 @@ public class DefaultedCollection<T> implements WritableCollection<T>, DefaultedQ
         }
 
         private void bringCurrentIndexUp() {
-            while(currentIndex < data.length && data[currentIndex] == null){
+            while(currentIndex < data.length && data[currentIndex] == EMPTY){
                 currentIndex += 1;
             }
         }

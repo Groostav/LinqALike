@@ -86,8 +86,7 @@ public class UnionQuery<TElement> implements DefaultedQueryable<TElement> {
         return Linq.containsElement(left, candidate) || Linq.containsElement(right, candidate);
     }
 
-    @Override
-    public int size() {
-        return Linq.size(left) + Linq.size(right);
-    }
+    // note: do not overload size() to return left.size() + right.size(),
+    // duplicate elements will get double-counted!
+
 }

@@ -5,7 +5,7 @@ import com.empowerops.linqalike.DefaultedQueryable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CastQuery<TUncasted, TCasted> implements DefaultedQueryable<TCasted> {
+public class CastQuery<TUncasted, TCasted> implements DefaultedQueryable<TCasted>, FastSize {
 
     private final Iterable<TUncasted> sourceElements;
     private final Class<TCasted> desiredType;
@@ -34,5 +34,10 @@ public class CastQuery<TUncasted, TCasted> implements DefaultedQueryable<TCasted
             if ( ! hasNext()) { throw new NoSuchElementException(); }
             return desiredType.cast(sourceItr.next());
         }
+    }
+
+    @Override
+    public int size() {
+        return Accessors.vSize(sourceElements);
     }
 }
