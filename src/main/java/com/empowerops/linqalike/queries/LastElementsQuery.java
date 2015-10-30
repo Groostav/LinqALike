@@ -35,7 +35,7 @@ public class LastElementsQuery<TElement> implements DefaultedQueryable<TElement>
     @Override
     public int size() {
         return sourceElements instanceof FastSize
-                ? Accessors.vSize(sourceElements)
+                ? ((FastSize) sourceElements).cappedCount(maxToReturn)
                 : ImmediateInspections.cappedCount(sourceElements, maxToReturn);
     }
 }

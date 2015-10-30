@@ -1,5 +1,7 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.queries.FastSize;
+
 import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements
         QueryableList<TElement>,
         DefaultedQueryable<TElement>,
         WritableCollection<TElement>,
-        Serializable {
+        FastSize, Serializable {
 
     private static final Comparator<? super Queryable<? extends Comparable>> SequentialComparator = (left, right) -> {
         Iterator<? extends Comparable> leftItr = left.iterator();

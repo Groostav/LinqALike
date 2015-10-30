@@ -10,6 +10,7 @@ import org.junit.experimental.theories.DataPoint;
  * @author Geoff on 13/10/13
  */
 public abstract class QueryFixtureBase {
+
     protected static final int NEVER = 0;
     protected static final int ONCE = 1;
     protected static final int TWICE = 2;
@@ -106,6 +107,13 @@ public abstract class QueryFixtureBase {
                     '}';
         }
     }
+
+    //TODO: I would like to make this class generic on tthe type under test, so that this method can return
+    // a more specific type (=> less error prone) of query, but in my first implementation
+    // doing casues
+    // A) every existing fifxute to use a raw type in its extends clause
+    // B) every use of this method to cast the _raw type_ of the query to the specific type
+    //     - eg CountSkipQuery to CountSkipQuery<String>
 
     @SuppressWarnings("unchecked") //purpose of the method
     protected <TElement, TQuery extends Queryable<TElement>>

@@ -1,5 +1,8 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.queries.FastSize;
+
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -9,8 +12,9 @@ import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
 
 public class LinqingSet<TElement> extends LinkedHashSet<TElement> implements
         Set<TElement>,
-        DefaultedQueryable<TElement> ,
-        WritableCollection<TElement> {
+        DefaultedQueryable<TElement>,
+        WritableCollection<TElement>,
+        FastSize, Serializable{
 
     private static final long serialVersionUID = - 5877901452254113802L;
 

@@ -1,7 +1,6 @@
 package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.DefaultedQueryable;
-import com.empowerops.linqalike.Linq;
 import com.empowerops.linqalike.delegate.Func1;
 
 import java.util.Iterator;
@@ -52,7 +51,6 @@ public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResul
     }
 
     @Override
-    //performance critical
     public int size() {
         return Accessors.vSize(sourceElements);
     }

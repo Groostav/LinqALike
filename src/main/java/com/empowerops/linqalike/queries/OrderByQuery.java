@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-public class OrderByQuery<TElement> implements DefaultedQueryable<TElement> {
+public class OrderByQuery<TElement> implements DefaultedQueryable<TElement>, FastSize {
 
     private final Comparator<? super TElement> comparator;
     private final Iterable<TElement>           sourceElements;
@@ -21,6 +21,11 @@ public class OrderByQuery<TElement> implements DefaultedQueryable<TElement> {
     @Override
     public Iterator<TElement> iterator() {
         return new OrderByIterator();
+    }
+
+    @Override
+    public int size() {
+        return Accessors.vSize(sourceElements);
     }
 
     public class OrderByIterator implements Iterator<TElement>{

@@ -40,7 +40,7 @@ public class ImmediateInspections {
         Preconditions.notNull(sourceElements, "sourceElements");
 
         if(hasFastSize(sourceElements)){
-            return fastSizeIfAvailable(sourceElements);
+            return Math.min(maxToReturn, fastSizeIfAvailable(sourceElements));
         }
 
         int size = 0;

@@ -42,4 +42,8 @@ public class Preconditions {
                                                       "\tright (size " + Linq.size(rightSourceElements) + "):" + Formatting.csv(rightSourceElements));
        }
     }
+
+    public static void notNegative(int number, String argName) {
+        if(number < 0) { throw new IllegalArgumentException("argName"); }
+    }
 }

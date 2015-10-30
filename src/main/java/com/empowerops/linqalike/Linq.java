@@ -5,11 +5,8 @@ import com.empowerops.linqalike.delegate.*;
 import com.empowerops.linqalike.queries.*;
 
 import java.io.InputStream;
-import java.util.Collection;
+import java.util.*;
 import java.util.Comparator;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 import static com.empowerops.linqalike.CommonDelegates.*;
 import static com.empowerops.linqalike.Factories.from;
@@ -292,7 +289,7 @@ public class Linq {
     Queryable<TElement> skipWhile(Iterable<TElement> sourceElements,
                                                            Condition<? super TElement> excludingCondition) {
 
-        return new SkipQuery.Conditional<>(sourceElements, excludingCondition);
+        return new ConditionalSkipQuery<>(sourceElements, excludingCondition);
     }
 
     public static <TElement>
@@ -396,7 +393,9 @@ public class Linq {
     }
 
     public static <TElement> Queryable<TElement> skip(Iterable<TElement> sourceElements, int numberToSkip) {
-        return new SkipQuery.Capped<>(sourceElements, numberToSkip);
+        return sourceElements instanceof List
+                ? (Queryable<TElement>) new CountSkipQuery.ForList<>((List) sourceElements, numberToSkip)
+                : new CountSkipQuery<>(sourceElements, numberToSkip);
     }
 
     public static <TElement> LinqingList<TElement> toList(Iterable<TElement> set) {
@@ -753,14 +752,14 @@ public class Linq {
         public static <TKey, TValue>
         QueryableMap<TKey, TValue> skipWhile(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
                                              Condition<? super Map.Entry<TKey, TValue>> toExclude) {
-            return new QueryAdapter.ToQueryableMap<>(new SkipQuery.Conditional<>(sourceEntries, toExclude));
+            return new QueryAdapter.ToQueryableMap<>(new ConditionalSkipQuery<>(sourceEntries, toExclude));
         }
 
 
         public static <TKey, TValue>
         QueryableMap<TKey, TValue> skip(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries,
                                         int numberToSkip) {
-            return new QueryAdapter.ToQueryableMap<>(new SkipQuery.Capped<>(sourceEntries, numberToSkip));
+            return new QueryAdapter.ToQueryableMap<>(new CountSkipQuery<>(sourceEntries, numberToSkip));
         }
 
 

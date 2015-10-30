@@ -2,12 +2,9 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.ImmediateInspections;
-import com.empowerops.linqalike.Linq;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
-import static com.empowerops.linqalike.Factories.from;
 
 public class FirstElementsQuery<TElement> implements DefaultedQueryable<TElement>, FastSize {
 
@@ -48,7 +45,7 @@ public class FirstElementsQuery<TElement> implements DefaultedQueryable<TElement
     @Override
     public int size() {
         return sourceElements instanceof FastSize
-                ? Accessors.vSize(sourceElements)
+                ? ((FastSize) sourceElements).cappedCount(maxToReturn)
                 : ImmediateInspections.cappedCount(sourceElements, maxToReturn);
     }
 }
