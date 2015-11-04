@@ -1,14 +1,14 @@
 
 package com.empowerops.linqalike;
 
-import com.empowerops.assists.CountingCondition;
-import com.empowerops.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.CountingCondition;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.common.SetIsEmptyException;
 import com.empowerops.linqalike.common.SingletonSetContainsMultipleElementsException;
 import org.junit.Test;
 
-import static com.empowerops.assists.CountingCondition.track;
-import static com.empowerops.assists.Exceptions.assertThrows;
+import static com.empowerops.linqalike.assists.CountingCondition.track;
+import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**

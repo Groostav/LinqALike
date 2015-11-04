@@ -1,7 +1,7 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.assists.*;
 import com.empowerops.linqalike.*;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.*;
 
 import java.util.*;

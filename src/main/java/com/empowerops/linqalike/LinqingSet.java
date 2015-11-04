@@ -17,15 +17,14 @@ public class LinqingSet<TElement> extends LinkedHashSet<TElement> implements
         FastSize, Serializable{
 
     private static final long serialVersionUID = - 5877901452254113802L;
-
-    public static final int DefaultLinqingSetSize = 16;
+    public static final int DEFAULT_BIN_COUNT = 16;
 
     public LinqingSet() {
         super();
     }
 
     public LinqingSet(int size) {
-        super(size == - 1 ? DefaultLinqingSetSize : size);
+        super(size);
     }
 
     @SafeVarargs
@@ -40,7 +39,7 @@ public class LinqingSet<TElement> extends LinkedHashSet<TElement> implements
     }
 
     public LinqingSet(Iterable<? extends TElement> elements){
-        this(fastSizeIfAvailable(elements));
+        this(fastSizeIfAvailable(elements).orElse(DEFAULT_BIN_COUNT));
         addAll(elements);
     }
 

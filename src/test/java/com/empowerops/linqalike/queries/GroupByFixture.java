@@ -1,6 +1,6 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import org.junit.Test;

@@ -1,16 +1,16 @@
 
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.assists.CountingEqualityComparator;
-import com.empowerops.assists.CountingTransform;
-import com.empowerops.assists.QueryFixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.assists.CountingEqualityComparator;
+import com.empowerops.linqalike.assists.CountingTransform;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
 
 import java.util.List;
 
-import static com.empowerops.assists.CountingEqualityComparator.track;
+import static com.empowerops.linqalike.assists.CountingEqualityComparator.track;
 import static org.fest.assertions.Assertions.assertThat;
 
 
@@ -95,13 +95,13 @@ public class DistinctQueryFixture extends QueryFixtureBase {
     public void when_calling_distinct_with_a_comparator(){
         //setup
         LinqingList<Integer> list = new LinqingList<>(1,2,2,2,3,4,5,6,1,2,4,5,3);
-        CountingEqualityComparator<Integer> leftIsSaveEvennessAsRight = track((left, right) -> left%2 == right%2);
+        CountingEqualityComparator<Integer> leftIsSameEvennessAsRight = track((left, right) -> left%2 == right%2);
 
         //act
-        List<Integer> result = list.distinct(leftIsSaveEvennessAsRight).toList();
+        List<Integer> result = list.distinct(leftIsSameEvennessAsRight).toList();
 
         //assert
         assertThat(result).containsExactly(1, 2);
-        assertThat(leftIsSaveEvennessAsRight.getNumberOfInvocations()).isGreaterThanOrEqualTo(list.size()).isLessThanOrEqualTo(list.size() * list.size());
+        assertThat(leftIsSameEvennessAsRight.getNumberOfInvocations()).isGreaterThanOrEqualTo(list.size()).isLessThanOrEqualTo(list.size() * list.size());
     }
 }

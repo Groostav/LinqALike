@@ -5,9 +5,9 @@ import com.empowerops.linqalike.DefaultedQueryable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
-import static com.empowerops.linqalike.ImmediateInspections.hasFastSize;
 
 public class IterableCache<TElement> implements DefaultedQueryable<TElement> {
 
@@ -16,9 +16,9 @@ public class IterableCache<TElement> implements DefaultedQueryable<TElement> {
 
     public IterableCache(Iterable<TElement> sourceElements) {
         this.sourceCursor = sourceElements.iterator();
-        this.cache = hasFastSize(sourceElements)
-                ? new ArrayList<>(fastSizeIfAvailable(sourceElements))
-                : new ArrayList<>();
+        this.cache = fastSizeIfAvailable(sourceElements)
+                .map((Function<Integer, ArrayList<TElement>>) ArrayList::new)
+                .orElseGet(ArrayList::new);
     }
 
     private synchronized void moveUpIfNecessary(int desiredIndex) {

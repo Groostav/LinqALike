@@ -1,10 +1,10 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.assists.CountingFactory;
-import com.empowerops.assists.QueryFixtureBase;
-import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.assists.CountingFactory;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.common.Tuple;
 import org.junit.Test;
 
 import java.util.List;

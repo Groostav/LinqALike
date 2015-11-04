@@ -1,6 +1,6 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;

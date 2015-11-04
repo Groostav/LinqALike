@@ -7,12 +7,16 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
+
 @Immutable
 public class ReadonlyLinqingList<TElement> extends LinqingList<TElement> {
 
     private static final long serialVersionUID = - 1477889538915029367L;
+    private static final int DEFAULT_CAPACITY = 10;
 
     public ReadonlyLinqingList() {
+        super();
     }
 
     @SafeVarargs
@@ -22,7 +26,7 @@ public class ReadonlyLinqingList<TElement> extends LinqingList<TElement> {
     }
 
     public ReadonlyLinqingList(Iterable<? extends TElement> elements) {
-        super(Linq.size(elements));
+        super(fastSizeIfAvailable(elements).orElse(DEFAULT_CAPACITY));
         Factories.from(elements).forEach(super::add);
     }
 

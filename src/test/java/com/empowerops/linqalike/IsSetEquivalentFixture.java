@@ -1,9 +1,8 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.linqalike.LinqingList;
 import org.junit.Test;
 
-import static com.empowerops.assists.Exceptions.assertThrows;
+import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**

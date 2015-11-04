@@ -1,10 +1,10 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.assists.CountingCondition;
-import com.empowerops.assists.QueryFixtureBase;
-import com.empowerops.linqalike.LinqingList;
+import com.empowerops.linqalike.assists.CountingCondition;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
 
+import static com.empowerops.linqalike.assists.CountingCondition.track;
 import static org.fest.assertions.Assertions.assertThat;
 
 /**
@@ -16,7 +16,7 @@ public class AnyFixture extends QueryFixtureBase {
     public void when_calling_any_on_set_with_one_element_passing(){
         //setup
         LinqingList<String> countriesWithC = new LinqingList<>("Canada", "United States of America", "Mexico");
-        CountingCondition<String> startsWithC = CountingCondition.track(x -> x.startsWith("C"));
+        CountingCondition<String> startsWithC = track(x -> x.startsWith("C"));
 
         //act
         boolean result = countriesWithC.any(startsWithC);
@@ -30,7 +30,7 @@ public class AnyFixture extends QueryFixtureBase {
     public void when_calling_any_on_set_with_no_elements_passing(){
         //setup
         LinqingList<Integer> bigNums = new LinqingList<>(1000, 1000000, 1000000000);
-        CountingCondition<Integer> isSmallNum = CountingCondition.track(x -> x < 10);
+        CountingCondition<Integer> isSmallNum = track(x -> x < 10);
 
         //act
         boolean result = bigNums.any(isSmallNum);
@@ -44,7 +44,7 @@ public class AnyFixture extends QueryFixtureBase {
     public void when_calling_any_with_condition_on_empty_set_result_should_be_false(){
         //setup
         LinqingList<Double> noNums = new LinqingList<>();
-        CountingCondition<Double> isSmallNum = CountingCondition.track(x -> x < 10.0);
+        CountingCondition<Double> isSmallNum = track(x -> x < 10.0);
 
         //act
         boolean result = noNums.any(isSmallNum);

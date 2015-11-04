@@ -1,7 +1,7 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.assists.CountingTransform;
-import com.empowerops.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.CountingTransform;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
 
 import static org.fest.assertions.Assertions.assertThat;

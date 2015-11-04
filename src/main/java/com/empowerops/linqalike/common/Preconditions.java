@@ -37,13 +37,15 @@ public class Preconditions {
        if (hasFastSize(leftSourceElements) && hasFastSize(rightSourceElements)
                && fastSizeIfAvailable(leftSourceElements) != fastSizeIfAvailable(rightSourceElements)){
 
-           throw new IllegalArgumentException("left, right: must be same size, but they were" + "\n" +
-                                                      "\tleft (size " + Linq.size(leftSourceElements) + "):" + Formatting.csv(leftSourceElements) + "\n" +
-                                                      "\tright (size " + Linq.size(rightSourceElements) + "):" + Formatting.csv(rightSourceElements));
+           throw new IllegalArgumentException(
+                   "left, right: must be same size, but they were" + "\n" +
+                   "\tleft (size " + Linq.size(leftSourceElements) + "):" + Formatting.csv(leftSourceElements) + "\n" +
+                   "\tright (size " + Linq.size(rightSourceElements) + "):" + Formatting.csv(rightSourceElements)
+           );
        }
     }
 
     public static void notNegative(int number, String argName) {
-        if(number < 0) { throw new IllegalArgumentException("argName"); }
+        if(number < 0) { throw new IllegalArgumentException(argName); }
     }
 }

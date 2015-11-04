@@ -1,11 +1,16 @@
 package com.empowerops.linqalike.assists;
 
 import com.empowerops.linqalike.LinqingList;
+import com.empowerops.linqalike.LinqingSet;
+import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.queries.DefaultedCollection;
+import org.junit.experimental.theories.DataPoint;
 
 /**
  * @author Geoff on 13/10/13
  */
-public class QueryFixtureBase {
+public abstract class QueryFixtureBase {
+
     protected static final int NEVER = 0;
     protected static final int ONCE = 1;
     protected static final int TWICE = 2;
@@ -14,6 +19,10 @@ public class QueryFixtureBase {
     protected static final int FOUR_TIMES = 4;
     protected static final int FIVE_TIMES = 5;
     protected static final int SEVEN_TIMES = 7;
+
+    public @DataPoint static LinqingSet usingSet(){ return new LinqingSet(); }
+    public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
+    public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
 
     protected static class NamedValue {
         public String name;
@@ -99,5 +108,18 @@ public class QueryFixtureBase {
         }
     }
 
+    //TODO: I would like to make this class generic on tthe type under test, so that this method can return
+    // a more specific type (=> less error prone) of query, but in my first implementation
+    // doing casues
+    // A) every existing fifxute to use a raw type in its extends clause
+    // B) every use of this method to cast the _raw type_ of the query to the specific type
+    //     - eg CountSkipQuery to CountSkipQuery<String>
 
+    @SuppressWarnings("unchecked") //purpose of the method
+    protected <TElement, TQuery extends Queryable<TElement>>
+    TQuery asTypeUnderTest(Queryable<TElement> cast){
+        return (TQuery) (getTypeUnderTest() == null ? cast : getTypeUnderTest().cast(cast));
+    }
+
+    protected Class<? extends Queryable> getTypeUnderTest(){ return null; }
 }

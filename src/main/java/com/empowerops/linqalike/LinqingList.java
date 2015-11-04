@@ -9,6 +9,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
+import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
+
 /**
  * An {@link java.util.ArrayList} decorated with support {@link com.empowerops.linqalike.Queryable}, probably the most
  * useful instantiable class in this library.
@@ -53,6 +55,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements
     }
 
     private static final long serialVersionUID = - 5504726367113690047L;
+    private static final int DEFAULT_CAPACITY = 10;
 
     public LinqingList() {
         super();
@@ -64,7 +67,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements
 
     @SafeVarargs
     public LinqingList(TElement... elements) {
-        this();
+        this(elements.length);
         addAll(elements);
     }
 
@@ -73,7 +76,7 @@ public class LinqingList<TElement> extends ArrayList<TElement> implements
         addAllRemaining(elements);
     }
     public LinqingList(Iterable<? extends TElement> elements) {
-        this();
+        this(fastSizeIfAvailable(elements).orElse(DEFAULT_CAPACITY));
         addAll(elements);
     }
 

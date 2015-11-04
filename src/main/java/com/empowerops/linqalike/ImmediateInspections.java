@@ -39,33 +39,33 @@ public class ImmediateInspections {
     public static int cappedCount(Iterable<?> sourceElements, int maxToReturn) {
         Preconditions.notNull(sourceElements, "sourceElements");
 
-        if(hasFastSize(sourceElements)){
-            return Math.min(maxToReturn, fastSizeIfAvailable(sourceElements));
-        }
+        Optional<Integer> fastMax = fastSizeIfAvailable(sourceElements).map(val -> Math.max(maxToReturn, val));
 
-        int size = 0;
-        for(Object ignored : sourceElements){
-            size += 1;
+        return fastMax.orElseGet(() -> {
+            int count = 0;
+            for (Object ignored : sourceElements) {
+                count += 1;
 
-            if(size == maxToReturn) {
-                break;
+                if (count == maxToReturn) {
+                    break;
+                }
             }
-        }
-        return size;
+            return count;
+        });
     }
 
     public static int size(Iterable<?> sourceElements) {
         Preconditions.notNull(sourceElements, "sourceElements");
 
-        if(hasFastSize(sourceElements)){
-            return fastSizeIfAvailable(sourceElements);
-        }
+        return fastSizeIfAvailable(sourceElements).orElseGet(() -> {
 
-        int size = 0;
-        for(Object ignored : sourceElements){
-            size += 1;
-        }
-        return size;
+            int size = 0;
+            for(Object ignored : sourceElements){
+                size += 1;
+            }
+            return size;
+
+        });
     }
 
     public static <TElement> double average(Iterable<? extends TElement> sourceElements, Func1<? super TElement, Double> valueSelector) {
@@ -455,8 +455,10 @@ public class ImmediateInspections {
         return sourceElements instanceof Collection;
     }
 
-    public static int fastSizeIfAvailable(Iterable<?> sourceElements){
-        return sourceElements instanceof Collection ? ((Collection) sourceElements).size() : -1;
+    public static Optional<Integer> fastSizeIfAvailable(Iterable<?> sourceElements){
+        return sourceElements instanceof Collection
+                ? Optional.of(((Collection) sourceElements).size())
+                : Optional.empty();
     }
 
     public static <TElement> int indexOf(Iterable<? extends TElement> sourceElements,

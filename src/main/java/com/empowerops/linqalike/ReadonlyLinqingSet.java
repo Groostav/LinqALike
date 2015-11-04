@@ -14,8 +14,11 @@ import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
 public class ReadonlyLinqingSet<TElement> extends LinqingSet<TElement> {
 
     private static final long serialVersionUID = - 1477889538915029367L;
+    private static final int DEFAULT_BIN_COUNT = 16;
 
-    public ReadonlyLinqingSet(){}
+    public ReadonlyLinqingSet(){
+        super();
+    }
 
     @SafeVarargs
     public ReadonlyLinqingSet(TElement... initialAndFinalMembers) {
@@ -24,7 +27,7 @@ public class ReadonlyLinqingSet<TElement> extends LinqingSet<TElement> {
     }
 
     public ReadonlyLinqingSet(Iterable<? extends TElement> initialAndFinalMembers){
-        super(fastSizeIfAvailable(initialAndFinalMembers));
+        super(fastSizeIfAvailable(initialAndFinalMembers).orElse(DEFAULT_BIN_COUNT));
         initialAndFinalMembers.iterator().forEachRemaining(super::add);
     }
 
