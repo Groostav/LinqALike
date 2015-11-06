@@ -39,8 +39,10 @@ public class ZipQuery<TLeft, TRight, TJoined> implements DefaultedQueryable<TJoi
 
         @Override
         public boolean hasNext() {
+
             if(left.hasNext() ^ right.hasNext()){
-                throw new IllegalArgumentException("right -- has different number of elements from left");
+                //read: if EITHER left has some OR right has some (but _not_ if both have some)
+                throw Preconditions.makeNotSameSizeException(leftSourceElements, rightSourceElements);
             }
             return left.hasNext();
         }
