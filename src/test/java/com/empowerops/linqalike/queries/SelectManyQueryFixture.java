@@ -8,7 +8,7 @@ import java.util.*;
 
 import static com.empowerops.linqalike.Factories.asSet;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-05-19.

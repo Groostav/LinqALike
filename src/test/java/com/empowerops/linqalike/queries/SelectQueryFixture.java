@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.empowerops.linqalike.assists.CountingTransform.track;
 import static java.lang.Math.PI;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("Convert2MethodRef") // stick with lambda's for simplicity
 @RunWith(Theories.class)

@@ -39,7 +39,7 @@ public class ImmediateInspections {
     public static int cappedCount(Iterable<?> sourceElements, int maxToReturn) {
         Preconditions.notNull(sourceElements, "sourceElements");
 
-        Optional<Integer> fastMax = fastSizeIfAvailable(sourceElements).map(val -> Math.max(maxToReturn, val));
+        Optional<Integer> fastMax = fastSizeIfAvailable(sourceElements).map(val -> Math.min(maxToReturn, val));
 
         return fastMax.orElseGet(() -> {
             int count = 0;

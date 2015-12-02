@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Geoff on 31/10/13

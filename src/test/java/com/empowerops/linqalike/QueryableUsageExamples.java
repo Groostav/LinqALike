@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.empowerops.linqalike.Factories.from;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-10-02.

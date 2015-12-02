@@ -5,7 +5,7 @@ import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
 
 import static com.empowerops.linqalike.assists.CountingCondition.track;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-05-09.

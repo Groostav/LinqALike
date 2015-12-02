@@ -1,9 +1,8 @@
 package com.empowerops.linqalike.assists;
 
 import com.empowerops.linqalike.LinqingList;
-import com.empowerops.linqalike.LinqingSet;
+import com.empowerops.linqalike.NavigableLinqingSet;
 import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.queries.DefaultedCollection;
 import org.junit.experimental.theories.DataPoint;
 
 /**
@@ -20,9 +19,10 @@ public abstract class QueryFixtureBase {
     protected static final int FIVE_TIMES = 5;
     protected static final int SEVEN_TIMES = 7;
 
-    public @DataPoint static LinqingSet usingSet(){ return new LinqingSet(); }
-    public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
-    public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
+//    public @DataPoint static LinqingSet usingHashSet(){ return new LinqingSet(); }
+//    public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
+//    public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
+    public @DataPoint static NavigableLinqingSet usingAssociativeSet() { return new NavigableLinqingSet(); }
 
     protected static class NamedValue {
         public String name;

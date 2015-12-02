@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.empowerops.linqalike.Factories.from;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -146,7 +146,7 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         right.add(newlyExcluded);
 
         //assert
-        assertThat(result).excludes(newlyExcluded);
+        assertThat(result).doesNotContain(newlyExcluded);
     }
 
     @Test

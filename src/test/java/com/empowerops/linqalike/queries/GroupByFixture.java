@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.empowerops.linqalike.CommonDelegates.identity;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 /**

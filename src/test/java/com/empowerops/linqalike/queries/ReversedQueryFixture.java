@@ -1,13 +1,13 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
 
 import java.util.List;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 30/04/2014.

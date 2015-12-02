@@ -521,10 +521,14 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Gets all the elements in this queryable that are instances of the type specified.
      *
+     * <p>null is defined not to be an instance of anything, meaning that using this method
+     * will remove all nulls in the resutling <code>queryable</code></p>
+     *
      * <p>If you wish to cast each element in this queryable to the specified type, and have
      * an exception raised if one element is not of the correct type, consider using
      * <code>thisQueryable.&lt;DesiredClass&gt;Cast().immediately()</code>, which will raise a
      * runtime exception of one or more of the elements is not of the correct type.
+     *
      * @param desiredClass the minimum type that each element in the resulting subset will be
      * @param <TElementSubclass> static type of <code>desiredClass</code>
      * @return a subset of this queryable containing only instances of <code>TElementSubclass</code>

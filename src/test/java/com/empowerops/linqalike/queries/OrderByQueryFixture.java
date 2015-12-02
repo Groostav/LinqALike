@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.empowerops.linqalike.assists.CountingTransform.track;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 /**

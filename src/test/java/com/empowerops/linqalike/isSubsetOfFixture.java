@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static com.empowerops.linqalike.Factories.empty;
 import static com.empowerops.linqalike.Factories.from;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-06-18.

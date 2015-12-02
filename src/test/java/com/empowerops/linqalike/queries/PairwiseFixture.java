@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.empowerops.linqalike.Factories.asList;
-import static org.fest.assertions.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Justin on 7/21/2014.
