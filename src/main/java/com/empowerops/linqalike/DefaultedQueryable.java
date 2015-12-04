@@ -5,8 +5,11 @@ import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
+
+import static com.empowerops.linqalike.Factories.from;
 
 /**
  * An <i>implementation</i> (by way of default extension methods) to the {@link com.empowerops.linqalike.Queryable} interface.
@@ -435,9 +438,46 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
 
+
     /** {@inheritDoc} */ @Override default public
 	Queryable<TElement> where(Condition<? super TElement> condition){
         return Linq.where(this, condition);
+    }
+
+
+    @Override
+    default Queryable<TElement> with(TElement toInclude) {
+        return Linq.with(this, toInclude);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement another0, TElement another1) {
+        return Linq.with(this, another0, another1);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement another0, TElement another1, TElement another2) {
+        return Linq.with(this, another0, another1, another2);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement another0, TElement another1, TElement another2, TElement another3) {
+        return Linq.with(this, another0, another1, another2, another3);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement another0, TElement another1, TElement another2, TElement another3, TElement another4) {
+        return Linq.with(this, another0, another1, another2, another3, another4);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement... toInclude) {
+        return Linq.with(this, toInclude);
+    }
+
+    @Override
+    default Queryable<TElement> with(Iterable<? extends TElement> toInclude) {
+        return Linq.with(this, toInclude);
     }
 
 

@@ -18,7 +18,7 @@ public final class ISet<TElement> implements Set<TElement>, DefaultedQueryable<T
     private final PSet<TElement> backingSet;
 
     public ISet(){
-        backingSet = Empty.set();
+        backingSet = Empty.orderedSet();
     }
 
     public ISet(PSet<TElement> source) {

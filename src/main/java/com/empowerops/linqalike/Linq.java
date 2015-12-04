@@ -140,6 +140,15 @@ public class Linq {
         return ImmediateInspections.lastOrDefault(sourceElements, condition);
     }
 
+    @SafeVarargs
+    public static <TElement> Queryable<TElement> with(Iterable<? extends TElement> left, TElement... right){
+        return new WithQuery<>(left, right);
+    }
+
+    public static <TElement> Queryable<TElement> with(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
+        return new WithQuery<>(left, right);
+    }
+
     public static <TElement>
     Queryable<TElement> where(Iterable<TElement> sourceElements,
                               Condition<? super TElement> condition) {

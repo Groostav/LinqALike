@@ -1044,6 +1044,27 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
      Queryable<TElement> where(Condition<? super TElement> condition);
 
+    /**
+     * Gets a queryable that will iterate first through <code>this</code> queryable, then through
+     * the elements in <code>toInclude</code>, including any duplicates.
+     *
+     * @param toInclude the elements to be included in the resulting union
+     * @return the concatination of this queryable with the specified elements
+     */
+    Queryable<TElement> with(TElement toInclude);
+    Queryable<TElement> with(TElement another0, TElement another1);
+    Queryable<TElement> with(TElement another0, TElement another1, TElement another2);
+    Queryable<TElement> with(TElement another0, TElement another1, TElement another2, TElement another3);
+    Queryable<TElement> with(TElement another0, TElement another1, TElement another2, TElement another3, TElement another4);
+    Queryable<TElement> with(TElement... toInclude);
+    /**
+     * Gets a queryable that will iterate first through <code>this</code> queryable, then through
+     * the elements in <code>toInclude</code>, including only the first instance of any duplicates.
+     *
+     * @param toInclude the elements to be included in the resulting union
+     * @return the union of this queryable with the specified elements
+     */
+    Queryable<TElement> with(Iterable<? extends TElement> toInclude);
 
     /**
      * @return the number of elements in this queryable
