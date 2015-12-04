@@ -2,7 +2,6 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.delegate.Action;
 import org.junit.experimental.theories.Theories;
@@ -14,6 +13,7 @@ import java.util.List;
 import static com.empowerops.linqalike.assists.Exceptions.assertDoesNotThrow;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Created by Geoff on 2014-05-10.
@@ -29,10 +29,10 @@ public class CastQueryFixture extends QueryFixtureBase{
 
     @Theory
     public void when_performing_a_safe_cast_with_a_inferred_type(
-            WritableCollection<Number> numbers
+            Queryable<Number> numbers
     ){
         //setup
-        numbers.addAll(1.0d, 2.0d, 3.0d, 4.0d);
+        numbers = doAdd(numbers, 1.0d, 2.0d, 3.0d, 4.0d);
 
         //act
         Queryable<Double> castNumbers = numbers.<Double>cast();
@@ -45,10 +45,10 @@ public class CastQueryFixture extends QueryFixtureBase{
 
     @Theory
     public void when_performing_a_safe_cast_with_a_specific_supplied_runtime_type(
-            WritableCollection<Number> numbers
+            Queryable<Number> numbers
     ){
         //setup
-        numbers.addAll(1.0d, 2.0d, 3.0d, 4.0d);
+        numbers = doAdd(numbers, 1.0d, 2.0d, 3.0d, 4.0d);
 
         //act
         CastQuery<Number, Double> castNumbers = asTypeUnderTest(numbers.cast(Double.class));
@@ -62,10 +62,10 @@ public class CastQueryFixture extends QueryFixtureBase{
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "CodeBlock2Expr", "Convert2Lambda", "Anonymous2MethodRef"}) //purpose of test
     @Theory
     public void when_using_cast_with_explicit_type_cast_exception_should_be_raised_earlier_than_assignment_but_still_lazily(
-            WritableCollection<Number> numbers
+            Queryable<Number> numbers
     ){
         //setup
-        numbers.addAll(1.0D, 2.0D, 3.0D, 4L);
+        numbers = doAdd(numbers, 1.0D, 2.0D, 3.0D, 4L);
 
         //act
         CastQuery<Number, Double> polluted = asTypeUnderTest(numbers.cast(Double.class));
@@ -89,10 +89,10 @@ public class CastQueryFixture extends QueryFixtureBase{
     @SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "CodeBlock2Expr"})
     @Theory
     public void when_retrieving_a_value_from_a_polluted_list_should_act_strangely(
-            WritableCollection<Number> numbers
+            Queryable<Number> numbers
     ){
         //setup
-        numbers.addAll(1.0d, 2.0, 3.0f);
+        numbers = doAdd(numbers, 1.0d, 2.0, 3.0f);
 
         //act
         Queryable<Double> polluted = numbers.cast();
@@ -117,10 +117,10 @@ public class CastQueryFixture extends QueryFixtureBase{
 
     @Theory
     public void when_performing_operations_on_a_polluted_list_as_long_as_those_operations_are_generic_there_is_no_problem(
-            WritableCollection<Number> numbers
+            Queryable<Number> numbers
     ){
         //setup
-        numbers.addAll(1.0d, 2.0d, 3.0d, 4L);
+        numbers = doAdd(numbers, 1.0d, 2.0d, 3.0d, 4L);
 
         //act
         Queryable<Double> polluted = numbers.cast();

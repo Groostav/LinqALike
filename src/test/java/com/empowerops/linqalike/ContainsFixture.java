@@ -11,9 +11,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContainsFixture extends QueryFixtureBase {
 
     @Theory
-    public void when_asking_if_set_of_strings_contains_another_string_ignoring_case_should_get_true(WritableCollection<String> collection){
+    public void when_asking_if_set_of_strings_contains_another_string_ignoring_case_should_get_true(
+            Queryable<String> collection
+    ){
         //setup
-        collection.addAll("true", "yes");
+        collection = doAdd(collection, "true", "yes");
 
         //act
         boolean result = collection.containsElement("TRUE", String::equalsIgnoreCase);

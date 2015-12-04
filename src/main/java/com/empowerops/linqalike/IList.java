@@ -1,6 +1,5 @@
 package com.empowerops.linqalike;
 
-import org.pcollections.Empty;
 import org.pcollections.PVector;
 
 import javax.annotation.Nonnull;
@@ -9,17 +8,22 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.RandomAccess;
 
 /**
  * Created by Geoff on 2015-12-02.
  */
+@SuppressWarnings("deprecation") //intentional and carried forward.
 public class IList<T> implements List<T>, DefaultedQueryable<T>{
+
+    private static final IList Empty = new IList();
+    @SuppressWarnings("unchecked") //thanks to immutableness this is safe!
+    public static <T> IList<T> empty(){ return Empty; }
+
 
     private final PVector<T> backingList;
 
     public IList(){
-        backingList = Empty.vector();
+        backingList = org.pcollections.Empty.vector();
     }
 
     public IList(PVector<T> backingList){
@@ -128,52 +132,61 @@ public class IList<T> implements List<T>, DefaultedQueryable<T>{
     }
 
     @Override
+    @Deprecated
     public boolean add(T t) {
         return backingList.add(t);
     }
 
     @Override
+    @Deprecated
     public boolean remove(Object o) {
         return backingList.remove(o);
     }
 
     @Override
+    @Deprecated
     public boolean containsAll(Collection<?> c) {
         return backingList.containsAll(c);
     }
 
     @Override
+    @Deprecated
     public boolean addAll(Collection<? extends T> c) {
         return backingList.addAll(c);
     }
 
     @Override
+    @Deprecated
     public boolean addAll(int index, Collection<? extends T> c) {
         return backingList.addAll(index, c);
     }
 
     @Override
+    @Deprecated
     public boolean removeAll(Collection<?> c) {
         return backingList.removeAll(c);
     }
 
     @Override
+    @Deprecated
     public boolean retainAll(Collection<?> c) {
         return backingList.retainAll(c);
     }
 
     @Override
+    @Deprecated
     public void clear() {
         backingList.clear();
     }
 
-
     @Override
+    @Deprecated
     public T set(int index, T element) {
         return backingList.set(index, element);
     }
 
     @Override
+    @Deprecated
     public void add(int index, T element) {
         backingList.add(index, element);
     }

@@ -2,33 +2,40 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingCondition;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-05-09.
  */
+@RunWith(Theories.class)
 public class AllFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_calling_all_on_a_set_of_passing_objects_all_should_return_true(){
+    @Theory
+    public void when_calling_all_on_a_set_of_passing_objects_all_should_return_true(
+            Queryable<String> countriesStartingWithN
+    ){
         //setup
-        LinqingList<String> countriesStaringWithN = new LinqingList<>("New Zealand", "Nigera", "Norway");
+        countriesStartingWithN = doAdd(countriesStartingWithN, "New Zealand", "Nigera", "Norway");
         CountingCondition<String> startsWithN = CountingCondition.track(x -> x.startsWith("N"));
 
         //act
-        boolean result = countriesStaringWithN.all(startsWithN);
+        boolean result = countriesStartingWithN.all(startsWithN);
 
         //assert
         assertThat(result).isTrue();
         startsWithN.shouldHaveBeenInvoked(THRICE);
     }
 
-    @Test
-    public void when_calling_all_on_a_group_containing_one_failing_element_all_should_return_false(){
+    @Theory
+    public void when_calling_all_on_a_group_containing_one_failing_element_all_should_return_false(
+            Queryable<Object> differentTypes
+    ){
         //setup
-        LinqingList<Object> differentTypes = new LinqingList<>(1.0d, 2.0f, "3.0", 4L);
+        differentTypes = doAdd(differentTypes, 1.0d, 2.0f, "3.0", 4L);
         CountingCondition<Object> isNumeric = CountingCondition.track(x -> x instanceof Number);
 
         //act
@@ -39,10 +46,11 @@ public class AllFixture extends QueryFixtureBase {
         isNumeric.shouldHaveBeenInvoked(THRICE);
     }
 
-    @Test
-    public void when_calling_all_on_the_empty_set_result_should_be_true(){
+    @Theory
+    public void when_calling_all_on_the_empty_set_result_should_be_true(
+            Queryable<Integer> emptyNumbersSet
+    ){
         //setup
-        LinqingList<Integer> emptyNumbersSet = new LinqingList<>();
         CountingCondition<Integer> falsehood = CountingCondition.track(x -> false);
 
         //act

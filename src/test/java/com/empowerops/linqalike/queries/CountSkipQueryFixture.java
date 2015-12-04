@@ -21,10 +21,10 @@ public class CountSkipQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_skipping_first_three_elements_in_seven_element_set_should_get_last_four(
-            WritableCollection<String> names
+            Queryable<String> names
     ){
         //setup
-        names.addAll("Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
+        names = doAdd(names, "Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
 
         //act
         Queryable<String> latterNames =names.skip(3);
@@ -37,10 +37,10 @@ public class CountSkipQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_skipping_no_elements_in_empty_set_should_get_empty_set(
-            WritableCollection<Integer> numbers
+            Queryable<Integer> numbers
     ){
         //setup
-        numbers.clear();
+        numbers = doClear(numbers);
 
         //act
         Queryable<Integer> skippedNums = numbers.skip(0);
@@ -53,10 +53,10 @@ public class CountSkipQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_skipping_negative_elements_should_get_exception(
-            WritableCollection<Integer> numbers
+            Queryable<Integer> numbers
     ){
         //setup
-        numbers.clear();
+        //no setup -- numbers already empty
 
         //act & assert
         assertThrows(IllegalArgumentException.class, () -> numbers.skip(-4));
@@ -64,10 +64,10 @@ public class CountSkipQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_skipping_more_elements_than_are_in_the_set_should_get_empty_set(
-            WritableCollection<String> names
+            Queryable<String> names
     ){
         //setup
-        names.addAll("Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
+        names = doAdd(names, "Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
 
         //act
         Queryable<String> latterNames = names.skip(10);
@@ -80,10 +80,10 @@ public class CountSkipQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_skipping_as_many_elements_as_are_in_the_collection_should_get_empty_queryable(
-            WritableCollection<String> names
+            Queryable<String> names
     ){
         //setup
-        names.addAll("Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
+        names = doAdd(names, "Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
 
         //act
         Queryable<String> latterNames = names.skip(names.count());

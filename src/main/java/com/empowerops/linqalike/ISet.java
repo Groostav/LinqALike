@@ -2,7 +2,6 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.delegate.Func1;
-import org.pcollections.Empty;
 import org.pcollections.PSet;
 
 import java.util.Arrays;
@@ -15,10 +14,15 @@ import java.util.Set;
  */
 public final class ISet<TElement> implements Set<TElement>, DefaultedQueryable<TElement>{
 
+    private static final ISet Empty = new ISet();
+    @SuppressWarnings("unchecked") //thanks to immutability this is safe!
+    public static <T> ISet<T> empty(){ return Empty; }
+
+
     private final PSet<TElement> backingSet;
 
     public ISet(){
-        backingSet = Empty.orderedSet();
+        backingSet = org.pcollections.Empty.orderedSet();
     }
 
     public ISet(PSet<TElement> source) {

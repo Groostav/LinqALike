@@ -2,19 +2,24 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-05-09.
  */
+@RunWith(Theories.class)
 public class AverageFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_averaging_a_set_of_doubles_the_result_should_be_the_average(){
+    @Theory
+    public void when_averaging_a_set_of_doubles_the_result_should_be_the_average(
+            Queryable<Double> divingBoardHeights
+    ){
         //setup
-        LinqingList<Double> divingBoardHeights = new LinqingList<>(2.5, 5.0, 7.5, 10.0, 12.5);
+        divingBoardHeights = doAdd(divingBoardHeights, 2.5, 5.0, 7.5, 10.0, 12.5);
         CountingTransform<Double, Double> identity = CountingTransform.track(x -> x);
 
         //act
@@ -25,10 +30,10 @@ public class AverageFixture extends QueryFixtureBase {
         identity.shouldHaveBeenInvoked(FIVE_TIMES);
     }
 
-    @Test
-    public void when_averaging_an_empty_set_average_call_should_give_NaN(){
-        //setup
-        LinqingList<AverageFixture> fixtures = new LinqingList<>();
+    @Theory
+    public void when_averaging_an_empty_set_average_call_should_give_NaN(
+            Queryable<Double> fixtures
+    ){
 
         //act & assert
         double result = fixtures.average(x -> 10.0d);

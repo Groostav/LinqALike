@@ -30,6 +30,13 @@ public abstract class QueryFixtureBase {
     public @DataPoint static ISet usingImmutableSet() { return new ISet(); }
     public @DataPoint static IList usingImmutableList() { return new IList(); }
 
+    /**
+     * This method provides indirection for immutable and mutable collections.
+     * This means that, while this method appears functional, it very much is not!
+     * If you pass it a java.util.collection object as TSource, that object will be modified,
+     * but if you pass it an ISet or an IList, a new ISet or IList will be returned
+     * containing the new elements (as per the immutable paradigm)
+     */
     @SafeVarargs
     @SuppressWarnings("unchecked")
     protected final <T extends Queryable<E>, E> T doAdd(T source, E... elements){
@@ -45,6 +52,10 @@ public abstract class QueryFixtureBase {
         }
         else throw new UnsupportedOperationException();
     }
+
+    /**
+     * {@link QueryFixtureBase#doAdd(Queryable, Object[])}
+     */
     @SuppressWarnings("unchecked")
     protected final <T extends Queryable<E>, E> T doAdd(T source, Iterable<E> elements){
         if(source instanceof WritableCollection){
@@ -56,6 +67,23 @@ public abstract class QueryFixtureBase {
         }
         else if (source instanceof IList){
             return (T) ((IList) source).with(elements);
+        }
+        else throw new UnsupportedOperationException();
+    }
+    /**
+     * {@link QueryFixtureBase#doAdd(Queryable, Object[])}
+     */
+    @SuppressWarnings("unchecked")
+    protected final <T extends Queryable<?>> T doClear(T source){
+        if(source instanceof WritableCollection){
+            ((WritableCollection) source).clear();
+            return source;
+        }
+        else if (source instanceof ISet){
+            return (T) ISet.empty();
+        }
+        else if (source instanceof IList){
+            return (T) IList.empty();
         }
         else throw new UnsupportedOperationException();
     }
