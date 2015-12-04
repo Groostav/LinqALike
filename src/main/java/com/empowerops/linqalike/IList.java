@@ -13,7 +13,7 @@ import java.util.ListIterator;
  * Created by Geoff on 2015-12-02.
  */
 @SuppressWarnings("deprecation") //intentional and carried forward.
-public class IList<T> implements List<T>, DefaultedQueryable<T>{
+public class IList<T> implements List<T>, DefaultedQueryable<T>, QueryableList<T>{
 
     private static final IList Empty = new IList();
     @SuppressWarnings("unchecked") //thanks to immutableness this is safe!
@@ -27,6 +27,15 @@ public class IList<T> implements List<T>, DefaultedQueryable<T>{
     }
 
     public IList(PVector<T> backingList){
+        this.backingList = backingList;
+    }
+
+    @SafeVarargs
+    public IList(T... initialElements){
+        PVector<T> backingList = org.pcollections.Empty.vector();
+        for(T initial : initialElements){
+            backingList = backingList.plus(initial);
+        }
         this.backingList = backingList;
     }
 
@@ -66,8 +75,8 @@ public class IList<T> implements List<T>, DefaultedQueryable<T>{
     }
 
     @Override
-    public @Nonnull List<T> subList(int fromIndex, int toIndex) {
-        return backingList.subList(fromIndex, toIndex);
+    public @Nonnull IList<T> subList(int fromIndex, int toIndex) {
+        return new IList<>(backingList.subList(fromIndex, toIndex));
     }
 
     @Override
@@ -91,39 +100,44 @@ public class IList<T> implements List<T>, DefaultedQueryable<T>{
     }
 
     @Override
-    public Queryable<T> with(T toInclude) {
+    public IList<T> with(T toInclude) {
         return new IList<>(backingList.plus(toInclude));
     }
 
+    public IList<T> with(int index, T toInclude){
+        //TODO hmm, this means my with method is their add method and their withMethod is juc's set method.
+        return new IList<>(backingList.plus(index, toInclude));
+    }
+
     @Override
-    public Queryable<T> with(T another0, T another1) {
+    public IList<T> with(T another0, T another1) {
         return new IList<>(backingList.plusAll(Arrays.asList(another0, another1)));
     }
 
     @Override
-    public Queryable<T> with(T another0, T another1, T another2) {
+    public IList<T> with(T another0, T another1, T another2) {
         return new IList<>(backingList.plusAll(Arrays.asList(another0, another1, another2)));
     }
 
     @Override
-    public Queryable<T> with(T another0, T another1, T another2, T another3) {
+    public IList<T> with(T another0, T another1, T another2, T another3) {
         return new IList<>(backingList.plusAll(Arrays.asList(another0, another1, another2, another3)));
     }
 
     @Override
-    public Queryable<T> with(T another0, T another1, T another2, T another3, T another4) {
+    public IList<T> with(T another0, T another1, T another2, T another3, T another4) {
         return new IList<>(backingList.plusAll(Arrays.asList(another0, another1, another2, another3, another4)));
     }
 
     @Override
     @SafeVarargs
     @SuppressWarnings("unchecked")
-    public final Queryable<T> with(T... othersToInclude) {
+    public final IList<T> with(T... othersToInclude) {
         return new IList<>(backingList.plusAll(Arrays.asList(othersToInclude)));
     }
 
     @Override
-    public Queryable<T> with(Iterable<? extends T> toInclude) {
+    public IList<T> with(Iterable<? extends T> toInclude) {
         Collection<? extends T> source = toInclude instanceof Collection
                 ? (Collection) toInclude
                 : Factories.asList(toInclude);
