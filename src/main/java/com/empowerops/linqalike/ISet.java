@@ -3,6 +3,7 @@ package com.empowerops.linqalike;
 import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.common.Preconditions;
 import com.empowerops.linqalike.delegate.Func1;
+import com.empowerops.linqalike.queries.FastSize;
 import org.pcollections.PSet;
 
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.Set;
 /**
  * Created by Geoff on 2015-12-02.
  */
-public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<TElement>, DefaultedQueryable<TElement>{
+public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<TElement>, DefaultedQueryable<TElement>, FastSize{
 
     private static final ISet Empty = new ISet();
     @SuppressWarnings("unchecked") //thanks to immutability this is safe!

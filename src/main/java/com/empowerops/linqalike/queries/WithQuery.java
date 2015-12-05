@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static com.empowerops.linqalike.Factories.from;
+import static com.empowerops.linqalike.queries.Accessors.vSize;
 
 /**
  * Created by Geoff on 2015-12-03.
@@ -33,7 +34,15 @@ public class WithQuery<TElement> implements DefaultedQueryable<TElement>, FastSi
 
     @Override
     public int size() {
-        return Accessors.vSize(left) + Accessors.vSize(right);
+        return vSize(left) + vSize(right);
+    }
+
+    @Override
+    public int cappedCount(int maxValueToReturn) {
+        int leftSize = vSize(left);
+        if(leftSize > maxValueToReturn) { return maxValueToReturn; }
+        int size = leftSize + vSize(right);
+        return Math.min(size, maxValueToReturn);
     }
 
     public class WithQueryIterator implements Iterator<TElement>{

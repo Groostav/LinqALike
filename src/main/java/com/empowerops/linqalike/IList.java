@@ -1,5 +1,6 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.queries.FastSize;
 import org.pcollections.PVector;
 
 import javax.annotation.Nonnull;
@@ -13,7 +14,7 @@ import java.util.ListIterator;
  * Created by Geoff on 2015-12-02.
  */
 @SuppressWarnings("deprecation") //intentional and carried forward.
-public class IList<T> implements ImmutableCollection<T>, List<T>, DefaultedQueryable<T>, QueryableList<T>{
+public class IList<T> implements ImmutableCollection<T>, List<T>, DefaultedQueryable<T>, QueryableList<T>, FastSize{
 
     private static final IList Empty = new IList();
     @SuppressWarnings("unchecked") //thanks to immutableness this is safe!
