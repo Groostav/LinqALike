@@ -1,12 +1,9 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
-import javax.management.Query;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +29,7 @@ public class IsDistinctFixture extends QueryFixtureBase {
 
     @Theory
     public void when_asking_if_bag_is_distinct(
-            LinqingList<Integer> friendsAreaCodes
+            QueryableList<Integer> friendsAreaCodes
     ){
         //setup
         friendsAreaCodes = doAdd(friendsAreaCodes, 604, 604, 778, 508);
@@ -78,7 +75,7 @@ public class IsDistinctFixture extends QueryFixtureBase {
 
     @Theory
     public void when_asking_if_bag_with_comparator_is_distinct(
-            LinqingList<NamedValue> flowers
+            QueryableList<NamedValue> flowers
     ){
         //setup
         flowers = doAdd(flowers,
