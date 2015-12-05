@@ -91,14 +91,18 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
     public <TCompared> Queryable<TElement> union(Iterable<? extends TElement> toInclude,
                                                  Func1<? super TElement, TCompared> comparableSelector) {
         //TODO
-        return DefaultedQueryable.super.union(toInclude, comparableSelector);
+        return comparableSelector == CommonDelegates.identity()
+                ? union(toInclude)
+                : DefaultedQueryable.super.union(toInclude, comparableSelector);
     }
 
     @Override
     public Queryable<TElement> union(Iterable<? extends TElement> toInclude,
                                      EqualityComparer<? super TElement> equalityComparator) {
         //TODO
-        return DefaultedQueryable.super.union(toInclude, equalityComparator);
+        return equalityComparator == CommonDelegates.DefaultEquality
+                ? union(toInclude)
+                : DefaultedQueryable.super.union(toInclude, equalityComparator);
     }
 
     public ISet<TElement> except(TElement toExclude) {

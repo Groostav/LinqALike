@@ -206,6 +206,7 @@ public class Linq {
         return new SelectManyQuery<>(set, x -> from(selector.getFrom(x)));
     }
 
+    @SafeVarargs
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
         return new UnionQuery<>(left, from(toInclude), performEqualsUsing(identity()));
@@ -348,6 +349,7 @@ public class Linq {
         return ImmediateInspections.count(sourceElements, condition);
     }
 
+    @SafeVarargs
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
 

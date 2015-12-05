@@ -96,6 +96,31 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude){
+        return Linq.except(this, toExclude);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1){
+        return Linq.except(this, toExclude0, toExclude1);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1, TElement toExclude2){
+        return Linq.except(this, toExclude0, toExclude1, toExclude2);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1, TElement toExclude2, TElement toExclude3){
+        return Linq.except(this, toExclude0, toExclude1, toExclude2, toExclude3);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1, TElement toExclude2, TElement toExclude3, TElement toExclude4){
+        return Linq.except(this, toExclude0, toExclude1, toExclude2, toExclude3, toExclude4);
+    }
+
+    /** {@inheritDoc} */ @Override default public
 	Queryable<TElement> except(TElement... toExclude){
         return Linq.except(this, toExclude);
     }
@@ -416,6 +441,27 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     /** {@inheritDoc} */ @Override default public
 	double[] toDoubleArray(Func1<? super TElement, Double> converter){
         return Linq.toDoubleArray(this, converter);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude){
+        return Linq.union(this, toInclude);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1){
+        return Linq.union(this, toInclude0, toInclude1);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1, TElement toInclude2){
+        return Linq.union(this, toInclude0, toInclude1, toInclude2);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3){
+        return Linq.union(this, toInclude0, toInclude1, toInclude2, toInclude3);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3, TElement toInclude4){
+        return Linq.union(this, toInclude0, toInclude1, toInclude2, toInclude3, toInclude4);
     }
 
     /** {@inheritDoc} */ @Override default public

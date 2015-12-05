@@ -14,13 +14,14 @@ import static com.empowerops.linqalike.Factories.from;
 
 public class CommonDelegates {
 
-    public static       Condition.WithDescription<Iterable> IsEmpty           = new Condition.WithDescription<>(
+    public static final Func1.WithDescription<Object, Object> Identity = new Func1.WithDescription<>("identity function: object -> object", object -> object);
+    public static final Condition.WithDescription<Iterable> IsEmpty           = new Condition.WithDescription<>(
             "set is empty",
             candidate -> ! candidate.iterator().hasNext()
     );
-    public static final EqualityComparer.Untyped            DefaultEquality   = new com.empowerops.linqalike.DefaultEqualityComparer();
-    public static final EqualityComparer.Untyped            ReferenceEquality = new com.empowerops.linqalike.ReferenceEqualityComparer();
-    public static final EqualityComparer.Untyped            FalsehoodEquality = new DescribedUntypedEqualityComparer(
+    public static final EqualityComparer.Untyped DefaultEquality   = new DefaultEqualityComparer();
+    public static final EqualityComparer.Untyped ReferenceEquality = new ReferenceEqualityComparer();
+    public static final EqualityComparer.Untyped FalsehoodEquality = new DescribedUntypedEqualityComparer(
             "never-true equaity, equals(left, right) -> false, hashcode(object) -> counter++",
             new EqualityComparer.Untyped() {
                 private int counter = 0;
@@ -32,7 +33,7 @@ public class CommonDelegates {
 
                 @Override
                 public int hashCode(Object object) {
-                    counter = (counter + 1) % Integer.MAX_VALUE; //mod prevents integer overflow
+                    counter = (counter % Integer.MAX_VALUE) + 1; //mod prevents integer overflow
                     return counter;
                 }
             });
@@ -50,8 +51,9 @@ public class CommonDelegates {
             obj -> obj.getClass().hashCode()
     );
 
+    @SuppressWarnings("unchecked")
     public static <TObject> Func1<TObject, TObject> identity() {
-        return new Func1.WithDescription<>("identity function: object -> object", object -> object);
+        return (Func1) Identity;
     }
 
     public static <TObject> Func1<TObject, TObject> elementsAsIs() {

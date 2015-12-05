@@ -13,7 +13,7 @@ import java.util.ListIterator;
  * Created by Geoff on 2015-12-02.
  */
 @SuppressWarnings("deprecation") //intentional and carried forward.
-public class IList<T> implements List<T>, DefaultedQueryable<T>, ImmutableCollection<T>, QueryableList<T>{
+public class IList<T> implements ImmutableCollection<T>, List<T>, DefaultedQueryable<T>, QueryableList<T>{
 
     private static final IList Empty = new IList();
     @SuppressWarnings("unchecked") //thanks to immutableness this is safe!
@@ -105,7 +105,7 @@ public class IList<T> implements List<T>, DefaultedQueryable<T>, ImmutableCollec
     }
 
     public IList<T> with(int index, T toInclude){
-        //TODO hmm, this means my with method is their add method and their withMethod is juc's set method.
+        //TODO hmm, this means my 'with' is their 'add' and their 'with' is juc's 'set' method.
         return new IList<>(backingList.plus(index, toInclude));
     }
 
@@ -145,69 +145,22 @@ public class IList<T> implements List<T>, DefaultedQueryable<T>, ImmutableCollec
         return new IList<>(backingList.plusAll(source));
     }
 
+    /** {@inheritDoc} **/
     @Override
     @Deprecated
     public boolean add(T t) {
         return backingList.add(t);
     }
 
-    @Override
-    @Deprecated
-    public boolean remove(Object o) {
-        return backingList.remove(o);
-    }
-
-    @Override
-    @Deprecated
-    public boolean containsAll(Collection<?> c) {
-        return backingList.containsAll(c);
-    }
-
-    @Override
-    @Deprecated
-    public boolean addAll(Collection<? extends T> c) {
-        return backingList.addAll(c);
-    }
-
-    @Override
-    @Deprecated
-    public boolean addAll(int index, Collection<? extends T> c) {
-        return backingList.addAll(index, c);
-    }
-
-    @Override
-    @Deprecated
-    public boolean removeAll(Collection<?> c) {
-        return backingList.removeAll(c);
-    }
-
-    @Override
-    @Deprecated
-    public boolean retainAll(Collection<?> c) {
-        return backingList.retainAll(c);
-    }
-
-    @Override
-    @Deprecated
-    public void clear() {
-        backingList.clear();
-    }
-
-    @Override
-    @Deprecated
-    public T set(int index, T element) {
-        return backingList.set(index, element);
-    }
-
-    @Override
-    @Deprecated
-    public void add(int index, T element) {
-        backingList.add(index, element);
-    }
-
-    @Override
-    public T remove(int index) {
-        return backingList.remove(index);
-    }
+    /**{@inheritDoc}*/ @Override @Deprecated public boolean remove(Object o) { return backingList.remove(o); }
+    /**{@inheritDoc}*/ @Override @Deprecated public boolean containsAll(Collection<?> c) {return backingList.containsAll(c);}
+    /**{@inheritDoc}*/ @Override @Deprecated public boolean addAll(Collection<? extends T> c) {return backingList.addAll(c);}
+    /**{@inheritDoc}*/ @Override @Deprecated public boolean addAll(int index, Collection<? extends T> c) {return backingList.addAll(index, c);}
+    /**{@inheritDoc}*/ @Override @Deprecated public boolean removeAll(Collection<?> c) {return backingList.removeAll(c);}
+    /**{@inheritDoc}*/ @Override @Deprecated public boolean retainAll(Collection<?> c) {return backingList.retainAll(c);}
+    /**{@inheritDoc}*/ @Override @Deprecated public void clear() {backingList.clear();}
+    /**{@inheritDoc}*/ @Override @Deprecated public T set(int index, T element) {return backingList.set(index, element);}
+    /**{@inheritDoc}*/ @Override @Deprecated public void add(int index, T element) {backingList.add(index, element);}
+    /**{@inheritDoc}*/ @Override @Deprecated public T remove(int index) {return backingList.remove(index);}
 
 }
