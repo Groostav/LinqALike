@@ -1,9 +1,9 @@
 package com.empowerops.linqalike.queries;
 
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.WritableCollection;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -21,17 +21,18 @@ public class UnionQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_calling_union_on_two_disjoint_sets_the_result_should_be_the_simple_sum(
-            WritableCollection<String> goodTeams,
-            WritableCollection<String> badTeams){
+            Queryable<String> goodTeams,
+            Queryable<String> badTeams
+    ){
 
         //setup
-        goodTeams.addAll("Colorado", "Minnesota", "St. Louis", "Chicago",
+        goodTeams = doAdd(goodTeams, "Colorado", "Minnesota", "St. Louis", "Chicago",
                          "Anaheim", "Dallas", "San Jose", "Los Angeles");
-        badTeams.addAll("Phoenix", "Nashville", "Winnipeg", "Vancouver", // T_T
-                "Calgary", "Edmonton");
+        badTeams = doAdd(badTeams, "Phoenix", "Nashville", "Winnipeg", "Vancouver", // T_T
+                        "Calgary", "Edmonton");
 
         //act
-        UnionQuery<String> westernConference = asTypeUnderTest(goodTeams.union(badTeams));
+        Queryable<String> westernConference = goodTeams.union(badTeams);
         LinqingList<String> resultList = westernConference.toList();
 
         //assert
@@ -39,21 +40,22 @@ public class UnionQueryFixture extends QueryFixtureBase {
                 "Colorado", "Minnesota", "St. Louis", "Chicago",
                 "Anaheim", "Dallas", "San Jose", "Los Angeles",
                 "Phoenix", "Nashville", "Winnipeg", "Vancouver",
-                "Calgary", "Edmonton");
+                "Calgary", "Edmonton"
+        );
         assertThat(westernConference.size()).isEqualTo(14);
     }
 
     @Theory
     public void when_calling_union_on_two_sets_where_the_summation_contains_a_duplicate_the_dupliace_should_be_removed(
-            WritableCollection<NamedValue> left,
-            WritableCollection<NamedValue> right
+            Queryable<NamedValue> left,
+            Queryable<NamedValue> right
     ){
         //setup
-        left.addAll(NamedValue.forNames("one", "two", "three"));
-        right.addAll(NamedValue.forNames("three", "four"));
+        left = doAdd(left, NamedValue.forNames("one", "two", "three"));
+        right = doAdd(right, NamedValue.forNames("three", "four"));
 
         //act
-        UnionQuery<NamedValue> result = asTypeUnderTest(left.union(right, NamedValue.GetName()));
+        Queryable<NamedValue> result = left.union(right, NamedValue.GetName());
         LinqingList<NamedValue> resultList = result.toList();
 
         //result
@@ -63,15 +65,14 @@ public class UnionQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_calling_union_on_one_filled_set_and_one_empty_set(
-            WritableCollection<Integer> left,
-            WritableCollection<Integer> right
+            Queryable<Integer> left,
+            Queryable<Integer> right
     ){
         //setup
-        left.clear();
-        right.addAll(2, 3, 4, 6);
+        right = doAdd(right, 2, 3, 4, 6);
 
         //act
-        UnionQuery<Integer> result = asTypeUnderTest(left.union(right));
+        Queryable<Integer> result = left.union(right);
         LinqingList<Integer> resultList = result.toList();
 
         //assert
@@ -81,15 +82,15 @@ public class UnionQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_calling_union_on_two_set_identical_sets_the_result_should_be_identical_to_the_arguments(
-            WritableCollection<Integer> left,
-            WritableCollection<Integer> right
+            Queryable<Integer> left,
+            Queryable<Integer> right
     ){
         //setup
-        left.addAll(1, 2, 3, 4);
-        right.addAll(4, 3, 2, 1);
+        left = doAdd(left, 1, 2, 3, 4);
+        right = doAdd(right, 4, 3, 2, 1);
 
         //act
-        UnionQuery<Integer> result = asTypeUnderTest(left.union(right));
+        Queryable<Integer> result = left.union(right);
         LinqingList<Integer> resultList = result.toList();
 
         //assert
@@ -101,10 +102,11 @@ public class UnionQueryFixture extends QueryFixtureBase {
     public void when_calling_union_on_two_sets_both_with_nulls(
             WritableCollection<String> left,
             WritableCollection<String> right
+            //note: only testing writable collections because null is unsupported in pcollections.
     ){
         //setup
-        left.addAll("one", null, "two", "three");
-        right.addAll(null, "four", "five");
+        left = doAdd(left, "one", null, "two", "three");
+        right = doAdd(right, null, "four", "five");
 
         //act
         Queryable<String> result = left.union(right);
@@ -117,12 +119,12 @@ public class UnionQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_calling_union_on_a_subset_result_should_appear_identical(
-            WritableCollection<Integer> left,
-            WritableCollection<Integer> right
+            Queryable<Integer> left,
+            Queryable<Integer> right
     ){
         //setup
-        left.addAll(1, 2, 3, 4, 5, 6, 7, 8, 9);
-        right.addAll(4, 5, 6);
+        left = doAdd(left, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        right = doAdd(right, 4, 5, 6);
 
         //act
         Queryable<Integer> result = left.union(right);
@@ -134,15 +136,15 @@ public class UnionQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_calling_union_on_a_set_already_containing_duplicates_the_duplicates_should_be_removed(
-            WritableCollection<Integer> left,
-            WritableCollection<Integer> right
+            Queryable<Integer> left,
+            Queryable<Integer> right
     ){
         //setup
-        left.addAll(1, 2, 2, 3);
-        right.addAll(1, 4);
+        left = doAdd(left, 1, 2, 2, 3);
+        right = doAdd(right, 1, 4);
 
         //act
-        UnionQuery<Integer> result = asTypeUnderTest(left.union(right));
+        Queryable<Integer> result = left.union(right);
 
         //assert
         assertThat(result.toList()).containsExactly(1, 2, 3, 4);

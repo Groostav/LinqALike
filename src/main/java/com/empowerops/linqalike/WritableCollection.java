@@ -20,7 +20,7 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
     // but it would mean that there would be no type-safe remove method.
     boolean removeElement(TElement toRemove);
 
-    public default boolean addAll(TElement... valuesToBeAdded){
+    default boolean addAll(TElement... valuesToBeAdded){
         boolean wasModified = false;
         for(TElement element : valuesToBeAdded){
             wasModified |= add(element);
@@ -28,7 +28,7 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         return wasModified;
     }
 
-    public default boolean addAll(Iterable<? extends TElement> valuesToBeAdded) {
+    default boolean addAll(Iterable<? extends TElement> valuesToBeAdded) {
         boolean wasModified = false;
         for(TElement element : valuesToBeAdded){
             wasModified |= add(element);
@@ -36,7 +36,7 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         return wasModified;
     }
 
-    public default boolean addAllRemaining(Iterator<? extends TElement> valuesToBeAdded){
+    default boolean addAllRemaining(Iterator<? extends TElement> valuesToBeAdded){
         boolean wasModified = false;
         while(valuesToBeAdded.hasNext()){
             wasModified |= add(valuesToBeAdded.next());
@@ -44,7 +44,7 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         return wasModified;
     }
 
-    public default boolean removeAll(Iterable<? extends TElement> valuesToRemove) {
+    default boolean removeAll(Iterable<? extends TElement> valuesToRemove) {
         boolean wasModified = false;
         for(TElement element : valuesToRemove){
             wasModified |= removeElement(element);
@@ -52,13 +52,13 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         return wasModified;
     }
 
-    public default boolean retainAll(Iterable<? extends TElement> valuesToKeep){
+    default boolean retainAll(Iterable<? extends TElement> valuesToKeep){
         HashSet<? extends TElement> setToKeep = Factories.asReadonlySet(valuesToKeep);
 
         return removeIf(Not(setToKeep::contains)::passesFor);
     }
 
-    public default boolean removeIf(Predicate<? super TElement> predicate){
+    default boolean removeIf(Predicate<? super TElement> predicate){
         boolean wasModified = false;
         Iterator<TElement> iterator = iterator();
         while(iterator.hasNext()){
@@ -72,19 +72,13 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         return wasModified;
     }
 
-    public default void addIfNotNull(TElement element) {
-        if(element != null){
-            add(element);
-        }
-    }
-
-    public default void clear(){
+    default void clear(){
         for(TElement element : this){
             removeElement(element);
         }
     }
 
-    public default void clearAndAddAll(Iterable<? extends TElement> newItems){
+    default void clearAndAddAll(Iterable<? extends TElement> newItems){
         clear();
         addAll(newItems);
     }
@@ -129,5 +123,5 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
             add(newItem);
         }
     }
-
 }
+

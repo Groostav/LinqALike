@@ -2,18 +2,24 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-08-04.
  */
+@RunWith(Theories.class)
 public class ToArrayFixture extends QueryFixtureBase{
 
-    @Test
-    public void when_calling_to_array_on_a_set_of_objects(){
+    @Theory
+    public void when_calling_to_array_on_a_set_of_objects(
+            Queryable<EquatableValue> woodTypes
+    ){
         //setup
-        LinqingList<EquatableValue> woodTypes = new LinqingList<EquatableValue>(
+        woodTypes = doAdd(woodTypes,
                 new EquatableValue("Elm"), new EquatableValue("Birch"), new EquatableValue("Pine"),
                 new EquatableValue("Hemlock"), new EquatableValue("Mahogony"), new EquatableValue("Cypress"),
                 new EquatableValue("Oak"));
@@ -30,10 +36,12 @@ public class ToArrayFixture extends QueryFixtureBase{
                 new EquatableValue("Oak"));
     }
 
-    @Test
-    public void when_calling_to_array_on_a_set_of_ints(){
+    @Theory
+    public void when_calling_to_array_on_a_set_of_ints(
+            Queryable<NumberValue> bettysRandomNumbers
+    ){
         //setup
-        LinqingList<NumberValue> bettysRandomNumbers = new LinqingList<NumberValue>(
+        bettysRandomNumbers = doAdd(bettysRandomNumbers,
                 new NumberValue(42),
                 new NumberValue(64),
                 new NumberValue(97),

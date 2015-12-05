@@ -1,10 +1,7 @@
 package com.empowerops.linqalike.queries;
 
+import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import com.empowerops.linqalike.Factories;
-import com.empowerops.linqalike.LinqingList;
-import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.WritableCollection;
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -25,10 +22,10 @@ public class FirstElementsFixture extends QueryFixtureBase {
 
     @Theory
     public void when_asking_for_the_first_three_letters_in_the_alphabet(
-            WritableCollection<String> alphabet
+            Queryable<String> alphabet
     ){
         //setup
-        alphabet.addAll("A", "B", "C", "D", "E");
+        alphabet = doAdd(alphabet, "A", "B", "C", "D", "E");
 
         //act
         FirstElementsQuery<String> abcs = asTypeUnderTest(alphabet.first(3));
@@ -42,10 +39,10 @@ public class FirstElementsFixture extends QueryFixtureBase {
 
     @Theory
     public void when_asking_for_the_first_4_elements_of_a_3_element_list(
-            WritableCollection<Integer> countDown
+            Queryable<Integer> countDown
     ){
         //setup
-        countDown.addAll(3, 2, 1);
+        countDown = doAdd(countDown, 3, 2, 1);
 
         //act
         FirstElementsQuery<Integer> first = asTypeUnderTest(countDown.first(5));
@@ -56,10 +53,15 @@ public class FirstElementsFixture extends QueryFixtureBase {
         assertThat(theFinalCountDown).containsExactly(3, 2, 1);
     }
 
-    @Test
-    public void when_asking_for_the_first_elements_the_result_should_be_lazy(){
+    @Theory
+    public void when_asking_for_the_first_elements_the_result_should_be_lazy(
+            // since we're testing specifically at indexes and lazyness,
+            // that restricts our candidate types to mutable collections supporting indexes.
+            // Only 1 of those.
+            LinqingList<Integer> ints
+    ){
         //setup
-        LinqingList<Integer> ints = new LinqingList<>(1, 2, 3, 4, 5, 6);
+        ints.addAll(1, 2, 3, 4, 5, 6);
 
         //act
         Queryable<Integer> firstQuery = ints.first(3);

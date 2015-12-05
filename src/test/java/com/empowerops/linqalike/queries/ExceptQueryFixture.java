@@ -1,13 +1,12 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.CommonDelegates;
-import com.empowerops.linqalike.Factories;
-import com.empowerops.linqalike.LinqingList;
-import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.assists.CountingEqualityComparator;
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 
@@ -19,25 +18,29 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Geoff on 31/10/13
  */
+@RunWith(Theories.class)
 public class ExceptQueryFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_excluding_elements_using_the_default_equality_comparer(){
+    @Theory
+    public void when_excluding_elements_using_the_default_equality_comparer(
+            Queryable<Double> originalSet
+    ){
         //setup
-        LinqingList<Double> originalSet = Factories.asList(1.0, 3.0, 5.0, 7.0);
+        originalSet = doAdd(originalSet, 1.0, 3.0, 5.0, 7.0);
 
         //act
-        Queryable<Double> result = originalSet.except(Factories.asList(1.0, 5.0));
-        LinqingList<Double> flattenedResults = result.toList();
+        List<Double> result = originalSet.except(1.0, 5.0).toList();
 
         //assert
-        assertThat(flattenedResults).containsExactly(3.0, 7.0);
+        assertThat(result).containsExactly(3.0, 7.0);
     }
 
-    @Test
-    public void when_excluding_some_elements_including_duplicates_using_a_selector(){
+    @Theory
+    public void when_excluding_some_elements_including_duplicates_using_a_selector(
+            Queryable<NumberValue> originalSet
+    ){
         //setup
-        LinqingList<NumberValue> originalSet = Factories.asList(
+        originalSet = doAdd(originalSet,
                 new NumberValue(1), new NumberValue(1), new NumberValue(2),
                 new NumberValue(3), new NumberValue(4));
         CountingTransform<NumberValue, Integer> getValueTransform = CountingTransform.track(x -> x.number);
@@ -47,14 +50,16 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         List<NumberValue> result = originalSet.except(exclusionList, getValueTransform).toList();
 
         //assert
-        assertThat(result).containsExactly(originalSet.get(2), originalSet.get(4));
+        assertThat(result).containsExactly(originalSet.first(3).last(), originalSet.first(5).last());
         getValueTransform.shouldHaveBeenInvoked(SEVEN_TIMES);
     }
 
-    @Test
-    public void when_excluding_elements_from_empty_set(){
+    @Theory
+    public void when_excluding_elements_from_empty_set(
+            Queryable<NumberValue> originalSet
+    ){
         //setup
-        LinqingList<NumberValue> originalSet = new LinqingList<>();
+        originalSet = doClear(originalSet);
         CountingTransform<NumberValue, Integer> getValueTransform = NumberValue.GetValue();
 
         //act
@@ -65,33 +70,39 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         assertThat(flattenedResults).isEmpty();
     }
 
-    @Test
-    public void when_excluding_empty_set_of_elements_from_valid_set(){
+    @Theory
+    public void when_excluding_empty_set_of_elements_from_valid_set(
+            Queryable<String> originalSet
+    ){
         //setup
-        LinqingList<String> originalSet = new LinqingList<>("A", "B", "C");
+        originalSet = doAdd(originalSet, "A", "B", "C");
 
         //act
-        Queryable<String> result = originalSet.except(Factories.<String>empty());
-        LinqingList<String> flattenedResults = result.toList();
+        List<String> result = originalSet.except(Factories.<String>empty()).toList();
 
         //assert
-        assertThat(flattenedResults).containsExactly("A", "B", "C");
+        assertThat(result).containsExactly("A", "B", "C");
     }
 
-	@Test
-	public void when_excluding_null_call_should_throw_exception(){
+	@Theory
+	public void when_excluding_null_call_should_throw_exception(
+            Queryable<String> originalSet
+    ){
 		//setup
-		LinqingList<String> originalSet = new LinqingList<>("A", "B", "C");
+        Queryable<String> originalSet2 = doAdd(originalSet, "A", "B", "C");
 
 		//act & assert
-		assertThrows(IllegalArgumentException.class, () -> originalSet.except((Iterable<String>)null).toList());
+		assertThrows(IllegalArgumentException.class, () -> originalSet2.except((Iterable<String>)null));
 	}
 
-    @Test
-    public void when_calling_excluding_prior_to_adding_values_to_the_left_list_excluding_query_should_see_newly_added_values(){
+    @Theory
+    public void when_calling_excluding_prior_to_adding_values_to_the_left_list_excluding_query_should_see_newly_added_values(
+            WritableCollection<Integer> left,
+            WritableCollection<Integer> right
+    ){
         //setup
-        LinqingList<Integer> left = new LinqingList<>(1, 2, 3);
-        LinqingList<Integer> right = new LinqingList<>(3, 4);
+        left = doAdd(left, 1, 2, 3);
+        right = doAdd(right, 3, 4);
         int newValue = 0;
 
         //act
@@ -102,11 +113,14 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         assertThat(result.toList()).contains(newValue);
     }
 
-    @Test
-    public void when_calling_except_with_comparable_selector(){
+    @Theory
+    public void when_calling_except_with_comparable_selector_should_call_selector_appropriately(
+            Queryable<NumberValue> primes,
+            Queryable<NumberValue> palindromes
+    ){
         //setup
-        LinqingList<NumberValue> primes = new LinqingList<>(new NumberValue(7), new NumberValue(11), new NumberValue(13));
-        LinqingList<NumberValue> palindromes = new LinqingList<>(new NumberValue(11), new NumberValue(1001), new NumberValue(1331));
+        primes = doAdd(primes, new NumberValue(7), new NumberValue(11), new NumberValue(13));
+        palindromes = doAdd(palindromes, new NumberValue(11), new NumberValue(1001), new NumberValue(1331));
         CountingTransform<NumberValue, Integer> getNumberValue = CountingTransform.track(x -> x.number);
 
         //act
@@ -117,11 +131,14 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         getNumberValue.shouldHaveBeenInvoked(primes.size() + palindromes.size());
     }
 
-    @Test
-    public void when_calling_except_with_equality_comparor(){
+    @Theory
+    public void when_calling_except_with_equality_comparor_should_strip_correct_member_from_source(
+            Queryable<String> boys,
+            Queryable<String> girls
+    ){
         //setup
-        LinqingList<String> boys = new LinqingList<>("Ed", "Ken", "Jesse");
-        LinqingList<String> girls = new LinqingList<>("Ellen", "Eireen");
+        boys = doAdd(boys, "Ed", "Ken", "Jesse");
+        girls = doAdd(girls, "Ellen", "Eireen");
         CountingEqualityComparator<String> haveEsInSamePlace = CountingEqualityComparator.track(
                 (left, right) -> left.toLowerCase().indexOf("e") == right.toLowerCase().indexOf("e")
         );
@@ -131,14 +148,17 @@ public class ExceptQueryFixture extends QueryFixtureBase {
 
         //assert
         assertThat(result).containsExactly("Ken", "Jesse");
-        haveEsInSamePlace.shouldHaveBeenInvoked(1 + 2 + 2);
+        haveEsInSamePlace.shouldHaveBeenInvoked(1/*Ed to Ellen*/ + 2/*Ken to X*/ + 2/*Jesse to X*/);
     }
 
-    @Test
-    public void when_calling_excluding_prior_to_adding_values_to_the_right_list_except_query_should_see_newly_excluded_values(){
+    @Theory
+    public void when_calling_excluding_prior_to_adding_values_to_the_right_list_except_query_should_see_newly_excluded_values(
+            WritableCollection<Integer> left,
+            WritableCollection<Integer> right
+    ){
         //setup
-        LinqingList<Integer> left = new LinqingList<>(7, 8, 9);
-        LinqingList<Integer> right = new LinqingList<>(5, 6, 7);
+        left = doAdd(left, 7, 8, 9);
+        right = doAdd(right, 5, 6, 7);
         int newlyExcluded = 8;
 
         //act
@@ -149,12 +169,15 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         assertThat(result).doesNotContain(newlyExcluded);
     }
 
-    @Test
-    public void when_excluding_something_that_is_a_duplicate_by_default_equality_but_not_by_a_specified_equality_comparator(){
+    @SuppressWarnings("unchecked")
+    @Theory
+    public void when_excluding_something_that_is_a_duplicate_by_default_equality_but_not_by_a_specified_equality_comparator(
+            QueryableList<EquatableValue> brothers
+    ){
         //setup
         EquatableValue firstDuplicate = new EquatableValue("Sedin");
         EquatableValue secondDuplicate = new EquatableValue("Sedin");
-        LinqingList<EquatableValue> brothers = new LinqingList<>(firstDuplicate, secondDuplicate);
+        brothers = doAdd(brothers, firstDuplicate, secondDuplicate);
 
         //act
         List<EquatableValue> results = brothers.except(from(firstDuplicate), CommonDelegates.ReferenceEquality).toList();
@@ -163,12 +186,14 @@ public class ExceptQueryFixture extends QueryFixtureBase {
         assertThat(results).containsExactly(secondDuplicate);
     }
 
-    @Test
-    public void when_excluding_something_that_is_a_duplicate_by_default_equality_but_not_by_a_specified_comparable_selector(){
+    @Theory
+    public void when_excluding_something_that_is_a_duplicate_by_default_equality_but_not_by_a_specified_comparable_selector(
+            QueryableList<EquatableValue> brothers
+    ){
         //setup
         EquatableValue firstDuplicate = new EquatableValue("Sedin");
         EquatableValue secondDuplicate = new EquatableValue("Sedin");
-        LinqingList<EquatableValue> brothers = new LinqingList<>(firstDuplicate, secondDuplicate);
+        brothers = doAdd(brothers, firstDuplicate, secondDuplicate);
 
         //act
         List<EquatableValue> results = brothers.except(from(firstDuplicate), System::identityHashCode).toList();

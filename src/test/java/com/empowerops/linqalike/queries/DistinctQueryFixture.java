@@ -1,12 +1,14 @@
 
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingEqualityComparator;
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 
@@ -17,29 +19,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Edwin on 2014-04-02.
  */
+@RunWith(Theories.class)
 public class DistinctQueryFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_calling_distinct_on_a_list_containing_several_integer_duplicates() {
+    @Theory
+    public void when_calling_distinct_on_a_list_containing_several_integer_duplicates(
+            Queryable<Integer> numbersWithDupes
+    ) {
         //setup
-        LinqingList<Integer> list = new LinqingList<>(1,2,2,2,3,4,5,6,1,2,4,5,3);
+        numbersWithDupes = doAdd(numbersWithDupes, 1,2,2,2,3,4,5,6,1,2,4,5,3);
 
         //act
-        List<Integer> result = list.distinct().toList();
+        List<Integer> result = numbersWithDupes.distinct().toList();
 
         //assert
         assertThat(result).containsExactly(1, 2, 3, 4, 5, 6);
     }
 
-    @Test
-    public void when_calling_distinct_on_a_list_containing_string_duplicates() {
+    @Theory
+    public void when_calling_distinct_on_a_list_containing_string_duplicates(
+            Queryable<String> cities
+    ) {
         //setup
-        LinqingList<String> left = new LinqingList<>(
+        cities = doAdd(cities,
                 "Seoul", "Nagasaki", "Mumbai", "Amsterdam", "Shanghai", "Dubai", "Dubai",
                 "Nagasaki", "Anchorage", "Mumbai", "Rio de Janeiro", "Cairo");
 
         //act
-        List<String> resultLeft = left.distinct().toList();
+        List<String> resultLeft = cities.distinct().toList();
 
         //assert
         assertThat(resultLeft).doesNotHaveDuplicates();
@@ -48,13 +55,15 @@ public class DistinctQueryFixture extends QueryFixtureBase {
                 "Anchorage", "Rio de Janeiro", "Cairo");
     }
 
-    @Test
-    public void when_calling_distinct_on_a_list_containing_objects_of_dispirate_types() {
+    @Theory
+    public void when_calling_distinct_on_a_list_containing_objects_of_dispirate_types(
+            Queryable<Object> starbucksNumbers
+    ) {
         //setup
-        LinqingList<Object> list = new LinqingList<Object>("Starbucks", 5L, 5, 5.0d, 5);
+        starbucksNumbers = doAdd(starbucksNumbers, "Starbucks", 5L, 5, 5.0d, 5);
 
         //act
-        List<Object> result = list.distinct().toList();
+        List<Object> result = starbucksNumbers.distinct().toList();
 
         //assert
         assertThat(result).doesNotHaveDuplicates();
@@ -63,10 +72,12 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         assertThat(5.0d).isEqualTo(5);
     }
 
-    @Test
-    public void when_calling_distinct_prior_to_adding_values_to_the_source_list_distinct_should_see_newly_added_values(){
+    @Theory
+    public void when_calling_distinct_prior_to_adding_values_to_the_source_list_distinct_should_see_newly_added_values(
+            WritableCollection<Double> sourceList
+    ){
         //setup
-        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        sourceList.addAll(1.0, 2.0, 2.0, 3.0);
         double newValue = 2.5;
 
         //act
@@ -77,31 +88,35 @@ public class DistinctQueryFixture extends QueryFixtureBase {
         assertThat(distinctResult.toList()).contains(newValue);
     }
 
-    @Test
-    public void when_calling_distinct_with_a_comapared_value_selector(){
+    @Theory
+    public void when_calling_distinct_with_a_comapared_value_selector(
+            Queryable<Object> numsAndNumStrings
+    ){
         //setup
-        LinqingList<Object> list = new LinqingList<>(1,"1", 2, 2, "3", 3);
+        numsAndNumStrings = doAdd(numsAndNumStrings, 1,"1", 2, 2, "3", 3);
         CountingTransform<Object, String> getStringValue = CountingTransform.track(Object::toString);
 
         //act
-        List<Object> result = list.distinct(getStringValue).toList();
+        List<Object> result = numsAndNumStrings.distinct(getStringValue).toList();
 
         //assert
         assertThat(result).containsExactly(1, 2, "3");
-        assertThat(getStringValue.getNumberOfInvocations()).isEqualTo(list.size());
+        assertThat(getStringValue.getNumberOfInvocations()).isEqualTo(numsAndNumStrings.size());
     }
 
-    @Test
-    public void when_calling_distinct_with_a_comparator(){
+    @Theory
+    public void when_calling_distinct_with_a_comparator(
+            Queryable<Integer> nums
+    ){
         //setup
-        LinqingList<Integer> list = new LinqingList<>(1,2,2,2,3,4,5,6,1,2,4,5,3);
+        nums = doAdd(nums, 1,2,2,2,3,4,5,6,1,2,4,5,3);
         CountingEqualityComparator<Integer> leftIsSameEvennessAsRight = track((left, right) -> left%2 == right%2);
 
         //act
-        List<Integer> result = list.distinct(leftIsSameEvennessAsRight).toList();
+        List<Integer> result = nums.distinct(leftIsSameEvennessAsRight).toList();
 
         //assert
         assertThat(result).containsExactly(1, 2);
-        assertThat(leftIsSameEvennessAsRight.getNumberOfInvocations()).isGreaterThanOrEqualTo(list.size()).isLessThanOrEqualTo(list.size() * list.size());
+        assertThat(leftIsSameEvennessAsRight.getNumberOfInvocations()).isGreaterThanOrEqualTo(nums.size()).isLessThanOrEqualTo(nums.size() * nums.size());
     }
 }

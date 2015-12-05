@@ -16,7 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ReplaceFixture extends QueryFixtureBase{
 
     @Theory
-    public void when_replacing_first_element_should_correctly_be_replaced(WritableCollection<String> collection){
+    public void when_replacing_first_element_should_correctly_be_replaced (
+            WritableCollection<String> collection
+    ){
         //setup
         collection.addAll("x1 + x2", "345", "x3");
 

@@ -2,8 +2,13 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
+import javafx.scene.layout.Pane;
 import org.junit.*;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
+import javax.management.Query;
 import java.util.*;
 
 import static com.empowerops.linqalike.Factories.asSet;
@@ -13,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Geoff on 2014-05-19.
  */
+@RunWith(Theories.class)
 public class SelectManyQueryFixture extends QueryFixtureBase {
 
     private class NumberGroup{
@@ -23,10 +29,12 @@ public class SelectManyQueryFixture extends QueryFixtureBase {
         public final List<Integer> numbers = new ArrayList<Integer>();
     }
 
-    @Test
-    public void when_selecting_on_a_group_of_multi_child_elements_select_many_should_simply_flatten(){
+    @Theory
+    public void when_selecting_on_a_group_of_multi_child_elements_select_many_should_simply_flatten(
+            Queryable<NumberGroup> groups
+    ){
         //setup
-        LinqingList<NumberGroup> groups = new LinqingList<>(new NumberGroup(1, 2, 3, 4), new NumberGroup(5, 6, 7, 8));
+        groups = doAdd(groups, new NumberGroup(1, 2, 3, 4), new NumberGroup(5, 6, 7, 8));
 
         //act
         List<Integer> numbers = groups.selectMany(x -> x.numbers).toList();
@@ -35,10 +43,12 @@ public class SelectManyQueryFixture extends QueryFixtureBase {
         assertThat(numbers).containsExactly(1, 2, 3, 4, 5, 6, 7, 8);
     }
 
-    @Test
-    public void when_selecting_many_on_groups_containing_no_elements_they_should_simply_be_skipped(){
+    @Theory
+    public void when_selecting_many_on_groups_containing_no_elements_they_should_simply_be_skipped(
+            Queryable<NumberGroup> groups
+    ){
         //setup
-        LinqingList<NumberGroup> groups = new LinqingList<>(new NumberGroup(1, 2, 3, 4), new NumberGroup(), new NumberGroup(5, 6, 7, 8));
+        groups = doAdd(groups, new NumberGroup(1, 2, 3, 4), new NumberGroup(), new NumberGroup(5, 6, 7, 8));
 
         //act
         List<Integer> numbers = groups.selectMany(x -> x.numbers).toList();
@@ -47,9 +57,11 @@ public class SelectManyQueryFixture extends QueryFixtureBase {
         assertThat(numbers).containsExactly(1, 2, 3, 4, 5, 6, 7, 8);
     }
 
-    @Test
-    public void when_selecting_many_on_only_empty_groups(){
-        LinqingList<NumberGroup> groups = new LinqingList<>(new NumberGroup(), new NumberGroup());
+    @Theory
+    public void when_selecting_many_on_only_empty_groups(
+            Queryable<NumberGroup> groups
+    ){
+        groups = doAdd(groups, new NumberGroup(), new NumberGroup());
 
         //act
         List<Integer> numbers = groups.selectMany(x -> x.numbers).toList();
@@ -67,12 +79,14 @@ public class SelectManyQueryFixture extends QueryFixtureBase {
         public Set<Integer> children;
     }
 
-    @Test
-    public void when_selecting_many_and_selector_returns_null_should_get_nice_exception(){
+    @Theory
+    public void when_selecting_many_and_selector_returns_null_should_get_nice_exception(
+            Queryable<Parent> groups
+    ){
         //setup
-        LinqingList<Parent> groups = new LinqingList<>(new Parent(new HashSet<>()), new Parent(asSet(1, 2, 3)), new Parent(null));
+        Queryable<Parent> groups2 = doAdd(groups, new Parent(new HashSet<>()), new Parent(asSet(1, 2, 3)), new Parent(null));
 
         //act
-        assertThrows(IllegalArgumentException.class, () -> groups.selectMany(parent -> parent.children).toList());
+        assertThrows(IllegalArgumentException.class, () -> groups2.selectMany(parent -> parent.children).toList());
     }
 }

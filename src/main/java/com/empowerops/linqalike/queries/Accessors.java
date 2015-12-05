@@ -19,7 +19,7 @@ import com.empowerops.linqalike.Queryable;
  */
 class Accessors {
 
-    //access the native size method if available, elese delegate to Linq's static size method
+    //access the native size method if available, else delegate to Linq's static size method
     static final int vSize(Iterable<?> source){
         return source instanceof Queryable ? ((Queryable) source).size() : Linq.size(source);
     }

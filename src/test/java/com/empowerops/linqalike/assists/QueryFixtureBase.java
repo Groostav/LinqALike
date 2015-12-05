@@ -1,8 +1,13 @@
 package com.empowerops.linqalike.assists;
 
+import com.empowerops.linqalike.IList;
+import com.empowerops.linqalike.ISet;
 import com.empowerops.linqalike.LinqingList;
-import com.empowerops.linqalike.NavigableLinqingSet;
+import com.empowerops.linqalike.LinqingSet;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
+import com.empowerops.linqalike.queries.DefaultedCollection;
+import com.empowerops.linqalike.queries.UnionQuery;
 import org.junit.experimental.theories.DataPoint;
 
 /**
@@ -19,10 +24,69 @@ public abstract class QueryFixtureBase {
     protected static final int FIVE_TIMES = 5;
     protected static final int SEVEN_TIMES = 7;
 
-//    public @DataPoint static LinqingSet usingHashSet(){ return new LinqingSet(); }
-//    public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
-//    public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
-    public @DataPoint static NavigableLinqingSet usingAssociativeSet() { return new NavigableLinqingSet(); }
+    public @DataPoint static LinqingSet usingHashSet(){ return new LinqingSet(); }
+    public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
+    public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
+    public @DataPoint static ISet usingImmutableSet() { return new ISet(); }
+    public @DataPoint static IList usingImmutableList() { return new IList(); }
+
+    /**
+     * This method provides indirection for immutable and mutable collections.
+     * This means that, while this method appears functional, it very much is not!
+     * If you pass it a java.util.collection object as TSource, that object will be modified,
+     * but if you pass it an ISet or an IList, a new ISet or IList will be returned
+     * containing the new elements (as per the immutable paradigm)
+     */
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
+    protected final <T extends Queryable<E>, E> T doAdd(T source, E... elements){
+        if(source instanceof WritableCollection){
+            ((WritableCollection) source).addAll(elements);
+            return source;
+        }
+        else if (source instanceof ISet){
+            return (T) ((ISet) source).union((Object[])elements);
+        }
+        else if (source instanceof IList){
+            return (T) ((IList) source).with((Object[])elements);
+        }
+        else throw new UnsupportedOperationException();
+    }
+
+    /**
+     * {@link QueryFixtureBase#doAdd(Queryable, Object[])}
+     */
+    @SuppressWarnings("unchecked")
+    protected final <T extends Queryable<E>, E> T doAdd(T source, Iterable<E> elements){
+        if(source instanceof WritableCollection){
+            ((WritableCollection) source).addAll(elements);
+            return source;
+        }
+        else if (source instanceof ISet){
+            return (T) ((ISet) source).union(elements);
+        }
+        else if (source instanceof IList){
+            return (T) ((IList) source).with(elements);
+        }
+        else throw new UnsupportedOperationException();
+    }
+    /**
+     * {@link QueryFixtureBase#doAdd(Queryable, Object[])}
+     */
+    @SuppressWarnings("unchecked")
+    protected final <T extends Queryable<?>> T doClear(T source){
+        if(source instanceof WritableCollection){
+            ((WritableCollection) source).clear();
+            return source;
+        }
+        else if (source instanceof ISet){
+            return (T) ISet.empty();
+        }
+        else if (source instanceof IList){
+            return (T) IList.empty();
+        }
+        else throw new UnsupportedOperationException();
+    }
 
     protected static class NamedValue {
         public String name;
@@ -108,13 +172,19 @@ public abstract class QueryFixtureBase {
         }
     }
 
+    /**
+     * Method to conveniently cast the object under test to a specific type,
+     * so that any further assertions or method calls are more obvious
+     * (for example, if you have an UnionQuery and you call its size method,
+     * {@link UnionQuery#size()}, if you statically know its a UnionQuery
+     * you dont have to jump through interfaces)
+     */
     //TODO: I would like to make this class generic on tthe type under test, so that this method can return
     // a more specific type (=> less error prone) of query, but in my first implementation
-    // doing casues
-    // A) every existing fifxute to use a raw type in its extends clause
+    // doing so casues
+    // A) every existing fixute to use a raw type in its extends clause
     // B) every use of this method to cast the _raw type_ of the query to the specific type
     //     - eg CountSkipQuery to CountSkipQuery<String>
-
     @SuppressWarnings("unchecked") //purpose of the method
     protected <TElement, TQuery extends Queryable<TElement>>
     TQuery asTypeUnderTest(Queryable<TElement> cast){

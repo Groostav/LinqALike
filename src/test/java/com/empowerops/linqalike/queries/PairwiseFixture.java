@@ -2,11 +2,16 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingFactory;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.common.Tuple;
 import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
+import javax.management.Query;
 import java.util.List;
 
 import static com.empowerops.linqalike.Factories.asList;
@@ -15,15 +20,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Justin on 7/21/2014.
  */
+@RunWith(Theories.class)
 public class PairwiseFixture extends QueryFixtureBase{
 
-    @Test
-    public void when_calling_pairwise_on_some_sensible_data() {
+    @Theory
+    public void when_calling_pairwise_on_some_sensible_data(
+            Queryable<String> zeldaCharacters
+    ) {
         //Setup
-        LinqingList<String> zeldaCharacters = asList(
+        zeldaCharacters = doAdd(zeldaCharacters,
                 "Link",
                 "Zelda",
-                "Gannon",
+                "Ganon", //Do you even LoZ bro?
                 "Impa",
                 "Shiek",
                 "Big Goron"
@@ -35,17 +43,19 @@ public class PairwiseFixture extends QueryFixtureBase{
         //assert
         assertThat(zeldaPairs.toList()).containsExactly(new Tuple<>(null, "Link"),
                 new Tuple<>("Link", "Zelda"),
-                new Tuple<>("Zelda", "Gannon"),
-                new Tuple<>("Gannon", "Impa"),
+                new Tuple<>("Zelda", "Ganon"),
+                new Tuple<>("Ganon", "Impa"),
                 new Tuple<>("Impa", "Shiek"),
                 new Tuple<>("Shiek", "Big Goron"),
                 new Tuple<>("Big Goron", null));
     }
 
-    @Test
-    public void when_calling_pairwise_on_an_empty_list_should_get_a_single_null_null_pair() {
+    @Theory
+    public void when_calling_pairwise_on_an_empty_list_should_get_a_single_null_null_pair(
+            Queryable<NamedValue> emptySet
+    ) {
         //setup
-        LinqingList<NamedValue> emptySet = new LinqingList<>();
+        emptySet = doAdd(emptySet);
 
         //act
         Queryable<Tuple<NamedValue, NamedValue>> pairs = emptySet.pairwise();
@@ -54,10 +64,12 @@ public class PairwiseFixture extends QueryFixtureBase{
         assertThat(pairs.toList()).containsExactly(new Tuple<>(null, null));
     }
 
-    @Test
-    public void when_calling_pairwise_on_a_singleton_list_should_get_two_pairs_each_with_a_null() {
+    @Theory
+    public void when_calling_pairwise_on_a_singleton_list_should_get_two_pairs_each_with_a_null(
+            Queryable<EquatableValue> emptySet
+    ) {
         //setup
-        LinqingList<EquatableValue> emptySet = new LinqingList<>(new EquatableValue("IM SO ALONE"));
+        emptySet = doAdd(emptySet, new EquatableValue("IM SO ALONE"));
 
         //act
         Queryable<Tuple<EquatableValue, EquatableValue>> pairs = emptySet.pairwise().toList();
@@ -69,10 +81,12 @@ public class PairwiseFixture extends QueryFixtureBase{
         );
     }
 
-    @Test
-    public void when_calling_pairwise_on_a_singleton_list_of_null_it_should_get_two_empty_pairs(){
+    @Theory
+    public void when_calling_pairwise_on_a_singleton_list_of_null_it_should_get_two_empty_pairs(
+            WritableCollection<EquatableValue> emptySet
+    ){
         //setup
-        LinqingList<EquatableValue> emptySet = new LinqingList<>((EquatableValue)null);
+        emptySet = doAdd(emptySet, (EquatableValue)null);
 
         //act
         Queryable<Tuple<EquatableValue, EquatableValue>> pairs = emptySet.pairwise();
@@ -84,10 +98,12 @@ public class PairwiseFixture extends QueryFixtureBase{
         );
     }
 
-    @Test
-    public void when_calling_pairwise_with_a_default_factory_the_factory_should_be_called_twice(){
+    @Theory
+    public void when_calling_pairwise_with_a_default_factory_the_factory_should_be_called_twice(
+            Queryable<EquatableValue> cafes
+    ){
         //setup
-        LinqingList<EquatableValue> cafes = new LinqingList<>(
+        cafes = doAdd(cafes,
                 new EquatableValue("Starbucks"),
                 new EquatableValue("Blenz"),
                 new EquatableValue("Woods")

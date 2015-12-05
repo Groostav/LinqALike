@@ -1,9 +1,13 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
-import org.junit.Test;
+import com.empowerops.linqalike.QueryableList;
+import com.empowerops.linqalike.WritableCollection;
+import com.empowerops.linqalike.assists.QueryFixtureBase;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,13 +19,17 @@ import static org.junit.Assume.assumeTrue;
 /**
  * Created by Geoff on 14/04/2014.
  */
+@RunWith(Theories.class)
 public class GroupByFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_grouping_a_set_containing_groups(){
+    @Theory
+    public void when_grouping_a_set_containing_groups_should_group_correctly(
+            Queryable<NamedValue> values
+    ){
         //setup
-        LinqingList<NamedValue> values = new LinqingList<>(NamedValue.forNames(
-                "Sony", "Panasonic", "Microsoft", "Sony", "Toshiba", "Sony", "Microsoft"));
+        values = doAdd(values, NamedValue.forNames(
+                "Sony", "Panasonic", "Microsoft", "Sony", "Toshiba", "Sony", "Microsoft")
+        );
 
         //act
         List<Queryable<NamedValue>> groups = values.groupBy(x -> x.name).toList();
@@ -34,10 +42,12 @@ public class GroupByFixture extends QueryFixtureBase {
         assertNameGroupHas(groups, 3, "Toshiba", 1);
     }
 
-    @Test
-    public void when_grouping_an_empty_set(){
+    @Theory
+    public void when_grouping_an_empty_set_should_get_empty_set(
+            Queryable<String> values
+    ){
         //setup
-        LinqingList<String> values = new LinqingList<>();
+        values = doClear(values);
 
         //act
         List<Queryable<String>> groups = values.groupBy(identity()).toList();
@@ -46,10 +56,12 @@ public class GroupByFixture extends QueryFixtureBase {
         assertThat(groups).isEmpty();
     }
 
-    @Test
-    public void when_grouping_a_set_containing_no_groups(){
+    @Theory
+    public void when_grouping_a_set_containing_no_groups(
+            Queryable<String> values
+    ){
         //setup
-        LinqingList<String> values = new LinqingList<>(
+        values = doAdd(values,
                 "The Light", "Always For You", "Shine", "Writings On The Wall", "Red-Eye",
                 "See In You", "into The Sea", "Wherever I Go", "Wishful Thinking", "Broken Arrow");
 
@@ -66,12 +78,14 @@ public class GroupByFixture extends QueryFixtureBase {
     }
 
     // set containing duplicates
-        // test with group containing a duplicate
-    @Test
-    public void when_grouping_a_bag_containing_multiple_ref_equals_entries(){
+    // test with group containing a duplicate
+    @Theory
+    public void when_grouping_a_bag_containing_multiple_ref_equals_entries(
+            QueryableList<NumberValue> values
+    ){
         //setup
         NumberValue duplicate = new NumberValue(5);
-        LinqingList<NumberValue> values = new LinqingList<>(
+        values = doAdd(values,
                 new NumberValue(839), duplicate, new NumberValue(857),
                 new NumberValue(859), new NumberValue(863), duplicate);
 
@@ -87,29 +101,34 @@ public class GroupByFixture extends QueryFixtureBase {
         assertNumbedGroupHas(groups, 4, 863, 1);
     }
 
-    @Test
-    public void when_grouping_a_bag_containing_ref_equals_entries_that_are_in_different_groups(){
+    @Theory
+    public void when_grouping_a_bag_containing_ref_equals_entries_that_are_in_different_groups(
+            QueryableList<NumberValue> values
+    ){
         //setup
         NumberValue duplicate = new NumberValue(1);
-        LinqingList<NumberValue> values = new LinqingList<>(
+        values = doAdd(values,
                 new NumberValue(877), duplicate, new NumberValue(881),
                 duplicate, new NumberValue(883), new NumberValue(887));
 
         //act
         Queryable<Queryable<NumberValue>> groups = values.groupBy((x, y) -> false);
 
+        //assert
         assertThat(groups).hasSize(6);
     }
 
-    @Test
-    public void when_groups_are_found_prior_to_adding_a_new_ungrouped_value_to_the_source_list_query_should_see_newly_added_group(){
+    @Theory
+    public void when_groups_are_found_prior_to_adding_a_new_ungrouped_value_to_the_source_list_query_should_see_newly_added_group(
+            WritableCollection<Double> sourceNums
+    ){
         //setup
-        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        sourceNums.addAll(1.0, 2.0, 2.0, 3.0);
         double newValue = 2.5;
 
         //act
-        Queryable<Queryable<Double>> groups = sourceList.groupBy(x -> x);
-        sourceList.add(newValue);
+        Queryable<Queryable<Double>> groups = sourceNums.groupBy(x -> x);
+        sourceNums.add(newValue);
 
         //assert
         LinqingList<Queryable<Double>> result = groups.toList();
@@ -117,39 +136,46 @@ public class GroupByFixture extends QueryFixtureBase {
         assertThat(result.get(3)).containsOnly(newValue);
     }
 
-    @Test
-    public void when_groups_are_found_prior_to_adding_a_wouldbe_group_member_to_the_source_list_query_should_see_new_group_member(){
+    @Theory
+    public void when_groups_are_found_prior_to_adding_a_wouldbe_group_member_to_the_source_list_query_should_see_new_group_member(
+            //collection must support duplicates + be mutable = LinqingList
+            LinqingList<Double> sourceNums
+    ){
         //setup
-        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        sourceNums.addAll(1.0, 2.0, 2.0, 3.0);
         double newValue = 2.0;
 
         //act
-        Queryable<Queryable<Double>> groups = sourceList.groupBy(x -> x);
-        sourceList.add(newValue);
+        Queryable<Queryable<Double>> groups = sourceNums.groupBy(x -> x);
+        sourceNums.add(newValue);
 
         //assert
         List<Queryable<Double>> result = groups.toList();
         assertThat(result.get(1).toList()).containsExactly(2.0, 2.0, newValue);
     }
 
-    @Test
-    public void when_adding_a_member_to_a_group_already_resolved_by_a_group_by_query_group_should_contain_new_element(){
+    @Theory
+    public void when_adding_a_member_to_a_group_already_resolved_by_a_group_by_query_group_should_contain_new_element(
+            LinqingList<Integer> sourceNums
+    ){
         //setup
-        LinqingList<Integer> sourceNumbers = new LinqingList<>(1, 2);
-        Queryable<Integer> firstNumGroup = sourceNumbers.groupBy(x -> x).first();
+        sourceNums.addAll(1, 2);
+        Queryable<Integer> firstNumGroup = sourceNums.groupBy(x -> x).first();
         assumeTrue(firstNumGroup.containsElement(1) && firstNumGroup.isSingle());
 
         //act
-        sourceNumbers.add(1);
+        sourceNums.add(1);
 
         //assert
         assertThat(firstNumGroup).containsOnly(1, 1);
     }
 
-    @Test
-    public void when_using_group_by_to_find_duplicates(){
+    @Theory
+    public void when_using_group_by_to_find_duplicates(
+            QueryableList<String> names
+    ){
         //setup
-        LinqingList<String> names = new LinqingList<>("Brian", "Justin", "Jeff", "Vincent", "Jeff", "George");
+        names = doAdd(names, "Brian", "Justin", "Jeff", "Vincent", "Jeff", "George");
 
         //act
         Queryable<String> duplicates = names.groupBy(name -> name).where(group -> group.count() > 1).selectMany(x -> x).distinct();

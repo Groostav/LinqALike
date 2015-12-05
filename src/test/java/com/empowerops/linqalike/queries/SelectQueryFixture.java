@@ -45,10 +45,10 @@ public class SelectQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_calling_select_on_an_objects_field_result_is_projected(
-            WritableCollection<NamedValue> source
+            Queryable<NamedValue> source
     ){
         //setup
-        source.addAll(new QueryFixtureBase.NamedValue("First"), new NamedValue("Second"), new NamedValue("Third"));
+        source = doAdd(source, new NamedValue("First"), new NamedValue("Second"), new NamedValue("Third"));
         CountingTransform<NamedValue, String> transform;
 
         //act
@@ -61,10 +61,10 @@ public class SelectQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_using_select_to_apply_a_transform_across_the_origin_set(
-            WritableCollection<Integer> source
+            Queryable<Integer> source
     ){
         //setup
-        source.addAll(2, 4, 6, 8, 10);
+        source = doAdd(source, 2, 4, 6, 8, 10);
         CountingTransform<Integer, Double> transform;
 
         //act

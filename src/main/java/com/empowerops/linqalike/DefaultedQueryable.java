@@ -5,8 +5,11 @@ import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
+
+import static com.empowerops.linqalike.Factories.from;
 
 /**
  * An <i>implementation</i> (by way of default extension methods) to the {@link com.empowerops.linqalike.Queryable} interface.
@@ -90,6 +93,31 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     /** {@inheritDoc} */ @Override default public <TComparable>
     Queryable<TElement> distinct(Func1<? super TElement, TComparable> comparableSelector){
         return Linq.distinct(this, comparableSelector);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude){
+        return Linq.except(this, toExclude);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1){
+        return Linq.except(this, toExclude0, toExclude1);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1, TElement toExclude2){
+        return Linq.except(this, toExclude0, toExclude1, toExclude2);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1, TElement toExclude2, TElement toExclude3){
+        return Linq.except(this, toExclude0, toExclude1, toExclude2, toExclude3);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> except(TElement toExclude0, TElement toExclude1, TElement toExclude2, TElement toExclude3, TElement toExclude4){
+        return Linq.except(this, toExclude0, toExclude1, toExclude2, toExclude3, toExclude4);
     }
 
     /** {@inheritDoc} */ @Override default public
@@ -416,6 +444,27 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude){
+        return Linq.union(this, toInclude);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1){
+        return Linq.union(this, toInclude0, toInclude1);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1, TElement toInclude2){
+        return Linq.union(this, toInclude0, toInclude1, toInclude2);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3){
+        return Linq.union(this, toInclude0, toInclude1, toInclude2, toInclude3);
+    }
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> union(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3, TElement toInclude4){
+        return Linq.union(this, toInclude0, toInclude1, toInclude2, toInclude3, toInclude4);
+    }
+
+    /** {@inheritDoc} */ @Override default public
 	Queryable<TElement> union(TElement... toInclude){
         return Linq.union(this, toInclude);
     }
@@ -435,9 +484,46 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
 
+
     /** {@inheritDoc} */ @Override default public
 	Queryable<TElement> where(Condition<? super TElement> condition){
         return Linq.where(this, condition);
+    }
+
+
+    @Override
+    default Queryable<TElement> with(TElement toInclude) {
+        return Linq.with(this, toInclude);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1) {
+        return Linq.with(this, toInclude0, toInclude1);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1, TElement toInclude2) {
+        return Linq.with(this, toInclude0, toInclude1, toInclude2);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3) {
+        return Linq.with(this, toInclude0, toInclude1, toInclude2, toInclude3);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3, TElement toInclude4) {
+        return Linq.with(this, toInclude0, toInclude1, toInclude2, toInclude3, toInclude4);
+    }
+
+    @Override
+    default Queryable<TElement> with(TElement... toInclude) {
+        return Linq.with(this, toInclude);
+    }
+
+    @Override
+    default Queryable<TElement> with(Iterable<? extends TElement> toInclude) {
+        return Linq.with(this, toInclude);
     }
 
 
