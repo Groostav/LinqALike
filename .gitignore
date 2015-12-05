@@ -11,6 +11,7 @@ build/**
 .idea/*.iws
 .idea/workspace.xml
 .idea/misc.xml
+.idea/gradle.xml
 .idea/copyright/*
 .idea/dictionaries/*
 .idea/uiDesigner.xml
