@@ -24,8 +24,6 @@ public class CommonDelegates {
     public static final EqualityComparer.Untyped FalsehoodEquality = new DescribedUntypedEqualityComparer(
             "never-true equaity, equals(left, right) -> false, hashcode(object) -> counter++",
             new EqualityComparer.Untyped() {
-                private int counter = 0;
-
                 @Override
                 public boolean equals(Object left, Object right) {
                     return false;
@@ -33,8 +31,7 @@ public class CommonDelegates {
 
                 @Override
                 public int hashCode(Object object) {
-                    counter = (counter % Integer.MAX_VALUE) + 1; //mod prevents integer overflow
-                    return counter;
+                    return System.identityHashCode(object);
                 }
             });
 

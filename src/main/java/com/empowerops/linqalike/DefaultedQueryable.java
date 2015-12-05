@@ -497,23 +497,23 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     @Override
-    default Queryable<TElement> with(TElement another0, TElement another1) {
-        return Linq.with(this, another0, another1);
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1) {
+        return Linq.with(this, toInclude0, toInclude1);
     }
 
     @Override
-    default Queryable<TElement> with(TElement another0, TElement another1, TElement another2) {
-        return Linq.with(this, another0, another1, another2);
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1, TElement toInclude2) {
+        return Linq.with(this, toInclude0, toInclude1, toInclude2);
     }
 
     @Override
-    default Queryable<TElement> with(TElement another0, TElement another1, TElement another2, TElement another3) {
-        return Linq.with(this, another0, another1, another2, another3);
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3) {
+        return Linq.with(this, toInclude0, toInclude1, toInclude2, toInclude3);
     }
 
     @Override
-    default Queryable<TElement> with(TElement another0, TElement another1, TElement another2, TElement another3, TElement another4) {
-        return Linq.with(this, another0, another1, another2, another3, another4);
+    default Queryable<TElement> with(TElement toInclude0, TElement toInclude1, TElement toInclude2, TElement toInclude3, TElement toInclude4) {
+        return Linq.with(this, toInclude0, toInclude1, toInclude2, toInclude3, toInclude4);
     }
 
     @Override
