@@ -2,10 +2,16 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
+import javax.management.Query;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 import static com.empowerops.linqalike.assists.CountingTransform.track;
@@ -15,12 +21,15 @@ import static org.junit.Assume.assumeTrue;
 /**
  * Created by Geoff on 09/04/14.
  */
+@RunWith(Theories.class)
 public class OrderByQueryFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_ordering_an_unordered_set_of_integers_by_their_value(){
-        //seutp
-        LinqingList<Integer> values = new LinqingList<>(1, 4, 43, 2, 7, 19, 0, 42);
+    @Theory
+    public void when_ordering_an_unordered_set_of_integers_by_their_value(
+            Queryable<Integer> values
+    ){
+        //setup
+        values = doAdd(values, 1, 4, 43, 2, 7, 19, 0, 42);
 
         //act
         CountingTransform<Integer, Integer> comparableSelector = track(element -> element);
@@ -33,10 +42,12 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         assertThat(comparableSelector.getNumberOfInvocations()).isGreaterThan(0);
     }
 
-    @Test
-    public void when_ordering_an_empty_set(){
+    @Theory
+    public void when_ordering_an_empty_set(
+            Queryable<Integer> values
+    ){
         //setup
-        LinqingList<Integer> values = new LinqingList<>();
+        values = doAdd(values);
 
         //act
         CountingTransform<Integer, Integer> comparableSelector = track(x -> x);
@@ -47,28 +58,32 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         assertThat(comparableSelector.getNumberOfInvocations()).isEqualTo(0);
     }
 
-    @Test
-    public void when_ordering_a_bag(){
+    @Theory
+    public void when_ordering_a_bag(
+            LinqingList<EquatableValue> values
+    ){
         //setup
         EquatableValue firstDuplicate = new EquatableValue("Sedin");
         EquatableValue secondDuplicate = new EquatableValue("Sedin");
-        LinqingList<EquatableValue> values = new LinqingList<>(new EquatableValue("Burrows"), firstDuplicate, new EquatableValue("Hamhuis"), secondDuplicate);
+        values = doAdd(values, new EquatableValue("Burrows"), firstDuplicate, new EquatableValue("Hamhuis"), secondDuplicate);
 
         //act
         List<EquatableValue> ordered = values.orderBy(x -> x.value).toList();
 
         //assert
-        assertThat(ordered).containsExactly(values.get(0), values.get(2), firstDuplicate, firstDuplicate);
+        assertThat(ordered).containsExactly(values.first(), values.first(3).last(), firstDuplicate, firstDuplicate);
         assertThat(ordered.get(2)).isSameAs(firstDuplicate);
         assertThat(ordered.get(3)).isSameAs(secondDuplicate);
     }
 
-    @Test
-    public void when_comparing_two_custom_objects_by_a_string_field(){
+    @Theory
+    public void when_comparing_two_custom_objects_by_a_string_field(
+            Queryable<NamedValue> values
+    ){
         //setup
         List<NamedValue> origin = NamedValue.forNames(
                 "Uranium", "Einsteinium", "Manganese", "Silicon", "Francium");
-        LinqingList<NamedValue> values = new LinqingList<>(origin);
+        values = doAdd(values, origin);
         //act
         List<NamedValue> ordered = values.orderBy(x -> x.name).toList();
 
@@ -76,10 +91,12 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         assertThat(ordered).containsExactly(origin.get(1), origin.get(4), origin.get(2), origin.get(3), origin.get(0));
     }
 
-    @Test
-    public void when_ordering_by_a_non_sequitur(){
+    @Theory
+    public void when_ordering_by_a_non_sequitur(
+            Queryable<Integer> source
+    ){
         //setup
-        LinqingList<Integer> source = new LinqingList<>(2, 3, 6, 1, 5, 4);
+        source = doAdd(source, 2, 3, 6, 1, 5, 4);
 
         //act
         List<Integer> result = source.orderBy(x -> 42).toList();
@@ -88,10 +105,12 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         assertThat(result).containsExactly(2, 3, 6, 1, 5, 4);
     }
 
-    @Test
-    public void when_ordering_by_a_nonintuitive_comparison(){
+    @Theory
+    public void when_ordering_by_a_nonintuitive_comparison(
+            Queryable<Integer> source
+    ){
         //setup
-        LinqingList<Integer> source = new LinqingList<>(2, 3, 6, 1, 5, 4);
+        source = doAdd(source, 2, 3, 6, 1, 5, 4);
 
         //act
         List<Integer> result = source.orderBy(x -> x < 4).toList();
@@ -102,10 +121,12 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         assertThat(result).containsExactly(6, 5, 4, 2, 3, 1);
     }
 
-    @Test
-    public void when_calling_order_by_prior_to_adding_values_to_the_source_list_order_by_should_see_newly_added_values(){
+    @Theory
+    public void when_calling_order_by_prior_to_adding_values_to_the_source_list_order_by_should_see_newly_added_values(
+            WritableCollection<Double> sourceList
+    ){
         //setup
-        LinqingList<Double> sourceList = new LinqingList<>(1.0, 2.0, 2.0, 3.0);
+        sourceList = doAdd(sourceList, 1.0, 2.0, 2.0, 3.0);
         double newValue = 2.5;
 
         //act
@@ -116,12 +137,14 @@ public class OrderByQueryFixture extends QueryFixtureBase {
         assertThat(distinctResult.toList()).contains(newValue);
     }
 
-    @Test
-    public void when_calling_order_by_on_a_set_containing_a_duplicate_by_default_equality_but_not_by_a_specified_comparable_selector(){
+    @Theory
+    public void when_calling_order_by_on_a_set_containing_a_duplicate_by_default_equality_but_not_by_a_specified_comparable_selector(
+            Queryable<EquatableValue> cityAndState
+    ){
         //setup
         EquatableValue city = new EquatableValue("New York");
         EquatableValue state = new EquatableValue("New York");
-        LinqingList<EquatableValue> cityAndState = new LinqingList<>(city, state);
+        cityAndState = doAdd(cityAndState, city, state);
         assumeTrue(cityAndState.first() == city && cityAndState.last() == state);
 
         //act

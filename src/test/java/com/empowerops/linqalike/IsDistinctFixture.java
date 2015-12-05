@@ -2,18 +2,26 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
+
+import javax.management.Query;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Geoff on 2014-07-26.
  */
-public class IsDistinctFixture extends QueryFixtureBase{
+@RunWith(Theories.class)
+public class IsDistinctFixture extends QueryFixtureBase {
 
-    @Test
-    public void when_asking_if_set_is_distinct(){
+    @Theory
+    public void when_asking_if_set_is_distinct(
+            Queryable<Double> heights
+    ){
         //setup
-        LinqingList<Double> heights = new LinqingList<>(6.1, 5.4, 6.4);
+        heights = doAdd(heights, 6.1, 5.4, 6.4);
 
         //act
         boolean result = heights.isDistinct();
@@ -22,10 +30,12 @@ public class IsDistinctFixture extends QueryFixtureBase{
         assertThat(result).isTrue();
     }
 
-    @Test
-    public void when_asking_if_bag_is_distinct(){
+    @Theory
+    public void when_asking_if_bag_is_distinct(
+            LinqingList<Integer> friendsAreaCodes
+    ){
         //setup
-        LinqingList<Integer> friendsAreaCodes = new LinqingList<>(604, 604, 778, 508);
+        friendsAreaCodes = doAdd(friendsAreaCodes, 604, 604, 778, 508);
 
         //act
         boolean result = friendsAreaCodes.isDistinct();
@@ -34,10 +44,12 @@ public class IsDistinctFixture extends QueryFixtureBase{
         assertThat(result).isFalse();
     }
 
-    @Test
-    public void when_asking_if_empty_set_is_distinct(){
+    @Theory
+    public void when_asking_if_empty_set_is_distinct(
+            Queryable<Integer> emptySet
+    ){
         //setup
-        LinqingList<Integer> emptySet = new LinqingList<>();
+        emptySet = doAdd(emptySet);
 
         //act
         boolean result = emptySet.isDistinct();
@@ -46,10 +58,12 @@ public class IsDistinctFixture extends QueryFixtureBase{
         assertThat(result).isTrue();
     }
 
-    @Test
-    public void when_asking_if_set_with_comparable_is_distinct(){
+    @Theory
+    public void when_asking_if_set_with_comparable_is_distinct(
+            Queryable<NamedValue> flowers
+    ){
         //setup
-        LinqingList<NamedValue> flowers = new LinqingList<>(
+        flowers = doAdd(flowers,
                 new NamedValue("Rose"), new NamedValue("Mum"), new NamedValue("Daisy"),
                 new NamedValue("Tulip"), new NamedValue("Carnation"), new NamedValue("Hydrangea"),
                 new NamedValue("Sun flower"), new NamedValue("Dandelion"), new NamedValue("Geranium"),
@@ -62,10 +76,12 @@ public class IsDistinctFixture extends QueryFixtureBase{
         assertThat(result).isTrue();
     }
 
-    @Test
-    public void when_asking_if_bag_with_comparator_is_distinct(){
+    @Theory
+    public void when_asking_if_bag_with_comparator_is_distinct(
+            LinqingList<NamedValue> flowers
+    ){
         //setup
-        LinqingList<NamedValue> flowers = new LinqingList<>(
+        flowers = doAdd(flowers,
                 new NamedValue("Rose"), new NamedValue("Mum"), new NamedValue("Daisy"),
                 new NamedValue("Tulip"), new NamedValue("Carnation"), new NamedValue("Hydrangea"),
                 new NamedValue("Sun flower"), new NamedValue("Dandelion"), new NamedValue("Geranium"),
