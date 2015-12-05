@@ -100,7 +100,7 @@ public class PairwiseFixture extends QueryFixtureBase{
 
     @Theory
     public void when_calling_pairwise_with_a_default_factory_the_factory_should_be_called_twice(
-            Queryable cafes
+            Queryable<EquatableValue> cafes
     ){
         //setup
         cafes = doAdd(cafes,

@@ -2,6 +2,7 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class ReversedQueryFixture extends QueryFixtureBase{
 
     @Theory
     public void when_a_bag_is_reversed(
-            LinqingList<EquatableValue> list
+            QueryableList<EquatableValue> list
     ){
         //setup
         EquatableValue firstDuplicate = new EquatableValue("454");
@@ -71,7 +72,7 @@ public class ReversedQueryFixture extends QueryFixtureBase{
             WritableCollection<Integer> source
     ){
         //setup
-        source = doAdd(source, 1, 2, 3);
+        source.addAll(1, 2, 3);
         Queryable<Integer> reversed = source.reversed();
 
         //act

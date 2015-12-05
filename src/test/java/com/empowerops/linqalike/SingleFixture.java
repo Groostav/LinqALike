@@ -27,7 +27,7 @@ public class SingleFixture extends QueryFixtureBase{
             Queryable<Integer> theAnswer
     ){
         //setup
-        theAnswer = doAdd(theAnswer, new Integer[]{42});
+        theAnswer = doAdd(theAnswer, 42);
 
         //act
         int result = theAnswer.single();

@@ -7,6 +7,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
+import static com.empowerops.linqalike.assists.CountingCondition.track;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -23,12 +24,13 @@ public class SingleOrDefaultFixture extends QueryFixtureBase {
     ){
         //setup
         numbersGreaterThanOne = doAdd(numbersGreaterThanOne, 2, 3, 4);
-        CountingCondition<Integer> numbersEqualToOne = CountingCondition.track(x -> x == 1);
+        CountingCondition<Integer> condition;
 
         //act
-        Integer one = numbersGreaterThanOne.singleOrDefault(numbersEqualToOne);
+        Integer one = numbersGreaterThanOne.singleOrDefault(condition = track(x -> x == 1));
 
         //assert
         assertThat(one).isNull();
+        assertThat(condition.getNumberOfInvocations()).isEqualTo(3);
     }
 }

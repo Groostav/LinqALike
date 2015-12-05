@@ -22,7 +22,8 @@ public class UnionQueryFixture extends QueryFixtureBase {
     @Theory
     public void when_calling_union_on_two_disjoint_sets_the_result_should_be_the_simple_sum(
             Queryable<String> goodTeams,
-            Queryable<String> badTeams){
+            Queryable<String> badTeams
+    ){
 
         //setup
         goodTeams = doAdd(goodTeams, "Colorado", "Minnesota", "St. Louis", "Chicago",

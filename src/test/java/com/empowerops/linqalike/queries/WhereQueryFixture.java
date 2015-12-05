@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import javax.management.Query;
 import java.util.List;
 
+import static com.empowerops.linqalike.assists.CountingCondition.track;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +30,7 @@ public class WhereQueryFixture extends QueryFixtureBase {
     ){
         //setup
         numbers = doAdd(numbers, 1, 2, 3, 4, 5, 6, 7, 8);
-        CountingCondition<Integer> condition = CountingCondition.track(number -> number % 2 == 0);
+        CountingCondition<Integer> condition = track(number -> number % 2 == 0);
 
         //act
         List<Integer> evens = numbers.where(condition).toList();
@@ -57,7 +58,7 @@ public class WhereQueryFixture extends QueryFixtureBase {
     ){
         //setup
         numbers = doAdd(numbers, 1, 2, 3, 4, 5, 6, 7, 8);
-        CountingCondition<Integer> condition = CountingCondition.track(number -> number < 0);
+        CountingCondition<Integer> condition = track(number -> number < 0);
 
         //act
         List<Integer> emptyList = numbers.where(condition).toList();
@@ -73,7 +74,7 @@ public class WhereQueryFixture extends QueryFixtureBase {
     ){
         //setup
         numbers = doAdd(numbers, 1, 2, 3, 4, 5, 6 ,7, 8);
-        CountingCondition<Integer> condition = CountingCondition.track(number -> true);
+        CountingCondition<Integer> condition = track(number -> true);
 
         //act
         List<Integer> completeList = numbers.where(condition).toList();
@@ -88,7 +89,7 @@ public class WhereQueryFixture extends QueryFixtureBase {
             Queryable<Integer> numbers
     ){
         //setup
-        CountingCondition<Integer> condition = CountingCondition.track(number -> true);
+        CountingCondition<Integer> condition = track(number -> true);
 
         //act
         List<Integer> filteredList = numbers.where(condition).toList();
@@ -104,7 +105,7 @@ public class WhereQueryFixture extends QueryFixtureBase {
     ){
         //setup
         desperateList = doAdd(desperateList, null, new NamedValue("hi"), "Hi", -1d, 1L, 2, new Integer[]{1, 2, 3, 4, 5}, new NumberValue(5));
-        CountingCondition<Object> condition = CountingCondition.track(element -> element instanceof Number);
+        CountingCondition<Object> condition = track(element -> element instanceof Number);
 
         //act
         List<Object> typedList = desperateList.where(condition).toList();
@@ -122,10 +123,10 @@ public class WhereQueryFixture extends QueryFixtureBase {
         //setup
         countries = doAdd(countries, new NamedValue("Uganda"), new NamedValue("Zimbabwe"),
                                      new NamedValue("Denmark"), new NamedValue("Deutschland"));
-        CountingCondition<NamedValue> condition = CountingCondition.track(country -> country.name.startsWith("D"));
+        CountingCondition<NamedValue> condition;
 
         //act
-        List<NamedValue> dCountries = countries.where(condition).toList();
+        List<NamedValue> dCountries = countries.where(condition = track(country -> country.name.startsWith("D"))).toList();
 
         //assert
         assertThat(dCountries).containsExactly(countries.first(3).last(), countries.first(4).last());
