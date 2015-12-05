@@ -1,9 +1,12 @@
 package com.empowerops.linqalike.queries;
 
+import com.empowerops.linqalike.ImmutableCollection;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
+import org.junit.Assume;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -122,8 +125,8 @@ public class IntersectionFixture extends QueryFixtureBase {
 
     @Theory
     public void when_intersecting_two_sets_containing_different_typed_content(
-            Queryable<Object> left,
-            Queryable<Object> right
+            WritableCollection<Object> left,
+            WritableCollection<Object> right
     ) {
         //setup
         left = doAdd(left, "1", 1, 4.3d, 2f, null);

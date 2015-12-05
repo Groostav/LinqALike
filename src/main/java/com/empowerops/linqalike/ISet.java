@@ -1,18 +1,20 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.EqualityComparer;
+import com.empowerops.linqalike.common.Preconditions;
 import com.empowerops.linqalike.delegate.Func1;
 import org.pcollections.PSet;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Created by Geoff on 2015-12-02.
  */
-public final class ISet<TElement> implements Set<TElement>, DefaultedQueryable<TElement>{
+public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<TElement>, DefaultedQueryable<TElement>{
 
     private static final ISet Empty = new ISet();
     @SuppressWarnings("unchecked") //thanks to immutability this is safe!
@@ -71,11 +73,14 @@ public final class ISet<TElement> implements Set<TElement>, DefaultedQueryable<T
     @Override
     @SafeVarargs
     public final ISet<TElement> union(TElement... toInclude) {
+        Preconditions.notNull(toInclude, "toInclude");
         return new ISet<>(backingSet.plusAll(Arrays.asList(toInclude)));
     }
 
     @Override
     public ISet<TElement> union(Iterable<? extends TElement> toInclude) {
+        Preconditions.notNull(toInclude, "toInclude");
+
         Collection<? extends TElement> source = toInclude instanceof Collection
                 ? (Collection) toInclude
                 : Factories.asList(toInclude);
@@ -103,11 +108,15 @@ public final class ISet<TElement> implements Set<TElement>, DefaultedQueryable<T
     @Override
     @SafeVarargs
     public final ISet<TElement> except(TElement... toExclude) {
+        Preconditions.notNull(toExclude, "toExclude");
+
         return new ISet<>(backingSet.minusAll(Arrays.asList(toExclude)));
     }
 
     @Override
     public ISet<TElement> except(Iterable<? extends TElement> toExclude) {
+        Preconditions.notNull(toExclude, "toExclude");
+
         Collection<? extends TElement> source = toExclude instanceof Collection
                 ? (Collection) toExclude
                 : Factories.asList(toExclude);

@@ -2,6 +2,7 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingCondition;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import org.junit.Test;
@@ -99,7 +100,7 @@ public class WhereQueryFixture extends QueryFixtureBase {
 
     @Theory
     public void when_filtering_on_a_list_of_desperate_types_it_should_apply_the_condition_to_each(
-            Queryable<Object> desperateList
+            WritableCollection<Object> desperateList
     ){
         //setup
         desperateList = doAdd(desperateList, null, new NamedValue("hi"), "Hi", -1d, 1L, 2, new Integer[]{1, 2, 3, 4, 5}, new NumberValue(5));

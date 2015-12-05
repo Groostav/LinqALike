@@ -2,6 +2,7 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingFactory;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.common.Tuple;
@@ -82,7 +83,7 @@ public class PairwiseFixture extends QueryFixtureBase{
 
     @Theory
     public void when_calling_pairwise_on_a_singleton_list_of_null_it_should_get_two_empty_pairs(
-            Queryable<EquatableValue> emptySet
+            WritableCollection<EquatableValue> emptySet
     ){
         //setup
         emptySet = doAdd(emptySet, (EquatableValue)null);

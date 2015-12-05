@@ -13,7 +13,7 @@ import java.util.ListIterator;
  * Created by Geoff on 2015-12-02.
  */
 @SuppressWarnings("deprecation") //intentional and carried forward.
-public class IList<T> implements List<T>, DefaultedQueryable<T>, QueryableList<T>{
+public class IList<T> implements List<T>, DefaultedQueryable<T>, ImmutableCollection<T>, QueryableList<T>{
 
     private static final IList Empty = new IList();
     @SuppressWarnings("unchecked") //thanks to immutableness this is safe!
