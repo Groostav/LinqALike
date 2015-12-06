@@ -410,7 +410,7 @@ public class ImmediateInspections {
         Preconditions.notNull(right, "right");
         Preconditions.notNull(equalityComparer, "equalityComparer");
 
-        if( ! any(left)){
+        if(isEmpty(left)){
             return true;
         }
 

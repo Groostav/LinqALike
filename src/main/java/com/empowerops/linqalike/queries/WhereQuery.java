@@ -1,8 +1,11 @@
 package com.empowerops.linqalike.queries;
 
+import com.empowerops.linqalike.DefaultedBiQueryable;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.common.Preconditions;
 import com.empowerops.linqalike.common.PrefetchingIterator;
+import com.empowerops.linqalike.common.Tuple;
+import com.empowerops.linqalike.delegate.BiCondition;
 import com.empowerops.linqalike.delegate.Condition;
 
 import java.util.Iterator;

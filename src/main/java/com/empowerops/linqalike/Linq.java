@@ -156,6 +156,13 @@ public class Linq {
         return new WhereQuery<>(sourceElements, condition);
     }
 
+    public static <TLeft, TRight>
+    BiQueryable<TLeft, TRight> where(BiQueryable<TLeft, TRight> sourceElements,
+                                     Condition<Tuple<? super TLeft, ? super TRight>> condition) {
+
+        return new BiQueryAdapter.FromPairs<>(new WhereQuery<>(sourceElements, condition));
+    }
+
     public static <TElement, TResult>
     Queryable<TResult> select(Iterable<TElement> sourceElements,
                               Func1<? super TElement, TResult> targetSite) {
@@ -209,12 +216,12 @@ public class Linq {
     @SafeVarargs
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, TElement... toInclude) {
-        return new UnionQuery<>(left, from(toInclude), performEqualsUsing(identity()));
+        return new UnionQuery<>(left, from(toInclude), CommonDelegates.DefaultEquality);
     }
 
     public static <TElement>
     Queryable<TElement> union(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
-        return new UnionQuery<>(left, right, performEqualsUsing(identity()));
+        return new UnionQuery<>(left, right, CommonDelegates.DefaultEquality);
     }
 
     public static <TElement, TCompared>
@@ -257,6 +264,20 @@ public class Linq {
         return new CastQuery<>(sourceElements, desiredType);
     }
 
+    public static <TLeftDesired, TLeftOriginal, TRight>
+    BiQueryable<TLeftDesired, TRight> castLeft(Iterable<Tuple<TLeftOriginal, TRight>> sourceElements,
+                                               Class<TLeftDesired> desiredType) {
+
+        return new CastQuery.Inner<>(sourceElements, Optional.of(desiredType), Optional.empty());
+    }
+
+    public static <TLeft, TRightCast, TRightOriginal>
+    BiQueryable<TLeft, TRightCast> castRight(Iterable<Tuple<TLeft, TRightOriginal>> sourceElements,
+                                             Class<TRightCast> desiredType) {
+
+        return new CastQuery.Inner<>(sourceElements, Optional.empty(), Optional.of(desiredType));
+    }
+
     public static <TElement>
     boolean all(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
         return ImmediateInspections.all(sourceElements, condition);
@@ -297,7 +318,7 @@ public class Linq {
 
     public static <TElement>
     Queryable<TElement> skipWhile(Iterable<TElement> sourceElements,
-                                                           Condition<? super TElement> excludingCondition) {
+                                  Condition<? super TElement> excludingCondition) {
 
         return new ConditionalSkipQuery<>(sourceElements, excludingCondition);
     }
@@ -353,14 +374,14 @@ public class Linq {
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> source, TElement... toExclude) {
 
-        return new ExceptQuery<>(source, from(toExclude), performEqualsUsing(identity()));
+        return new ExceptQuery<>(source, from(toExclude), CommonDelegates.DefaultEquality);
     }
 
     public static <TElement>
     Queryable<TElement> except(Iterable<? extends TElement> left,
                                Iterable<? extends TElement> right) {
 
-        return new ExceptQuery<>(left, right, performEqualsUsing(CommonDelegates.<TElement>identity()));
+        return new ExceptQuery<>(left, right, CommonDelegates.DefaultEquality);
     }
 
     public static <TElement, TCompared>
@@ -546,7 +567,7 @@ public class Linq {
     }
 
     public static <TElement> boolean isDistinct(Iterable<TElement> source) {
-        return ImmediateInspections.isDistinct(source, performEqualsUsing(identity()));
+        return ImmediateInspections.isDistinct(source, CommonDelegates.DefaultEquality);
     }
 
     public static <TElement, TCompared> boolean isDistinct(Iterable<TElement> sourceElements,
@@ -563,20 +584,20 @@ public class Linq {
 
     public static <TValue, TKey> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
         if(sourceEntries instanceof Map){
-            //so what if its a queryable map of one thing, and a util.map of another?
-            //no, because you'd get a signature collision in keySet() and values(). So that's impossible. Thank god.
+            // so what if its a iterable of one thing, and a util.map of another?
+            // you'd get a signature collision in keySet() and values(). So that's impossible. Thank god.
             return ((Map<TKey, TValue>)sourceEntries).get(key);
         }
 
         return ImmediateInspections.getFor(sourceEntries, key);
     }
 
-    public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements) {
+    public static <TElement> BiQueryable<TElement, TElement> pairwise(Iterable<TElement> sourceElements) {
         return new PairwiseQuery<>(sourceElements, () -> null);
     }
 
-    public static <TElement> Queryable<Tuple<TElement, TElement>> pairwise(Iterable<TElement> sourceElements,
-                                                                           Func<? extends TElement> defaultFactory) {
+    public static <TElement> BiQueryable<TElement, TElement> pairwise(Iterable<TElement> sourceElements,
+                                                                      Func<? extends TElement> defaultFactory) {
         return new PairwiseQuery<>(sourceElements, defaultFactory);
     }
 
@@ -622,8 +643,13 @@ public class Linq {
     public static <TLeft, TRight, TJoined> Queryable<TJoined> zip(Iterable<TLeft> sourceElements,
                                                                   Iterable<TRight> rightElements,
                                                                   Func2<? super TLeft, ? super TRight, TJoined> resultSelector) {
-        return new ZipQuery<>(sourceElements, rightElements, resultSelector);
+        return new ZipQuery.WithJoinFactory<>(sourceElements, rightElements, resultSelector);
     }
+
+    public static <TLeft, TRight> BiQueryable<TLeft, TRight> zip(Iterable<TLeft> left, Iterable<TRight> right) {
+        return new ZipQuery<>(left, right);
+    }
+
     public static <TElement, TRight> void forEachWith(Iterable<TElement> leftElements,
                                                       Iterable<TRight> rightElements,
                                                       Action2<? super TElement, ? super TRight> tupleConsumer) {
@@ -636,16 +662,23 @@ public class Linq {
         return ImmediateInspections.indexOf(sourceElements, elementToFind, equalityComparer);
     }
 
+
     public static <TElement> int lastIndexOf(Iterable<TElement> sourceElements,
                                              TElement elementToFind,
                                              EqualityComparer<? super TElement> equalityComparer) {
         return ImmediateInspections.indexOf(reversed(sourceElements), elementToFind, equalityComparer);
     }
 
-    public static <TElement, TCompared> int indexOf(Iterable<? extends TElement> sourceElements,
-                                                    TElement elementToFind,
-                                                    Func1<? super TElement, TCompared> comparableSelector) {
-        return ImmediateInspections.indexOf(sourceElements, elementToFind, performEqualsUsing(memoizedSelector(comparableSelector)));
+    @SuppressWarnings("unchecked") //cast of a dynamically assured type
+    public static <TLeft, TSubclassLeft extends TLeft, TRight>
+    BiQueryable<TSubclassLeft, TRight> ofLeftType(BiQueryable<TLeft, TRight> tuples, Class<TSubclassLeft> desiredLeftClass) {
+        return (BiQueryable) where(tuples, tuple -> desiredLeftClass.isInstance(tuple.left));
+    }
+
+    @SuppressWarnings("unchecked") //cast of a dynamically assured type
+    public static <TLeft, TSubclassRight extends TRight, TRight>
+    BiQueryable<TLeft, TSubclassRight> ofRightType(BiQueryable<TLeft, TRight> tuples, Class<TSubclassRight> desiredRightClass) {
+        return (BiQueryable) where(tuples, tuple -> desiredRightClass.isInstance(tuple.right));
     }
 
     public static <TElement, TCompared> int lastIndexOf(Iterable<TElement> sourceElements,
@@ -806,6 +839,12 @@ public class Linq {
                     new WhereQuery<>(sourceEntries, condition)
             );
         }
+    }
+
+    public static <TElement, TCompared> int indexOf(Iterable<? extends TElement> sourceElements,
+                                                    TElement elementToFind,
+                                                    Func1<? super TElement, TCompared> comparableSelector) {
+        return ImmediateInspections.indexOf(sourceElements, elementToFind, performEqualsUsing(memoizedSelector(comparableSelector)));
     }
 }
 

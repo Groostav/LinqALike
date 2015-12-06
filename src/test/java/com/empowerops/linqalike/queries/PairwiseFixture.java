@@ -1,18 +1,19 @@
 package com.empowerops.linqalike.queries;
-
+import com.empowerops.linqalike.BiQueryable;
 import com.empowerops.linqalike.LinqingList;
-import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
+import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.assists.CountingFactory;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
 import com.empowerops.linqalike.common.Tuple;
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
+
+import java.util.List;
 import org.junit.runner.RunWith;
 
 import javax.management.Query;
-import java.util.List;
 
 import static com.empowerops.linqalike.Factories.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,10 +39,11 @@ public class PairwiseFixture extends QueryFixtureBase{
         );
 
         //act
-        Queryable<Tuple<String, String>> zeldaPairs = zeldaCharacters.pairwise();
+        BiQueryable<String, String> zeldaPairs = zeldaCharacters.pairwise();
 
         //assert
-        assertThat(zeldaPairs.toList()).containsExactly(new Tuple<>(null, "Link"),
+        assertThat(zeldaPairs.toList()).containsExactly(
+                new Tuple<>(null, "Link"),
                 new Tuple<>("Link", "Zelda"),
                 new Tuple<>("Zelda", "Ganon"),
                 new Tuple<>("Ganon", "Impa"),
@@ -58,7 +60,7 @@ public class PairwiseFixture extends QueryFixtureBase{
         emptySet = doAdd(emptySet);
 
         //act
-        Queryable<Tuple<NamedValue, NamedValue>> pairs = emptySet.pairwise();
+        BiQueryable<NamedValue, NamedValue> pairs = emptySet.pairwise();
 
         //assert
         assertThat(pairs.toList()).containsExactly(new Tuple<>(null, null));
@@ -72,7 +74,7 @@ public class PairwiseFixture extends QueryFixtureBase{
         emptySet = doAdd(emptySet, new EquatableValue("IM SO ALONE"));
 
         //act
-        Queryable<Tuple<EquatableValue, EquatableValue>> pairs = emptySet.pairwise().toList();
+        BiQueryable<EquatableValue, EquatableValue> pairs = emptySet.pairwise();
 
         //assert
         assertThat(pairs.toList()).containsExactly(
@@ -83,13 +85,13 @@ public class PairwiseFixture extends QueryFixtureBase{
 
     @Theory
     public void when_calling_pairwise_on_a_singleton_list_of_null_it_should_get_two_empty_pairs(
-            WritableCollection<EquatableValue> emptySet
+            WritableCollection<EquatableValue> singletonSet
     ){
         //setup
-        emptySet = doAdd(emptySet, (EquatableValue)null);
+        singletonSet = doAdd(singletonSet, (EquatableValue)null);
 
         //act
-        Queryable<Tuple<EquatableValue, EquatableValue>> pairs = emptySet.pairwise();
+        BiQueryable<EquatableValue, EquatableValue> pairs = singletonSet.pairwise();
 
         //assert
         assertThat(pairs.toList()).containsExactly(

@@ -177,7 +177,7 @@ public class CommonDelegates {
         return new EqualityComparerWithDescription<>(
                 "memoized { " + valueRetrieval + " }",
                 (left, right) -> {
-                    Tuple<TEquated, TEquated> key = new Tuple.Equatable<>(left, right, CommonDelegates.ReferenceEquality);
+                    Tuple<TEquated, TEquated> key = new EquatableTuple<>(left, right, CommonDelegates.ReferenceEquality);
                     if(cache.containsKey(key)){
                         return cache.get(key);
                     }

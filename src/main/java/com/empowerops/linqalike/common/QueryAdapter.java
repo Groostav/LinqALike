@@ -1,8 +1,11 @@
 package com.empowerops.linqalike.common;
 
+import com.empowerops.linqalike.BiQueryable;
+import com.empowerops.linqalike.DefaultedBiQueryable;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.DefaultedQueryableMap;
 import com.empowerops.linqalike.Linq;
+import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.delegate.Condition;
 import com.empowerops.linqalike.delegate.Func1;
 
@@ -11,7 +14,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public abstract class QueryAdapter{
+public final class QueryAdapter{
+
+    private QueryAdapter(){};
 
     public static class FromArray<TElement> implements DefaultedQueryable<TElement> {
         private final TElement[] elements;

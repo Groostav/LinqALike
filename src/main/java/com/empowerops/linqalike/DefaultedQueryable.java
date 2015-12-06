@@ -266,11 +266,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
 
 
     /** {@inheritDoc} */ @Override default public
-	Queryable<Tuple<TElement, TElement>> pairwise(){
+	BiQueryable<TElement, TElement> pairwise(){
         return Linq.pairwise(this);
     }
     /** {@inheritDoc} */ @Override default public
-	Queryable<Tuple<TElement, TElement>> pairwise(Func<? extends TElement> defaultFactory){
+	BiQueryable<TElement, TElement> pairwise(Func<? extends TElement> defaultFactory){
         return Linq.pairwise(this, defaultFactory);
     }
 
@@ -588,8 +588,8 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public <TRight>
-    Queryable<Tuple<TElement, TRight>> zip(Iterable<TRight> rightElements){
-        return Linq.zip(this, rightElements, Tuple::new);
+    BiQueryable<TElement, TRight> zip(Iterable<TRight> rightElements){
+        return Linq.zip(this, rightElements);
     }
 
     /** {@inheritDoc} */ @Override default public <TRight>

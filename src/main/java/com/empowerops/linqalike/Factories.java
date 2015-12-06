@@ -62,6 +62,12 @@ public class Factories {
     }
 
     @SafeVarargs
+    public static <TLeft, TRight>
+    BiQueryable<TLeft, TRight> pairs(Tuple<? extends TLeft, ? extends TRight>... pairs){
+        return new BiQueryAdapter.FromArray<>(pairs);
+    }
+
+    @SafeVarargs
     public static <TElement> LinqingList<TElement> asList(TElement... initialElements) {
         return new LinqingList<>(initialElements);
     }
@@ -266,23 +272,6 @@ public class Factories {
         if(targetArray.length > index){
             targetArray[index] = null;
         }
-    }
-
-    public static Queryable<Long> from(long[] sourceElements) {
-        return (DefaultedQueryable<Long>)() -> new Iterator<Long>(){
-
-            int index = 0;
-
-            @Override
-            public boolean hasNext() {
-                return index < sourceElements.length;
-            }
-
-            @Override
-            public Long next() {
-                return sourceElements[index++];
-            }
-        };
     }
 
     public static <TElement> InputStream asInputStream(Iterable<TElement> sourceElements, Func1<? super TElement, Integer> converter) {

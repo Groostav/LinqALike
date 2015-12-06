@@ -1,5 +1,6 @@
 package com.empowerops.linqalike.queries;
 
+import com.empowerops.linqalike.DefaultedBiQueryable;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.Func;
@@ -10,7 +11,7 @@ import java.util.NoSuchElementException;
 /**
  * Created by Justin on 7/21/2014.
  */
-public class PairwiseQuery<TElement> implements DefaultedQueryable<Tuple<TElement, TElement>> {
+public class PairwiseQuery<TElement> implements DefaultedBiQueryable<TElement, TElement> {
 
     private final Iterable<TElement> sourceElements;
     private final Func<? extends TElement> defaultFactory;

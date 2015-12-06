@@ -85,10 +85,10 @@ import java.util.Set;
  */
 public interface Queryable<TElement> extends Iterable<TElement> {
 
-    public TElement aggregate(Func2<? super TElement, ? super TElement, ? extends TElement> aggregator);
+    TElement aggregate(Func2<? super TElement, ? super TElement, ? extends TElement> aggregator);
 
 
-    public <TAccumulate> TAccumulate aggregate(TAccumulate seed,
+    <TAccumulate> TAccumulate aggregate(TAccumulate seed,
                                                Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator);
 
     /**
@@ -100,7 +100,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @param condition the condition to test each member in the set with
      * @return <tt>true</tt> iff all members of the set pass the supplied condition, or the set is empty
      */
-    public boolean all(Condition<? super TElement> condition);
+    boolean all(Condition<? super TElement> condition);
 
     /**
      * Determines if the set contains any elements.
@@ -609,7 +609,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @return a new queryable containing every a tuple for every 2 adjacent elements in this queryable
      */
-    Queryable<Tuple<TElement, TElement>> pairwise();
+     BiQueryable<TElement, TElement> pairwise();
 
     /**
      * Gets all possible adjacent parirs in this queryable invoking the supplied factory to get
@@ -619,7 +619,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *                       first and last element respectively.
      * @return a new queryable containing every a tuple for every 2 adjacent elements in this queryable
      */
-    Queryable<Tuple<TElement, TElement>> pairwise(Func<? extends TElement> defaultFactory);
+     BiQueryable<TElement, TElement> pairwise(Func<? extends TElement> defaultFactory);
 
 
     /**
@@ -862,7 +862,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @return a readonly List containing all the elements currently in this queryable.
      */
     ReadonlyLinqingList<TElement> toReadOnly();
-
     /**
      * @return a readonly Set containing all the slements curreently in this queryable,
      * de-duplicated by taking the first of each duplicates.
@@ -1211,7 +1210,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * duplicates, meaning the sequence {3, 3, 4, 5} is <i>not</i> a subsequence of {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
      * (since the latter only has the one '3').
      *
-     * @param possibleSupersequence a candidate supersequence
+     * @param possibleSupersequence the sequence to test as a supersequence
      * @return true if this queryable is a subsequence of <code>possibleSupersequence</code>
      */
     boolean isSubsequenceOf(Iterable<? extends TElement> possibleSupersequence);
@@ -1225,7 +1224,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * duplicates, meaning the sequence {3, 3, 4, 5} is <i>not</i> a subsequence of {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
      * (since the latter only has the one '3').
      *
-     * @param possibleSupersequence a candidate supersequence
+     * @param possibleSupersequence the sequence to test as a supersequence
      * @param equalityComparer      the method of equality to use
      * @return true if this queryable is a subsequence of <code>possibleSupersequence</code>
      */
@@ -1242,7 +1241,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * Sequences allow for duplicates, meaning the sequence {a, a, b, c, d, d, e} is <i>not</i> a supersequence of
      * {b, c, d, e} (since the former has two 'd's).
      *
-     * @param possibleSubsequence a candidate supersequence
+     * @param possibleSubsequence the sequence to test as a supersequence
      * @return true if this queryable is a subsequence of <code>possibleSubsequence</code>
      */
     boolean isSupersequenceOf(Iterable<? extends TElement> possibleSubsequence);
@@ -1313,7 +1312,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * and each tuple's right value mapping to an element in <code>rightElements</code>.
      */
     <TRight>
-    Queryable<Tuple<TElement, TRight>> zip(Iterable<TRight> rightElements);
+    BiQueryable<TElement, TRight> zip(Iterable<TRight> rightElements);
 
     /**
      * performs the specified action on each pair of elements in this queryable and the supplied
@@ -1329,5 +1328,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     <TRight>
     void forEachWith(Iterable<TRight> rightElements, Action2<? super TElement, ? super TRight> zippedConsumer);
 }
+
 
 

@@ -1,11 +1,18 @@
 package com.empowerops.linqalike.delegate;
 
+import com.empowerops.linqalike.common.Tuple;
+
 @FunctionalInterface
 public interface Func2<TFirstParam, TSecondParam, TResult> {
 
-    public TResult getFrom(TFirstParam firstArgument, TSecondParam secondArgument);
+    TResult getFrom(TFirstParam firstArgument,TSecondParam secondArgument);
 
-    public static class WithDescription<TFirstParam, TSecondParam, TResult>
+
+    default Func1<Tuple<? extends TFirstParam, ? extends TSecondParam>, TResult> asFuncOnTuple(){
+        return tuple -> getFrom(tuple.left, tuple.right);
+    }
+
+    class WithDescription<TFirstParam, TSecondParam, TResult>
             implements Func2<TFirstParam, TSecondParam, TResult>{
 
         public final String description;
