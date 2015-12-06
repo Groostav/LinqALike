@@ -89,7 +89,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     <TAccumulate> TAccumulate aggregate(TAccumulate seed,
-                                               Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator);
+                                        Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator);
 
     /**
      * Determines if all elements in the set pass the given condition.
@@ -327,9 +327,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     Queryable<TElement> first(int count);
 
     /**
-     * Gets the first element contained in this query, or <code>null</code> if this query is empty.
+     * Gets the first element contained in this query, or <code>Queryable.empty()</code> if this query is empty.
      */
-    TElement firstOrDefault();
+     Optional<TElement> firstOrDefault();
 
     /**
      * Gets the first element contained in this query that matches the supplied condition, or null
@@ -337,7 +337,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @param condition the condition that will be satisfied by the returned element
      */
-    TElement firstOrDefault(Condition<? super TElement> condition);
+    Optional<TElement> firstOrDefault(Condition<? super TElement> condition);
 
     /**
      * Gets the <i>first</i> element in this Queryable, as defined by the iterator,
@@ -358,7 +358,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Gets the first element contained in this query, or <code>null</code> if this query is empty.
      */
-    TElement secondOrDefault();
+    Optional<TElement> secondOrDefault();
 
     /**
      * Gets the first element contained in this query that matches the supplied condition, or null
@@ -366,7 +366,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @param condition the condition that will be satisfied by the returned element
      */
-    TElement secondOrDefault(Condition<? super TElement> condition);
+    Optional<TElement> secondOrDefault(Condition<? super TElement> condition);
 
 
     /**
@@ -434,7 +434,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Gets the intersection of this queryable and the elements in <code>toInclude</code>, where
      * <code>equalityComparison</code> is used to determine membership in the resulting intersection.
-     * Each element of this queryable such that <code>equalityComparison.equals(elementOfThisQueryable, anyElementOfToInclude)</code>
+     * Each element of this queryable such that
+     * <code>equalityComparison.equals(elementOfThisQueryable, anyElementOfToInclude)</code>
      * is true will be in the resulting queryable.
      *
      * @param toInclude          the elements to be intersected
@@ -475,7 +476,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Gets the last element in this queryable if it's available, otherwise it returns <tt>null</tt>.
      */
-    TElement lastOrDefault();
+    Optional<TElement> lastOrDefault();
 
     /**
      * Gets the last element in this queryable that passes the specified condition if one exists,
@@ -483,7 +484,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @param condition the condition that must be satisfied
      */
-    TElement lastOrDefault(Condition<? super TElement> condition);
+    Optional<TElement> lastOrDefault(Condition<? super TElement> condition);
 
 
     /**
@@ -729,7 +730,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @return the single element in this queryable, or null if this queryable is empty.
      */
-    TElement singleOrDefault();
+     Optional<TElement> singleOrDefault();
 
     /**
      * Gets the only element in this queryable that passes <code>uniqueConstraint</code>, or null if
@@ -741,7 +742,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @param uniqueConstraint a condition that will pass for exactly one element in this queryable
      * @return the one element passing the <code>uniqueConstraint</code>, or null if this queryable is empty
      */
-    TElement singleOrDefault(Condition<? super TElement> uniqueConstraint);
+     Optional<TElement> singleOrDefault(Condition<? super TElement> uniqueConstraint);
 
 
     /**
@@ -781,7 +782,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @return <tt>true</tt> if this queryable is set equivalent to the specified <code>otherCollection</code>
      * where equality is determined by the specified <code>equalityComparer</code>
      */
-    boolean setEquals(Iterable<? extends TElement> otherCollection, EqualityComparer<? super TElement> equalityComparer);
+    boolean setEquals(Iterable<? extends TElement> otherCollection,
+                      EqualityComparer<? super TElement> equalityComparer);
 
     /**
      * Determines if this queryable has sequence equality with the specified elements. Two collections are
@@ -806,7 +808,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @return <tt>true</tt> if this equeryable is sequence-equivalent to the specified
      * <code>otherOrderedCollection</code>
      */
-    <TCompared> boolean sequenceEquals(Iterable<? extends TElement> otherOrderedCollection, Func1<? super TElement, TCompared> comparableSelector);
+    <TCompared> boolean sequenceEquals(Iterable<? extends TElement> otherOrderedCollection,
+                                       Func1<? super TElement, TCompared> comparableSelector);
 
     /**
      * Determines if this queryable has sequence equalitywith the specified elements
@@ -819,7 +822,8 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @return <tt>true</tt> if this equeryable is sequence-equivalent to the specified
      * <code>otherOrderedCollection</code>
      */
-    boolean sequenceEquals(Iterable<? extends TElement> otherOrderedCollection, EqualityComparer<? super TElement> equalityComparer);
+    boolean sequenceEquals(Iterable<? extends TElement> otherOrderedCollection,
+                           EqualityComparer<? super TElement> equalityComparer);
 
 
     /**
@@ -1328,6 +1332,5 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     <TRight>
     void forEachWith(Iterable<TRight> rightElements, Action2<? super TElement, ? super TRight> zippedConsumer);
 }
-
 
 

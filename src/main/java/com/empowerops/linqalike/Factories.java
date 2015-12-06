@@ -12,6 +12,7 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.empowerops.linqalike.CommonDelegates.memoized;
 
@@ -108,12 +109,12 @@ public class Factories {
     }
 
     @SafeVarargs
-    public static <TElement> TElement firstNotNullOrDefault(TElement ... set){
+    public static <TElement> Optional<TElement> firstNotNullOrDefault(TElement ... set){
         return from(set).firstOrDefault(CommonDelegates.NotNull);
     }
 
     @SafeVarargs
-    public static <TElement> TElement firstPresentOrDefault(Yield<? extends TElement>... candidates){
+    public static <TElement> Optional<TElement> firstPresentOrDefault(Yield<? extends TElement>... candidates){
         return from(candidates).select(x -> (TElement) x.get()).firstOrDefault(candidate -> candidate != null);
     }
 

@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Geoff on 2014-06-18.
  */
-public class isSubsetOfFixture {
+public class IsSubsetOfFixture_ {
 
     @Test
     public void when_asking_a_simple_subset_if_its_a_subset_linq_should_return_true(){

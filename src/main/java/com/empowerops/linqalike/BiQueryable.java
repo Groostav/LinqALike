@@ -72,17 +72,17 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     BiQueryable<TLeft, TRight> first(int count);
 
-    Tuple<TLeft, TRight> firstOrDefault();
+    Optional<Tuple<TLeft, TRight>> firstOrDefault();
 
-    Tuple<TLeft, TRight> firstOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
+    Optional<Tuple<TLeft, TRight>> firstOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
 
     Tuple<TLeft, TRight> second();
 
     Tuple<TLeft, TRight> second(BiCondition<? super TLeft, ? super TRight> condition);
 
-    Tuple<TLeft, TRight> secondOrDefault();
+    Optional<Tuple<TLeft, TRight>> secondOrDefault();
 
-    Tuple<TLeft, TRight> secondOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
+    Optional<Tuple<TLeft, TRight>> secondOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
 
     BiQueryable<TLeft, TRight> intersect(BiQueryable<? extends TLeft, ? extends TRight> toInclude);
 
@@ -92,9 +92,9 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     BiQueryable<TLeft, TRight> last(int count);
 
-    Tuple<TLeft, TRight> lastOrDefault();
+    Optional<Tuple<TLeft, TRight>> lastOrDefault();
 
-    Tuple<TLeft, TRight> lastOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
+    Optional<Tuple<TLeft, TRight>> lastOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
 
     <TCompared extends Comparable<TCompared>>
     Optional<TCompared> max(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
@@ -132,9 +132,9 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     Tuple<TLeft, TRight> single(BiCondition<? super TLeft, ? super TRight> uniqueConstraint);
 
-    Tuple<TLeft, TRight> singleOrDefault();
+    Optional<Tuple<TLeft, TRight>> singleOrDefault();
 
-    Tuple<TLeft, TRight> singleOrDefault(BiCondition<? super TLeft, ? super TRight> uniqueConstraint);
+    Optional<Tuple<TLeft, TRight>> singleOrDefault(BiCondition<? super TLeft, ? super TRight> uniqueConstraint);
 
     boolean setEquals(BiQueryable<? extends TLeft, ? extends TRight> otherCollection);
 

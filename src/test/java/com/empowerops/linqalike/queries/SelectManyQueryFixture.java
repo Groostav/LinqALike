@@ -1,15 +1,12 @@
 package com.empowerops.linqalike.queries;
-
 import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.assists.QueryFixtureBase;
-import javafx.scene.layout.Pane;
-import org.junit.*;
-import org.junit.experimental.theories.Theories;
+
+import java.util.*;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.junit.experimental.theories.Theories;
 
-import javax.management.Query;
-import java.util.*;
 
 import static com.empowerops.linqalike.Factories.asSet;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;

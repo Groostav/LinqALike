@@ -72,12 +72,12 @@ public class ImmediateInspections {
         return sum(sourceElements, valueSelector) / size(sourceElements);
     }
 
-    public static <TElement> TElement singleOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
-        Func1<Queryable<TElement>, TElement> resultOnMultipleFound = problems -> {
-            throw new SingletonSetContainsMultipleElementsException(sourceElements, problems, uniqueCondition);
+    public static <TElement> Optional<TElement> singleOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
+        Func1<Queryable<TElement>, TElement> resultOnMultipleFound = problemElements -> {
+            throw new SingletonSetContainsMultipleElementsException(sourceElements, problemElements, uniqueCondition);
         };
 
-        return singleOr(sourceElements, uniqueCondition, () -> null, resultOnMultipleFound);
+        return Optional.ofNullable(singleOr(sourceElements, uniqueCondition, () -> null, resultOnMultipleFound));
     }
 
     public static <TElement> TElement single(Iterable<TElement> sourceElements, Condition<? super TElement> uniqueCondition) {
@@ -124,9 +124,9 @@ public class ImmediateInspections {
         return firstOr(sourceElements, condition, () -> {throw new SetIsEmptyException(sourceElements, condition);});
     }
 
-    public static <TElement> TElement firstOrDefault(Iterable<TElement> sourceElements,
+    public static <TElement> Optional<TElement> firstOrDefault(Iterable<TElement> sourceElements,
                                                      Condition<? super TElement> condition){
-        return firstOr(sourceElements, condition, () -> null);
+        return Optional.ofNullable(firstOr(sourceElements, condition, () -> null));
     }
 
     private static <TElement> TElement firstOr(Iterable<TElement> sourceElements,
@@ -160,8 +160,8 @@ public class ImmediateInspections {
         return reversed.first(condition);
     }
 
-    public static <TElement> TElement lastOrDefault(Iterable<TElement> sourceElements,
-                                                    Condition<? super TElement> condition) {
+    public static <TElement> Optional<TElement> lastOrDefault(Iterable<TElement> sourceElements,
+                                                              Condition<? super TElement> condition) {
 
         ReversedQuery<TElement> reversed = new ReversedQuery<>(sourceElements);
         return reversed.firstOrDefault(condition);
@@ -331,7 +331,10 @@ public class ImmediateInspections {
     }
 
     public static <TKey, TValue> TValue getFor(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries, TKey key) {
-        return ImmediateInspections.firstOrDefault(sourceEntries, kvp -> nullSafeEquals(key, kvp.getKey())).getValue();
+        return ImmediateInspections
+                .firstOrDefault(sourceEntries, kvp -> nullSafeEquals(key, kvp.getKey()))
+                .map(Map.Entry::getValue)
+                .orElse(null);
     }
 
     public static <TElement> boolean sequenceEquals(Iterable<TElement> left,

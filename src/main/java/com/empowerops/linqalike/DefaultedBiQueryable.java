@@ -135,11 +135,11 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return new BiQueryAdapter.FromPairs<>(Linq.first(this, count));
     }
 
-    default Tuple<TLeft, TRight> firstOrDefault(){
+    default Optional<Tuple<TLeft, TRight>> firstOrDefault(){
         return Linq.firstOrDefault(this);
     }
 
-    default Tuple<TLeft, TRight> firstOrDefault(BiCondition<? super TLeft, ? super TRight> condition){
+    default Optional<Tuple<TLeft, TRight>> firstOrDefault(BiCondition<? super TLeft, ? super TRight> condition){
         return Linq.firstOrDefault(this, condition.toConditionOnTuple());
     }
 
@@ -151,11 +151,11 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.second(this, condition.toConditionOnTuple());
     }
 
-    default Tuple<TLeft, TRight> secondOrDefault(){
+    default Optional<Tuple<TLeft, TRight>> secondOrDefault(){
         return Linq.secondOrDefault(this);
     }
 
-    default Tuple<TLeft, TRight> secondOrDefault(BiCondition<? super TLeft, ? super TRight> condition){
+    default Optional<Tuple<TLeft, TRight>> secondOrDefault(BiCondition<? super TLeft, ? super TRight> condition){
         return Linq.secondOrDefault(this, condition.toConditionOnTuple());
     }
 
@@ -175,11 +175,11 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return new BiQueryAdapter.FromPairs<>(Linq.last(this, count));
     }
 
-    default Tuple<TLeft, TRight> lastOrDefault(){
+    default Optional<Tuple<TLeft, TRight>> lastOrDefault(){
         return Linq.lastOrDefault(this);
     }
 
-    default Tuple<TLeft, TRight> lastOrDefault(BiCondition<? super TLeft, ? super TRight> condition){
+    default Optional<Tuple<TLeft, TRight>> lastOrDefault(BiCondition<? super TLeft, ? super TRight> condition){
         return Linq.lastOrDefault(this, condition.toConditionOnTuple());
     }
 
@@ -252,12 +252,12 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.single(this.asTuples(), uniqueConstraint.toConditionOnTuple());
     }
 
-    default Tuple<TLeft, TRight> singleOrDefault(){
+    default Optional<Tuple<TLeft, TRight>> singleOrDefault(){
         return Linq.singleOrDefault(this.asTuples());
     }
 
     @SuppressWarnings("unchecked") //see note 'Need inner tuple types'
-    default Tuple<TLeft, TRight> singleOrDefault(BiCondition<? super TLeft, ? super TRight> uniqueConstraint){
+    default Optional<Tuple<TLeft, TRight>> singleOrDefault(BiCondition<? super TLeft, ? super TRight> uniqueConstraint){
         return Linq.singleOrDefault(this.asTuples(), uniqueConstraint.toConditionOnTuple());
     }
 

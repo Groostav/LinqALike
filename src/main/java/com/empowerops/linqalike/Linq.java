@@ -63,13 +63,13 @@ public class Linq {
     }
 
     public static <TElement>
-    TElement singleOrDefault(Iterable<TElement> sourceElements) {
+    Optional<TElement> singleOrDefault(Iterable<TElement> sourceElements) {
         return singleOrDefault(sourceElements, Tautology);
     }
 
     public static <TElement>
-    TElement singleOrDefault(Iterable<TElement> sourceElements,
-                             Condition<? super TElement> uniqueCondition) {
+    Optional<TElement> singleOrDefault(Iterable<TElement> sourceElements,
+                                       Condition<? super TElement> uniqueCondition) {
         return ImmediateInspections.singleOrDefault(sourceElements, uniqueCondition);
     }
 
@@ -84,18 +84,18 @@ public class Linq {
 
         return ImmediateInspections.first(sourceElements, condition);
     }
-    public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count){
-        return new FirstElementsQuery<>(sourceElements, count);
-    }
     public static <TElement>
-    TElement firstOrDefault(Iterable<TElement> sourceElements) {
+    Optional<TElement> firstOrDefault(Iterable<TElement> sourceElements) {
         return ImmediateInspections.firstOrDefault(sourceElements, Tautology);
     }
-
     public static <TElement>
-    TElement firstOrDefault(Iterable<TElement> sourceElements,
-                            Condition<? super TElement> condition) {
+    Optional<TElement> firstOrDefault(Iterable<TElement> sourceElements,
+                                      Condition<? super TElement> condition) {
         return ImmediateInspections.firstOrDefault(sourceElements, condition);
+    }
+
+    public static <TElement> Queryable<TElement> first(Iterable<TElement> sourceElements, int count){
+        return new FirstElementsQuery<>(sourceElements, count);
     }
 
     public static <TElement>
@@ -108,11 +108,11 @@ public class Linq {
         return filtered.any() ? filtered.first() : Formatting.otherwiseThrow(new SetIsEmptyException(sourceElements, condition));
     }
     public static <TElement>
-    TElement secondOrDefault(Iterable<TElement> sourceElements){
+    Optional<TElement> secondOrDefault(Iterable<TElement> sourceElements){
         return secondOrDefault(sourceElements, Tautology);
     }
     public static <TElement>
-    TElement secondOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> condition){
+    Optional<TElement> secondOrDefault(Iterable<TElement> sourceElements, Condition<? super TElement> condition){
         return from(sourceElements).where(condition).skip(1).firstOrDefault();
     }
 
@@ -125,17 +125,14 @@ public class Linq {
                   Condition<? super TElement> condition) {
         return ImmediateInspections.last(sourceElements, condition);
     }
-    public static <TElement> Queryable<TElement> last(Iterable<TElement> sourceElements, int count){
-        return new LastElementsQuery<>(sourceElements, count);
-    }
-
-    public static <TElement> TElement lastOrDefault(Iterable<TElement> sourceElements) {
+    public static <TElement>
+    Optional<TElement> lastOrDefault(Iterable<TElement> sourceElements) {
         return lastOrDefault(sourceElements, Tautology);
     }
 
     public static <TElement>
-    TElement lastOrDefault(Iterable<TElement> sourceElements,
-                           Condition<? super TElement> condition) {
+    Optional<TElement> lastOrDefault(Iterable<TElement> sourceElements,
+                                     Condition<? super TElement> condition) {
 
         return ImmediateInspections.lastOrDefault(sourceElements, condition);
     }
@@ -147,6 +144,11 @@ public class Linq {
 
     public static <TElement> Queryable<TElement> with(Iterable<? extends TElement> left, Iterable<? extends TElement> right){
         return new WithQuery<>(left, right);
+    }
+
+    public static <TElement>
+    Queryable<TElement> last(Iterable<TElement> sourceElements, int count){
+        return new LastElementsQuery<>(sourceElements, count);
     }
 
     public static <TElement>

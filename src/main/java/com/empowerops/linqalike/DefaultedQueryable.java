@@ -153,11 +153,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.first(this, count);
     }
     /** {@inheritDoc} */ @Override default public
-	TElement firstOrDefault(){
+    Optional<TElement> firstOrDefault(){
         return Linq.firstOrDefault(this);
     }
     /** {@inheritDoc} */ @Override default public
-	TElement firstOrDefault(Condition<? super TElement> condition){
+    Optional<TElement> firstOrDefault(Condition<? super TElement> condition){
         return Linq.firstOrDefault(this, condition);
     }
 
@@ -170,11 +170,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.second(this, condition);
     }
     /** {@inheritDoc} */ @Override default public
-    TElement secondOrDefault(){
+    Optional<TElement> secondOrDefault(){
         return Linq.secondOrDefault(this);
     }
     /** {@inheritDoc} */ @Override default public
-    TElement secondOrDefault(Condition<? super TElement> condition){
+    Optional<TElement> secondOrDefault(Condition<? super TElement> condition){
         return Linq.secondOrDefault(this, condition);
     }
 
@@ -222,11 +222,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.last(this, count);
     }
     /** {@inheritDoc} */ @Override default public
-	TElement lastOrDefault(){
+    Optional<TElement> lastOrDefault(){
         return Linq.lastOrDefault(this);
     }
     /** {@inheritDoc} */ @Override default public
-	TElement lastOrDefault(Condition<? super TElement> condition){
+    Optional<TElement> lastOrDefault(Condition<? super TElement> condition){
         return Linq.lastOrDefault(this, condition);
     }
 
@@ -302,11 +302,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.single(this, uniqueConstraint);
     }
     /** {@inheritDoc} */ @Override default public
-	TElement singleOrDefault(){
+    Optional<TElement> singleOrDefault(){
         return Linq.singleOrDefault(this);
     }
     /** {@inheritDoc} */ @Override default public
-	TElement singleOrDefault(Condition<? super TElement> uniqueConstraint){
+    Optional<TElement> singleOrDefault(Condition<? super TElement> uniqueConstraint){
         return Linq.singleOrDefault(this, uniqueConstraint);
     }
 
