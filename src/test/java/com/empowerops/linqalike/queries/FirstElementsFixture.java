@@ -1,7 +1,7 @@
 package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.*;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-08-11.
  */
 @RunWith(Theories.class)
-public class FirstElementsFixture extends QueryFixtureBase {
+public class FirstElementsFixture extends FixtureBase {
 
     @Override
     protected Class<? extends Queryable> getTypeUnderTest() { return FirstElementsQuery.class; }

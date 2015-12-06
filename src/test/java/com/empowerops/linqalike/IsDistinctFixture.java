@@ -1,6 +1,6 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-07-26.
  */
 @RunWith(Theories.class)
-public class IsDistinctFixture extends QueryFixtureBase {
+public class IsDistinctFixture extends FixtureBase {
 
     @Theory
     public void when_asking_if_set_is_distinct(

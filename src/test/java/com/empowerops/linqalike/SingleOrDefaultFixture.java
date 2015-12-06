@@ -2,7 +2,7 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingCondition;
 import com.empowerops.linqalike.common.SingletonSetContainsMultipleElementsException;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import com.empowerops.linqalike.common.Tuple;
 import org.junit.experimental.theories.Theory;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-05-20.
  */
 @RunWith(Theories.class)
-public class SingleOrDefaultFixture extends QueryFixtureBase {
+public class SingleOrDefaultFixture extends FixtureBase {
 
     @Theory
     public void when_calling_singleOrDefault_empty_set_should_get_empty(

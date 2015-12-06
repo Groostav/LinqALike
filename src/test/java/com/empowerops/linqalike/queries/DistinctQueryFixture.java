@@ -5,7 +5,7 @@ import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingEqualityComparator;
 import com.empowerops.linqalike.assists.CountingTransform;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Edwin on 2014-04-02.
  */
 @RunWith(Theories.class)
-public class DistinctQueryFixture extends QueryFixtureBase {
+public class DistinctQueryFixture extends FixtureBase {
 
     @Theory
     public void when_calling_distinct_on_a_list_containing_several_integer_duplicates(

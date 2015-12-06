@@ -206,8 +206,8 @@ public class ImmediateInspections {
         Preconditions.notNull(valueSelector, "valueSelector");
         if(Linq.isEmpty(sourceElements)) { return Optional.empty(); }
 
-        TElement result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, LowerIsBetter));
-        return Optional.of(valueSelector.getFrom(result));
+        Optional<TElement> result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, LowerIsBetter));
+        return result.map(valueSelector::getFrom);
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>>
@@ -216,43 +216,27 @@ public class ImmediateInspections {
         Preconditions.notNull(valueSelector, "valueSelector");
         if(Linq.isEmpty(sourceElements)) { return Optional.empty(); }
 
-        TElement result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, HigherIsBetter));
-        return Optional.of(valueSelector.getFrom(result));
+        Optional<TElement> result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, HigherIsBetter));
+        return result.map(valueSelector::getFrom);
     }
 
 
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TElement withMin(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TElement> withMin(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(valueSelector, "valueSelector");
         Preconditions.cannotBeEmpty(sourceElements, "sourceElements");
 
-        TElement result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, LowerIsBetter));
-        return result;
+        return aggregate(sourceElements, new ComparingChooser<>(valueSelector, LowerIsBetter));
     }
 
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TElement withMax(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TElement> withMax(Iterable<TElement> sourceElements, Func1<? super TElement, TCompared> valueSelector) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(valueSelector, "valueSelector");
         Preconditions.cannotBeEmpty(sourceElements, "sourceElements");
 
-        TElement result = aggregate(sourceElements, new ComparingChooser<>(valueSelector, HigherIsBetter));
-        return result;
-    }
-
-    public static <TElement> TElement withMinInt(Iterable<TElement> sourceElements,
-                                                 Func1<? super TElement, Integer> valueSelector) {
-        return any(sourceElements)
-                ? aggregate(sourceElements, (left, right) -> valueSelector.getFrom(left) < valueSelector.getFrom(right) ? left : right)
-                : otherwiseThrow(new SetIsEmptyException());
-    }
-
-    public static <TElement> TElement withMaxInt(Iterable<TElement> sourceElements,
-                                                 Func1<? super TElement, Integer> valueSelector) {
-        return any(sourceElements)
-                ? aggregate(sourceElements, (left, right) -> valueSelector.getFrom(left) > valueSelector.getFrom(right) ? left : right)
-                : otherwiseThrow(new SetIsEmptyException());
+        return aggregate(sourceElements, new ComparingChooser<>(valueSelector, HigherIsBetter));
     }
 
     public static <TElement> boolean isDistinct(Iterable<TElement> sourceElements,
@@ -377,21 +361,23 @@ public class ImmediateInspections {
         return true;
     }
 
-    @SuppressWarnings("unchecked") //TODO not precisely sure why type system is mad at this
-    public static <TElement> TElement aggregate(Iterable<TElement> sourceElements,
-                                                Func2<? super TElement, ? super TElement, ? extends TElement> aggregator) {
+    public static <TElement> Optional<TElement> aggregate(Iterable<TElement> sourceElements,
+                                                          Func2<? super TElement, ? super TElement, ? extends TElement> aggregator) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(aggregator, "aggregator");
-        Preconditions.cannotBeEmpty(sourceElements, "sourceElements");
+
+        if(isEmpty(sourceElements)){
+            return Optional.empty();
+        }
 
         ForkingIterator<TElement> sourceIterator = new ForkingIterator<>(sourceElements);
         TElement seed = sourceIterator.next();
 
-        return (TElement) aggregate(sourceIterator.remaining(), seed, (Func2) aggregator);
+        return Optional.ofNullable(aggregate(sourceIterator.remaining(), seed, aggregator));
     }
     public static <TAccumulate, TElement> TAccumulate aggregate(Iterable<TElement> sourceElements,
                                                                 TAccumulate seed,
-                                                                Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator) {
+                                                                Func2<? super TAccumulate, ? super TElement, ? extends TAccumulate> aggregator) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(aggregator, "aggregator");
 

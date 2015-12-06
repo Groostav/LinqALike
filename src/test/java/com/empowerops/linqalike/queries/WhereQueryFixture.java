@@ -1,16 +1,13 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingCondition;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import javax.management.Query;
 import java.util.List;
 
 import static com.empowerops.linqalike.assists.CountingCondition.track;
@@ -21,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 @RunWith(Theories.class)
-public class WhereQueryFixture extends QueryFixtureBase {
+public class WhereQueryFixture extends FixtureBase {
 
 
     @Theory

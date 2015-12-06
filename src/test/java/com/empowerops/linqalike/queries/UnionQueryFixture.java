@@ -1,7 +1,7 @@
 package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.WritableCollection;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import org.junit.experimental.theories.Theories;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 @RunWith(Theories.class)
-public class UnionQueryFixture extends QueryFixtureBase {
+public class UnionQueryFixture extends FixtureBase {
 
     @Override
     protected Class<? extends Queryable> getTypeUnderTest() { return UnionQuery.class; }
@@ -150,4 +150,20 @@ public class UnionQueryFixture extends QueryFixtureBase {
         assertThat(result.toList()).containsExactly(1, 2, 3, 4);
         assertThat(result.size()).isEqualTo(4);
     }
+
+    @Theory
+    public void when_calling_union_with_empty_set_should_have_effect_of_making_source_distinct(
+            Queryable<Integer> nums
+    ){
+        //setup
+        nums = doAdd(nums, 1, 2, 2, 3);
+
+        //act
+        Queryable<Integer> result = nums.union();
+
+        //assert
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result.toList()).containsExactly(1, 2, 3);
+    }
+
 }

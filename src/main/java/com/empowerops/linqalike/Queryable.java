@@ -4,9 +4,12 @@ import com.empowerops.linqalike.common.*;
 import com.empowerops.linqalike.delegate.*;
 
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 
 /**
  * SQL like interface for collections, akin to the Streams API.
@@ -17,38 +20,38 @@ import java.util.Set;
  * <!-- usage example -->
  * <p>For example, lets say you had a flat list of customers and you wished to:
  * <ul>
- * <li>get only the last names</li>
- * <li>collect only information about seniors (customers with an age &gt; 65)</li>
- * <li>grouped by their age</li>
- * <li>ordered by the average purchase amount of that customer group</li>
- * <li>and convert to a grid (a string[][]) for some legacy API</li>
+ *      <li>get only the last names</li>
+ *      <li>collect only information about seniors (customers with an age &gt; 65)</li>
+ *      <li>grouped by their age</li>
+ *      <li>ordered by the average purchase amount of that customer group</li>
+ *      <li>and convert to a grid (a string[][]) for some legacy API</li>
  * </ul>
  * with Linq-A-Like, you would do that with:
  * <pre>{@code
- * String[][] groupedNames = Factories.from(allCustomers)
- * .where(customer -> customer.getAge() >= 65)
- * .groupBy(Customer::getAge)
- * .orderBy(group -> group.average(Customer::getPurchaseAmount))
- * .select(group -> group.select(Customer::getLastName))
- * .select(group -> group.toArray(String[]::new))
- * .toArray(String[][]::new);
+ *   String[][] groupedNames = Factories.from(allCustomers)
+ *       .where(customer -> customer.getAge() >= 65)
+ *       .groupBy(Customer::getAge)
+ *       .orderBy(group -> group.average(Customer::getPurchaseAmount))
+ *       .select(group -> group.select(Customer::getLastName))
+ *       .select(group -> group.toArray(String[]::new))
+ *       .toArray(String[][]::new);
  * }</pre>
  * <p>
  * <p>This interface is implemented:
  * <ul>
- * <li>as an interface with default implementations (akin to an abstract base-class)
- * by {@link DefaultedQueryable}</li>
- * <li>as a list by {@link com.empowerops.linqalike.LinqingList}</li>
- * <li>as a set by {@link com.empowerops.linqalike.LinqingSet}</li>
- * <li>as widened static methods by {@link Linq}</li>
- * <li>and extended to the map portion of the collections framework
- * by {@link com.empowerops.linqalike.QueryableMap}</li>
+ *      <li>as an interface with default implementations (akin to an abstract base-class)
+ *      by {@link DefaultedQueryable}</li>
+ *      <li>as a list by {@link com.empowerops.linqalike.LinqingList}</li>
+ *      <li>as a set by {@link com.empowerops.linqalike.LinqingSet}</li>
+ *      <li>as widened static methods by {@link Linq}</li>
+ *      <li>and extended to the map portion of the collections framework
+ *      by {@link com.empowerops.linqalike.QueryableMap}</li>
  * </ul>
  * <p>
  * <p>Most of this libraries documentation is here, but (very readable) unit tests can typically be found in either
  * <ul>
- * <li>test/com/empowerops/linqalike/queries/[methodName]Fixture, if the return type is Queryable or</li>
- * <li>test/com/empowerops/linqalike/immediates/[methodName]Fixture, if the return type is primiative</li>
+ *      <li>test/com/empowerops/linqalike/queries/[methodName]Fixture, if the return type is Queryable or</li>
+ *      <li>test/com/empowerops/linqalike/immediates/[methodName]Fixture, if the return type is primiative</li>
  * </ul>
  * <p>
  * <!-- on Sets and Bags -->
@@ -57,11 +60,7 @@ import java.util.Set;
  * in set operations, queryables with the elements{A, A, B, C, B, D} are treated as the set {A, B, C, D}
  * (note the second A and second B are not included) for set operations. Any particular queryable can be asked
  * whether or not it contains duplicates (read: if it is a bag or a set) with the method {@link #isDistinct()}.
- * <p>
- * <p>It is worth noting that since <code>Queryable</code> is the base interface for all members of Linq-A-Like,
- * the {@link #first()}, {@link #first(int)}, {@link #last()}, and {@link #last(int)} methods resemble the
- * {@link java.util.NavigableSet} interface. Thus <i>all</i> implementations in Linq-A-Like are navigable.</p>
- * <p>
+ *
  * <!-- on equality -->
  * <p>the {@link DefaultedQueryable} interface does not override equals, meaning <i>most</i> queryables will use
  * {@link Object#equals(Object)} (reference equality). This excludes the backing mutable implementations (eg
@@ -71,7 +70,7 @@ import java.util.Set;
  * {@link #sequenceEquals(Iterable)}. It also provides a number of ways to test for specific cases of set and
  * sequence inequality with {@link #isSubsetOf(Iterable)}, {@link #isSupersetOf(Iterable)} (Iterable)},
  * {@link #isSubsequenceOf(Iterable)}, and {@link #isSupersequenceOf(Iterable)}.
- * <p>
+ *
  * <!-- on C# compatibility -->
  * <p>This interface is the documented portion of the Linq-A-Like implementation of C#'s Linq. In as many ways as
  * was convenient I followed
@@ -85,15 +84,148 @@ import java.util.Set;
  */
 public interface Queryable<TElement> extends Iterable<TElement> {
 
-    TElement aggregate(Func2<? super TElement, ? super TElement, ? extends TElement> aggregator);
+    /**
+     * Aggregates this queryable together with the specified aggregator function and seed value.
+     *
+     * <p><code>aggregate</code> will create an accumulator containing the value of the
+     * first member of this queryable, and apply the function against the accumulator and
+     * every subsequent member in this queryable, and yield the result.
+     *
+     * <p>eg:
+     * <pre>{@code
+     *   Queryable<String> names = Factories.from("Bob", "Jim", "Sam");
+     *   String result = names.aggregate((accumulator, next) -> {
+     *     System.out.println("accumuator:" + accumulator + ", next:" + next);
+     *     return accumulator + "-" + next;
+     *   });
+     *   System.out.println("result is " + result);
+     * }</pre>
+     * would output:
+     * <pre>{@code
+     *   accumulator:Bob, next:Jim
+     *   accumulator:Bob-Jim, next:Sam
+     *   result is Bob-Jim-Sam
+     * }</pre>
+     *
+     * <p>This means <code>aggregate</code> the effect of returning:
+     * <ul>
+     *     <li>{@link Optional#empty()} if this queryable is empty</li>
+     *     <li>{@link #single()} if this queryable contains one element</li>
+     *     <li><code>aggregator.doUsing(first(), second())</code> if this queryable contains two elements</li>
+     *     <li><code>aggregator.doUsing(aggregator.doUsing(first(), skip(1).first()), skip(2).first() )</code>
+     *     if this queryable contains three elements</li>
+     *     <li><code>aggregator.doUsing(aggregator.doUsing(aggregator.doUsing((first(), skip(1).first()), skip(2).first()), skip(3).first())</code>
+     *     if this queryable contains four elements</li>
+     *     <li>and so on for many elements</li>
+     * </ul>
+     *
+     * <p>more details about <code>aggregate</code> can be found in the docs
+     * for the more general form, {@link #aggregate(Object, Func2)}.
+     *
+     * @param aggregator an aggregating function to apply against every element in this queryable,
+     *                   if this queryable contains 2 or more elements.
+     * @return the result of the aggregator function applied to each element if this queryable has many elements,
+     *         <code>empty</code> if this queryable is empty, and <code>single()</code> if this queryable has one element.
+     */
+    Optional<TElement> aggregate(Func2<? super TElement, ? super TElement, ? extends TElement> aggregator);
 
-
+    /**
+     * Aggregates this queryable together with the specified aggregator function and seed value.
+     *
+     * <p><code>aggregate</code> will create an accumulator with the seed value provided,
+     * and apply the function against the accumulator and the next element
+     * in this queryable, for each element in this queryable, and yield the result.
+     *
+     * <p>eg:
+     * <pre>{@code
+     *   Queryable<String> names = Factories.from("Bob", "Jim", "Sam");
+     *   String result = names.aggregate("seed", (accumulator, next) -> {
+     *     System.out.println("accumuator:" + accumulator + ", next:" + next);
+     *     return accumulator + "-" + next;
+     *   });
+     *   System.out.println("result is " + result);
+     * }</pre>
+     * would output:
+     * <pre>{@code
+     *   accumulator:seed, next:Bob
+     *   accumulator:seed-Bob, next:Jim
+     *   accumulator:seed-Bob-Jim, next:Sam
+     *   result is seed-Bob-Jim-Sam
+     * }</pre>
+     *
+     * <p>This means <code>aggregate</code> the effect of returning:
+     * <ul>
+     *     <li><code>seed</code> if this queryable is empty</li>
+     *     <li><code>aggregator.doUsing(seed, first())</code> if this queryable contains one element</li>
+     *     <li><code>aggregator.doUsing(aggregator.doUsing(seed, first()), second())</code>
+     *     if this queryable contains two elements</li>
+     *     <li><code>aggregator.doUsing(aggregator.doUsing(aggregator.doUsing(seed, first()), skip(1).first()), skip(2).first())</code>
+     *     if this queryable contains three elements</li>
+     *     <li><code>aggregator.doUsing(aggregator.doUsing(aggregator.doUsing(aggregator.doUsing(seed, first()), skip(1).first()), skip(2).first()), skip(3).first())</code>
+     *     if this queryable contains four elements</li>
+     *     <li>and so on for many elements</li>
+     * </ul>
+     *
+     * <p>This method allows for the transformation of the entire queryable
+     * (rather than individual elements as provided by {@link #select(Func1)})
+     * into any other type. Some example implementations of aggregation is
+     * {@link #count()}, {@link #average(Func1)}, and {@link #withMin(Func1)}.
+     *
+     * <p>For example, a sum function on a list can be implemented as
+     * <pre>{@code
+     * int size = list.aggregate(0, (accumulator, next) -> accumulator + 1);
+     * System.out.println("result is " + result);
+     * }</pre>
+     *
+     * <p>if the accumulator is the same type as an element (for example,
+     * if doing some kind of aggregation of a list of decimal numbers
+     * that itself produces a decimal number, like {@link #average(Func1)} )
+     * the {@link #aggregate(Func2)} may be preferable as it does not require
+     * a seed.
+     *
+     * <p>Semantically <code>aggregate</code> is identical to
+     * {@link java.util.stream.Stream#reduce(BinaryOperator)},
+     * and is commonly known as <code>fold</code> in the functional community.
+     *
+     * <p>this method is preferable to {@link #forEach(Consumer)} in the case where
+     * the transform can produce a scalar and combinable result (such as a string
+     * or double) or is a parsing function that returns some kind of state in a
+     * state machine. In these cases, using <code>aggregate</code>, you do not
+     * typically need to affect some result as part of a closure or mutable value
+     * declared outside the for loop block.
+     *
+     * <p>If we wanted to make a copy of a list</p>
+     * <pre>{@code
+     *  //using Java-7
+     *  List<Customer> sameCustomers = new ArrayList<>(); //mutable variable out-side block
+     *  for(Customer customer : customers){
+     *    sameCustomers.add(customer);
+     *  }
+     *
+     *  //using forEach method, Java-8
+     *  List<Customer> sameCustomers = new ArrayList<>();
+     *  customers.forEach(sameCustomers::add);
+     *
+     *  //using aggregate & IList, Java-8
+     *  IList<Customer> sameCustomers = customers.aggregate(IList.empty(), IList::with);
+     * }</pre>
+     *
+     * <p>This isn't itself very helpful (especially in light of the
+     * {@link IList#with(Iterable)} and {@link java.util.List#addAll(Collection)} methods),
+     * but for a parsing function and other combination functions, <code>aggregate</code>
+     * encourages developers to compopse their code with pure methods
+     * (methods without side-effects), which is typically worth aiming for.
+     *
+     * @param aggregator the aggregator function to be applied against each element
+     * @return the result of aggregating all elements in this queryable together,
+     *         or <code>empty</code> if this queryable is empty
+     */
     <TAccumulate> TAccumulate aggregate(TAccumulate seed,
                                         Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator);
 
     /**
      * Determines if all elements in the set pass the given condition.
-     * <p>
+     *
      * <p>note that if this is called on an empty collection it will return true.
      * In other words, all members of the empty set pass a given condition.</p>
      *
@@ -520,7 +652,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * applying <code>valueSelector</code>
      */
     <TCompared extends Comparable<TCompared>>
-    TElement withMax(Func1<? super TElement, TCompared> valueSelector);
+    Optional<TElement> withMax(Func1<? super TElement, TCompared> valueSelector);
 
     /**
      * Gets the minimum of the value provided by the <code>valueSelector</code> against each of the elements in
@@ -552,7 +684,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * applying <code>valueSelector</code>
      */
     <TCompared extends Comparable<TCompared>>
-    TElement withMin(Func1<? super TElement, TCompared> valueSelector);
+    Optional<TElement> withMin(Func1<? super TElement, TCompared> valueSelector);
 
 
     /**
@@ -1078,6 +1210,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @param toInclude the elements to be included in the resulting union
      * @return the union of this queryable with the specified elements
      */
+    @SuppressWarnings("unchecked")
     Queryable<TElement> union(TElement... toInclude);
 
     /**

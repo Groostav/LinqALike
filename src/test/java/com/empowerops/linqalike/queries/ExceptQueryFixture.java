@@ -3,7 +3,7 @@ package com.empowerops.linqalike.queries;
 import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.assists.CountingEqualityComparator;
 import com.empowerops.linqalike.assists.CountingTransform;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 @RunWith(Theories.class)
-public class ExceptQueryFixture extends QueryFixtureBase {
+public class ExceptQueryFixture extends FixtureBase {
 
     @Theory
     public void when_excluding_elements_using_the_default_equality_comparer(

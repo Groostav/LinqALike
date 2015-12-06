@@ -3,7 +3,7 @@ package com.empowerops.linqalike.queries;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(Theories.class)
-public class CountSkipQueryFixture extends QueryFixtureBase {
+public class CountSkipQueryFixture extends FixtureBase {
 
     // Because of the nature of SkipQuery and SkipQuery.ForList,
     // I cant use the Type-under-test stuff here.

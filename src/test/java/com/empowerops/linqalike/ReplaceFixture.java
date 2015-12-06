@@ -1,6 +1,6 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2015-10-27.
  */
 @RunWith(Theories.class)
-public class ReplaceFixture extends QueryFixtureBase{
+public class ReplaceFixture extends FixtureBase {
 
     @Theory
     public void when_replacing_first_element_should_correctly_be_replaced (

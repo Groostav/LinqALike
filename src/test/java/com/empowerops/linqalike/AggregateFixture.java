@@ -1,42 +1,55 @@
 package com.empowerops.linqalike;
 
-import org.junit.Test;
+import com.empowerops.linqalike.assists.FixtureBase;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 
-import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
 * Created by Geoff on 2014-10-13.
 */
-public class AggregateFixture {
+@RunWith(Theories.class)
+public class AggregateFixture extends FixtureBase {
 
-
-    @Test
-    public void when_concatinating_a_nonempty_list_of_names_the_result_should_be_a_string_join(){
+    @Theory
+    public void when_concatinating_a_nonempty_list_of_names_the_result_should_be_a_string_join(
+            Queryable<String> names
+    ){
         //setup
-        LinqingList<String> names = new LinqingList<String>("Jimmy", "Ken", "Bob", "Alice");
+        names = doAdd(names, "Jimmy", "Ken", "Bob", "Alice");
 
         //act
-        String result = names.aggregate((left, right) -> left + " " + right);
+        String result = names.aggregate((left, right) -> left + " " + right).get();
 
         //assert
         assertThat(result).isEqualTo("Jimmy Ken Bob Alice");
     }
 
 
-    @Test
-    public void when_aggregating_an_empty_set_without_seed_should_throw(){
+    @Theory
+    public void when_aggregating_an_empty_set_without_seed_should_give_optional_empty(
+            Queryable<Integer> emptySet
+    ){
         //setup
-        LinqingList<Integer> emptySet = new LinqingList<Integer>();
+        emptySet = doClear(emptySet);
 
-        //act & assert
-        assertThrows(IllegalArgumentException.class, () -> emptySet.aggregate((left, right) -> {throw new IllegalStateException();}));
+        //act
+        Optional<Integer> result = emptySet.aggregate((left, right) -> {throw new IllegalStateException();});
+
+        //assert
+        assertThat(result).isEmpty();
     }
 
-    @Test
-    public void when_performing_product_with_aggregate_and_seed(){
-        //seutup
-        LinqingList<Integer> primes = new LinqingList<>(5, 7, 11, 13, 17);
+    @Theory
+    public void when_performing_product_with_aggregate_and_seed(
+            Queryable<Integer> primes
+    ){
+        //setup
+        primes = doAdd(primes, 5, 7, 11, 13, 17);
 
         //act
         double result = primes.aggregate(1.0, (Double left, Integer right) -> left * right);
@@ -45,22 +58,26 @@ public class AggregateFixture {
         assertThat(result).isEqualTo(5 * 7 * 11 * 13 * 17);
     }
 
-    @Test
-    public void when_aggregating_on_dispirate_type(){
+    @Theory
+    public void when_aggregating_on_dispirate_type(
+            Queryable<String> zombieHunters
+    ){
         //setup
-        LinqingList<String> zombieHunters = new LinqingList<>("Bill", "Francis", "Louis", "Zoey");
+        zombieHunters = doAdd(zombieHunters, "Bill", "Francis", "Louis", "Zoey");
 
         //act & spoilers
-        double livingMembers = zombieHunters.aggregate(0, (Integer aliveCount, String member) -> aliveCount += member.equals("Bill") ? 0 : 1);
+        double livingMembers = zombieHunters.aggregate(0, (aliveCount, member) -> aliveCount += member.equals("Bill") ? 0 : 1);
 
         //assert
         assertThat(livingMembers).isEqualTo(3);
     }
 
-    @Test
-    public void when_aggregating_an_empty_set_with_seed_should_return_seed(){
+    @Theory
+    public void when_aggregating_an_empty_set_with_seed_should_return_seed(
+            Queryable<Double> emptySet
+    ){
         //setup
-        LinqingList<Double> emptySet = new LinqingList<>();
+        emptySet = doClear(emptySet);
 
         //act
         double result = emptySet.aggregate(42.0, (Double left, Double right) -> {throw new IllegalStateException();});

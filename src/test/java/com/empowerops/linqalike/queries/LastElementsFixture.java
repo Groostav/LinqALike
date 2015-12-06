@@ -1,6 +1,6 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-08-11.
  */
 @RunWith(Theories.class)
-public class LastElementsFixture extends QueryFixtureBase {
+public class LastElementsFixture extends FixtureBase {
 
     @Override
     protected Class<? extends Queryable> getTypeUnderTest() { return LastElementsQuery.class; }

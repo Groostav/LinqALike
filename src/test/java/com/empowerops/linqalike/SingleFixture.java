@@ -2,12 +2,9 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingCondition;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.common.SetIsEmptyException;
 import com.empowerops.linqalike.common.SingletonSetContainsMultipleElementsException;
-import com.empowerops.linqalike.common.Tuple;
-import javafx.beans.property.StringProperty;
-import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -20,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-04-16.
  */
 @RunWith(Theories.class)
-public class SingleFixture extends QueryFixtureBase{
+public class SingleFixture extends FixtureBase {
 
     @Theory
     public void when_called_on_a_list_containing_one_element_that_element_should_be_returned(

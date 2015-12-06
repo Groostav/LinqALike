@@ -1,7 +1,6 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-08-04.
  */
 @RunWith(Theories.class)
-public class ToArrayFixture extends QueryFixtureBase{
+public class ToArrayFixture extends FixtureBase {
 
     @Theory
     public void when_calling_to_array_on_a_set_of_objects(

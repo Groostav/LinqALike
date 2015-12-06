@@ -1,12 +1,10 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.ImmutableCollection;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Assume;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -20,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Geoff on 31/10/13
  */
 @RunWith(Theories.class)
-public class IntersectionFixture extends QueryFixtureBase {
+public class IntersectionFixture extends FixtureBase {
 
     @Theory
     public void when_intersecting_a_set_containing_2_members_from_another_set(

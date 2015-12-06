@@ -13,7 +13,7 @@ import org.junit.experimental.theories.DataPoint;
 /**
  * @author Geoff on 13/10/13
  */
-public abstract class QueryFixtureBase {
+public abstract class FixtureBase {
 
     protected static final int NEVER = 0;
     protected static final int ONCE = 1;
@@ -54,7 +54,7 @@ public abstract class QueryFixtureBase {
     }
 
     /**
-     * {@link QueryFixtureBase#doAdd(Queryable, Object[])}
+     * {@link FixtureBase#doAdd(Queryable, Object[])}
      */
     @SuppressWarnings("unchecked")
     protected final <T extends Queryable<E>, E> T doAdd(T source, Iterable<E> elements){
@@ -71,7 +71,7 @@ public abstract class QueryFixtureBase {
         else throw new UnsupportedOperationException();
     }
     /**
-     * {@link QueryFixtureBase#doAdd(Queryable, Object[])}
+     * {@link FixtureBase#doAdd(Queryable, Object[])}
      */
     @SuppressWarnings("unchecked")
     protected final <T extends Queryable<?>> T doClear(T source){

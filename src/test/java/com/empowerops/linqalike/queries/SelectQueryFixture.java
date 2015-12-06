@@ -5,7 +5,7 @@ import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.delegate.Func1;
 import org.junit.Test;
 import org.junit.experimental.theories.Theories;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("Convert2MethodRef") // stick with lambda's for simplicity
 @RunWith(Theories.class)
-public class SelectQueryFixture extends QueryFixtureBase {
+public class SelectQueryFixture extends FixtureBase {
 
     /* Note regarding syntax:
      *

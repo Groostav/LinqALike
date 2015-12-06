@@ -21,8 +21,8 @@ public class Linq {
 
     private Linq(){}
 
-    public static <TElement> TElement aggregate(Iterable<TElement> sourceElements,
-                                                Func2<? super TElement, ? super TElement, ? extends TElement> aggregator) {
+    public static <TElement> Optional<TElement> aggregate(Iterable<TElement> sourceElements,
+                                                          Func2<? super TElement, ? super TElement, ? extends TElement> aggregator) {
         return ImmediateInspections.aggregate(sourceElements, aggregator);
     }
     public static <TAccumulate, TElement> TAccumulate aggregate(Iterable<TElement> sourceElements,
@@ -211,7 +211,7 @@ public class Linq {
     }
     public static <TTransformed, TElement>
     Queryable<TTransformed> selectMany(Iterable<TElement> set,
-                                         Func1.Array<? super TElement, TTransformed> selector) {
+                                       Func1.Array<? super TElement, TTransformed> selector) {
         return new SelectManyQuery<>(set, x -> from(selector.getFrom(x)));
     }
 
@@ -496,7 +496,7 @@ public class Linq {
 
     public static <TElement, TCompared extends Comparable<TCompared>>
     Optional<TCompared> min(Iterable<TElement> sourceElements,
-                  Func1<? super TElement, TCompared> valueSelector) {
+                            Func1<? super TElement, TCompared> valueSelector) {
         return ImmediateInspections.min(sourceElements, valueSelector);
     }
     public static <TElement, TCompared extends Comparable<TCompared>>
@@ -505,13 +505,13 @@ public class Linq {
         return ImmediateInspections.max(sourceElements, valueSelector);
     }
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TElement withMin(Queryable<TElement> sourceElements,
-                     Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TElement> withMin(Queryable<TElement> sourceElements,
+                               Func1<? super TElement, TCompared> valueSelector) {
         return ImmediateInspections.withMin(sourceElements, valueSelector);
     }
     public static <TElement, TCompared extends Comparable<TCompared>>
-    TElement withMax(Queryable<TElement> sourceElements,
-                     Func1<? super TElement, TCompared> valueSelector) {
+    Optional<TElement> withMax(Queryable<TElement> sourceElements,
+                               Func1<? super TElement, TCompared> valueSelector) {
         return ImmediateInspections.withMax(sourceElements, valueSelector);
     }
 

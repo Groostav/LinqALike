@@ -1,6 +1,6 @@
 package com.empowerops.linqalike.queries;
 import com.empowerops.linqalike.*;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 
 import java.util.*;
 import org.junit.experimental.theories.Theory;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-05-19.
  */
 @RunWith(Theories.class)
-public class SelectManyQueryFixture extends QueryFixtureBase {
+public class SelectManyQueryFixture extends FixtureBase {
 
     private class NumberGroup{
 

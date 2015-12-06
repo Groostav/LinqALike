@@ -189,7 +189,7 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
     }
 
     default <TCompared extends Comparable<TCompared>>
-    Tuple<TLeft, TRight> withMax(Func2<? super TLeft, ? super TRight, TCompared> valueSelector){
+    Optional<Tuple<TLeft, TRight>> withMax(Func2<? super TLeft, ? super TRight, TCompared> valueSelector){
         return Linq.withMax(this.asTuples(), valueSelector.asFuncOnTuple());
     }
 
@@ -199,7 +199,7 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
     }
 
     default <TCompared extends Comparable<TCompared>>
-    Tuple<TLeft, TRight> withMin(Func2<? super TLeft, ? super TRight, TCompared> valueSelector){
+    Optional<Tuple<TLeft, TRight>> withMin(Func2<? super TLeft, ? super TRight, TCompared> valueSelector){
         return Linq.withMin(this.asTuples(), valueSelector.asFuncOnTuple());
     }
 

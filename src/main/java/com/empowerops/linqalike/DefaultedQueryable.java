@@ -1,11 +1,9 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.EqualityComparer;
-import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -23,7 +21,7 @@ import static com.empowerops.linqalike.Factories.from;
 public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
 
     /** {@inheritDoc} */ @Override default public
-    TElement aggregate(Func2<? super TElement, ? super TElement, ? extends TElement> aggregator){
+    Optional<TElement> aggregate(Func2<? super TElement, ? super TElement, ? extends TElement> aggregator){
         return Linq.aggregate(this, aggregator);
     }
 
@@ -235,7 +233,7 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.max(this, valueSelector);
     }
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
-    TElement withMax(Func1<? super TElement, TCompared> valueSelector){
+    Optional<TElement> withMax(Func1<? super TElement, TCompared> valueSelector){
         return Linq.withMax(this, valueSelector);
     }
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
@@ -243,7 +241,7 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.min(this, valueSelector);
     }
     /** {@inheritDoc} */ @Override default public <TCompared extends Comparable<TCompared>>
-    TElement withMin(Func1<? super TElement, TCompared> valueSelector){
+    Optional<TElement> withMin(Func1<? super TElement, TCompared> valueSelector){
         return Linq.withMin(this, valueSelector);
     }
 
@@ -464,7 +462,9 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.union(this, toInclude0, toInclude1, toInclude2, toInclude3, toInclude4);
     }
 
-    /** {@inheritDoc} */ @Override default public
+    /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
+    @Override default public
 	Queryable<TElement> union(TElement... toInclude){
         return Linq.union(this, toInclude);
     }

@@ -1,16 +1,13 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import javax.management.Query;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 30/04/2014.
  */
 @RunWith(Theories.class)
-public class ReversedQueryFixture extends QueryFixtureBase{
+public class ReversedQueryFixture extends FixtureBase {
 
     @Theory
     public void when_reversing_a_set_of_numbers(

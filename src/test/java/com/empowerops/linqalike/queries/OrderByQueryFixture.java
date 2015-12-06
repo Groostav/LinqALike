@@ -4,14 +4,11 @@ import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
-import org.junit.Test;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import javax.management.Query;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 
 import static com.empowerops.linqalike.assists.CountingTransform.track;
@@ -22,7 +19,7 @@ import static org.junit.Assume.assumeTrue;
  * Created by Geoff on 09/04/14.
  */
 @RunWith(Theories.class)
-public class OrderByQueryFixture extends QueryFixtureBase {
+public class OrderByQueryFixture extends FixtureBase {
 
     @Theory
     public void when_ordering_an_unordered_set_of_integers_by_their_value(

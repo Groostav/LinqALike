@@ -1,19 +1,15 @@
 package com.empowerops.linqalike.queries;
 import com.empowerops.linqalike.BiQueryable;
-import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.assists.CountingFactory;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.common.Tuple;
-import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 
 import java.util.List;
 import org.junit.runner.RunWith;
-
-import javax.management.Query;
 
 import static com.empowerops.linqalike.Factories.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Justin on 7/21/2014.
  */
 @RunWith(Theories.class)
-public class PairwiseFixture extends QueryFixtureBase{
+public class PairwiseFixture extends FixtureBase {
 
     @Theory
     public void when_calling_pairwise_on_some_sensible_data(

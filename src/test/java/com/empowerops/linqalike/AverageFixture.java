@@ -1,7 +1,7 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingTransform;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-05-09.
  */
 @RunWith(Theories.class)
-public class AverageFixture extends QueryFixtureBase {
+public class AverageFixture extends FixtureBase {
 
     @Theory
     public void when_averaging_a_set_of_doubles_the_result_should_be_the_average(

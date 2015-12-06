@@ -1,7 +1,7 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingCondition;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by Geoff on 2014-05-09.
  */
 @RunWith(Theories.class)
-public class AnyFixture extends QueryFixtureBase {
+public class AnyFixture extends FixtureBase {
 
     @Theory
     public void when_calling_any_on_set_with_one_element_passing(

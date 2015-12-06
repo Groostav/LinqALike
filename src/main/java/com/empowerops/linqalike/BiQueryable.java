@@ -1,6 +1,5 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.BiCondition;
 import com.empowerops.linqalike.delegate.Func1;
@@ -100,13 +99,13 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
     Optional<TCompared> max(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
 
     <TCompared extends Comparable<TCompared>>
-    Tuple<TLeft, TRight> withMax(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
+    Optional<Tuple<TLeft, TRight>> withMax(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
 
     <TCompared extends Comparable<TCompared>>
     Optional<TCompared> min(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
 
     <TCompared extends Comparable<TCompared>>
-    Tuple<TLeft, TRight> withMin(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
+    Optional<Tuple<TLeft, TRight>> withMin(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
 
     <TSubclassLeft extends TLeft>
     BiQueryable<TSubclassLeft, TRight> ofLeftType(Class<TSubclassLeft> desiredLeftClass);

@@ -4,7 +4,7 @@ import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -20,7 +20,7 @@ import static org.junit.Assume.assumeTrue;
  * Created by Geoff on 14/04/2014.
  */
 @RunWith(Theories.class)
-public class GroupByFixture extends QueryFixtureBase {
+public class GroupByFixture extends FixtureBase {
 
     @Theory
     public void when_grouping_a_set_containing_groups_should_group_correctly(

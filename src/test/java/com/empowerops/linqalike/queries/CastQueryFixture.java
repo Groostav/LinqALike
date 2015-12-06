@@ -2,7 +2,7 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.assists.QueryFixtureBase;
+import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.delegate.Action;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 //method references not used because lambda's are clearer in the case of throw-away return values
 //unused declarations because its only in assignment that we have an exception, => its clearer to have unused vars.
 @RunWith(Theories.class)
-public class CastQueryFixture extends QueryFixtureBase{
+public class CastQueryFixture extends FixtureBase {
 
     @Override
     protected Class<? extends Queryable> getTypeUnderTest() { return CastQuery.class; }
