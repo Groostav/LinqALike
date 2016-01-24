@@ -4,10 +4,12 @@ import com.empowerops.linqalike.BiQueryable;
 import com.empowerops.linqalike.DefaultedBiQueryable;
 import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.DefaultedQueryableMap;
+import com.empowerops.linqalike.Factories;
 import com.empowerops.linqalike.Linq;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.delegate.Condition;
 import com.empowerops.linqalike.delegate.Func1;
+import com.empowerops.linqalike.queries.FastSize;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,7 +20,7 @@ public final class QueryAdapter{
 
     private QueryAdapter(){};
 
-    public static class FromArray<TElement> implements DefaultedQueryable<TElement> {
+    public static class FromArray<TElement> implements DefaultedQueryable<TElement>, FastSize {
         private final TElement[] elements;
 
         public FromArray(TElement[] elements){
@@ -35,7 +37,7 @@ public final class QueryAdapter{
         }
     }
 
-    public static class FromCollection<TElement> implements DefaultedQueryable<TElement> {
+    public static class FromCollection<TElement> implements DefaultedQueryable<TElement>, FastSize {
         private final Collection<TElement> sourceElements;
 
         public FromCollection(Collection<TElement> sourceElements) {
@@ -99,7 +101,7 @@ public final class QueryAdapter{
         }
     }
 
-    public static class FromDoubleArray implements DefaultedQueryable<Double> {
+    public static class FromDoubleArray implements DefaultedQueryable<Double>, FastSize {
 
         private final double[] sourceElements;
 
@@ -121,7 +123,7 @@ public final class QueryAdapter{
     }
 
 
-    public static class FromLongIntegers implements DefaultedQueryable<Long> {
+    public static class FromLongIntegers implements DefaultedQueryable<Long>, FastSize {
 
         private final long[] sourceElements;
 
@@ -142,7 +144,7 @@ public final class QueryAdapter{
         @Override public int size() { return sourceElements.length; }
     }
 
-    public static class FromIntegerArray implements DefaultedQueryable<Integer> {
+    public static class FromIntegerArray implements DefaultedQueryable<Integer>, FastSize {
 
         private final int[] sourceElements;
 
@@ -163,7 +165,7 @@ public final class QueryAdapter{
         @Override public int size() { return sourceElements.length; }
     }
 
-    public static class FromByteArray implements DefaultedQueryable<Byte>{
+    public static class FromByteArray implements DefaultedQueryable<Byte>, FastSize{
 
         private final byte[] sourceElements;
 
@@ -184,7 +186,7 @@ public final class QueryAdapter{
         @Override public int size() { return sourceElements.length; }
     }
 
-    public static class FromCharacterSequence implements DefaultedQueryable<Character> {
+    public static class FromCharacterSequence implements DefaultedQueryable<Character>, FastSize {
         private final CharSequence sourceCharacter;
 
         public FromCharacterSequence(CharSequence sourceCharacter) {this.sourceCharacter = sourceCharacter;}
@@ -209,15 +211,15 @@ public final class QueryAdapter{
         @Override public int size() { return sourceCharacter.length(); }
     }
 
-    public static class FromImplicitIterator<TElement> implements DefaultedQueryable<TElement> {
+    public static class DistibutingQuery<TElement> implements DefaultedQueryable<TElement> {
 
         private final TElement                          seed;
         private final Func1<? super TElement, TElement> nextGetter;
         private final Condition<? super TElement>       hasNextGetter;
 
-        public FromImplicitIterator(TElement seed,
-                                    Func1<? super TElement, TElement> nextGetter,
-                                    Condition<? super TElement> hasNextGetter) {
+        public DistibutingQuery(TElement seed,
+                                Func1<? super TElement, TElement> nextGetter,
+                                Condition<? super TElement> hasNextGetter) {
             this.seed = seed;
             this.nextGetter = nextGetter;
             this.hasNextGetter = hasNextGetter;
@@ -229,30 +231,26 @@ public final class QueryAdapter{
         }
 
         private class ImplicitIterator implements Iterator<TElement> {
-            TElement current = seed;
-            private boolean hasYieldedSeed;
+
+            private TElement next = seed;
 
             @Override
             public boolean hasNext() {
-                return hasNextGetter.passesFor(current);
+                return hasNextGetter.passesFor(next);
             }
 
             @Override
             public TElement next() {
-                if ( ! hasNext()) {
-                    throw new NoSuchElementException();
-                }
-                if ( ! hasYieldedSeed) {
-                    hasYieldedSeed = true;
-                    return seed;
-                }
-                current = nextGetter.getFrom(current);
-                return current;
+                if( ! hasNext()){ throw new NoSuchElementException(); }
+
+                TElement result = next;
+                next = nextGetter.getFrom(next);
+                return result;
             }
         }
     }
 
-    public static class FromMap<TKey, TValue> implements DefaultedQueryableMap<TKey, TValue> {
+    public static class FromMap<TKey, TValue> implements DefaultedQueryableMap<TKey, TValue>, FastSize {
 
         private final Map<TKey, TValue> source;
 

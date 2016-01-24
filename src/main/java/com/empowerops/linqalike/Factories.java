@@ -21,10 +21,12 @@ public class Factories {
     public static <TElement> Queryable<TElement> through(TElement seed,
                                                          Func1<? super TElement, TElement> nextGetter,
                                                          Condition<? super TElement> hasNextGetter){
-        return new QueryAdapter.FromImplicitIterator<>(seed, nextGetter, memoized(hasNextGetter));
+
+        return new QueryAdapter.DistibutingQuery<>(seed, nextGetter, hasNextGetter);
     }
-    public static <TElement> Queryable<TElement> through(TElement seed, Func1<? super TElement, TElement> nextGetter){
-        return through(seed, nextGetter, value -> value != null);
+    public static <TElement> Queryable<TElement> through(TElement seed,
+                                                         Func1<? super TElement, TElement> nextGetter){
+        return new QueryAdapter.DistibutingQuery<>(seed, nextGetter::getFrom, CommonDelegates.NotNull);
     }
 
 
