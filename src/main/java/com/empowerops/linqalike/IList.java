@@ -1,14 +1,22 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.common.Immutable;
+import com.empowerops.linqalike.delegate.Action1;
+import com.empowerops.linqalike.delegate.Condition;
+import com.empowerops.linqalike.delegate.Func;
+import com.empowerops.linqalike.delegate.Func1;
 import com.empowerops.linqalike.queries.FastSize;
 import org.pcollections.PVector;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created by Geoff on 2015-12-02.
@@ -118,6 +126,7 @@ public class IList<T> implements ImmutableCollection<T>, List<T>, DefaultedQuery
 
     @Override
     public IList<T> with(T another0, T another1, T another2) {
+        //an immutable list wrapping an immutable list wrapping an immutable list wrapping an array wrapping a bunch of stack elements.
         return new IList<>(backingList.plusAll(Arrays.asList(another0, another1, another2)));
     }
 
@@ -166,5 +175,5 @@ public class IList<T> implements ImmutableCollection<T>, List<T>, DefaultedQuery
     /**{@inheritDoc}*/ @Override @Deprecated public T set(int index, T element) {return backingList.set(index, element);}
     /**{@inheritDoc}*/ @Override @Deprecated public void add(int index, T element) {backingList.add(index, element);}
     /**{@inheritDoc}*/ @Override @Deprecated public T remove(int index) {return backingList.remove(index);}
-
 }
+
