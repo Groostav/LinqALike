@@ -48,8 +48,8 @@ public class GroupByQuery<TElement> implements DefaultedQueryable<Queryable<TEle
 
                 Queryable<TElement> group = sourceElements.where(groupCandidate -> groupMembershipComparator.equals(candidateLeader, groupCandidate));
 
-                if( ! group.containsElement(candidateLeader, ReferenceEquality)){
-                    group = from(candidateLeader).union(group, FalsehoodEquality);
+                if(group.isEmpty()){
+                    throw new Comparator
                 }
 
                 setPrefetchedValue(group);

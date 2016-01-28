@@ -5,6 +5,7 @@ import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.FixtureBase;
+import com.empowerops.linqalike.common.Tuple;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -182,6 +183,21 @@ public class GroupByFixture extends FixtureBase {
 
         //assert
         assertThat(duplicates.toList()).containsExactly("Jeff");
+    }
+
+    @Theory
+    public void when_looking_for_groups_over_things_not_reference_equal_should_behave_as_expected(
+            WritableCollection<String> sourceNums
+    ){
+        //setup
+        Queryable<String> renewingNums = doAdd(sourceNums, "Hello", "groupBy").select(String::new);
+
+        //act
+        Queryable<Queryable<String>> groups = renewingNums.groupBy(identity()).where(group -> group.size() >= 2);
+
+        //assert
+        assertThat(groups.size()).isEqualTo(0);
+        assertThat(groups).isEmpty();
     }
 
     private void assertNameGroupHas(List<Queryable<NamedValue>> groups, int groupIndex, String expectedName, int expectedSize) {
