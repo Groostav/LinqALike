@@ -1,7 +1,7 @@
 <component name="InspectionProjectProfileManager">
-  <profile version="1.0" is_locked="false">
+  <profile version="1.0">
     <option name="myName" value="Project Default" />
-    <option name="myLocal" value="false" />
+    <option name="myLocal" value="true" />
     <inspection_tool class="BooleanParameter" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="CastToConcreteClass" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="ClassReferencesSubclass" enabled="false" level="INFO" enabled_by_default="false" />
@@ -54,7 +54,6 @@
     </inspection_tool>
     <inspection_tool class="StaticMethodOnlyUsedInOneClass" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="StaticVariableOfConcreteClass" enabled="false" level="INFO" enabled_by_default="false" />
-    <inspection_tool class="ThrowableResultOfMethodCallIgnored" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="TypeMayBeWeakened" enabled="true" level="INFO" enabled_by_default="true">
       <option name="useRighthandTypeAsWeakestTypeInAssignments" value="true" />
       <option name="useParameterizedTypeForCollectionMethods" value="true" />

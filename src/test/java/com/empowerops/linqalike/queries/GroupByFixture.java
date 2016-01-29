@@ -5,7 +5,6 @@ import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.FixtureBase;
-import com.empowerops.linqalike.common.Tuple;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -14,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.empowerops.linqalike.CommonDelegates.identity;
+import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
 
@@ -91,7 +91,7 @@ public class GroupByFixture extends FixtureBase {
                 new NumberValue(859), new NumberValue(863), duplicate);
 
         //act
-        List<Queryable<NumberValue>> groups = values.groupBy(x -> x.number).toList();
+        LinqingList<Queryable<NumberValue>> groups = values.groupBy(x -> x.number).toList();
 
         //assert
         assertThat(groups).hasSize(5);
@@ -100,9 +100,12 @@ public class GroupByFixture extends FixtureBase {
         assertNumbedGroupHas(groups, 2, 857, 1);
         assertNumbedGroupHas(groups, 3, 859, 1);
         assertNumbedGroupHas(groups, 4, 863, 1);
+
+        assertThat(groups.second()).containsExactly(duplicate, duplicate);
     }
 
     @Theory
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     public void when_grouping_a_bag_containing_ref_equals_entries_that_are_in_different_groups(
             QueryableList<NumberValue> values
     ){
@@ -114,9 +117,10 @@ public class GroupByFixture extends FixtureBase {
 
         //act
         Queryable<Queryable<NumberValue>> groups = values.groupBy((x, y) -> false);
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, groups::toList);
 
         //assert
-        assertThat(groups).hasSize(6);
+        assertThat(ex.getMessage()).isEqualTo("Comparison method violates its general contract!");
     }
 
     @Theory

@@ -7,14 +7,12 @@ import java.io.InputStream;
 import java.util.Comparator;
 import java.util.Optional;
 
-import static com.empowerops.linqalike.Factories.from;
-
 /**
  * An <i>implementation</i> (by way of default extension methods) to the {@link com.empowerops.linqalike.Queryable} interface.
  * For a concise list of what methods this interface offers and documentation on each of the methods,
  * please inspect that interface.
  *
- * <p>All calls are forwarded to their corresponding lifted and widened methods in {@link com.empowerops.linqalike.Linq}.</p>
+ * <p>All calls are forwarded to their corresponding lifted and widened methods in {@link com.empowerops.linqalike.Linq}.
  *
  * @author Geoff on 06/09/13
  */

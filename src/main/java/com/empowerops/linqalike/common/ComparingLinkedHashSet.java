@@ -16,7 +16,7 @@ import static com.empowerops.linqalike.Factories.from;
  * <p>This class will be re-written as soon as I can find the time
  * to take off my software developer hat and put on my computer scientist hat and write my own
  * Hashing Set object. That object will have the same name and ahere to the same interface
- * as this class.</p>
+ * as this class.
  *
  * Created by Geoff on 2014-05-11.
  */

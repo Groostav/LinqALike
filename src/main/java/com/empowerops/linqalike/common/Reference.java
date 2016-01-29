@@ -58,7 +58,7 @@ public class Reference<TReferenced> {
      * constructors since they will always assume equals is being done on the exact type of its composing members.
      * Thanks to type erasure we also cannot determine the type from the objects provided at run time.
      * The only solution I have thought of is to force the caller to supply the equating super-class at
-     * source time.</p>
+     * source time.
      *
      * <p>an example, illustrating the problem and how this solves it:
      * <ul>
@@ -91,7 +91,7 @@ public class Reference<TReferenced> {
      * and the equals call in the former is using a perfectly legitimate argument is if you supply us with the run-time
      * type of the objects accepted by your typed equality comparer. In other words, the only way to avoid casting a
      * String to a Vehicle (so that it can be used as the <tt>right</tt> argument for the lambda equality comparer)
-     * is if you provide this class with enough information so it can avoid that cast at runtime.</p>
+     * is if you provide this class with enough information so it can avoid that cast at runtime.
      *
      * @param initalValue the initial value to set the reference to. Can be null.
      * @param equatedSuperType the type that equality is performed on.

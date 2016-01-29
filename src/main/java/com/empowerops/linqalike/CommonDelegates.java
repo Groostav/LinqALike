@@ -208,7 +208,6 @@ public class CommonDelegates {
                 "default equality on values provided by: " + comparableSelector,
                 EqualityComparer.Untyped.make(
                     (left, right) -> {
-                        //TODO investigate, maybe split Queryable and Collections further?
                         TEquated leftComparable = comparableSelector.getFrom((TArgument)left);
                         TEquated rightComparable = comparableSelector.getFrom((TArgument)right);
 

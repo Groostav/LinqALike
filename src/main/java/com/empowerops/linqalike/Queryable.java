@@ -65,7 +65,7 @@ import java.util.function.Consumer;
  * <p>the {@link DefaultedQueryable} interface does not override equals, meaning <i>most</i> queryables will use
  * {@link Object#equals(Object)} (reference equality). This excludes the backing mutable implementations (eg
  * {@link com.empowerops.linqalike.LinqingSet} and {@link com.empowerops.linqalike.LinqingList}) since they
- * will likely provide whatever equals they inherit from the collections framework.</p> the Queryable interface
+ * will likely provide whatever equals they inherit from the collections framework. the Queryable interface
  * does supply a couple means to explcitly test for equality: {@link #setEquals(Iterable)} and
  * {@link #sequenceEquals(Iterable)}. It also provides a number of ways to test for specific cases of set and
  * sequence inequality with {@link #isSubsetOf(Iterable)}, {@link #isSupersetOf(Iterable)} (Iterable)},
@@ -194,7 +194,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * typically need to affect some result as part of a closure or mutable value
      * declared outside the for loop block.
      *
-     * <p>If we wanted to make a copy of a list</p>
+     * <p>If we wanted to make a copy of a list
      * <pre>{@code
      *  //using Java-7
      *  List<Customer> sameCustomers = new ArrayList<>(); //mutable variable out-side block
@@ -227,7 +227,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * Determines if all elements in the set pass the given condition.
      *
      * <p>note that if this is called on an empty collection it will return true.
-     * In other words, all members of the empty set pass a given condition.</p>
+     * In other words, all members of the empty set pass a given condition.
      *
      * @param condition the condition to test each member in the set with
      * @return <tt>true</tt> iff all members of the set pass the supplied condition, or the set is empty
@@ -237,7 +237,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Determines if the set contains any elements.
      * <p>
-     * <p>functionally identical to <code>! source.isEmpty()</code></p>
+     * <p>functionally identical to <code>! source.isEmpty()</code>
      *
      * @return true iff the set contains any elements
      */
@@ -286,7 +286,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * <p>This method will not pollute the heap but it will cause
      * lazy {@link java.lang.ClassCastException}s where {@link #cast()} would pollute the heap.
      * The method can be used in conjunction with {@link #immediately()} to force any exceptions
-     * to be thrown at the time the queryable is created, rather than having them thrown lazily</p>
+     * to be thrown at the time the queryable is created, rather than having them thrown lazily
      * <p>
      * <p>for example, consider
      * <pre>{@code
@@ -344,11 +344,11 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Returns a Queryable that contains no duplicates.
      * <p>
-     * <p>A duplicate is found by using natural equality comparison.</p>
+     * <p>A duplicate is found by using natural equality comparison.
      * <p>
      * <p>The returned Queryable will contain each element in the source Queryable in the
      * same order as the source Queryable, but with only the first elements of any duplicate
-     * elements in its result.</p>
+     * elements in its result.
      *
      * @return the source set skipping any duplicates
      */
@@ -359,7 +359,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * through the selector.
      * <p>
      * <p>A duplicate is found by using the natural equality on the projection found using
-     * the comparableSelector.</p>
+     * the comparableSelector.
      *
      * @param comparableSelector the projection to use to find comparable values from each element
      * @param <TCompared>        the type returned by the comparableSelector, and the type that is compored
@@ -502,13 +502,16 @@ public interface Queryable<TElement> extends Iterable<TElement> {
 
 
     /**
-     * Returns a set of sets, where each member-set contains members that are equal by comparing
-     * the results of the <code>equatableSelector</code>. If
+     * Returns a set of groups, where each group contains members that are equal by comparing
+     * the results of the <code>equatableSelector</code>.
+     *
+     * <p>If
      * <code>nullSafeEquals(equatableSelector.getFrom(oneElement), equatableSelector.getFrom(anotherElement))</code>
      * is <tt>true</tt>, then
-     * <code>oneElement</code> and <code>anotherElement</code> will be in the same group.
-     * <p>
-     * <p>TODO-????: reference-equal duplicates will not be maintained in the result.
+     * <code>oneElement</code> and <code>anotherElement</code> will be in the same group,
+     * and only that group.
+     *
+     * <p>this method does not do any form of de-duplication
      *
      * @param equatableSelector a transform that will be used to obtain a equatable component of
      *                          each element, used to determine group membership.
@@ -517,18 +520,22 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @return a set of groups (a "jagged grid"), with each member of the group being equal as
      * per the <code>equatableSelector</code>
      */
-
     <TComparable> Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> equatableSelector);
 
     /**
-     * Returns a set of sets, where each member-set contains members that are equal according to
-     * the results of the <code>equalityComparison</code>. If
-     * <code>equatableSelector.equals(oneElement, anotherElement)</code> is <tt>true</tt>, then
-     * <code>oneElement</code> and <code>anotherElement</code> will be in the same group.
+     * Returns a set of groups, where each group contains members that are equal by comparing
+     * the results of the <code>equatableSelector</code>.
      *
-     * @param equalityComparison an equality comparer that will be used to find members of the same group.
+     * <p>If
+     * <code>equalityComparison.equals(oneElement, anotherElement)</code> returns <tt>true</tt>,
+     * <code>oneElement</code> and <code>anotherElement</code> will be in the same group,
+     * and only that group.
+     *
+     * <p>this method does not do any form of de-duplication
+     *
+     * @param equalityComparison a comparator that will be used to determine if two elements are in the same group.
      * @return a set of groups (a "jagged grid"), with each member of the group being equal as
-     * per the <code>equatableSelector</code>
+     * per the <code>equalityComparison</code>
      */
     Queryable<Queryable<TElement>> groupBy(EqualityComparer<? super TElement> equalityComparison);
 
@@ -634,7 +641,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * the value for <code>oldest</code> would be <code>42</code>
      * <p>
      * <p>a more general version of <code>max</code> is {@link #aggregate(Func2)}},
-     * which <code>max</code> delegates to.</p>
+     * which <code>max</code> delegates to.
      * <p>
      * <p>for a method that returns the element with that value rather than simply the value itself,
      * use {@link #withMax(com.empowerops.linqalike.delegate.Func1)}
@@ -669,7 +676,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * the value for <code>youngest</code> would be <code>23</code>
      * <p>
      * <p>a more general version of <code>min</code> is {@link #aggregate(Func2)}},
-     * which <code>min</code> delegates to.</p>
+     * which <code>min</code> delegates to.
      *
      * @param valueSelector a transform that gets a comparable value from each element in this queryable
      * @return the minimum value in this queryable as per the value provided by applying <code>valueSelector</code>
@@ -691,7 +698,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * Gets all the elements in this queryable that are instances of the type specified.
      * <p>
      * <p>null is defined not to be an instance of anything, meaning that using this method
-     * will remove all nulls in the resutling <code>queryable</code></p>
+     * will remove all nulls in the resutling <code>queryable</code>
      * <p>
      * <p>If you wish to cast each element in this queryable to the specified type, and have
      * an exception raised if one element is not of the correct type, consider using
@@ -1388,7 +1395,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * <p>
      * <p>a queryable that is distinct is known as a set, and a queryable that is not distinct is
      * known as a bag. All known queryables that derive from the {@link Set} interface will
-     * return true immediately.</p>
+     * return true immediately.
      *
      * @return <tt>true</tt> if this queryable contains no duplicates
      */
@@ -1399,10 +1406,10 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * supplied <code>equatableSelector</code> against each element in this queryable.
      * <p>
      * <p>Once a single duplicate is found no further evaluations of the <code>equatableSelector</code>
-     * will be made.</p>
+     * will be made.
      * <p>
      * <p>by hashing the result of the <code>equatableSelector</code>, all known implementations
-     * will run in linear time.</p>
+     * will run in linear time.
      *
      * @param equatableSelector the transform that provides an equatable item for each element.
      * @param <TCompared>       the type of the compared item

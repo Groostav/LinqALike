@@ -15,7 +15,7 @@ import static com.empowerops.linqalike.Factories.from;
  * Widened and made-static implementation of {@link Queryable} and {@link QueryableMap}.
  *
  * <p>This interface allows Linq-A-Like users to use older static-method style invocation
- * against older standard collections framework objects (namely {@link java.lang.Iterable})</p>
+ * against older standard collections framework objects (namely {@link java.lang.Iterable})
  */
 public class Linq {
 

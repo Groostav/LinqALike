@@ -2,6 +2,8 @@ package com.empowerops.linqalike.assists;
 
 import com.empowerops.linqalike.delegate.Action;
 
+import javax.annotation.Nonnull;
+
 import static org.junit.Assert.fail;
 
 /**
@@ -14,6 +16,7 @@ import static org.junit.Assert.fail;
 public class Exceptions {
     private Exceptions(){}
 
+    @Nonnull
     public static <TException extends Throwable> TException assertThrows(Class<TException> expectedException, Action runnable){
         assert ! expectedException.equals(AssertionError.class) : "cant assert on assertion errors since thats how we fail a test!";
         try{

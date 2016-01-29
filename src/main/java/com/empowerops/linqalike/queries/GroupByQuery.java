@@ -1,16 +1,14 @@
 package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.DefaultedQueryable;
+import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.common.ComparingLinkedHashSet;
 import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.common.Preconditions;
 import com.empowerops.linqalike.common.PrefetchingIterator;
-import com.empowerops.linqalike.Queryable;
 
 import java.util.Iterator;
 
-import static com.empowerops.linqalike.CommonDelegates.FalsehoodEquality;
-import static com.empowerops.linqalike.CommonDelegates.ReferenceEquality;
 import static com.empowerops.linqalike.Factories.from;
 
 public class GroupByQuery<TElement> implements DefaultedQueryable<Queryable<TElement>> {
@@ -49,7 +47,9 @@ public class GroupByQuery<TElement> implements DefaultedQueryable<Queryable<TEle
                 Queryable<TElement> group = sourceElements.where(groupCandidate -> groupMembershipComparator.equals(candidateLeader, groupCandidate));
 
                 if(group.isEmpty()){
-                    throw new Comparator
+                    //the only way this could be the case is if comparator.compare(leader, leader) returned false
+                    // -> illegal comparator
+                    throw new IllegalArgumentException("Comparison method violates its general contract!");
                 }
 
                 setPrefetchedValue(group);
