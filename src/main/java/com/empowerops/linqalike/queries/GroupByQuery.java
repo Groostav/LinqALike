@@ -49,7 +49,7 @@ public class GroupByQuery<TElement> implements DefaultedQueryable<Queryable<TEle
                 Queryable<TElement> group = sourceElements.where(groupCandidate -> groupMembershipComparator.equals(candidateLeader, groupCandidate));
 
                 if(group.isEmpty()){
-                    throw new Comparator
+                    throw new IllegalArgumentException("Comparator violates its general contract");
                 }
 
                 setPrefetchedValue(group);
