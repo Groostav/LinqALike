@@ -42,4 +42,9 @@ public class LambdaComprehention{
 
         return targetMethod;
     }
+
+    @FunctionalInterface
+    public interface PropertyGetter<THost, TResult> extends Serializable{
+        TResult get(THost liftedHost);
+    }
 }
