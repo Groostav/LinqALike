@@ -40,9 +40,10 @@ public class ExceptQueryFixture extends FixtureBase {
             Queryable<NumberValue> originalSet
     ){
         //setup
+        NumberValue firstExpected, lastExpected;
         originalSet = doAdd(originalSet,
-                new NumberValue(1), new NumberValue(1), new NumberValue(2),
-                new NumberValue(3), new NumberValue(4));
+                new NumberValue(1), new NumberValue(1), firstExpected = new NumberValue(2),
+                new NumberValue(3), lastExpected = new NumberValue(4));
         CountingTransform<NumberValue, Integer> getValueTransform = CountingTransform.track(x -> x.number);
         LinqingList<NumberValue> exclusionList = Factories.asList(new NumberValue(1), new NumberValue(3));
 
@@ -50,7 +51,7 @@ public class ExceptQueryFixture extends FixtureBase {
         List<NumberValue> result = originalSet.except(exclusionList, getValueTransform).toList();
 
         //assert
-        assertThat(result).containsExactly(originalSet.first(3).last(), originalSet.first(5).last());
+        assertQueryResult(result).containsSmartly(firstExpected, lastExpected);
         getValueTransform.shouldHaveBeenInvoked(SEVEN_TIMES);
     }
 
@@ -119,7 +120,8 @@ public class ExceptQueryFixture extends FixtureBase {
             Queryable<NumberValue> palindromes
     ){
         //setup
-        primes = doAdd(primes, new NumberValue(7), new NumberValue(11), new NumberValue(13));
+        NumberValue firstExpected, lastExpected;
+        primes = doAdd(primes, firstExpected = new NumberValue(7), new NumberValue(11), lastExpected = new NumberValue(13));
         palindromes = doAdd(palindromes, new NumberValue(11), new NumberValue(1001), new NumberValue(1331));
         CountingTransform<NumberValue, Integer> getNumberValue = CountingTransform.track(x -> x.number);
 
@@ -127,7 +129,7 @@ public class ExceptQueryFixture extends FixtureBase {
         List<NumberValue> result = primes.except(palindromes, getNumberValue).toList();
 
         //assert
-        assertThat(result).containsExactly(primes.first(), primes.last());
+        assertQueryResult(result).containsSmartly(firstExpected, lastExpected);
         getNumberValue.shouldHaveBeenInvoked(primes.size() + palindromes.size());
     }
 

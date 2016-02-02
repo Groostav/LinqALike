@@ -1,51 +1,99 @@
 package com.empowerops.linqalike.experimental;
 
+import com.empowerops.linqalike.LinqingMap;
 import com.empowerops.linqalike.LinqingSet;
+import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.SortedLinqingSet;
 import com.empowerops.linqalike.common.EqualityComparer;
+import com.empowerops.linqalike.common.Tuple;
+import com.empowerops.linqalike.delegate.Func1;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
 
-    private final Map<Method, SortedSet<TElement>> indicies = new HashMap<>();
+//    private final Map<Method, LinqingSet<TElement>> hashIndexes = new HashMap<>();
+    private final Map<Method, SortedLinqingSet<TElement>> treeIndexes = new HashMap<>();
+    private final LinqingMap<Class, Method> indexAliasesByLambdaType = new LinqingMap<>();
+    private final HashSet<Class> nonIndexedLambdaClasses = new HashSet<>();
 
-    public IndexedLinqingSet() {
+    private final Class<TElement> hostType;
+
+    public IndexedLinqingSet(Class<TElement> hostType) {
+        super();
+        this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(int size) {
+    public IndexedLinqingSet(Class<TElement> hostType, int size) {
         super(size);
+        this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(TElement... tElements) {
+    public IndexedLinqingSet(Class<TElement> hostType, TElement... tElements) {
         super(tElements);
+        this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(Iterator<? extends TElement> elements) {
+    public IndexedLinqingSet(Class<TElement> hostType, Iterator<? extends TElement> elements) {
         super(elements);
+        this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(Iterable<? extends TElement> tElements) {
+    public IndexedLinqingSet(Class<TElement> hostType, Iterable<? extends TElement> tElements) {
         super(tElements);
+        this.hostType = hostType;
     }
 
     public interface PropertyMethodRef<THost> extends Serializable {
-
         Object get(THost host);
-
     }
 
-    public void index(LambdaComprehention.PropertyGetter<TElement, ?> propertyToIndex){
-        Method target = LambdaComprehention.getReferredProperty(propertyToIndex);
+    @Override
+    public <TCompared extends Comparable<TCompared>>
+    Queryable<TElement> orderBy(Func1<? super TElement, TCompared> comparableSelector) {
+
+        Class lambdaClass = comparableSelector.getClass();
+
+        if(nonIndexedLambdaClasses.contains(lambdaClass)){
+            return super.orderBy(comparableSelector);
+        }
+
+        Method recognizedProperty = LambdaComprehention.getReferredProperty(comparableSelector.getClass(), hostType).getLeft();
+        if (recognizedProperty != null && treeIndexes.containsKey(recognizedProperty)){
+            return treeIndexes.get(recognizedProperty);
+        }
+
+        nonIndexedLambdaClasses.add(lambdaClass);
+        return super.orderBy(comparableSelector);
     }
 
+    public <TIndexed extends Comparable<TIndexed>> void treeIndex(LambdaComprehention.PropertyGetter<TElement, Comparable<?>> propertyToIndex){
+        Tuple<Method, RuntimeException> target = LambdaComprehention.getReferredProperty(propertyToIndex, hostType);
+
+        if(target.getRight() != null){ throw target.getRight(); }
+
+        Method targetMethod = target.getLeft();
+
+        Function<TElement, Comparable> wrappedTargetMethod = elem -> {
+            try{
+                Object result = targetMethod.invoke(elem);
+                return Comparable.class.cast(result);
+            }
+            catch (InvocationTargetException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        @SuppressWarnings("unchecked") Comparator<TElement> comparator = Comparator.comparing(wrappedTargetMethod);
+        SortedLinqingSet<TElement> index = SortedLinqingSet.createFor(comparator, this);
+
+        treeIndexes.put(targetMethod, index);
+    }
 
     private void onChange() {
         throw new UnsupportedOperationException("onChange");
@@ -148,23 +196,9 @@ public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
 
     @Override
     public boolean addAllRemaining(Iterator<? extends TElement> valuesToBeAdded) {
-        return tryAndNotifyOnFailure(() -> super.addAllRemaining(valuesToBeAdded));
-    }
-
-    //consider the ~reasonable case: NPE from a hashCode() or equals() call.
-    // what do? calling onChange() is likely to cause the same exception to go off.
-
-    @SuppressWarnings({"ThrowFromFinallyBlock", "finally"})
-    private boolean tryAndNotifyOnFailure(Supplier<Boolean> update) {
-
         boolean changed = true;
-        try{
-            changed = update.get();
-        }
-        catch(Exception | AssertionError e){
-            try { onChange(); }
-            finally { throw e; }
-        }
+        try { return changed = super.addAllRemaining(valuesToBeAdded); }
+        finally { if(changed) onChange(); }
     }
 
     @Override

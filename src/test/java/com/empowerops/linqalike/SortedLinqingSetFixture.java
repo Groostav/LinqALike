@@ -19,7 +19,7 @@ public class SortedLinqingSetFixture {
     @Test
     public void when_getting_a_symbol_from_a_sorted_set_should_find_appropriate_element(){
         //setup
-        SortedLinqingSet<NamedValue> values = SortedLinqingSet.createSortedSetFor((left, right) -> left.name.compareTo(right.name));
+        SortedLinqingSet<NamedValue> values = SortedLinqingSet.createFor((left, right) -> left.name.compareTo(right.name));
         values.addAll(new NamedValue("A", 1), new NamedValue("B", 2));
 
         //act

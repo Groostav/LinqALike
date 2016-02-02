@@ -1,9 +1,8 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.WritableCollection;
-import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -36,7 +35,7 @@ public class UnionQueryFixture extends FixtureBase {
         LinqingList<String> resultList = westernConference.toList();
 
         //assert
-        assertThat(resultList).containsExactly(
+        assertQueryResult(resultList).containsSmartly(
                 "Colorado", "Minnesota", "St. Louis", "Chicago",
                 "Anaheim", "Dallas", "San Jose", "Los Angeles",
                 "Phoenix", "Nashville", "Winnipeg", "Vancouver",
@@ -100,8 +99,8 @@ public class UnionQueryFixture extends FixtureBase {
 
     @Theory
     public void when_calling_union_on_two_sets_both_with_nulls(
-            WritableCollection<String> left,
-            WritableCollection<String> right
+            Queryable.SupportsNull<String> left,
+            Queryable.SupportsNull<String> right
             //note: only testing writable collections because null is unsupported in pcollections.
     ){
         //setup
@@ -113,7 +112,7 @@ public class UnionQueryFixture extends FixtureBase {
         LinqingList<String> resultList = result.toList();
 
         //assert
-        assertThat(resultList).containsExactly("one", null, "two", "three", "four", "five");
+        assertQueryResult(resultList).containsSmartly("one", null, "two", "three", "four", "five");
         assertThat(result.size()).isEqualTo(6);
     }
 

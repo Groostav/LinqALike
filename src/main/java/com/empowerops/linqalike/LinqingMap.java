@@ -8,7 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements DefaultedQueryableMap<TKey, TValue> {
+public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implements
+        DefaultedQueryableMap<TKey, TValue>,
+        Queryable.PreservingInsertionOrder<Map.Entry<TKey, TValue>> {
 
     private static final long serialVersionUID = 5468979086836647070L;
 

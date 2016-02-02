@@ -49,7 +49,7 @@ public class LastElementsFixture extends FixtureBase {
         List<Double> geometricsList = smallGeometry.toList();
 
         //assert
-        assertThat(geometricsList).containsExactly(1 / 2D, 1 / 4D, 1 / 8D, 1 / 16D, 1 / 32D);
+        assertQueryResult(geometricsList).containsSmartly(1 / 2D, 1 / 4D, 1 / 8D, 1 / 16D, 1 / 32D);
         assertThat(smallGeometry.size()).isEqualTo(5);
     }
 

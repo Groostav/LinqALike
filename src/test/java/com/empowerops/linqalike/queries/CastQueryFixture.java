@@ -13,7 +13,6 @@ import java.util.List;
 import static com.empowerops.linqalike.assists.Exceptions.assertDoesNotThrow;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
 
 /**
  * Created by Geoff on 2014-05-10.
@@ -62,7 +61,7 @@ public class CastQueryFixture extends FixtureBase {
     @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "CodeBlock2Expr", "Convert2Lambda", "Anonymous2MethodRef"}) //purpose of test
     @Theory
     public void when_using_cast_with_explicit_type_cast_exception_should_be_raised_earlier_than_assignment_but_still_lazily(
-            Queryable<Number> numbers
+            Queryable.PreservingInsertionOrder<Number> numbers
     ){
         //setup
         numbers = doAdd(numbers, 1.0D, 2.0D, 3.0D, 4L);
@@ -117,7 +116,7 @@ public class CastQueryFixture extends FixtureBase {
 
     @Theory
     public void when_performing_operations_on_a_polluted_list_as_long_as_those_operations_are_generic_there_is_no_problem(
-            Queryable<Number> numbers
+            Queryable.PreservingInsertionOrder<Number> numbers
     ){
         //setup
         numbers = doAdd(numbers, 1.0d, 2.0d, 3.0d, 4L);

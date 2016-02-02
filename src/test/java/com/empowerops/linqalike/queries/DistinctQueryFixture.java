@@ -50,24 +50,24 @@ public class DistinctQueryFixture extends FixtureBase {
 
         //assert
         assertThat(resultLeft).doesNotHaveDuplicates();
-	    assertThat(resultLeft).containsExactly(
+	    assertQueryResult(resultLeft).containsSmartly(
                 "Seoul", "Nagasaki", "Mumbai", "Amsterdam", "Shanghai", "Dubai",
                 "Anchorage", "Rio de Janeiro", "Cairo");
     }
 
     @Theory
-    public void when_calling_distinct_on_a_list_containing_objects_of_dispirate_types(
+    public void when_calling_distinct_on_a_list_containing_distinct_objects_of_dispirate_types_should_get_back_original_list(
             Queryable<Object> starbucksNumbers
     ) {
         //setup
-        starbucksNumbers = doAdd(starbucksNumbers, "Starbucks", 5L, 5, 5.0d, 5);
+        starbucksNumbers = doAdd(starbucksNumbers, "Starbucks", 5L, 4, 3.0d);
 
         //act
         List<Object> result = starbucksNumbers.distinct().toList();
 
         //assert
         assertThat(result).doesNotHaveDuplicates();
-        assertThat(result).containsExactly("Starbucks", 5L, 5, 5.0d);
+        assertQueryResult(result).containsSmartly("Starbucks", 5L, 4, 3.0d);
 	    // This should not be true.
         assertThat(5.0d).isEqualTo(5);
     }
@@ -90,7 +90,7 @@ public class DistinctQueryFixture extends FixtureBase {
 
     @Theory
     public void when_calling_distinct_with_a_comapared_value_selector(
-            Queryable<Object> numsAndNumStrings
+            Queryable.PreservingInsertionOrder<Object> numsAndNumStrings
     ){
         //setup
         numsAndNumStrings = doAdd(numsAndNumStrings, 1,"1", 2, 2, "3", 3);
@@ -100,7 +100,7 @@ public class DistinctQueryFixture extends FixtureBase {
         List<Object> result = numsAndNumStrings.distinct(getStringValue).toList();
 
         //assert
-        assertThat(result).containsExactly(1, 2, "3");
+        assertQueryResult(result).containsSmartly(1, 2, "3");
         assertThat(getStringValue.getNumberOfInvocations()).isEqualTo(numsAndNumStrings.size());
     }
 

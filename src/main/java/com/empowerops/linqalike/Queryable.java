@@ -84,6 +84,10 @@ import java.util.function.Consumer;
  */
 public interface Queryable<TElement> extends Iterable<TElement> {
 
+    interface PreservingInsertionOrder<TElement> extends Queryable<TElement>{}
+
+    interface SupportsNull<TElement> extends Queryable<TElement>{}
+
     /**
      * Aggregates this queryable together with the specified aggregator function and seed value.
      *

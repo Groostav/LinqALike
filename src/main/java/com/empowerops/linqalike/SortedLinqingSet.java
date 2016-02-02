@@ -11,38 +11,43 @@ import static com.empowerops.linqalike.Factories.from;
 /**
  * Created by Geoff on 2015-04-08.
  */
-public class SortedLinqingSet<TElement> extends TreeSet<TElement>
-                                        implements DefaultedQueryable<TElement>,
-                                                   WritableCollection<TElement>,
-                                                   NavigableSet<TElement> {
+public class SortedLinqingSet<TElement> extends TreeSet<TElement> implements
+        DefaultedQueryable<TElement>,
+        WritableCollection<TElement>,
+        NavigableSet<TElement> {
 
     private static final long serialVersionUID = 4188611250638519387L;
 
     public static <TComparableElem extends Comparable<TComparableElem>>
-    SortedLinqingSet<TComparableElem> createSetForComparables(Iterable<TComparableElem> initialElements){
+    SortedLinqingSet<TComparableElem> createForComparables(Iterable<TComparableElem> initialElements){
         Comparator<TComparableElem> comparator = Comparable::compareTo;
         return new SortedLinqingSet<>(comparator, initialElements);
     }
     @SafeVarargs //consumption of array is only for initialization
     public static <TComparableElem extends Comparable<TComparableElem>>
-    SortedLinqingSet<TComparableElem> createSetSetForComparables(TComparableElem... initialElements){
+    SortedLinqingSet<TComparableElem> createForComparables(TComparableElem... initialElements){
         Comparator<TComparableElem> comparator = Comparable::compareTo;
         return new SortedLinqingSet<>(comparator, from(initialElements));
     }
-    public static <TElement> SortedLinqingSet<TElement> creasteSortedSetFor(Comparator<? super TElement> comparator, Iterable<TElement> source){
+    public static <TElement> SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator, Iterable<TElement> source){
         return new SortedLinqingSet<>(comparator, source);
     }
     @SafeVarargs //consumption of array is only for initialization
-    public static <TElement> SortedLinqingSet<TElement> createSortedSetFor(Comparator<? super TElement> comparator, TElement... source){
+    public static <TElement> SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator, TElement... source){
         return new SortedLinqingSet<>(comparator, from(source));
     }
-    public static <TElement> SortedLinqingSet<TElement> createSortedSetFor(Comparator<? super TElement> comparator){
+    public static <TElement> SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator){
         return new SortedLinqingSet<>(comparator, empty());
     }
 
     private SortedLinqingSet(Comparator<? super TElement> comparator, Iterable<? extends TElement> initialElements) {
         super(comparator);
         addAll(initialElements);
+    }
+
+    @Override
+    public Queryable<TElement> reversed() {
+        return from(descendingSet());
     }
 
     @Override

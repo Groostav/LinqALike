@@ -99,7 +99,7 @@ public class OrderByQueryFixture extends FixtureBase {
         List<Integer> result = source.orderBy(x -> 42).toList();
 
         //assert
-        assertThat(result).containsExactly(2, 3, 6, 1, 5, 4);
+        assertQueryResult(result).containsSmartly(2, 3, 6, 1, 5, 4);
     }
 
     @Theory
@@ -110,12 +110,15 @@ public class OrderByQueryFixture extends FixtureBase {
         source = doAdd(source, 2, 3, 6, 1, 5, 4);
 
         //act
-        List<Integer> result = source.orderBy(x -> x < 4).toList();
+        Queryable<Integer> query = source.orderBy(x -> x < 4);
+        List<Integer> result = query.toList();
 
         //assert
         // interestingly, when we sort by a boolean, "true" is greater than "false",
         // so the "true" elements are at the end of the list.
-        assertThat(result).containsExactly(6, 5, 4, 2, 3, 1);
+        assertQueryResult(result).containsSmartly(6, 5, 4, 2, 3, 1);
+        assertThat(query.first(2)).containsOnly(6, 5, 4);
+        assertThat(query.last(4)).containsOnly(3, 2, 1);
     }
 
     @Theory

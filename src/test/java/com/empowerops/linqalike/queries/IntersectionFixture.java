@@ -2,7 +2,6 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
@@ -37,8 +36,8 @@ public class IntersectionFixture extends FixtureBase {
 
     @Theory
     public void when_intersecting_a_set_with_specific_comparer(
-            Queryable<NamedValue> left,
-            Queryable<NamedValue> right
+            Queryable.PreservingInsertionOrder<NamedValue> left,
+            Queryable.PreservingInsertionOrder<NamedValue> right
     ){
         //setup
         left = doAdd(left, NamedValue.forNames("A", "B", "C"));
@@ -123,8 +122,8 @@ public class IntersectionFixture extends FixtureBase {
 
     @Theory
     public void when_intersecting_two_sets_containing_different_typed_content(
-            WritableCollection<Object> left,
-            WritableCollection<Object> right
+            Queryable.SupportsNull<Object> left,
+            Queryable.SupportsNull<Object> right
     ) {
         //setup
         left = doAdd(left, "1", 1, 4.3d, 2f, null);

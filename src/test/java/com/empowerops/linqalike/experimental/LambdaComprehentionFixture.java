@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
-import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -21,7 +20,7 @@ public class LambdaComprehentionFixture {
         Runnable runnable = (Runnable & Serializable) this::localRun;
 
         //act
-        Method target = LambdaComprehention.getReferredProperty((Serializable) runnable);
+        Method target = LambdaComprehention.getReferredProperty((Serializable) runnable, LambdaComprehentionFixture.class).getLeft();
 
         //assert
         assertThat(target.getName()).isEqualTo("localRun");
@@ -37,7 +36,10 @@ public class LambdaComprehentionFixture {
         Runnable runnable = (Runnable & Serializable) () -> localRun();
 
         //act
-        assertThrows(IllegalArgumentException.class, () -> LambdaComprehention.getReferredProperty((Serializable) runnable));
+        RuntimeException ex = LambdaComprehention.getReferredProperty((Serializable) runnable, LambdaComprehentionFixture.class).getRight();
+
+        //assert
+        assertThat(ex).isInstanceOf(IllegalArgumentException.class);
     }
 
     public static class NestedClass{

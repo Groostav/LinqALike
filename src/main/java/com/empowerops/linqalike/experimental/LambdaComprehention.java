@@ -1,5 +1,7 @@
 package com.empowerops.linqalike.experimental;
 
+import com.empowerops.linqalike.common.Tuple;
+
 import java.io.Serializable;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.InvocationTargetException;
@@ -10,7 +12,8 @@ import java.lang.reflect.Method;
  */
 public class LambdaComprehention{
 
-    public static Method getReferredProperty(Serializable serializableLambda){
+    //TODO need an either
+    public static Tuple<Method, RuntimeException> getReferredProperty(Serializable serializableLambda, Class expectedHostClass){
 
         Method writeReplace;
         try { writeReplace = serializableLambda.getClass().getDeclaredMethod("writeReplace"); }
@@ -23,24 +26,42 @@ public class LambdaComprehention{
         catch (IllegalAccessException | InvocationTargetException e) { throw new RuntimeException(e); }
 
         if(serialized.getImplMethodName().contains("$")){
-            throw new IllegalArgumentException(
-                    "serializableLambda must be a method reference, "
-                        + "but it was a lambda:" + serialized.getImplMethodName()
+            return new Tuple<>(
+                    null,
+                    new IllegalArgumentException(
+                            "serializableLambda must be a method reference, "
+                                + "but it was a lambda:" + serialized.getImplMethodName()
+                    )
             );
         }
 
         if(Descriptor.getParameterTypes(serialized.getImplMethodSignature()).length >= 1){
-            throw new IllegalArgumentException(
+            return new Tuple<>(
+                    null,
+                    new IllegalArgumentException(
                     "serializableLambda must be a property (getter), "
-                        + "but it had arguments:" + serialized.getImplMethodSignature()
+                            + "but it had arguments:" + serialized.getImplMethodSignature()
+                    )
+            );
+        }
+
+        Class<?> actualHostClass = Descriptor.toClass(serialized.getImplClass());
+
+        if(actualHostClass != expectedHostClass){
+            return new Tuple<>(
+                    null,
+                    new IllegalArgumentException(
+                    "expected serialized lambda to be a getter (or other property) on '" + expectedHostClass + "', "
+                        + "but it was a property on '" + actualHostClass + "'"
+                    )
             );
         }
 
         Method targetMethod;
-        try { targetMethod = Descriptor.toClass(serialized.getImplClass()).getMethod(serialized.getImplMethodName()); }
+        try {targetMethod = actualHostClass.getMethod(serialized.getImplMethodName()); }
         catch (NoSuchMethodException e) { throw new RuntimeException(e); }
 
-        return targetMethod;
+        return new Tuple<>(targetMethod, null);
     }
 
     @FunctionalInterface

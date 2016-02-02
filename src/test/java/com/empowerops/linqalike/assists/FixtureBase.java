@@ -1,14 +1,16 @@
 package com.empowerops.linqalike.assists;
 
-import com.empowerops.linqalike.IList;
-import com.empowerops.linqalike.ISet;
-import com.empowerops.linqalike.LinqingList;
-import com.empowerops.linqalike.LinqingSet;
-import com.empowerops.linqalike.Queryable;
-import com.empowerops.linqalike.WritableCollection;
+import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.queries.DefaultedCollection;
 import com.empowerops.linqalike.queries.UnionQuery;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.assertj.core.api.AbstractIterableAssert;
+import org.assertj.core.api.IterableAssert;
+import org.junit.After;
 import org.junit.experimental.theories.DataPoint;
+
+import static java.util.Comparator.comparing;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Geoff on 13/10/13
@@ -24,11 +26,70 @@ public abstract class FixtureBase {
     protected static final int FIVE_TIMES = 5;
     protected static final int SEVEN_TIMES = 7;
 
-    public @DataPoint static LinqingSet usingHashSet(){ return new LinqingSet(); }
-    public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
-    public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
-    public @DataPoint static ISet usingImmutableSet() { return new ISet(); }
-    public @DataPoint static IList usingImmutableList() { return new IList(); }
+    static Boolean isTestingOrderedObject = null;
+
+    public @DataPoint static LinqingSet usingHashSet(){
+        setTestingOrderedQuery();
+        return new LinqingSet();
+    }
+    public @DataPoint static LinqingList usingList(){
+        setTestingOrderedQuery();
+        return new LinqingList();
+    }
+    public @DataPoint static DefaultedCollection usingWrapper() {
+        setTestingOrderedQuery();
+        return new DefaultedCollection();
+    }
+    public @DataPoint static ISet usingImmutableSet() {
+        setTestingOrderedQuery();
+        return new ISet();
+    }
+    public @DataPoint static IList usingImmutableList() {
+        setTestingOrderedQuery();
+        return new IList();
+    }
+
+    private static void setTestingOrderedQuery() {
+        isTestingOrderedObject = isTestingOrderedObject == null ? true : isTestingOrderedObject;
+    }
+
+    public @DataPoint static SortedLinqingSet usingSortedSet(){
+        isTestingOrderedObject = false;
+        return SortedLinqingSet.createFor(comparing(Object::hashCode));
+    }
+
+    @After
+    public final void reset_ordered_ness(){
+        isTestingOrderedObject = null;
+    }
+
+    protected boolean isTestingOrderedQuery(){
+        return isTestingOrderedObject;
+    }
+
+    public class SmartIterableAssert<T> extends IterableAssert<T>{
+
+        private final Iterable<? extends T> actual;
+
+        protected SmartIterableAssert(Iterable<? extends T> actual) {
+            super(actual);
+
+            this.actual = actual;
+        }
+
+        public AbstractIterableAssert<?, ?, T> containsSmartly(T... values){
+            if(isTestingOrderedObject) {
+                return assertThat(actual).containsExactly(values);
+            }
+            else{
+                return assertThat(actual).containsOnly(values);
+            }
+        }
+    }
+
+    protected <T> SmartIterableAssert<T> assertQueryResult(Iterable<T> result){
+        return new SmartIterableAssert<T>(result);
+    }
 
     /**
      * This method provides indirection for immutable and mutable collections.
@@ -137,6 +198,13 @@ public abstract class FixtureBase {
                     return cause.number;
                 }
             };
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("number", number)
+                    .toString();
         }
     }
 

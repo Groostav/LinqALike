@@ -17,7 +17,7 @@ public class AggregateFixture extends FixtureBase {
 
     @Theory
     public void when_concatinating_a_nonempty_list_of_names_the_result_should_be_a_string_join(
-            Queryable<String> names
+            Queryable.PreservingInsertionOrder<String> names
     ){
         //setup
         names = doAdd(names, "Jimmy", "Ken", "Bob", "Alice");

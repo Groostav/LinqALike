@@ -23,6 +23,8 @@ import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
  * @see DefaultedQueryable
  */
 public class LinqingList<TElement> extends ArrayList<TElement> implements
+        Queryable.PreservingInsertionOrder<TElement>,
+        Queryable.SupportsNull<TElement>,
         QueryableList<TElement>,
         DefaultedQueryable<TElement>,
         WritableCollection<TElement>,

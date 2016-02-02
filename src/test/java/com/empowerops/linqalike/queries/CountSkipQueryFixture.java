@@ -21,7 +21,7 @@ public class CountSkipQueryFixture extends FixtureBase {
 
     @Theory
     public void when_skipping_first_three_elements_in_seven_element_set_should_get_last_four(
-            Queryable<String> names
+            Queryable.PreservingInsertionOrder<String> names
     ){
         //setup
         names = doAdd(names, "Joe", "Johnson", "giorgio", "Jack", "Justin", "Giovanni", "Giorgio");
@@ -98,6 +98,8 @@ public class CountSkipQueryFixture extends FixtureBase {
     public void when_adding_elements_after_query_is_made_should_add_elements_lazily(
             WritableCollection<String> names
     ){
+        if( ! (names instanceof Queryable.PreservingInsertionOrder)){ return; }
+
         //setup
         names.addAll("Joe", "Johnson", "Jack", "Justin", "Giovanni", "Giorgio");
 
@@ -110,6 +112,4 @@ public class CountSkipQueryFixture extends FixtureBase {
         assertThat(lateLatterNamesList).containsExactly("Giorgio", "Gregor", "Jay");
         assertThat(latterNames.size()).isEqualTo(3);
     }
-
-
 }

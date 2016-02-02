@@ -47,7 +47,8 @@ public class ToArrayFixture extends FixtureBase {
                 new NumberValue(271),
                 new NumberValue(126),
                 new NumberValue(1072),
-                new NumberValue(587));
+                new NumberValue(587)
+        );
 
         //act
         int[] primativeResult = bettysRandomNumbers.toIntArray(elem -> elem.number);
@@ -55,6 +56,9 @@ public class ToArrayFixture extends FixtureBase {
         //assert
         assertThat(primativeResult.getClass().isArray()).isTrue();
         assertThat(primativeResult.getClass()).isEqualTo(int[].class);
-        assertThat(primativeResult).isEqualTo(new int[]{42, 64, 97, 271, 126, 1072, 587});
+        int[] expected = {42, 64, 97, 271, 126, 1072, 587};
+
+        if(isTestingOrderedQuery()) { assertThat(primativeResult).containsExactly(expected); }
+        else /*query is un-ordered*/{ assertThat(primativeResult).containsOnly(expected); }
     }
 }

@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 import static com.empowerops.linqalike.ImmediateInspections.fastSizeIfAvailable;
 
 public class LinqingSet<TElement> extends LinkedHashSet<TElement> implements
+        Queryable.PreservingInsertionOrder<TElement>,
+        Queryable.SupportsNull<TElement>,
         Set<TElement>,
         DefaultedQueryable<TElement>,
         WritableCollection<TElement>,

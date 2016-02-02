@@ -302,6 +302,7 @@ public class ImmediateInspections {
     public static <TElement> boolean contains(Iterable<? extends TElement> sourceElements,
                                               TElement candidate,
                                               EqualityComparer<? super TElement> comparer) {
+
         if (comparer == CommonDelegates.DefaultEquality && sourceElements instanceof Collection) {
             return ((Collection) sourceElements).contains(candidate);
         }

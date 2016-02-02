@@ -5,7 +5,6 @@ import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.FixtureBase;
-import com.empowerops.linqalike.common.Tuple;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -25,7 +24,7 @@ public class GroupByFixture extends FixtureBase {
 
     @Theory
     public void when_grouping_a_set_containing_groups_should_group_correctly(
-            Queryable<NamedValue> values
+            Queryable.PreservingInsertionOrder<NamedValue> values
     ){
         //setup
         values = doAdd(values, NamedValue.forNames(
@@ -103,23 +102,6 @@ public class GroupByFixture extends FixtureBase {
     }
 
     @Theory
-    public void when_grouping_a_bag_containing_ref_equals_entries_that_are_in_different_groups(
-            QueryableList<NumberValue> values
-    ){
-        //setup
-        NumberValue duplicate = new NumberValue(1);
-        values = doAdd(values,
-                new NumberValue(877), duplicate, new NumberValue(881),
-                duplicate, new NumberValue(883), new NumberValue(887));
-
-        //act
-        Queryable<Queryable<NumberValue>> groups = values.groupBy((x, y) -> false);
-
-        //assert
-        assertThat(groups).hasSize(6);
-    }
-
-    @Theory
     public void when_groups_are_found_prior_to_adding_a_new_ungrouped_value_to_the_source_list_query_should_see_newly_added_group(
             WritableCollection<Double> sourceNums
     ){
@@ -134,7 +116,7 @@ public class GroupByFixture extends FixtureBase {
         //assert
         LinqingList<Queryable<Double>> result = groups.toList();
         assertThat(result).hasSize(4);
-        assertThat(result.get(3)).containsOnly(newValue);
+        assertThat(result.where(group -> group.size() == 2).single()).containsOnly(2.0);
     }
 
     @Theory

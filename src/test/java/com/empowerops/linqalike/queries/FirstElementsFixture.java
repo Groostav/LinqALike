@@ -39,7 +39,7 @@ public class FirstElementsFixture extends FixtureBase {
 
     @Theory
     public void when_asking_for_the_first_4_elements_of_a_3_element_list(
-            Queryable<Integer> countDown
+            Queryable.PreservingInsertionOrder<Integer> countDown
     ){
         //setup
         countDown = doAdd(countDown, 3, 2, 1);

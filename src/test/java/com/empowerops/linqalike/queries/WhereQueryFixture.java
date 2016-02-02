@@ -101,14 +101,14 @@ public class WhereQueryFixture extends FixtureBase {
             WritableCollection<Object> desperateList
     ){
         //setup
-        desperateList = doAdd(desperateList, null, new NamedValue("hi"), "Hi", -1d, 1L, 2, new Integer[]{1, 2, 3, 4, 5}, new NumberValue(5));
+        desperateList = doAdd(desperateList, new NamedValue("hi"), "Hi", -1d, 1L, 2, new Integer[]{1, 2, 3, 4, 5}, new NumberValue(5));
         CountingCondition<Object> condition = track(element -> element instanceof Number);
 
         //act
         List<Object> typedList = desperateList.where(condition).toList();
 
         //assert
-        assertThat(typedList).containsExactly(-1d, 1L, 2);
+        assertQueryResult(typedList).containsSmartly(-1d, 1L, 2);
         assertThat(condition.getNumberOfInvocations()).isEqualTo(desperateList.size());
     }
 
@@ -118,15 +118,16 @@ public class WhereQueryFixture extends FixtureBase {
             Queryable<NamedValue> countries
     ) {
         //setup
+        NamedValue firstExpected, lastExpected;
         countries = doAdd(countries, new NamedValue("Uganda"), new NamedValue("Zimbabwe"),
-                                     new NamedValue("Denmark"), new NamedValue("Deutschland"));
+                                     firstExpected = new NamedValue("Denmark"), lastExpected = new NamedValue("Deutschland"));
         CountingCondition<NamedValue> condition;
 
         //act
         List<NamedValue> dCountries = countries.where(condition = track(country -> country.name.startsWith("D"))).toList();
 
         //assert
-        assertThat(dCountries).containsExactly(countries.first(3).last(), countries.first(4).last());
+        assertQueryResult(dCountries).containsSmartly(firstExpected, lastExpected);
         assertThat(condition.getNumberOfInvocations()).isEqualTo(countries.size());
     }
 }

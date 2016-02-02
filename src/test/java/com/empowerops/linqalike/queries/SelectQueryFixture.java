@@ -1,13 +1,12 @@
 package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.CommonDelegates;
-import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
+import com.empowerops.linqalike.QueryableList;
 import com.empowerops.linqalike.WritableCollection;
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.FixtureBase;
 import com.empowerops.linqalike.delegate.Func1;
-import org.junit.Test;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
@@ -77,10 +76,10 @@ public class SelectQueryFixture extends FixtureBase {
 
     @Theory
     public void when_running_select_over_a_set_containing_null(
-            WritableCollection<NumberValue> source
+            Queryable.SupportsNull<NumberValue> source
     ){
         //setup
-        source.addAll(new NumberValue(20), null, new NumberValue(30), new NumberValue(40));
+        source = doAdd(source, new NumberValue(20), null, new NumberValue(30), new NumberValue(40));
         CountingTransform<NumberValue, String> transform;
 
         //act
@@ -109,10 +108,10 @@ public class SelectQueryFixture extends FixtureBase {
 
     @Theory
     public void when_calling_select_on_empty_collection_should_get_empty_collection(
-            WritableCollection<Double> source
+            Queryable<Double> source
     ){
         //setup
-        source.clear();
+        doClear(source);
         CountingTransform<Double, Double> transform;
 
         //act
@@ -126,10 +125,10 @@ public class SelectQueryFixture extends FixtureBase {
 
     @Theory
     public void when_getting_the_first_member_of_projected_list_should_only_apply_transform_once(
-            WritableCollection<Double> source
+            Queryable<Double> source
     ){
         //setup
-        source.addAll(1.1, 2.2, 3.3, 4.4);
+        source = doAdd(source, 1.1, 2.2, 3.3, 4.4);
         CountingTransform<Double, Double> transform;
 
         //act
@@ -142,11 +141,12 @@ public class SelectQueryFixture extends FixtureBase {
         assertThat(transform.getNumberOfInvocations()).isEqualTo(1);
     }
 
-    @Test
-    //cant use theories here since set objects will disrupt this test by silently dropping duplicates.
-    public void when_running_select_over_a_bag_should_include_duplicates_in_source_for_transform(){
+    @Theory
+    public void when_running_select_over_a_bag_should_include_duplicates_in_source_for_transform(
+            QueryableList<Integer> bag
+    ){
         //setup
-        LinqingList<Integer> bag = new LinqingList<>(-1, 0, -1, 42, 43, 44, 42);
+        bag = doAdd(bag, -1, 0, -1, 42, 43, 44, 42);
 
         //act
         List<Integer> result = bag.select(member -> member * -1).toList();
@@ -167,11 +167,11 @@ public class SelectQueryFixture extends FixtureBase {
 
     @Theory
     public void when_selector_returns_item_that_will_be_duplicated_should_get_queryable_containing_duplicates(
-            WritableCollection<Customer> customers
+            Queryable<Customer> customers
     ){
 
         //setup
-        customers.addAll(
+        customers = doAdd(customers,
                 new Customer("John", "Stewart"), new Customer("John", "Oliver"),
                 new Customer("John", "Wick"), new Customer("John", "Snow")
         );
@@ -186,10 +186,10 @@ public class SelectQueryFixture extends FixtureBase {
 
     @Theory
     public void when_asking_for_size_of_select_query_should_inline_call_to_source_size(
-            WritableCollection<Integer> numbers
+            Queryable<Integer> numbers
     ){
         //setup
-        numbers.addAll(1, 2, 3, 4);
+        numbers = doAdd(numbers, 1, 2, 3, 4);
         CountingTransform<Integer, Integer> transform;
 
         //act
@@ -210,16 +210,16 @@ public class SelectQueryFixture extends FixtureBase {
      */
     @Theory
     public void when_asking_if_the_first_element_of_a_select_query_is_equal_to_itself_should_get_false(
-            WritableCollection<String> names
+            Queryable<String> names
     ){
         //setup
-        names.addAll("Bob", "Ken", "Susan");
+        names = doAdd(names, "Bob", "Ken", "Susan");
 
         //act
         Queryable<NamedValue> result = names.select(name -> new NamedValue(name));
 
         //assert
-        assertThat(result.first()).  isNotEqualTo(result.first()); //!!!
+        assertThat(result.first()).isNotEqualTo(result.first()); //!!!
         // the reason for this is that each call to 'first()' gets a new instance, because of select's lazyness
         // and NamedValue does not overload equals,
         // -> each call to `result.first()` gives us a different instance,
@@ -234,10 +234,10 @@ public class SelectQueryFixture extends FixtureBase {
      */
     @Theory
     public void when_using_immediately_should_only_invoke_the_transform_once_per_element(
-            WritableCollection<String> names
+            Queryable<String> names
     ){
         //setup
-        names.addAll("Vincent", "Justin");
+        names = doAdd(names, "Vincent", "Justin");
         CountingTransform<String, NamedValue> transform;
 
         //act
@@ -254,10 +254,10 @@ public class SelectQueryFixture extends FixtureBase {
      */
     @Theory
     public void when_using_memoized_selector_should_only_invoke_the_transform_once_per_element(
-            WritableCollection<String> names
+            Queryable<String> names
     ){
         //setup
-        names.addAll("Vincent", "Brian", "Geoff", "Justin");
+        names = doAdd(names, "Vincent", "Brian", "Geoff", "Justin");
 
         Func1<String, NamedValue> rawTransform = name -> new NamedValue(name);
         CountingTransform<String, NamedValue> trackedTransform = track(rawTransform);

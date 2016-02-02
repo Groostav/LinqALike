@@ -17,7 +17,11 @@ public abstract class CountingDelegate {
     protected List<Object> inspectedElements = new ArrayList<>();
 
     public void shouldHaveBeenInvoked(int numberOfTimes){
-        assertThat(inspectedElements.size()).describedAs("the elements for which the delegate " + this + " was invoked.").isEqualTo(numberOfTimes);
+        if(FixtureBase.isTestingOrderedObject == null || FixtureBase.isTestingOrderedObject) {
+            assertThat(inspectedElements.size())
+                    .describedAs("the elements for which the delegate " + this + " was invoked.")
+                    .isEqualTo(numberOfTimes);
+        }
     }
 
     public int getNumberOfInvocations(){
