@@ -117,8 +117,8 @@ public class OrderByQueryFixture extends FixtureBase {
         // interestingly, when we sort by a boolean, "true" is greater than "false",
         // so the "true" elements are at the end of the list.
         assertQueryResult(result).containsSmartly(6, 5, 4, 2, 3, 1);
-        assertThat(query.first(2)).containsOnly(6, 5, 4);
-        assertThat(query.last(4)).containsOnly(3, 2, 1);
+        assertThat(query.first(3)).containsOnly(6, 5, 4);
+        assertThat(query.last(3)).containsOnly(3, 2, 1);
     }
 
     @Theory

@@ -50,16 +50,16 @@ public class UnionQueryFixture extends FixtureBase {
             Queryable<NamedValue> right
     ){
         //setup
-        left = doAdd(left, NamedValue.forNames("one", "two", "three"));
-        right = doAdd(right, NamedValue.forNames("three", "four"));
+        NamedValue first, second, third, fourth;
+        left = doAdd(left, first = new NamedValue("one"), second = new NamedValue("two"), third = new NamedValue("three"));
+        right = doAdd(right, new NamedValue("three"), fourth = new NamedValue("four"));
 
         //act
         Queryable<NamedValue> result = left.union(right, NamedValue.GetName());
         LinqingList<NamedValue> resultList = result.toList();
 
         //result
-        assertThat(resultList).containsExactly(left.first(), left.second(), left.first(3).last(), right.second());
-        assertThat(result.size()).isEqualTo(4);
+        assertQueryResult(resultList).containsSmartly(first, second, third, fourth);
     }
 
     @Theory

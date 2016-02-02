@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.assertj.core.api.AbstractIterableAssert;
 import org.assertj.core.api.IterableAssert;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 
 import static java.util.Comparator.comparing;
@@ -49,20 +50,19 @@ public abstract class FixtureBase {
         return new IList();
     }
 
-    private static void setTestingOrderedQuery() {
-        isTestingOrderedObject = isTestingOrderedObject == null ? true : isTestingOrderedObject;
-    }
-
     public @DataPoint static SortedLinqingSet usingSortedSet(){
         isTestingOrderedObject = false;
         return SortedLinqingSet.createFor(comparing(Object::hashCode));
     }
 
-    @After
-    public final void reset_ordered_ness(){
-        isTestingOrderedObject = null;
+    private static void setTestingOrderedQuery() {
+        isTestingOrderedObject = isTestingOrderedObject == null ? true : isTestingOrderedObject;
     }
 
+    @After
+    public final void reset_ordered_ness_after(){
+        isTestingOrderedObject = null;
+    }
     protected boolean isTestingOrderedQuery(){
         return isTestingOrderedObject;
     }

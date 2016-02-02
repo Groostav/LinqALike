@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static com.empowerops.linqalike.CommonDelegates.identity;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -105,6 +106,7 @@ public class GroupByFixture extends FixtureBase {
     public void when_groups_are_found_prior_to_adding_a_new_ungrouped_value_to_the_source_list_query_should_see_newly_added_group(
             WritableCollection<Double> sourceNums
     ){
+        if(sourceNums instanceof Set){ return; }
         //setup
         sourceNums.addAll(1.0, 2.0, 2.0, 3.0);
         double newValue = 2.5;

@@ -37,7 +37,7 @@ public class SelectManyQueryFixture extends FixtureBase {
         List<Integer> numbers = groups.selectMany(x -> x.numbers).toList();
 
         //assert
-        assertThat(numbers).containsExactly(1, 2, 3, 4, 5, 6, 7, 8);
+        assertQueryResult(numbers).containsSmartly(1, 2, 3, 4, 5, 6, 7, 8);
     }
 
     @Theory
@@ -51,7 +51,7 @@ public class SelectManyQueryFixture extends FixtureBase {
         List<Integer> numbers = groups.selectMany(x -> x.numbers).toList();
 
         //assert
-        assertThat(numbers).containsExactly(1, 2, 3, 4, 5, 6, 7, 8);
+        assertQueryResult(numbers).containsSmartly(1, 2, 3, 4, 5, 6, 7, 8);
     }
 
     @Theory

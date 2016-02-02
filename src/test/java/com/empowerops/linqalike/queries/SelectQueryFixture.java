@@ -54,7 +54,7 @@ public class SelectQueryFixture extends FixtureBase {
         List<String> result = source.select(transform = track(x -> x.name)).toList();
 
         //assert
-        assertThat(result).containsExactly("First", "Second", "Third");
+        assertQueryResult(result).containsSmartly("First", "Second", "Third");
         assertThat(transform.getNumberOfInvocations()).isEqualTo(3);
     }
 

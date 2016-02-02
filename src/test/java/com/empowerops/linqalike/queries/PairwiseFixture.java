@@ -22,7 +22,7 @@ public class PairwiseFixture extends FixtureBase {
 
     @Theory
     public void when_calling_pairwise_on_some_sensible_data(
-            Queryable<String> zeldaCharacters
+            Queryable.PreservingInsertionOrder<String> zeldaCharacters
     ) {
         //Setup
         zeldaCharacters = doAdd(zeldaCharacters,
@@ -83,6 +83,7 @@ public class PairwiseFixture extends FixtureBase {
     public void when_calling_pairwise_on_a_singleton_list_of_null_it_should_get_two_empty_pairs(
             WritableCollection<EquatableValue> singletonSet
     ){
+        if( ! (singletonSet instanceof Queryable.SupportsNull)){ return; }
         //setup
         singletonSet = doAdd(singletonSet, (EquatableValue)null);
 
