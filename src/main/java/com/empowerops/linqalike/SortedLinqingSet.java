@@ -29,14 +29,17 @@ public class SortedLinqingSet<TElement> extends TreeSet<TElement> implements
         Comparator<TComparableElem> comparator = Comparable::compareTo;
         return new SortedLinqingSet<>(comparator, from(initialElements));
     }
-    public static <TElement> SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator, Iterable<TElement> source){
+    public static <TElement>
+    SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator, Iterable<TElement> source){
         return new SortedLinqingSet<>(comparator, source);
     }
     @SafeVarargs //consumption of array is only for initialization
-    public static <TElement> SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator, TElement... source){
+    public static <TElement>
+    SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator, TElement... source){
         return new SortedLinqingSet<>(comparator, from(source));
     }
-    public static <TElement> SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator){
+    public static <TElement>
+    SortedLinqingSet<TElement> createFor(Comparator<? super TElement> comparator){
         return new SortedLinqingSet<>(comparator, empty());
     }
 

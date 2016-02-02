@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
+public class IndexableLinqingSet<TElement> extends LinqingSet<TElement> {
 
 //    private final Map<Method, LinqingSet<TElement>> hashIndexes = new HashMap<>();
     private final Map<Method, SortedLinqingSet<TElement>> treeIndexes = new HashMap<>();
@@ -24,27 +24,27 @@ public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
 
     private final Class<TElement> hostType;
 
-    public IndexedLinqingSet(Class<TElement> hostType) {
+    public IndexableLinqingSet(Class<TElement> hostType) {
         super();
         this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(Class<TElement> hostType, int size) {
+    public IndexableLinqingSet(Class<TElement> hostType, int size) {
         super(size);
         this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(Class<TElement> hostType, TElement... tElements) {
+    public IndexableLinqingSet(Class<TElement> hostType, TElement... tElements) {
         super(tElements);
         this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(Class<TElement> hostType, Iterator<? extends TElement> elements) {
+    public IndexableLinqingSet(Class<TElement> hostType, Iterator<? extends TElement> elements) {
         super(elements);
         this.hostType = hostType;
     }
 
-    public IndexedLinqingSet(Class<TElement> hostType, Iterable<? extends TElement> tElements) {
+    public IndexableLinqingSet(Class<TElement> hostType, Iterable<? extends TElement> tElements) {
         super(tElements);
         this.hostType = hostType;
     }
@@ -59,11 +59,12 @@ public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
 
         Class lambdaClass = comparableSelector.getClass();
 
-        if(nonIndexedLambdaClasses.contains(lambdaClass)){
+        if( ! (comparableSelector instanceof Serializable)
+                || nonIndexedLambdaClasses.contains(lambdaClass)){
             return super.orderBy(comparableSelector);
         }
 
-        Method recognizedProperty = LambdaComprehention.getReferredProperty(comparableSelector.getClass(), hostType).getLeft();
+        Method recognizedProperty = LambdaComprehention.getReferredProperty((Serializable) comparableSelector, hostType).getLeft();
         if (recognizedProperty != null && treeIndexes.containsKey(recognizedProperty)){
             return treeIndexes.get(recognizedProperty);
         }
@@ -72,7 +73,8 @@ public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
         return super.orderBy(comparableSelector);
     }
 
-    public <TIndexed extends Comparable<TIndexed>> void treeIndex(LambdaComprehention.PropertyGetter<TElement, Comparable<?>> propertyToIndex){
+    public <TIndexed extends Comparable<TIndexed>>
+    void treeIndex(LambdaComprehention.PropertyGetter<TElement, TIndexed> propertyToIndex){
         Tuple<Method, RuntimeException> target = LambdaComprehention.getReferredProperty(propertyToIndex, hostType);
 
         if(target.getRight() != null){ throw target.getRight(); }
@@ -96,7 +98,7 @@ public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
     }
 
     private void onChange() {
-        throw new UnsupportedOperationException("onChange");
+//        throw new UnsupportedOperationException("onChange");
     }
     
     // ----------------------------------------------------
@@ -104,7 +106,7 @@ public class IndexedLinqingSet<TElement> extends LinqingSet<TElement> {
 
     @Override
     public Iterator<TElement> iterator() {
-        Iterator<TElement> superIter = iterator();
+        Iterator<TElement> superIter = super.iterator();
         return new Iterator<TElement>() {
             @Override
             public boolean hasNext() {

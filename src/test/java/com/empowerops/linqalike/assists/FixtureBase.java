@@ -1,13 +1,13 @@
 package com.empowerops.linqalike.assists;
 
 import com.empowerops.linqalike.*;
+import com.empowerops.linqalike.experimental.IndexableLinqingSet;
 import com.empowerops.linqalike.queries.DefaultedCollection;
 import com.empowerops.linqalike.queries.UnionQuery;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.assertj.core.api.AbstractIterableAssert;
 import org.assertj.core.api.IterableAssert;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 
 import static java.util.Comparator.comparing;
@@ -49,7 +49,11 @@ public abstract class FixtureBase {
         setTestingOrderedQuery();
         return new IList();
     }
-
+    @SuppressWarnings("unchecked")
+    public @DataPoint static IndexableLinqingSet usingIndexableSet(){
+        setTestingOrderedQuery();
+        return new IndexableLinqingSet(Object.class);
+    }
     public @DataPoint static SortedLinqingSet usingSortedSet(){
         isTestingOrderedObject = false;
         return SortedLinqingSet.createFor(comparing(Object::hashCode));
