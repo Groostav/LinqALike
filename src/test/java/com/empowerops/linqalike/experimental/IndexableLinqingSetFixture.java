@@ -8,7 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import static com.empowerops.linqalike.Factories.range;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 /**
  * Created by Geoff on 2/2/2016.
@@ -38,8 +38,8 @@ public class IndexableLinqingSetFixture {
         IndexableLinqingSet<IndexableItem> set = new IndexableLinqingSet<>(IndexableItem.class);
         set.addAll(range(0, 20_000).select(x -> new IndexableItem()));
 
-        LambdaComprehention.PropertyGetter<IndexableItem, Integer> getter = IndexableItem::getIntID;
-//        set.treeIndex(getter);
+//        set.treeIndex(IndexableItem::getIntID);
+        set.orderBy((Func1<IndexableItem, Integer> & Serializable) IndexableItem::getIntID);
 
         //act
         long startTime = System.nanoTime();
@@ -47,7 +47,16 @@ public class IndexableLinqingSetFixture {
         long endTime = System.nanoTime();
 
         //assert
-//        assertThat(endTime - startTime).isLessThan(100);
         System.out.println("took: " + (endTime - startTime)/1000 + "us");
+    }
+
+    @Test
+    public void when_creating_index_after_query_should_get_newly_cached_value_not_other_thing(){
+
+        //ie call orderBy(X) --this will likely get X put in the 'no index for' list
+        //call addIndex(X) --SHOULD remove X from the 'no index for' list
+        //call orderBy(X) again -- should get the index just added
+
+        fail();
     }
 }

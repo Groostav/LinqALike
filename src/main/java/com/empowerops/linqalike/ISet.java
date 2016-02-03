@@ -9,7 +9,6 @@ import org.pcollections.PSet;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -20,7 +19,6 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
     private static final ISet Empty = new ISet();
     @SuppressWarnings("unchecked") //thanks to immutability this is safe!
     public static <T> ISet<T> empty(){ return Empty; }
-
 
     private final PSet<TElement> backingSet;
 
@@ -71,10 +69,12 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
         return new ISet<>(backingSet.plus(toInclude));
     }
 
+
     @Override
     @SafeVarargs
     public final ISet<TElement> union(TElement... toInclude) {
         Preconditions.notNull(toInclude, "toInclude");
+
         return new ISet<>(backingSet.plusAll(Arrays.asList(toInclude)));
     }
 
