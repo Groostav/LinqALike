@@ -12,12 +12,12 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class IndexableLinqingSet<TElement> extends LinqingSet<TElement> {
 
-//    private final Map<Method, LinqingSet<TElement>> hashIndexes = new HashMap<>();
     private final Map<Method, SortedLinqingSet<TElement>> treeIndexes = new HashMap<>();
     private final LinqingMap<Class, Method> indexAliasesByLambdaType = new LinqingMap<>();
     private final HashSet<Class> nonIndexedLambdaClasses = new HashSet<>();
@@ -97,8 +97,8 @@ public class IndexableLinqingSet<TElement> extends LinqingSet<TElement> {
         treeIndexes.put(targetMethod, index);
     }
 
-    private void onChange() {
-//        throw new UnsupportedOperationException("onChange");
+    private void onChange(Consumer<SortedLinqingSet<TElement>> actionTaken) {
+        treeIndexes.values().forEach(actionTaken);
     }
     
     // ----------------------------------------------------
@@ -107,7 +107,11 @@ public class IndexableLinqingSet<TElement> extends LinqingSet<TElement> {
     @Override
     public Iterator<TElement> iterator() {
         Iterator<TElement> superIter = super.iterator();
+
         return new Iterator<TElement>() {
+
+            TElement current = null;
+
             @Override
             public boolean hasNext() {
                 return superIter.hasNext();
@@ -115,123 +119,148 @@ public class IndexableLinqingSet<TElement> extends LinqingSet<TElement> {
 
             @Override
             public TElement next() {
-                return superIter.next();
+                return current = superIter.next();
             }
 
             @Override
             public void remove() {
                 superIter.remove();
-                onChange();
+
+                //since these are indexes, this should be O(log(n)).
+                onChange(set -> set.remove(current));
             }
         };
     }
 
+
+
     @Override
-    public boolean removeAll(Collection<?> c) {
+    public boolean removeAll(Collection<?> toRemove) {
         boolean changed = true;
-		try { return changed = super.removeAll(c); }
-		finally { if(changed) onChange(); }
+		try { return changed = super.removeAll(toRemove); }
+		finally { if(changed) onChange(index -> index.removeAll(toRemove)); }
     }
 
     @Override
     public boolean removeIf(Predicate<? super TElement> filter) {
         boolean changed = true;
 		try { return changed = super.removeIf(filter); }
-		finally { if(changed) onChange(); }
+		finally { if(changed) onChange(index -> index.removeIf(filter)); }
     }
 
     @Override
     public boolean removeElement(TElement toRemove) {
         boolean changed = true;
 		try { return changed = super.removeElement(toRemove); }
-		finally { if(changed) onChange(); }
+		finally { if(changed) onChange(index -> index.removeElement(toRemove)); }
     }
 
     @Override
-    public boolean addAll(Collection<? extends TElement> c) {
+    public boolean addAll(Collection<? extends TElement> elementsToAdd) {
         boolean changed = true;
-		try { return changed = super.addAll(c); }
-		finally { if(changed) onChange(); }
+		try { return changed = super.addAll(elementsToAdd); }
+		finally { if(changed) onChange(index -> index.addAll(elementsToAdd)); }
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {
+    public boolean retainAll(Collection<?> elementsToKeep) {
         boolean changed = true;
-        try { return changed = super.retainAll(c); }
-		finally { if(changed) onChange(); }
+        try { return changed = super.retainAll(elementsToKeep); }
+		finally { if(changed) onChange(index -> index.retainAll(elementsToKeep)); }
     }
 
 
     @Override
-    public boolean add(TElement tElement) {
+    public boolean add(TElement newMember) {
         boolean changed = true;
-		try { return changed = super.add(tElement); }
-		finally { if(changed) onChange(); }
+		try { return changed = super.add(newMember); }
+		finally { if(changed) onChange(index -> index.add(newMember)); }
     }
 
     @Override
-    public boolean remove(Object o) {
+    public boolean remove(Object toRemove) {
         boolean changed = true;
-		try { return changed = super.remove(o); }
-		finally { if(changed) onChange(); }
+		try { return changed = super.remove(toRemove); }
+		finally { if(changed) onChange(index -> index.remove(toRemove)); }
     }
 
     @Override
     public void clear() {
         try { super.clear(); }
-        finally { onChange(); }
+        finally { onChange(Collection::clear); }
     }
 
     @Override
     public boolean retainAll(Iterable<? extends TElement> valuesToKeep) {
         boolean changed = true;
 		try { return changed = super.retainAll(valuesToKeep); }
-		finally { if(changed) onChange(); }
+		finally { if(changed) onChange(index -> index.retainAll(valuesToKeep)); }
     }
 
     @Override
     public boolean removeAll(Iterable<? extends TElement> valuesToRemove) {
         boolean changed = true;
 		try { return changed = super.removeAll(valuesToRemove); }
-		finally { if(changed) onChange(); }
+		finally { if(changed) onChange(index -> index.removeAll(valuesToRemove)); }
     }
 
     @Override
     public boolean addAllRemaining(Iterator<? extends TElement> valuesToBeAdded) {
         boolean changed = true;
         try { return changed = super.addAllRemaining(valuesToBeAdded); }
-        finally { if(changed) onChange(); }
+        finally { if(changed) onChange(index -> index.addAllRemaining(valuesToBeAdded)); }
     }
 
     @Override
     public boolean addAll(Iterable<? extends TElement> valuesToBeAdded) {
         boolean changed = true;
 		try { return changed = super.addAll(valuesToBeAdded); }
-		finally { if(changed) onChange(); }
+		finally { if(changed) onChange(index -> index.addAll(valuesToBeAdded)); }
     }
 
     @Override @SafeVarargs
     public final boolean addAll(TElement... valuesToBeAdded) {
-        boolean changed = true;
+
+        return doChange(collection -> collection.addAll(valuesToBeAdded));
+
 		try { return changed = super.addAll(valuesToBeAdded); }
-		finally { if(changed) onChange(); }
+		finally { if(changed) onChange(index -> index.addAll(valuesToBeAdded)); }
     }
 
+    private boolean doChange(Func1<IndexableLinqingSet<TElement>, Boolean> transform){
+        boolean changed;
+        try {
+            changed = transform.getFrom(this);
+        }
+        catch(Exception e){
+            Optional<ExceptionSet> aggregateEx = onChange(x -> transform.getFrom(x));
+            aggregateEx.setInitialException(e);
+            throw aggregateEx;
+        }
+        if(changed) try {
+            Optional<ExceptionSet> aggregateEx = onChange(index -> index.addAll(valuesToBeAdded));
+            aggregateEx.map(exception -> { throw exception; });
+            return changed;
+        }
+
+    }
+
+
     @Override
-    public void clearAndAddAll(Iterable<? extends TElement> newItems) {
-        try { super.clearAndAddAll(newItems); }
-		finally { onChange(); }
+    public void setAll(Iterable<? extends TElement> newItems) {
+        try { super.setAll(newItems); }
+		finally { onChange(index -> index.setAll(newItems)); }
     }
 
     @Override
     public void replace(TElement oldItem, TElement newItem) {
         try { super.replace(oldItem, newItem); }
-		finally { onChange(); }
+		finally { onChange(index -> index.replace(oldItem, newItem)); }
     }
 
     @Override
     public void replace(TElement oldItem, TElement newItem, EqualityComparer<? super TElement> comparer) {
         try { super.replace(oldItem, newItem, comparer); }
-		finally { onChange(); }
+		finally { onChange(index -> index.replace(oldItem, newItem, comparer)); }
     }
 }

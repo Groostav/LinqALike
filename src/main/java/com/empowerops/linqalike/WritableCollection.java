@@ -78,7 +78,7 @@ public interface WritableCollection<TElement> extends Iterable<TElement>, Querya
         }
     }
 
-    default void clearAndAddAll(Iterable<? extends TElement> newItems){
+    default void setAll(Iterable<? extends TElement> newItems){
         clear();
         addAll(newItems);
     }
