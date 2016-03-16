@@ -2,6 +2,7 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.*;
 import com.empowerops.linqalike.delegate.*;
+import com.empowerops.linqalike.experimental.IList;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -812,6 +813,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * each element in this queryable
      */
     <TTransformed> Queryable<TTransformed> select(Func1<? super TElement, TTransformed> selector);
+
+    //TODO
+    <TTransformed> SourcedBiqueryable<TElement, TTransformed> pushSelect(Func1<? super TElement, TTransformed> selector);
 
     /**
      * Gets a set of items by aggregating the result from the specified selector applied against

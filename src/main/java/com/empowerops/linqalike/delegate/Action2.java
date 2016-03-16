@@ -1,11 +1,17 @@
 package com.empowerops.linqalike.delegate;
 
+import com.empowerops.linqalike.common.Tuple;
+
 @FunctionalInterface
 public interface Action2<TFirstParameter, TSecondParameter>{
 
-    public void doUsing(TFirstParameter firstArgument, TSecondParameter secondArgument);
+    void doUsing(TFirstParameter firstArgument, TSecondParameter secondArgument);
 
-    public static class WithDescription<TFirstParameter, TSecondParameter>
+    default Action1<Tuple<? extends TFirstParameter, ? extends TSecondParameter>> toActionOnTuple(){
+        return tuple -> this.doUsing(tuple.left, tuple.right);
+    }
+
+    class WithDescription<TFirstParameter, TSecondParameter>
             implements Action2<TFirstParameter, TSecondParameter>{
 
         public final String description;

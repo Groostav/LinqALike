@@ -1,12 +1,11 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.Tuple;
-import com.empowerops.linqalike.delegate.BiCondition;
-import com.empowerops.linqalike.delegate.Func1;
-import com.empowerops.linqalike.delegate.Func2;
-import com.empowerops.linqalike.delegate.Func3;
+import com.empowerops.linqalike.delegate.*;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Created by Geoff on 2015-10-18.
@@ -218,6 +217,8 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
     Queryable<TJoined> zip(Iterable<TThird> rightElements,
                            Func3<? super TLeft, ? super TRight, ? super TThird, TJoined> joinedElementFactory);
 
-    public Queryable<Tuple<TLeft, TRight>> asTuples();
+    Queryable<Tuple<TLeft, TRight>> asTuples();
+
+    void forEach(Action2<? super TLeft, ? super TRight> consumer);
 }
 

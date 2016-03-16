@@ -282,6 +282,12 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     Queryable<TTransformed> select(Func1<? super TElement, TTransformed> selector){
         return Linq.select(this, selector);
     }
+
+    /** {@inheritDoc} */ @Override default public
+    <TTransformed> SourcedBiqueryable<TElement, TTransformed> pushSelect(Func1<? super TElement, TTransformed> selector){
+        return Linq.pushSelect(this, selector);
+    }
+
     /** {@inheritDoc} */ @Override default public
 	<TTransformed>
     Queryable<TTransformed> selectMany(Func1<? super TElement, ? extends Iterable<TTransformed>> selector){

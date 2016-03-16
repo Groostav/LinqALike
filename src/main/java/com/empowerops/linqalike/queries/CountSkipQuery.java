@@ -79,8 +79,6 @@ public class CountSkipQuery<TElement> implements DefaultedQueryable<TElement>, F
         private final List<TElement> sourceElements;
         private final int skipCount;
 
-        private List<TElement> sublist;
-
         public ForList(List<TElement> sourceElements, int skipCount){
             Preconditions.notNegative(skipCount, "skipCount");
 
@@ -90,21 +88,17 @@ public class CountSkipQuery<TElement> implements DefaultedQueryable<TElement>, F
 
         @Override
         public Iterator<TElement> iterator() {
-            pullSublist();
-            return sublist.iterator();
+            return pullSublist().iterator();
         }
 
         @Override
         public int size() {
-            pullSublist();
-            return sublist.size();
+            return pullSublist().size();
         }
 
-        private void pullSublist() {
-            if(sublist == null) {
-                int fromIndex = Math.max(0, Math.min(sourceElements.size(), skipCount));
-                sublist = sourceElements.subList(fromIndex, sourceElements.size());
-            }
+        private List<TElement> pullSublist() {
+            int fromIndex = Math.max(0, Math.min(sourceElements.size(), skipCount));
+            return sourceElements.subList(fromIndex, sourceElements.size());
         }
     }
 }

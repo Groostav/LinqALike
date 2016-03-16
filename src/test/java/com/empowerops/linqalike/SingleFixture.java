@@ -80,7 +80,7 @@ public class SingleFixture extends FixtureBase {
 
         //act & assert
         assertThrows(SingletonSetContainsMultipleElementsException.class, () -> colours2.single(startsWithBCondition));
-        startsWithBCondition.shouldHaveBeenInvoked(FOUR_TIMES);
+        assertThat(startsWithBCondition.getNumberOfInvocations()).isGreaterThanOrEqualTo(2);
     }
 
     @Theory

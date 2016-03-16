@@ -171,6 +171,12 @@ public class Linq {
         return new SelectQuery<>(sourceElements, targetSite);
     }
 
+    public static <TElement, TTransformed>
+    SourcedBiqueryable<TElement, TTransformed> pushSelect(Iterable<TElement> sourceElements,
+                                                          Func1<? super TElement, TTransformed> targetSite) {
+        return new SourcedBiqueryable<>(sourceElements, targetSite);
+    }
+
     public static <TElement>
     boolean any(Iterable<? extends TElement> sourceElements) {
         return ImmediateInspections.any(sourceElements);

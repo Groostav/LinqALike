@@ -1,16 +1,17 @@
-package com.empowerops.linqalike;
+package com.empowerops.linqalike.experimental;
 
+import com.empowerops.linqalike.*;
 import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.common.Preconditions;
 import com.empowerops.linqalike.delegate.Func1;
 import com.empowerops.linqalike.queries.FastSize;
-import org.pcollections.PSet;
+import com.github.andrewoma.dexx.collection.HashSet;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
+
+import static com.empowerops.linqalike.Factories.from;
 
 /**
  * Created by Geoff on 2015-12-02.
@@ -21,14 +22,22 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
     @SuppressWarnings("unchecked") //thanks to immutability this is safe!
     public static <T> ISet<T> empty(){ return Empty; }
 
-
-    private final PSet<TElement> backingSet;
+    private final HashSet<TElement> backingSet;
 
     public ISet(){
-        backingSet = org.pcollections.Empty.orderedSet();
+        this(HashSet.empty());
     }
 
-    public ISet(PSet<TElement> source) {
+    public ISet(TElement... initialElements){
+        this(HashSet.<TElement>factory().newBuilder().addAll(from(initialElements)).build());
+    }
+
+    @SuppressWarnings("unchecked")
+    public ISet(Iterable<? extends TElement> initialElements){
+        this((HashSet<TElement>)HashSet.<TElement>factory().newBuilder().addAll((Iterable) initialElements).build());
+    }
+
+    private ISet(HashSet<TElement> source) {
         backingSet = source;
     }
 
@@ -44,12 +53,17 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
 
     @Override
     public boolean contains(Object o) {
-        return backingSet.contains(o);
+        return backingSet.contains((TElement)o);
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return backingSet.containsAll(c);
+        for(Object elem : c){
+            if ( ! contains(elem)){
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -64,28 +78,37 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return backingSet.toArray(a);
+        return Linq.toArray(this, a);
     }
 
+    @Override
     public ISet<TElement> union(TElement toInclude) {
-        return new ISet<>(backingSet.plus(toInclude));
+        return new ISet<>(backingSet.add(toInclude));
     }
 
     @Override
     @SafeVarargs
     public final ISet<TElement> union(TElement... toInclude) {
         Preconditions.notNull(toInclude, "toInclude");
-        return new ISet<>(backingSet.plusAll(Arrays.asList(toInclude)));
+
+        HashSet<TElement> set = backingSet;
+        for(TElement elem : toInclude){
+            set = set.add(elem);
+        }
+
+        return new ISet<>(set);
     }
 
     @Override
     public ISet<TElement> union(Iterable<? extends TElement> toInclude) {
         Preconditions.notNull(toInclude, "toInclude");
 
-        Collection<? extends TElement> source = toInclude instanceof Collection
-                ? (Collection) toInclude
-                : Factories.asList(toInclude);
-        return new ISet<>(backingSet.plusAll(source));
+        HashSet<TElement> set = backingSet;
+        for(TElement elem : toInclude){
+            set = set.add(elem);
+        }
+
+        return new ISet<>(set);
     }
 
     @Override
@@ -107,25 +130,32 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
     }
 
     public ISet<TElement> except(TElement toExclude) {
-        return new ISet<>(backingSet.minus(toExclude));
+        return new ISet<>(backingSet.remove(toExclude));
     }
 
     @Override
     @SafeVarargs
     public final ISet<TElement> except(TElement... toExclude) {
         Preconditions.notNull(toExclude, "toExclude");
+        HashSet<TElement> set = backingSet;
 
-        return new ISet<>(backingSet.minusAll(Arrays.asList(toExclude)));
+        for(TElement elem : toExclude){
+            set = set.remove(elem);
+        }
+
+        return new ISet<>(set);
     }
 
     @Override
     public ISet<TElement> except(Iterable<? extends TElement> toExclude) {
         Preconditions.notNull(toExclude, "toExclude");
 
-        Collection<? extends TElement> source = toExclude instanceof Collection
-                ? (Collection) toExclude
-                : Factories.asList(toExclude);
-        return new ISet<>(backingSet.minusAll(source));
+        HashSet<TElement> set = backingSet;
+        for(TElement elem : toExclude){
+            set = set.remove(elem);
+        }
+
+        return new ISet<>(set);
     }
 
     @Override
@@ -148,7 +178,7 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
      */
     @Override
     public boolean add(TElement tElement) {
-        return backingSet.add(tElement);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -157,7 +187,7 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
      */
     @Override
     public boolean remove(Object o) {
-        return backingSet.remove(o);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -166,7 +196,7 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
      */
     @Override
     public boolean addAll(Collection<? extends TElement> c) {
-        return backingSet.addAll(c);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -174,7 +204,7 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
      */
     @Override
     public boolean retainAll(Collection<?> c) {
-        return backingSet.retainAll(c);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -182,15 +212,15 @@ public final class ISet<TElement> implements Set<TElement>, ImmutableCollection<
      * use {@link #except(Iterable)}
      */
     @Override
-    public boolean removeAll(Collection<?> c) {
-        return backingSet.removeAll(c);
-    }
+    public boolean removeAll(Collection<?> c){
+    throw new UnsupportedOperationException();
+}
 
     /**
      * @deprecated this implementation of 'add' is gaurenteed to throw!
      */
     @Override
     public void clear() {
-        backingSet.clear();
+        throw new UnsupportedOperationException();
     }
 }

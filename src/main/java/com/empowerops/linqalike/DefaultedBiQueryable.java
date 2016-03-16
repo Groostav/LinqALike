@@ -2,12 +2,10 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.BiQueryAdapter;
 import com.empowerops.linqalike.common.Tuple;
-import com.empowerops.linqalike.delegate.BiCondition;
-import com.empowerops.linqalike.delegate.Func1;
-import com.empowerops.linqalike.delegate.Func2;
-import com.empowerops.linqalike.delegate.Func3;
+import com.empowerops.linqalike.delegate.*;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 //re: 'need inner tuple types'
 // without the ability to use a template <TLeftActual super TLeft>
@@ -425,5 +423,9 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
 
     default Queryable<Tuple<TLeft, TRight>> asTuples(){
         return Factories.from(this);
+    }
+
+    default void forEach(Action2<? super TLeft, ? super TRight> consumer){
+        forEach(consumer.toActionOnTuple()::doUsing);
     }
 }

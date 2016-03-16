@@ -1,7 +1,7 @@
 package com.empowerops.linqalike.assists;
 
-import com.empowerops.linqalike.IList;
-import com.empowerops.linqalike.ISet;
+import com.empowerops.linqalike.experimental.IList;
+import com.empowerops.linqalike.experimental.ISet;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.LinqingSet;
 import com.empowerops.linqalike.Queryable;
@@ -27,8 +27,10 @@ public abstract class FixtureBase {
     public @DataPoint static LinqingSet usingHashSet(){ return new LinqingSet(); }
     public @DataPoint static LinqingList usingList(){ return new LinqingList(); }
     public @DataPoint static DefaultedCollection usingWrapper() { return new DefaultedCollection(); }
-    public @DataPoint static ISet usingImmutableSet() { return new ISet(); }
-    public @DataPoint static IList usingImmutableList() { return new IList(); }
+
+    //TODO
+//    public @DataPoint static ISet usingImmutableSet() { return new ISet(); }
+//    public @DataPoint static IList usingImmutableList() { return new IList(); }
 
     /**
      * This method provides indirection for immutable and mutable collections.
