@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.8
-version = '1.0.76.232'
+version = '1.0.76.234'
 
 jar {
     manifest {
