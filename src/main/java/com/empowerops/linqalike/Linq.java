@@ -7,6 +7,7 @@ import com.empowerops.linqalike.queries.*;
 import java.io.InputStream;
 import java.util.*;
 import java.util.Comparator;
+import java.util.function.Consumer;
 
 import static com.empowerops.linqalike.CommonDelegates.*;
 import static com.empowerops.linqalike.Factories.from;
@@ -172,9 +173,9 @@ public class Linq {
     }
 
     public static <TElement, TTransformed>
-    SourcedBiqueryable<TElement, TTransformed> pushSelect(Iterable<TElement> sourceElements,
+    BiQueryable<TElement, TTransformed> pushSelect(Iterable<TElement> sourceElements,
                                                           Func1<? super TElement, TTransformed> targetSite) {
-        return new SourcedBiqueryable<>(sourceElements, targetSite);
+        return new PushSelectQuery<>(sourceElements, targetSite);
     }
 
     public static <TElement>
@@ -693,6 +694,13 @@ public class Linq {
                                                         TElement elementToFind,
                                                         Func1<? super TElement, TCompared> comparableSelector) {
         return ImmediateInspections.indexOf(reversed(sourceElements), elementToFind, performEqualsUsing(memoizedSelector(comparableSelector)));
+    }
+
+    @SuppressWarnings("unchecked") //would have to be Queryable<A> and iterable<B> => collision on iterator()
+    public static <TElement> Queryable<TElement> apply(Iterable<TElement> sourceElements,
+                                                       Action1<? super TElement> sideEffectTransform) {
+        sourceElements.forEach(sideEffectTransform::doUsing);
+        return sourceElements instanceof Queryable ? (Queryable) sourceElements : from(sourceElements);
     }
 
     public static class MapSpecific {

@@ -115,6 +115,11 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
     <TCompared extends Comparable<TCompared>>
     BiQueryable<TLeft, TRight> orderBy(Func2<? super TLeft, ? super TRight, TCompared> comparableSelector);
 
+    /**
+     * Alias for {@link #lefts()}, to be used idiomatically with {@link Queryable#pushSelect(Func1)}
+     */
+    Queryable<TLeft> popSelect();
+
     BiQueryable<TLeft, TRight> reversed();
 
     public <TTransformed>

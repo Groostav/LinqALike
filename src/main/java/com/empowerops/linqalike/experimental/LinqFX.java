@@ -79,8 +79,12 @@ public class LinqFX{
                 else {
                     CountDownLatch latch = new CountDownLatch(1);
                     Platform.runLater(() -> {
-                        handleChange(source, added, removed, from, to, isPermutation);
-                        latch.countDown();
+                        try {
+                            handleChange(source, added, removed, from, to, isPermutation);
+                        }
+                        finally {
+                            latch.countDown();
+                        }
                     });
                     try{
                         latch.await();

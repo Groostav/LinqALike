@@ -814,8 +814,31 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
     <TTransformed> Queryable<TTransformed> select(Func1<? super TElement, TTransformed> selector);
 
-    //TODO
-    <TTransformed> SourcedBiqueryable<TElement, TTransformed> pushSelect(Func1<? super TElement, TTransformed> selector);
+    /**
+     * Applies the transform against each element in this queryable, returning a zipped version of this queryable
+     * and the result of the transform.
+     *
+     * <p>this transform is similar to {@link #select(Func1)} in that it will apply the supplied transform,
+     * (lazily) against each element in this queryable. This method can be used idomatically with
+     * {@link BiQueryable#popSelect()} to apply some kind of other transform
+     * without loosing the shape of the initial queryable.
+     *
+     * <p>eg
+     * <pre>{@code
+     * Queryable<Customer> vars = sourceVars
+     *       .pushSelect(VariableSymbol::getName)
+     *       .where((cust, name) -> targetName.equals(name))
+     *       .popSelect()
+     *       .singleOrDefault()
+     * }</pre>
+     *
+     * @param selector the selector to apply against each element in <tt>this</tt> queryable
+     * @param <TTransformed> the type supplied by the <code>selector</code> and the type of
+     *                      {@link BiQueryable#rights()} in the result.
+     * @return A <code>biqueryable</code> each pair containing an element in <tt>this</tt> queryable
+     *         and the result of applying <code>selector</code> against it, in the order of this queryable.
+     */
+    <TTransformed> BiQueryable<TElement, TTransformed> pushSelect(Func1<? super TElement, TTransformed> selector);
 
     /**
      * Gets a set of items by aggregating the result from the specified selector applied against
@@ -1382,7 +1405,6 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Determines if this queryable is a supersequence of the supplied sequence
      * <p>
-     * <p>
      * <p>'A' supersequence of 'B' if if there is a some portion of 'A' that sequence-equals 'B'.
      * for example the sequence {a, b, c, d, e} is supersequence of the sequence {b, c, d, e},
      * but it is <i>not</i> a supersequence of the sequence {a, b, c, d, e, f, g, h, i, j, k}.
@@ -1465,7 +1487,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * performs the specified action on each pair of elements in this queryable and the supplied
      * <code>rightElements</code>.
-     * <p>
+     *
      * <p>this queryable and <code>rights</code> must have the same number of elements.
      *
      * @param rightElements  another collection of elements, with the same size as this queryable.
@@ -1475,6 +1497,85 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
     <TRight>
     void forEachWith(Iterable<TRight> rightElements, Action2<? super TElement, ? super TRight> zippedConsumer);
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>consider using {@link #apply(Action1)} or {@link #select(Func1)}
+     */
+    @Override
+    //TODO this is annoying, hopefull the compiler figures this out,
+    //do i really have to provide an implementation just so I can add documentation?
+    default void forEach(Consumer<? super TElement> action){
+        Iterable.super.forEach(action);
+    }
+
+    /**
+     * Applies <code>sideEffectTransform</code> against each element in <tt>this</tt> queryable,
+     * and then returns <tt>this</tt> queryable.
+     *
+     * <p>This method is similar to {@link #forEach(Consumer)} in that each element will have the
+     * specified element applied against it, but different in that it can be pipelined.
+     * Because this flow is intrinsically impure, care must be made to ensure that the lazy nature of
+     * linq-a-like does not interfere with the expected behaviour when using this method.
+     * It is often appropriate to call {@link #immediately()} after this method so that
+     * <code>sideEffectTransform</code> will be executed exactly once for each element in <tt>this</tt>.
+     *
+     * <p><b>This method is antithetical to the referentially transparent ('pure') paradigm
+     * that drives LinqALike's design.</b> This has a number of interesting reprocussions.
+     *
+     * <p> consider
+     * <pre>{@code
+     *
+     * LinqingList<Customer> allCustomers = Factories.asList(
+     *   new Customer("Bob", 0),
+     *   new Customer("Sally", 5)
+     * );
+     *
+     * //...
+     *
+     * Queryable<Customer> incrementedCustomers = allCustomers.apply(cust -> cust.visits += 1);
+     *
+     * //...
+     *
+     * for(Customer customer : incrementedCustomers){
+     *   ui.registerNewComponent(makeControllerFor(customer));
+     * }
+     *
+     * //...
+     *
+     * incrementedCustomers.forEach(cust -> println(cust));
+     * }</pre>
+     *
+     * the printed result would be
+     *
+     * <pre>
+     * Customer[name=Bob, visits=2]
+     * Customer[name=Sally, visits=7]
+     * </pre>
+     *
+     * <p>This is expected behaviour because of the lazyness of Linq-a-Like.
+     * the sideEffectTransform is only applied at iteration time, which in this example is
+     * as part of the first for-each loop and the later forEach method.
+     * To achieve a behaviour wherein the visits are only incremented once,
+     * call {@link #immediately()} after <code>apply(cust -&gt; cust.visits += 1)</code>
+     *
+     * <p>Most mutating transforms can be refactored into referentially transparent (pure) transforms.
+     * Consider refactoring <code>sideEffectTransform</code> into something
+     * that doesn't modify the elements or environment. In such a case, {@link #select(Func1)} or
+     * {@link #pushSelect(Func1)} should be used.
+     *
+     * <p>Some common use cases for this method would be
+     * if two different and disjoint mutators need to be applied against the same list
+     * (such as a environment.modify and an element.modify methods),
+     * or if the exact time of iteration is known trivially
+     * (such as in the case where the queryable is a parameter to a for-each loop),
+     * or in the case of technically-impure (eg logging) or idempotent stateful transforms.
+     *
+     * @param sideEffectTransform a function which will apply some side effect
+     * @return <tt>this</tt> queryable, with each element updated as per <code>sideEffectTransform</code>
+     */
+    Queryable<TElement> apply(Action1<? super TElement> sideEffectTransform);
 }
 
 

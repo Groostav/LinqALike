@@ -9,12 +9,12 @@ import java.util.Iterator;
 /**
  * Created by Geoff on 3/9/2016.
  */
-public class SourcedBiqueryable<TSource, TTransformed> implements DefaultedBiQueryable<TSource, TTransformed>, FastSize{
+public class PushSelectQuery<TSource, TTransformed> implements DefaultedBiQueryable<TSource, TTransformed>, FastSize{
 
     private Iterable<TSource> source;
     private Func1<? super TSource, TTransformed> selector;
 
-    public SourcedBiqueryable(Iterable<TSource> source, Func1<? super TSource, TTransformed> selector){
+    public PushSelectQuery(Iterable<TSource> source, Func1<? super TSource, TTransformed> selector){
         this.source = source;
         this.selector = selector;
     }
@@ -23,7 +23,7 @@ public class SourcedBiqueryable<TSource, TTransformed> implements DefaultedBiQue
 
     @Override
     public Iterator<Tuple<TSource, TTransformed>> iterator() {
-        return new SourcedBiquery();
+        return new PushSelectIterator();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SourcedBiqueryable<TSource, TTransformed> implements DefaultedBiQue
                 : ImmediateInspections.size(source);
     }
 
-    private class SourcedBiquery implements Iterator<Tuple<TSource, TTransformed>>{
+    private class PushSelectIterator implements Iterator<Tuple<TSource, TTransformed>>{
 
         private final Iterator<TSource> sourceItr = source.iterator();
 

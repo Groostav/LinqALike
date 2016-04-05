@@ -6,6 +6,7 @@ import com.empowerops.linqalike.delegate.*;
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * An <i>implementation</i> (by way of default extension methods) to the {@link com.empowerops.linqalike.Queryable} interface.
@@ -26,6 +27,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     /** {@inheritDoc} */ @Override default public <TAccumulate>
     TAccumulate aggregate(TAccumulate seed, Func2<? super TAccumulate, ? super TElement, TAccumulate> aggregator){
         return Linq.aggregate(this, seed, aggregator);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> apply(Action1<? super TElement> sideEffectTransform) {
+        return Linq.apply(this, sideEffectTransform);
     }
 
     /** {@inheritDoc} */ @Override default public
@@ -284,7 +290,7 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public
-    <TTransformed> SourcedBiqueryable<TElement, TTransformed> pushSelect(Func1<? super TElement, TTransformed> selector){
+    <TTransformed> BiQueryable<TElement, TTransformed> pushSelect(Func1<? super TElement, TTransformed> selector){
         return Linq.pushSelect(this, selector);
     }
 
@@ -600,4 +606,5 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     void forEachWith(Iterable<TRight> rightElements, Action2<? super TElement, ? super TRight> tupleConsumer){
         Linq.forEachWith(this, rightElements, tupleConsumer);
     }
+
 }

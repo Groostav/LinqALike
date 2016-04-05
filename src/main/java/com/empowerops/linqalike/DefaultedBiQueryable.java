@@ -1,6 +1,7 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.BiQueryAdapter;
+import com.empowerops.linqalike.common.QueryAdapter;
 import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
@@ -216,6 +217,10 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return new BiQueryAdapter.FromPairs<>(Linq.orderBy(this.asTuples(), comparableSelector.asFuncOnTuple()));
     }
 
+    default Queryable<TLeft> popSelect() {
+        return lefts();
+    }
+
     default BiQueryable<TLeft, TRight> reversed(){
         return new BiQueryAdapter.FromPairs<>(Linq.reversed(this.asTuples()));
     }
@@ -283,18 +288,30 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.sum(this.asTuples(), valueSelector.asFuncOnTuple());
     }
 
-    default BiQueryable<TLeft, TRight> immediately(){ throw new UnsupportedOperationException(); }
+    default BiQueryable<TLeft, TRight> immediately(){
+        return new BiQueryAdapter.FromPairs<>(Linq.immediately(this.asTuples()));
+    }
 
-    default LinqingMap<TLeft, TRight> toMap(){ throw new UnsupportedOperationException(); }
+    default LinqingMap<TLeft, TRight> toMap(){
+        return Linq.toMap(lefts(), rights());
+    }
 
     default <TKey, TValue> LinqingMap<TKey, TValue> toMap(Func2<? super TLeft, ? super TRight, TKey> keySelector,
-                                                  Func2<? super TLeft, ? super TRight, TValue> valueSelector){ throw new UnsupportedOperationException(); }
+                                                          Func2<? super TLeft, ? super TRight, TValue> valueSelector){
+        return Linq.toMap(this, keySelector.asFuncOnTuple(), valueSelector.asFuncOnTuple());
+    }
 
-    default <TDesired> TDesired[] toArray(TDesired[] typedArray){ throw new UnsupportedOperationException(); }
+    default <TDesired> TDesired[] toArray(TDesired[] typedArray){
+        return Linq.toArray(this.asTuples(), typedArray);
+    }
 
-    default <TDesired> TDesired[] toArray(Func1<Integer, TDesired[]> arrayFactory){ throw new UnsupportedOperationException(); }
+    default <TDesired> TDesired[] toArray(Func1<Integer, TDesired[]> arrayFactory){
+        return Linq.toArray(this.asTuples(), arrayFactory);
+    }
 
-    default Object[] toArray(){ throw new UnsupportedOperationException(); }
+    default Object[] toArray(){
+        return Linq.toArray(this.asTuples());
+    }
 
     @Override
     default LinqingList<Tuple<TLeft, TRight>> toList(){
