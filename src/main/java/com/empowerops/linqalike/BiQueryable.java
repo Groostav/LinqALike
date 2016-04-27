@@ -225,5 +225,7 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
     Queryable<Tuple<TLeft, TRight>> asTuples();
 
     void forEach(Action2<? super TLeft, ? super TRight> consumer);
+
+    BiQueryable<TLeft, TRight> inlineForEach(Action2<? super TLeft, ? super TRight> consumer);
 }
 

@@ -273,5 +273,5 @@ public class SelectQueryFixture extends FixtureBase {
         assertThat(namedValues.last()).isEqualTo(namedValues.last());
         assertThat(trackedTransform.getNumberOfInvocations()).isEqualTo(4);
     }
-
 }
+

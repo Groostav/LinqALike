@@ -6,7 +6,6 @@ import com.empowerops.linqalike.delegate.*;
 import java.io.InputStream;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * An <i>implementation</i> (by way of default extension methods) to the {@link com.empowerops.linqalike.Queryable} interface.
@@ -30,8 +29,8 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public
-    Queryable<TElement> apply(Action1<? super TElement> sideEffectTransform) {
-        return Linq.apply(this, sideEffectTransform);
+    Queryable<TElement> inlineForEach(Action1<? super TElement> sideEffectTransform) {
+        return Linq.inlineForEach(this, sideEffectTransform);
     }
 
     /** {@inheritDoc} */ @Override default public

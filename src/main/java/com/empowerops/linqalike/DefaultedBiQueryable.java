@@ -445,4 +445,9 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
     default void forEach(Action2<? super TLeft, ? super TRight> consumer){
         forEach(consumer.toActionOnTuple()::doUsing);
     }
+
+    @Override
+    default BiQueryable<TLeft, TRight> inlineForEach(Action2<? super TLeft, ? super TRight> consumer) {
+        return new BiQueryAdapter.FromPairs<>(Linq.inlineForEach(this.asTuples(), consumer.toActionOnTuple()));
+    }
 }

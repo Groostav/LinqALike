@@ -1501,10 +1501,10 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * {@inheritDoc}
      *
-     * <p>consider using {@link #apply(Action1)} or {@link #select(Func1)}
+     * <p>consider using {@link #inlineForEach(Action1)} or {@link #select(Func1)}
      */
     @Override
-    //TODO this is annoying, hopefull the compiler figures this out,
+    //TODO this is annoying, hopefully the compiler figures this out,
     //do i really have to provide an implementation just so I can add documentation?
     default void forEach(Consumer<? super TElement> action){
         Iterable.super.forEach(action);
@@ -1575,7 +1575,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @param sideEffectTransform a function which will apply some side effect
      * @return <tt>this</tt> queryable, with each element updated as per <code>sideEffectTransform</code>
      */
-    Queryable<TElement> apply(Action1<? super TElement> sideEffectTransform);
+    Queryable<TElement> inlineForEach(Action1<? super TElement> sideEffectTransform);
 }
 
 
