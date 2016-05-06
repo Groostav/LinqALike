@@ -11,6 +11,10 @@ public class Tuple<TLeftMember, TRightMember> implements Map.Entry<TLeftMember, 
     public final TLeftMember left;
     public final TRightMember right;
 
+    public static <TL, TR> Tuple<TL, TR> Pair(TL l, TR r){
+        return new Tuple<>(l, r);
+    }
+
     public Tuple(TLeftMember left, TRightMember right){
         this.left = left;
         this.right = right;

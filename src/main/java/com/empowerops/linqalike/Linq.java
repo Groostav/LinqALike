@@ -704,13 +704,6 @@ public class Linq {
     public static class MapSpecific {
         private MapSpecific(){}
 
-
-        public static <TKey, TValue> Queryable<TValue> getAll(Iterable<? extends Map.Entry<TKey, TValue>> entries,
-                                                              Iterable<? extends TKey> keys) {
-            return where(entries, x -> containsElement(keys, x.getKey())).values();
-        }
-
-
         public static <TKey, TValue>
         QueryableMap<TValue, TKey> inverted(Iterable<? extends Map.Entry<TKey, TValue>> sourceEntries) {
             return new InvertMapQuery<>(sourceEntries);

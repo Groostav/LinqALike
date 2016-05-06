@@ -15,7 +15,7 @@ public interface DefaultedQueryableMap<TKey, TValue> extends QueryableMap<TKey, 
 
     @Override
     public default Queryable<TValue> getAll(Iterable<? extends TKey> keys){
-        return Linq.MapSpecific.getAll(this, keys);
+        return Factories.from(keys).where(keySet()::containsElement).select(this::getValueFor);
     }
 
     @Override default public Queryable<TKey> keySet(){
