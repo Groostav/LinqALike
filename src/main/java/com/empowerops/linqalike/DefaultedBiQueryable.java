@@ -8,6 +8,8 @@ import com.empowerops.linqalike.delegate.*;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import static com.empowerops.linqalike.CommonDelegates.nullSafeEquals;
+
 //re: 'need inner tuple types'
 // without the ability to use a template <TLeftActual super TLeft>
 // I cant statically handle this case, using java's generics system.
@@ -182,6 +184,14 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.lastOrDefault(this, condition.toConditionOnTuple());
     }
 
+    default TRight getValueFor(TLeft key){
+        return this.singleOrDefault((l, r) -> nullSafeEquals(l, key)).map(it -> it.right).orElse(null);
+    }
+
+    default Queryable<TRight> getAll(Iterable<? extends TLeft> keys){
+        return this.where((l, r) -> Linq.containsElement(keys, l)).select((l, r) -> r);
+    }
+
     default <TCompared extends Comparable<TCompared>>
     Optional<TCompared> max(Func2<? super TLeft, ? super TRight, TCompared> valueSelector){
         return Linq.max(this, valueSelector.asFuncOnTuple());
@@ -240,6 +250,32 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
             return new Tuple<>(projectedLeft, projectedRight);
         };
         return new BiQueryAdapter.FromPairs<>(Linq.select(this.asTuples(), projector));
+    }
+
+    default <TLeftTransformed>
+    BiQueryable<TLeftTransformed, TRight> selectLeft(Func2<? super TLeft, ? super TRight, TLeftTransformed> leftTransform){
+        return new BiQueryAdapter.FromPairs<>(
+                Linq.select(this, tuple -> new Tuple<>(leftTransform.asFuncOnTuple().getFrom(tuple), tuple.right))
+        );
+    }
+    default <TLeftTransformed>
+    BiQueryable<TLeftTransformed, TRight> selectLeft(Func1<? super TLeft, TLeftTransformed> leftTransform){
+        return new BiQueryAdapter.FromPairs<>(
+                Linq.select(this, tuple -> new Tuple<>(leftTransform.getFrom(tuple.left), tuple.right))
+        );
+    }
+
+    default <TRightTransformed>
+    BiQueryable<TLeft, TRightTransformed> selectRight(Func2<? super TLeft, ? super TRight, TRightTransformed> rightTransform){
+        return new BiQueryAdapter.FromPairs<>(
+                Linq.select(this, tuple -> new Tuple<>(tuple.left, rightTransform.asFuncOnTuple().getFrom(tuple)))
+        );
+    }
+    default <TRightTransformed>
+    BiQueryable<TLeft, TRightTransformed> selectRight(Func1<? super TRight, TRightTransformed> rightTransform){
+        return new BiQueryAdapter.FromPairs<>(
+                Linq.select(this, tuple -> new Tuple<>(tuple.left, rightTransform.getFrom(tuple.right)))
+        );
     }
 
     @SuppressWarnings("unchecked") //see note 'Need inner tuple types'

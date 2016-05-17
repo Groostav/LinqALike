@@ -1,14 +1,14 @@
 package com.empowerops.linqalike;
 
-import com.empowerops.linqalike.common.EqualityComparer;
-import com.empowerops.linqalike.delegate.Func1;
-
 import java.util.Map;
 
 /**
+ * @deprecated use BiQueryable; this interface is misleading as all queries implement get() in linear time,
+ * so its less misleading to use a BiQueryable.
+ *
  * Created by Geoff on 2014-05-22.
  */
-public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TValue>> {
+public interface QueryableMap<TKey, TValue> extends BiQueryable<TKey, TValue> {
 
     /**
      * gets the value that this key maps to, or <code>null</code>
@@ -18,40 +18,28 @@ public interface QueryableMap<TKey, TValue> extends Queryable<Map.Entry<TKey, TV
      *
      * @see Map#get(Object)
      */
-    public TValue getValueFor(TKey key);
+    @Override
+    TValue getValueFor(TKey key);
 
+    @Override
+    Queryable<TValue> getAll(Iterable<? extends TKey> keys);
     /**
      * @see java.util.Map#keySet()
      */
-    public Queryable<TKey> keySet();
-    public Queryable<TValue> values();
+    Queryable<TKey> keySet();
+
+    Queryable<TValue> values();
 
     boolean containsTKey(TKey candidateKey);
     boolean containsTValue(TValue candidateValue);
 
-    public LinqingMap<TKey, TValue> toMap();
-
-    public QueryableMap<TValue, TKey> inverted();
-
-    public Queryable<TValue> getAll(Iterable<? extends TKey> keys);
+    QueryableMap<TValue, TKey> inverted();
 
     @Override
-    public QueryableMap<TKey, TValue> immediately();
+    QueryableMap<TKey, TValue> immediately();
 
-    public ReadonlyLinqingMap<TKey, TValue> toReadonlyMap();
+    ReadonlyLinqingMap<TKey, TValue> toReadonlyMap();
 
-    public <TDesiredValue> QueryableMap<TKey, TDesiredValue> castValues();
-    public <TDesiredKey> QueryableMap<TDesiredKey, TValue> castKeys();
-
-    @Override QueryableMap<TKey, TValue> union(Map.Entry<TKey, TValue>... toInclude);
-
-    @Override QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> toInclude);
-
-    @Override
-    <TCompared> QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
-                                                 Func1<? super Map.Entry<TKey, TValue>, TCompared> comparableSelector);
-
-    @Override
-    QueryableMap<TKey, TValue> union(Iterable<? extends Map.Entry<TKey, TValue>> toInclude,
-                                     EqualityComparer<? super Map.Entry<TKey, TValue>> equalityComparator);
+    <TDesiredValue> QueryableMap<TKey, TDesiredValue> castValues();
+    <TDesiredKey> QueryableMap<TDesiredKey, TValue> castKeys();
 }

@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 /**
  * Created by Geoff on 2015-10-18.
  */
-//I'll have you know I'm experimenting with this interface while I'm in college...
 public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight>>{
 
     Queryable<TLeft> lefts();
@@ -94,6 +93,10 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     Optional<Tuple<TLeft, TRight>> lastOrDefault(BiCondition<? super TLeft, ? super TRight> condition);
 
+    TRight getValueFor(TLeft key);
+
+    Queryable<TRight> getAll(Iterable<? extends TLeft> keys);
+
     <TCompared extends Comparable<TCompared>>
     Optional<TCompared> max(Func2<? super TLeft, ? super TRight, TCompared> valueSelector);
 
@@ -122,14 +125,22 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     BiQueryable<TLeft, TRight> reversed();
 
-    public <TTransformed>
+    <TTransformed>
     Queryable<TTransformed> select(Func2<? super TLeft, ? super TRight, TTransformed> transform);
 
-    public <TLeftTransformed, TRightTransformed>
+    <TLeftTransformed, TRightTransformed>
     BiQueryable<TLeftTransformed, TRightTransformed> select(Func2<? super TLeft, ? super TRight, TLeftTransformed> leftTransform,
                                                             Func2<? super TLeft, ? super TRight, TRightTransformed> rightTransform);
 
     <TTransformed> Queryable<TTransformed> selectMany(Func2<? super TLeft, ? super TRight, ? extends Iterable<TTransformed>> selector);
+
+    <TLeftTransformed> BiQueryable<TLeftTransformed, TRight> selectLeft(Func2<? super TLeft, ? super TRight, TLeftTransformed> leftTransform);
+    <TLeftTransformed> BiQueryable<TLeftTransformed, TRight> selectLeft(Func1<? super TLeft, TLeftTransformed> leftTransform);
+
+    <TRightTransformed> BiQueryable<TLeft, TRightTransformed> selectRight(Func2<? super TLeft, ? super TRight, TRightTransformed> leftTransform);
+    <TRightTransformed> BiQueryable<TLeft, TRightTransformed> selectRight(Func1<? super TRight, TRightTransformed> leftTransform);
+
+    //select Many left & right, these are very similar to joins.
 
     Tuple<TLeft, TRight> single();
 

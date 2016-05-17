@@ -1,5 +1,6 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.Func;
 
 import javax.annotation.Nonnull;
@@ -103,6 +104,11 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
     }
 
     @Override
+    public @Nonnull ForwardingLinqingSet<Map.Entry<TKey, TValue>> entrySet() {
+        return new ForwardingLinqingSet<>(super.entrySet());
+    }
+
+    @Override
     public boolean containsTKey(TKey candidateKey) {
         return super.containsKey(candidateKey);
     }
@@ -113,13 +119,14 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
     }
 
     @Override
-    public ForwardingLinqingSet<Map.Entry<TKey, TValue>> entrySet() {
-        return new ForwardingLinqingSet<>((Set) super.entrySet());
-    }
-
-    @Override
-    public Iterator<Map.Entry<TKey, TValue>> iterator() {
-        return super.entrySet().iterator();
+    public Iterator<Tuple<TKey, TValue>> iterator() {
+        //why cant I just return entrySet.iterator()?
+        // Map.Entry -> Tuple,
+        // why are we using a tuple here?
+        // spcified by BiQueryable,
+        // why not use MapEntry there?
+        // left and right vs key and value. Hmm.
+        return entrySet().select(it -> new Tuple<>(it.getKey(), it.getValue())).iterator();
     }
 
     public TValue removeEntry(TKey key) {

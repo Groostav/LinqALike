@@ -38,8 +38,8 @@ public class IMap<TKey, TValue> implements Map<TKey, TValue>, DefaultedQueryable
     }
 
     @Override
-    public Iterator<Entry<TKey, TValue>> iterator() {
-        return new Iterator<Entry<TKey, TValue>>() {
+    public Iterator<Tuple<TKey, TValue>> iterator() {
+        return new Iterator<Tuple<TKey, TValue>>() {
 
             private Iterator<Pair<TKey, TValue>> backingIterator = backingMap.iterator();
 
@@ -49,7 +49,7 @@ public class IMap<TKey, TValue> implements Map<TKey, TValue>, DefaultedQueryable
             }
 
             @Override
-            public Entry<TKey, TValue> next() {
+            public Tuple<TKey, TValue> next() {
                 Pair<TKey, TValue> pair = backingIterator.next();
                 return new Tuple<>(pair.component1(), pair.component2());
             }

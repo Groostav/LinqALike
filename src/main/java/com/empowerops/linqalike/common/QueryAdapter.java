@@ -83,16 +83,16 @@ public final class QueryAdapter{
     }
 
     public static class ToQueryableMap<TKey, TValue> implements DefaultedQueryableMap<TKey, TValue> {
-        private final Iterable<? extends Map.Entry<TKey, TValue>> sourceQuery;
+        private final Iterable<? extends Tuple<TKey, TValue>> sourceQuery;
 
-        public ToQueryableMap(Iterable<? extends Map.Entry<TKey, TValue>> sourceQuery){
+        public ToQueryableMap(Iterable<? extends Tuple<TKey, TValue>> sourceQuery){
             this.sourceQuery = sourceQuery;
         }
 
         @Override
         @SuppressWarnings("unchecked") // safe because of iterator is covariant
-        public Iterator<Map.Entry<TKey, TValue>> iterator() {
-            return (Iterator<Map.Entry<TKey, TValue>>) sourceQuery.iterator();
+        public Iterator<Tuple<TKey, TValue>> iterator() {
+            return (Iterator<Tuple<TKey, TValue>>) sourceQuery.iterator();
         }
 
         @Override
@@ -267,8 +267,8 @@ public final class QueryAdapter{
         @Override public boolean containsTValue(TValue candidateValue) {
             return source.containsValue(candidateValue);
         }
-        @Override public Iterator<Map.Entry<TKey, TValue>> iterator() {
-            return source.entrySet().iterator();
+        @Override public Iterator<Tuple<TKey, TValue>> iterator() {
+            return Factories.from(source.entrySet()).select(it -> new Tuple<>(it.getKey(), it.getValue())).iterator();
         }
 
         @Override public TValue getValueFor(TKey key) {

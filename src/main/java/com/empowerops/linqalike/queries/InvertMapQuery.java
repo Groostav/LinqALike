@@ -27,11 +27,11 @@ public class InvertMapQuery<TOldKey, TNewKey> implements DefaultedQueryableMap<T
     }
 
     @Override
-    public Iterator<Map.Entry<TNewKey, TOldKey>> iterator() {
+    public Iterator<Tuple<TNewKey, TOldKey>> iterator() {
         return new InvertMapIterator();
     }
 
-    private class InvertMapIterator extends PrefetchingIterator<Map.Entry<TNewKey, TOldKey>> {
+    private class InvertMapIterator extends PrefetchingIterator<Tuple<TNewKey, TOldKey>> {
 
         Set<TNewKey> keySet = new HashSet<>();
         Iterator<? extends Map.Entry<TOldKey, TNewKey>> backingIterator = sourceEntries.iterator();

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LinqALike.iml" filepath="$PROJECT_DIR$/LinqALike.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LinqALike.iml" filepath="$PROJECT_DIR$/.idea/modules/LinqALike.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LinqALike_main.iml" filepath="$PROJECT_DIR$/.idea/modules/LinqALike_main.iml" group="LinqALike" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LinqALike_test.iml" filepath="$PROJECT_DIR$/.idea/modules/LinqALike_test.iml" group="LinqALike" />
     </modules>
   </component>
 </project>

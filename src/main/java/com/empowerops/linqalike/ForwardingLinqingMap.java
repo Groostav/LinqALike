@@ -1,5 +1,7 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.common.Tuple;
+
 import javax.annotation.Nonnull;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,8 +16,8 @@ public final class ForwardingLinqingMap<TKey, TValue> implements QueryableMap<TK
         this.source = source;
     }
 
-    @Override public Iterator<Entry<TKey, TValue>> iterator() {
-        return source.entrySet().iterator();
+    @Override public Iterator<Tuple<TKey, TValue>> iterator() {
+        return Factories.from(source.entrySet()).select(it -> new Tuple<>(it.getKey(), it.getValue())).iterator();
     }
     @Override public boolean containsKey(Object key) {
         return source.containsKey(key);
