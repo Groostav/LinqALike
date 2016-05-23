@@ -175,8 +175,14 @@ public class Linq {
 
     public static <TElement, TTransformed>
     BiQueryable<TElement, TTransformed> pushSelect(Iterable<TElement> sourceElements,
-                                                          Func1<? super TElement, TTransformed> targetSite) {
-        return new PushSelectQuery<>(sourceElements, targetSite);
+                                                   Func1<? super TElement, TTransformed> selector) {
+        return new PushSelectQuery<>(sourceElements, selector);
+    }
+
+    public static <TElement, TTransformed>
+    BiQueryable<TElement, TTransformed> pushSelectMany(Iterable<? extends TElement> sourceElements,
+                                                       Func1<? super TElement, ? extends Iterable<? extends TTransformed>> selector){
+        return new PushSelectManyQuery<>(sourceElements, selector);
     }
 
     public static <TElement>

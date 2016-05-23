@@ -299,6 +299,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.selectMany(this, selector);
     }
 
+    /** {@inheritDoc} */ @Override default public
+    <TTransformed>
+    BiQueryable<TElement, TTransformed> pushSelectMany(Func1<? super TElement, ? extends Iterable<? extends TTransformed>> selector){
+        return Linq.pushSelectMany(this, selector);
+    }
 
     /** {@inheritDoc} */ @Override default public
 	TElement single(){

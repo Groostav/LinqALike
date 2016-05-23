@@ -3,7 +3,7 @@ package com.empowerops.linqalike;
 import java.util.Map;
 
 /**
- * @deprecated use BiQueryable; this interface is misleading as all queries implement get() in linear time,
+ * ~deprecated: use BiQueryable; this interface is misleading as all queries implement get() in linear time,
  * so its less misleading to use a BiQueryable.
  *
  * Created by Geoff on 2014-05-22.

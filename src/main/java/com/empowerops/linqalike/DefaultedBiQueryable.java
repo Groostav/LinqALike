@@ -354,6 +354,12 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.toList(this);
     }
 
+    @Override
+    default LinqingSet<Tuple<TLeft, TRight>> toSet() {
+        return Linq.toSet(this);
+    }
+
+
 
     /** {@inheritDoc} */ default @Override public
     BiQueryable<TLeft, TRight> union(Tuple<? extends TLeft, ? extends TRight> toInclude){

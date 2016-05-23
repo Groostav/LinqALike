@@ -9,10 +9,7 @@ import com.empowerops.linqalike.delegate.Func1;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.empowerops.linqalike.CommonDelegates.memoized;
 
@@ -152,6 +149,10 @@ public class Factories {
 
     public static <TElement> Queryable<TElement> empty() {
         return new ReadonlyLinqingList<>();
+    }
+
+    public static <TLeft, TRight> BiQueryable<TLeft, TRight> emptyBiQuery(){
+        return EmptyBiQuery.getInstance();
     }
 
     public static <TElement> ReadonlyLinqingList<TElement> asReadonlyList(TElement... initialElements) {

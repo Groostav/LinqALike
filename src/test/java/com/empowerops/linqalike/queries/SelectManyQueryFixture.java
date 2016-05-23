@@ -87,3 +87,4 @@ public class SelectManyQueryFixture extends FixtureBase {
         assertThrows(IllegalArgumentException.class, () -> groups2.selectMany(parent -> parent.children).toList());
     }
 }
+

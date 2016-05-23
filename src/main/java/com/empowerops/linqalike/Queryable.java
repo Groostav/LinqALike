@@ -863,6 +863,19 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     <TTransformed> Queryable<TTransformed> selectMany(Func1<? super TElement, ? extends Iterable<TTransformed>> selector);
 
     /**
+     * Gets a set of items by aggregating the result from the specified selector applied against
+     * each element in this queryable, but including the original item that provided that set as the left side
+     * of a tuple, with the selements retrieved from the selector as the right side of the tuple
+     *
+     * @param selector       the transform to first apply against each element in this queryable and
+     *                       then aggregate into a single result
+     * @param <TTransformed> the type supplied by the transform and the type of the right side of the resulting biqueryable
+     * @return a biqueryable containing pairs each entry's left containing a member of this queryable and each entry's
+     *         right containing an element supplied by the selector
+     */
+    <TTransformed> BiQueryable<TElement, TTransformed> pushSelectMany(Func1<? super TElement, ? extends Iterable<? extends TTransformed>> selector);
+
+    /**
      * Gets the only element in this queryable if this queryable contains exactly one element. A
      * {@link SetIsEmptyException} is thrown if the set is empty, and an
      * {@link SingletonSetContainsMultipleElementsException} if this set contains more than one element.

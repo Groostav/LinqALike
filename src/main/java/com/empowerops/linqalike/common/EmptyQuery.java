@@ -1,6 +1,9 @@
 package com.empowerops.linqalike.common;
 
+import com.empowerops.linqalike.DefaultedBiQueryable;
 import com.empowerops.linqalike.DefaultedQueryable;
+import com.empowerops.linqalike.EmptyIterator;
+import com.empowerops.linqalike.LinqingSet;
 
 import java.util.*;
 
@@ -11,18 +14,7 @@ public class EmptyQuery<TElement> implements DefaultedQueryable<TElement> {
 
     @Override
     public Iterator<TElement> iterator() {
-        return new EmptyIterator();
-    }
-
-    private class EmptyIterator implements Iterator<TElement> {
-        @Override
-        public boolean hasNext() {
-            return false;
-        }
-
-        @Override
-        public TElement next() {
-            throw new NoSuchElementException("Empty by definition!");
-        }
+        return EmptyIterator.getInstance();
     }
 }
+

@@ -175,6 +175,8 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     LinqingList<Tuple<TLeft, TRight>> toList();
 
+    LinqingSet<Tuple<TLeft, TRight>> toSet();
+
     //TODO docs, smartly.
     BiQueryable<TLeft, TRight> union(Tuple<? extends TLeft, ? extends TRight> toInclude);
 
