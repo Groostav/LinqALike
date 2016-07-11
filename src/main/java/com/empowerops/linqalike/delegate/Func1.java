@@ -1,6 +1,9 @@
 package com.empowerops.linqalike.delegate;
 
+import com.empowerops.linqalike.common.Tuple;
+
 import java.io.Serializable;
+import java.util.Map;
 
 @FunctionalInterface
 public interface Func1<TParameter, TResult> {
@@ -29,6 +32,12 @@ public interface Func1<TParameter, TResult> {
 
         @Override
         public TResult[] getFrom(TParameter source);
+    }
+
+    default <TRightParam, TRightResult>
+    Func1<Map.Entry<TParameter, TRightParam>, Map.Entry<TResult, TRightResult>>
+    asFuncOnLeftTupleWithRight(Func1<? super TRightParam, TRightResult> rightSelector){
+        return entry -> new Tuple<>(this.getFrom(entry.getKey()), rightSelector.getFrom(entry.getValue()));
     }
 }
 

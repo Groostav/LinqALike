@@ -1,10 +1,12 @@
 package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.common.BiQueryAdapter;
+import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.common.QueryAdapter;
 import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -300,14 +302,87 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.singleOrDefault(this.asTuples(), uniqueConstraint.toConditionOnTuple());
     }
 
-    @SuppressWarnings("unchecked") //see note 'Need inner tuple types'
-    default boolean setEquals(BiQueryable<? extends TLeft, ? extends TRight> otherCollection){
-        return Linq.setEquals((Queryable) this.asTuples(), otherCollection.asTuples());
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection) {
+        return Linq.setEquals(this, (Iterable)otherCollection);
     }
 
-    @SuppressWarnings("unchecked") //see note 'Need inner tuple types'
-    default boolean sequenceEquals(BiQueryable<? extends TLeft, ? extends TRight> otherOrderedCollection){
-        return Linq.sequenceEquals((Queryable) this.asTuples(), otherOrderedCollection.asTuples());
+    @SuppressWarnings("unchecked")
+    @Override
+    default boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                              EqualityComparer<? super TLeft> leftEqualityComparer,
+                              EqualityComparer<? super TRight> rightEqualityComparer) {
+        return Linq.setEquals(
+                this,
+                (Iterable)otherCollection,
+                (EqualityComparer)leftEqualityComparer.asComparerOfTuplesWith(rightEqualityComparer)
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default <TCompared> boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                                          Func2<? super TLeft, ? super TRight, TCompared> equatableSelector) {
+        return Linq.setEquals(this, (Iterable)otherCollection, equatableSelector.asFuncOnTuple());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default <TLeftCompared, TRightCompared>
+    boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                      Func1<? super TLeft, TLeftCompared> leftEquatableSelector,
+                      Func1<? super TRight, TRightCompared> rightEquatableSelector) {
+        return Linq.setEquals(
+                this,
+                (Iterable)otherCollection,
+                (Func1)leftEquatableSelector.asFuncOnLeftTupleWithRight(rightEquatableSelector)
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection) {
+        return Linq.sequenceEquals(this, (Iterable)otherCollection);
+    }
+
+    @SuppressWarnings("unchecked") //I honestly dont know, im pretty sure its safe.
+    @Override
+    default <TLeftCompared, TRightCompared>
+    boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                           Func1<? super TLeft, TLeftCompared> leftEquatableSelector,
+                           Func1<? super TRight, TRightCompared> rightEquatableSelector) {
+        return Linq.sequenceEquals(
+                this,
+                (Iterable)otherCollection,
+                (Func1)leftEquatableSelector.asFuncOnLeftTupleWithRight(rightEquatableSelector)
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                                   EqualityComparer<? super TLeft> leftEqualityComparer,
+                                   EqualityComparer<? super TRight> rightEqualityComparer) {
+
+        return Linq.sequenceEquals(
+                this,
+                (Iterable)otherCollection,
+                (EqualityComparer)leftEqualityComparer.asComparerOfTuplesWith(rightEqualityComparer)
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default <TCompared> boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                                               Func2<? super TLeft, ? super TRight, TCompared> equatableSelector) {
+
+        return Linq.sequenceEquals(
+                this,
+                (Iterable)otherCollection,
+                (Func1)equatableSelector.asFuncOnTuple()
+        );
     }
 
     @SuppressWarnings("unchecked") //see note 'Need inner tuple types'

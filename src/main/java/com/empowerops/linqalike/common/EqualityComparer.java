@@ -3,6 +3,8 @@ package com.empowerops.linqalike.common;
 import com.empowerops.linqalike.delegate.Func1;
 import com.empowerops.linqalike.delegate.Func2;
 
+import java.util.Map;
+
 /**
  * Created by Geoff on 14/04/14.
  */
@@ -38,7 +40,7 @@ public interface EqualityComparer<TCompared> {
      *
      *
      * <p>Note that it is <b>not</b> strictly the case that if {@code a.equals(b)}
-     * then {@code anyComparator.equals(a, b} must return true.
+     * then {@code anyComparator.equals(a, b)} must return true.
      * This allows for a useful abstraction of equals to be defined
      * from different contexts.
      *
@@ -74,6 +76,24 @@ public interface EqualityComparer<TCompared> {
         //is to render hashCode completely useless.
         //more on this in a future update, I hope. This is a tough challenge.
         return 0;
+    }
+
+    default <TRightCompared>
+    EqualityComparer<Map.Entry<TCompared, TRightCompared>> asComparerOfTuplesWith(EqualityComparer<? super TRightCompared> rightEqualityComparer){
+
+        return new EqualityComparer<Map.Entry<TCompared, TRightCompared>>() {
+            @Override
+            public boolean equals(Map.Entry<TCompared, TRightCompared> left, Map.Entry<TCompared, TRightCompared> right) {
+                return EqualityComparer.this.equals(left.getKey(), right.getKey())
+                        && rightEqualityComparer.equals(left.getValue(), right.getValue());
+            }
+
+            @Override
+            public int hashCode(Map.Entry<TCompared, TRightCompared> object) {
+                return EqualityComparer.this.hashCode(object.getKey())
+                        ^ rightEqualityComparer.hashCode(object.getValue());
+            }
+        };
     }
 
     public static interface Untyped extends EqualityComparer<Object>{

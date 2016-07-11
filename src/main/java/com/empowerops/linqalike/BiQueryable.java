@@ -1,8 +1,10 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.common.EqualityComparer;
 import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -150,9 +152,33 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
 
     Optional<Tuple<TLeft, TRight>> singleOrDefault(BiCondition<? super TLeft, ? super TRight> uniqueConstraint);
 
-    boolean setEquals(BiQueryable<? extends TLeft, ? extends TRight> otherCollection);
+    boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection);
 
-    boolean sequenceEquals(BiQueryable<? extends TLeft, ? extends TRight> otherOrderedCollection);
+    boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                      EqualityComparer<? super TLeft> leftEqualityComparer,
+                      EqualityComparer<? super TRight> rightEqualityComparer);
+    <TCompared>
+    boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                      Func2<? super TLeft, ? super TRight, TCompared> equatableSelector);
+
+    <TLeftCompared, TRightCompared>
+    boolean setEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                      Func1<? super TLeft, TLeftCompared> leftEquatableSelector,
+                      Func1<? super TRight, TRightCompared> rightEquatableSelector);
+
+    boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection);
+
+    boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                           EqualityComparer<? super TLeft> leftEqualityComparer,
+                           EqualityComparer<? super TRight> rightEqualityComparer);
+    <TCompared>
+    boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                           Func2<? super TLeft, ? super TRight, TCompared> equatableSelector);
+
+    <TLeftCompared, TRightCompared>
+    boolean sequenceEquals(Iterable<? extends Map.Entry<? extends TLeft, ? extends TRight>> otherCollection,
+                           Func1<? super TLeft, TLeftCompared> leftEquatableSelector,
+                           Func1<? super TRight, TRightCompared> rightEquatableSelector);
 
     BiQueryable<TLeft, TRight> skipWhile(BiCondition<? super TLeft, ? super TRight> toExclude);
 
