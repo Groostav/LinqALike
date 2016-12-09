@@ -1040,6 +1040,27 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
     double sum(Func1<? super TElement, Double> valueSelector);
 
+    /**
+     * Gets the <i>first</i> <code>count</code> elements in the set, as determined by
+     * the iterator, or the maximum number of elements available if <code>count</code>
+     * is greater than this query's size.
+     *
+     * <p>Identical to {@link #first(int)}
+     *
+     * @param count the maximum number of elements to return
+     * @return the front subset of this query containing either <code>count</code> members,
+     * or all elements in this query.
+     */
+    Queryable<TElement> take(int count);
+
+    /**
+     * Gets the subsequence of elements at the beginning of this queryable
+     * that match the provided condition.
+     *
+     * @param condition a condition to test the head subsequence with
+     * @return the head subsequence of this queryable that matches the condition
+     */
+    Queryable<TElement> takeWhile(Condition<? super TElement> condition);
 
     /**
      * @return a readonly List containing all the elements currently in this queryable.

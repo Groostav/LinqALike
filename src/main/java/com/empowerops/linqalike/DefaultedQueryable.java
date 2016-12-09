@@ -362,6 +362,16 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
 
 
     /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> take(int count) {
+        return Linq.take(this, count);
+    }
+
+    /** {@inheritDoc} */ @Override default public
+    Queryable<TElement> takeWhile(Condition<? super TElement> condition) {
+        return Linq.takeWhile(this, condition);
+    }
+
+    /** {@inheritDoc} */ @Override default public
 	double sum(Func1<? super TElement, Double> valueSelector){
         return Linq.sum(this, valueSelector);
     }

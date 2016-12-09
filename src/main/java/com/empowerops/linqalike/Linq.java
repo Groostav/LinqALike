@@ -728,5 +728,14 @@ public class Linq {
     public static <TValue, TKey> QueryableMap<TValue, TKey> inverted(DefaultedQueryableMap<TKey, TValue> tuples) {
         return new InvertMapQuery<>(tuples);
     }
+
+    public static <TElement> Queryable<TElement> take(Iterable<TElement> sourceElements, int count) {
+        return first(sourceElements, count);
+    }
+
+    public static <TElement> Queryable<TElement> takeWhile(Iterable<TElement> sourceElements,
+                                                           Condition<? super TElement> condition) {
+        return new TakeWhileQuery<>(sourceElements, condition);
+    }
 }
 
