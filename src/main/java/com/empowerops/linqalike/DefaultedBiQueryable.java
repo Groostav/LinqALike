@@ -284,6 +284,12 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
         return Linq.selectMany(this.asTuples(), selector.asFuncOnTuple());
     }
 
+    @Override
+    default <TLeftTransformed, TRightTransformed>
+    BiQueryable<TLeftTransformed, TRightTransformed> selectManyPairs(Func2<? super TLeft, ? super TRight, ? extends Iterable<? extends Tuple<TLeftTransformed, TRightTransformed>>> selector) {
+        return Linq.selectManyPairs(this, selector);
+    }
+
     default Tuple<TLeft, TRight> single(){ return Linq.single(this.asTuples()); }
 
     @SuppressWarnings("unchecked") //see note 'Need inner tuple types'

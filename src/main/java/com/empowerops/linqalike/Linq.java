@@ -728,5 +728,12 @@ public class Linq {
     public static <TValue, TKey> QueryableMap<TValue, TKey> inverted(DefaultedQueryableMap<TKey, TValue> tuples) {
         return new InvertMapQuery<>(tuples);
     }
+
+    @SuppressWarnings("unchecked") //I really dont know, but I'm pretty sure this is safe. Type systems are hard.
+    public static <TLeftTransformed, TRightTransformed, TLeft, TRight>
+    BiQueryable<TLeftTransformed,TRightTransformed> selectManyPairs(Iterable<Tuple<TLeft, TRight>> sourceElements,
+                                                                    Func2<? super TLeft, ? super TRight, ? extends Iterable<? extends Tuple<TLeftTransformed, TRightTransformed>>> selector) {
+        return new BiQueryAdapter.FromPairs<>(new SelectManyQuery<>(sourceElements, (Func1) selector.asFuncOnTuple()));
+    }
 }
 

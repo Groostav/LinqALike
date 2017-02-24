@@ -4,8 +4,6 @@ import com.empowerops.linqalike.common.Tuple;
 import com.empowerops.linqalike.delegate.*;
 
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * Created by Geoff on 2015-10-18.
@@ -133,6 +131,9 @@ public interface BiQueryable<TLeft, TRight> extends Iterable<Tuple<TLeft, TRight
                                                             Func2<? super TLeft, ? super TRight, TRightTransformed> rightTransform);
 
     <TTransformed> Queryable<TTransformed> selectMany(Func2<? super TLeft, ? super TRight, ? extends Iterable<TTransformed>> selector);
+
+    <TLeftTransformed, TRightTransformed>
+    BiQueryable<TLeftTransformed, TRightTransformed> selectManyPairs(Func2<? super TLeft, ? super TRight, ? extends Iterable<? extends Tuple<TLeftTransformed, TRightTransformed>>> selector);
 
     <TLeftTransformed> BiQueryable<TLeftTransformed, TRight> selectLeft(Func2<? super TLeft, ? super TRight, TLeftTransformed> leftTransform);
     <TLeftTransformed> BiQueryable<TLeftTransformed, TRight> selectLeft(Func1<? super TLeft, TLeftTransformed> leftTransform);
