@@ -1,9 +1,15 @@
 package com.empowerops.linqalike;
 
+import com.empowerops.linqalike.assists.CountingTransform;
+import com.empowerops.linqalike.assists.Exceptions;
 import org.junit.Test;
 
+import java.util.Map;
+
+import static com.empowerops.linqalike.Factories.from;
 import static com.empowerops.linqalike.common.Tuple.Pair;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 /**
  * Created by Geoff on 5/6/2016.
@@ -39,11 +45,34 @@ public class LinqingMapFixture {
         );
 
         //act
-        Queryable<Double> result = values.getAll(Factories.from("x1", "x2", "x3", "x5"));
+        Queryable<Double> result = values.getAll(from("x1", "x2", "x3", "x5"));
         values.put("x5", 5.0);
 
         //assert
         assertThat(result).containsExactly(1.0, 2.0, 3.0, 5.0);
+    }
+
+    @Test
+    public void when_constructing_map_with_iterator_should_only_iterate_through_once(){
+
+        //setup
+        CountingTransform<String, Integer> transform = CountingTransform.track(String::length);
+        Queryable<Integer> stringLengths = from("1", "22", "333").select(transform);
+
+        //act
+        Map<Integer, Double> lenghtsToDoubleLenghts = new LinqingMap<>(stringLengths, from(1.0, 2.0, 3.0));
+
+        //assert
+        transform.shouldHaveBeenInvoked(3);
+        assertThat(lenghtsToDoubleLenghts).isEqualTo(new LinqingMap<>(from(1, 2, 3), from(1.0, 2.0, 3.0)));
+    }
+
+    @Test
+    public void when_calling_constructor_with_non_distinct_keys_should_throw(){
+
+        Exceptions.assertThrows(IllegalArgumentException.class,
+            () -> new LinqingMap<String, Double>(from("dupe", "dupe"), from(1.0, 2.0))
+        );
 
     }
 }

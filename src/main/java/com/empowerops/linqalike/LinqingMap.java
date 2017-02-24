@@ -21,12 +21,9 @@ public class LinqingMap<TKey, TValue> extends LinkedHashMap<TKey, TValue> implem
     }
 
     public LinqingMap(Iterable<? extends TKey> keys, Iterable<? extends TValue> values) {
-        if ( ! Linq.isDistinct(keys)){
-            throw new IllegalArgumentException("keys");
-        }
-
         Iterator<? extends TValue> valueIterator = values.iterator();
         for(TKey key : keys){
+            if(containsTKey(key)) { throw new IllegalArgumentException("keys -- keys must be distinct"); }
             put(key, valueIterator.next());
         }
     }
