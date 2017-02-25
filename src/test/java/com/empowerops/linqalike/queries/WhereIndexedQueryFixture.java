@@ -2,6 +2,7 @@ package com.empowerops.linqalike.queries;
 
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.WritableCollection;
+import com.empowerops.linqalike.assists.CountingBiCondition;
 import com.empowerops.linqalike.assists.CountingCondition;
 import com.empowerops.linqalike.assists.FixtureBase;
 import org.junit.experimental.theories.Theories;
@@ -10,12 +11,15 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static com.empowerops.linqalike.assists.CountingCondition.track;
+import static com.empowerops.linqalike.assists.CountingBiCondition.track;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @author Geoff on 31/10/13
+ */
 @RunWith(Theories.class)
-public class WhereQueryFixture extends FixtureBase {
+public class WhereIndexedQueryFixture extends FixtureBase {
 
 
     @Theory
@@ -24,10 +28,10 @@ public class WhereQueryFixture extends FixtureBase {
     ){
         //setup
         numbers = doAdd(numbers, 1, 2, 3, 4, 5, 6, 7, 8);
-        CountingCondition<Integer> condition = track(number -> number % 2 == 0);
+        CountingBiCondition<Integer, Integer> condition = track((number, idx) -> idx % 2 == 1);
 
         //act
-        List<Integer> evens = numbers.where(condition).toList();
+        List<Integer> evens = numbers.whereIndexed(condition).toList();
 
         //Assert
         assertThat(evens).containsExactly(2, 4, 6, 8);
@@ -43,7 +47,7 @@ public class WhereQueryFixture extends FixtureBase {
         Queryable<Integer> numbers2 = doAdd(numbers, 1, 2, 3, 4, 5, 6, 7, 8);
 
         //act
-        assertThrows(IllegalArgumentException.class, () -> numbers2.where(null));
+        assertThrows(IllegalArgumentException.class, () -> numbers2.whereIndexed(null));
     }
 
     @Theory
@@ -52,10 +56,10 @@ public class WhereQueryFixture extends FixtureBase {
     ){
         //setup
         numbers = doAdd(numbers, 1, 2, 3, 4, 5, 6, 7, 8);
-        CountingCondition<Integer> condition = track(number -> number < 0);
+        CountingBiCondition<Integer, Integer> condition = track((number, index) -> index < 0);
 
         //act
-        List<Integer> emptyList = numbers.where(condition).toList();
+        List<Integer> emptyList = numbers.whereIndexed(condition).toList();
 
         //assert
         assertThat(emptyList).isEmpty();
@@ -68,10 +72,10 @@ public class WhereQueryFixture extends FixtureBase {
     ){
         //setup
         numbers = doAdd(numbers, 1, 2, 3, 4, 5, 6 ,7, 8);
-        CountingCondition<Integer> condition = track(number -> true);
+        CountingBiCondition<Integer, Integer> condition = track((number, idx) -> true);
 
         //act
-        List<Integer> completeList = numbers.where(condition).toList();
+        List<Integer> completeList = numbers.whereIndexed(condition).toList();
 
         //assert
         assertThat(completeList).containsExactly(1, 2, 3, 4, 5, 6, 7, 8);
@@ -83,10 +87,10 @@ public class WhereQueryFixture extends FixtureBase {
             Queryable<Integer> numbers
     ){
         //setup
-        CountingCondition<Integer> condition = track(number -> true);
+        CountingBiCondition<Integer, Integer> condition = track((number, idx) -> true);
 
         //act
-        List<Integer> filteredList = numbers.where(condition).toList();
+        List<Integer> filteredList = numbers.whereIndexed(condition).toList();
 
         //assert
         assertThat(filteredList).isEmpty();
@@ -98,14 +102,23 @@ public class WhereQueryFixture extends FixtureBase {
             WritableCollection<Object> desperateList
     ){
         //setup
-        desperateList = doAdd(desperateList, null, new NamedValue("hi"), "Hi", -1d, 1L, 2, new Integer[]{1, 2, 3, 4, 5}, new NumberValue(5));
-        CountingCondition<Object> condition = track(element -> element instanceof Number);
+        desperateList = doAdd(desperateList,
+                null,
+                new NamedValue("hi"),
+                "Hi",
+                -1d,
+                1L,
+                2,
+                new Integer[]{1, 2, 3, 4, 5},
+                new NumberValue(5)
+        );
+        CountingBiCondition<Object, Integer> condition = track((element, idx) -> element instanceof Number && idx >= 4);
 
         //act
-        List<Object> typedList = desperateList.where(condition).toList();
+        List<Object> typedList = desperateList.whereIndexed(condition).toList();
 
         //assert
-        assertThat(typedList).containsExactly(-1d, 1L, 2);
+        assertThat(typedList).containsExactly(1L, 2);
         assertThat(condition.getNumberOfInvocations()).isEqualTo(desperateList.size());
     }
 
@@ -117,13 +130,19 @@ public class WhereQueryFixture extends FixtureBase {
         //setup
         countries = doAdd(countries, new NamedValue("Uganda"), new NamedValue("Zimbabwe"),
                                      new NamedValue("Denmark"), new NamedValue("Deutschland"));
-        CountingCondition<NamedValue> condition;
+        CountingBiCondition<NamedValue, Integer> condition
+                = track((country, idx) -> country.name.startsWith("D") || idx == 0);
 
         //act
-        List<NamedValue> dCountries = countries.where(condition = track(country -> country.name.startsWith("D"))).toList();
+        List<NamedValue> dCountries = countries.whereIndexed(condition).toList();
 
         //assert
-        assertThat(dCountries).containsExactly(countries.first(3).last(), countries.first(4).last());
+        assertThat(dCountries).containsExactly(
+                countries.first(),
+                countries.first(3).last(),
+                countries.first(4).last()
+        );
         assertThat(condition.getNumberOfInvocations()).isEqualTo(countries.size());
     }
 }
+

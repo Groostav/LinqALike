@@ -7,7 +7,6 @@ import com.empowerops.linqalike.queries.*;
 import java.io.InputStream;
 import java.util.*;
 import java.util.Comparator;
-import java.util.function.Consumer;
 
 import static com.empowerops.linqalike.CommonDelegates.*;
 import static com.empowerops.linqalike.Factories.from;
@@ -159,6 +158,13 @@ public class Linq {
 
         return new WhereQuery<>(sourceElements, condition);
     }
+    public static <TElement>
+    Queryable<TElement> whereIndexed(Iterable<TElement> sourceElements,
+                                     BiCondition<? super TElement, Integer> condition) {
+
+        return new WhereIndexedQuery<>(sourceElements, condition);
+    }
+
 
     public static <TLeft, TRight>
     BiQueryable<TLeft, TRight> where(BiQueryable<TLeft, TRight> sourceElements,
@@ -171,6 +177,11 @@ public class Linq {
     Queryable<TResult> select(Iterable<TElement> sourceElements,
                               Func1<? super TElement, TResult> targetSite) {
         return new SelectQuery<>(sourceElements, targetSite);
+    }
+    public static <TElement, TResult>
+    Queryable<TResult> selectIndexed(Iterable<TElement> sourceElements,
+                                     Func2<? super TElement, Integer, TResult> targetSite) {
+        return new SelectIndexedQuery<>(sourceElements, targetSite);
     }
 
     public static <TElement, TTransformed>
@@ -516,6 +527,12 @@ public class Linq {
     Queryable<Queryable<TElement>> groupBy(Iterable<TElement> setToGroup,
                                            Func1<? super TElement, TComparable> groupByPropertySelector) {
         return new GroupByQuery<>(setToGroup, performEqualsUsing(memoizedSelector(groupByPropertySelector)));
+    }
+
+    public static <TElement, TComparable>
+    Queryable<Queryable<TElement>> groupByIndexed(Iterable<TElement> setToGroup,
+                                                  Func2<? super TElement, Integer, TComparable> groupByPropertySelector) {
+        return new GroupByIndexedQuery<>(setToGroup, groupByPropertySelector);
     }
 
     public static <TElement>

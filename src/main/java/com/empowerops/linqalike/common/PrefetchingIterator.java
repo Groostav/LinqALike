@@ -4,11 +4,15 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * <p>Alleviates the difficulties of determining the hasNext() state, by simply allowing you to only immediately the value.
+ * <p>Alleviates the difficulties of determining the hasNext() state,
+ * by allowing the implementor to implement next-element logic with a callback.
  *
- * <p>Consider the case where you're iterator is a wrapper of a very complex object. Determining the result for {@link #hasNext()}
- * can be difficult or impossible to do without also determining the next value to immediately. In such circumstances, it is inconvenient
- * to split up our code based on <tt>hasNext</tt> and <tt>getNext</tt> methods. This class allows the programmer to effectively get
+ * <p>Consider the case where you're iterator is a wrapper of a very complex object.
+ * Determining the result for {@link #hasNext()}
+ * can be difficult or impossible to do without also determining the next value to immediately.
+ * In such circumstances, it is inconvenient
+ * to split up our code based on <tt>hasNext</tt> and <tt>getNext</tt> methods.
+ * This class allows the programmer to effectively get
  * a "free" implementation by setting a flag when there is no next value available.
  *
  * <p>to achieve this, we use a

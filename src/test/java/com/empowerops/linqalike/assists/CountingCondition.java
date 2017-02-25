@@ -1,5 +1,7 @@
 package com.empowerops.linqalike.assists;
 
+import com.empowerops.linqalike.common.Tuple;
+import com.empowerops.linqalike.delegate.BiCondition;
 import com.empowerops.linqalike.delegate.Condition;
 
 /**
@@ -31,3 +33,4 @@ public abstract class CountingCondition<TInspected> extends CountingDelegate imp
 
     protected abstract boolean passesForImpl(TInspected cause);
 }
+

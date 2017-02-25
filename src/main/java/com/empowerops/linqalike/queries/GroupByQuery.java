@@ -58,3 +58,4 @@ public class GroupByQuery<TElement> implements DefaultedQueryable<Queryable<TEle
         }
     }
 }
+

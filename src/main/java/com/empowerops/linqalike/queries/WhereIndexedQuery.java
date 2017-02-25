@@ -4,16 +4,18 @@ import com.empowerops.linqalike.DefaultedQueryable;
 import com.empowerops.linqalike.common.Preconditions;
 import com.empowerops.linqalike.common.PrefetchingIterator;
 import com.empowerops.linqalike.delegate.BiCondition;
-import com.empowerops.linqalike.delegate.Condition;
 
 import java.util.Iterator;
 
-public class WhereQuery<TElement> implements DefaultedQueryable<TElement> {
+/**
+ * Created by Geoff on 2017-01-19.
+ */
+public class WhereIndexedQuery<TElement> implements DefaultedQueryable<TElement> {
 
-    private final Iterable<TElement>          sourceElements;
-    private final Condition<? super TElement> condition;
+    private final Iterable<TElement>                     sourceElements;
+    private final BiCondition<? super TElement, Integer> condition;
 
-    public WhereQuery(Iterable<TElement> sourceElements, Condition<? super TElement> condition) {
+    public WhereIndexedQuery(Iterable<TElement> sourceElements, BiCondition<? super TElement, Integer> condition) {
         Preconditions.notNull(sourceElements, "sourceElements");
         Preconditions.notNull(condition, "condition");
 
@@ -23,11 +25,12 @@ public class WhereQuery<TElement> implements DefaultedQueryable<TElement> {
 
     @Override
     public Iterator<TElement> iterator() {
-        return new WhereIterator();
+        return new WhereIndexedIterator();
     }
 
-    private class WhereIterator extends PrefetchingIterator<TElement> {
+    private class WhereIndexedIterator extends PrefetchingIterator<TElement> {
 
+        private int index = 0;
         private final Iterator<TElement> previousIterator = sourceElements.iterator();
 
         @Override
@@ -35,7 +38,7 @@ public class WhereQuery<TElement> implements DefaultedQueryable<TElement> {
             while (!hasPrefetchedValue() && previousIterator.hasNext()) {
                 TElement candidate = previousIterator.next();
 
-                if (condition.passesFor(candidate)) {
+                if (condition.passesFor(candidate, index++)) {
                     setPrefetchedValue(candidate);
                 }
             }
@@ -47,4 +50,3 @@ public class WhereQuery<TElement> implements DefaultedQueryable<TElement> {
         }
     }
 }
-

@@ -1,18 +1,19 @@
 package com.empowerops.linqalike.queries;
 
-import com.empowerops.linqalike.DefaultedBiQueryable;
 import com.empowerops.linqalike.DefaultedQueryable;
-import com.empowerops.linqalike.delegate.Func1;
 import com.empowerops.linqalike.delegate.Func2;
 
 import java.util.Iterator;
 
-public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResult>, FastSize {
+/**
+ * Created by Geoff on 2017-01-19.
+ */
+public class SelectIndexedQuery<TElement, TResult> implements DefaultedQueryable<TResult>, FastSize {
 
-    private final Iterable<TElement>               sourceElements;
-    private final Func1<? super TElement, TResult> targetSite;
+    private final Iterable<TElement> sourceElements;
+    private final Func2<? super TElement, Integer, TResult> targetSite;
 
-    public SelectQuery(Iterable<TElement> sourceElements, Func1<? super TElement, TResult> targetSite) {
+    public SelectIndexedQuery(Iterable<TElement> sourceElements, Func2<? super TElement, Integer, TResult> targetSite) {
         assert sourceElements != null;
         assert targetSite != null;
 
@@ -21,10 +22,11 @@ public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResul
     }
 
     @Override
-    public Iterator<TResult> iterator() { return new SelectIterator(); }
+    public Iterator<TResult> iterator() { return new SelectIndexedIterator(); }
 
-    private class SelectIterator implements Iterator<TResult>{
+    private class SelectIndexedIterator implements Iterator<TResult>{
 
+        private int currentIndex = 0;
         private final Iterator<TElement> baseIterator = sourceElements.iterator();
 
         @Override
@@ -34,7 +36,7 @@ public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResul
 
         @Override
         public TResult next() {
-            return targetSite.getFrom(baseIterator.next());
+            return targetSite.getFrom(baseIterator.next(), currentIndex++);
         }
 
         @Override
@@ -43,10 +45,9 @@ public class SelectQuery<TElement, TResult> implements DefaultedQueryable<TResul
         }
     }
 
+
     @Override
     public int size() {
         return Accessors.vSize(sourceElements);
     }
 }
-
-

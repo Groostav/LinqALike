@@ -184,6 +184,12 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> equatableSelector){
         return Linq.groupBy(this, equatableSelector);
     }
+
+    /** {@inheritDoc} */ @Override default public <TComparable>
+    Queryable<Queryable<TElement>> groupByIndexed(Func2<? super TElement, Integer, TComparable> equatableSelector) {
+        return Linq.groupByIndexed(this, equatableSelector);
+    }
+
     /** {@inheritDoc} */ @Override default public
 	Queryable<Queryable<TElement>> groupBy(EqualityComparer<? super TElement> equalityComparison){
         return Linq.groupBy(this, equalityComparison);
@@ -286,6 +292,11 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
 	<TTransformed>
     Queryable<TTransformed> select(Func1<? super TElement, TTransformed> selector){
         return Linq.select(this, selector);
+    }
+    /** {@inheritDoc} */ @Override default public
+	<TTransformed>
+    Queryable<TTransformed> selectIndexed(Func2<? super TElement, Integer, TTransformed> selector){
+        return Linq.selectIndexed(this, selector);
     }
 
     /** {@inheritDoc} */ @Override default public
@@ -512,6 +523,10 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     /** {@inheritDoc} */ @Override default public
 	Queryable<TElement> where(Condition<? super TElement> condition){
         return Linq.where(this, condition);
+    }
+    /** {@inheritDoc} */ @Override default public
+	Queryable<TElement> whereIndexed(BiCondition<? super TElement, Integer> condition){
+        return Linq.whereIndexed(this, condition);
     }
 
 

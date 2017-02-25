@@ -1,5 +1,6 @@
 package com.empowerops.linqalike.queries;
 
+import com.empowerops.linqalike.Factories;
 import com.empowerops.linqalike.LinqingList;
 import com.empowerops.linqalike.Queryable;
 import com.empowerops.linqalike.QueryableList;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.empowerops.linqalike.CommonDelegates.identity;
+import static com.empowerops.linqalike.Factories.asList;
 import static com.empowerops.linqalike.assists.Exceptions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assume.assumeTrue;
@@ -21,7 +23,7 @@ import static org.junit.Assume.assumeTrue;
  * Created by Geoff on 14/04/2014.
  */
 @RunWith(Theories.class)
-public class GroupByFixture extends FixtureBase {
+public class GroupByQueryFixture extends FixtureBase {
 
     @Theory
     public void when_grouping_a_set_containing_groups_should_group_correctly(
@@ -220,3 +222,4 @@ public class GroupByFixture extends FixtureBase {
         }
     }
 }
+

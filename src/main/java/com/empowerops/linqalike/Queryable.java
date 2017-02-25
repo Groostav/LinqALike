@@ -523,6 +523,29 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      */
     <TComparable> Queryable<Queryable<TElement>> groupBy(Func1<? super TElement, TComparable> equatableSelector);
 
+
+    /**
+     * Returns a set of groups, where each group contains members that are equal by comparing
+     * the results of the <code>equatableSelector</code> when called with each element and its index
+     *
+     * <p>If
+     * <code>nullSafeEquals(equatableSelector.getFrom(oneElement, indexOf(oneElement)),
+     * equatableSelector.getFrom(anotherElement, indexOf(anotherElement)))</code>
+     * is <tt>true</tt>, then
+     * <code>oneElement</code> and <code>anotherElement</code> will be in the same group,
+     * and only that group.
+     *
+     * <p>this method does not do any form of de-duplication
+     *
+     * @param equatableSelector a transform that will be used to obtain a equatable component of
+     *                          each element and its index, used to determine group membership.
+     * @param <TComparable>     the resulting type of the <code>equatableSelector</code>, and the type
+     *                          whose natural equality will be used to determine group membership.
+     * @return a set of groups (a "jagged grid"), with each member of the group being equal as
+     * per the <code>equatableSelector</code>
+     */
+    <TComparable> Queryable<Queryable<TElement>> groupByIndexed(Func2<? super TElement, Integer, TComparable> equatableSelector);
+
     /**
      * Returns a set of groups, where each group contains members that are equal by comparing
      * the results of the <code>equatableSelector</code>.
@@ -813,6 +836,9 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * each element in this queryable
      */
     <TTransformed> Queryable<TTransformed> select(Func1<? super TElement, TTransformed> selector);
+
+    /** TBD **/
+    <TTransformed> Queryable<TTransformed> selectIndexed(Func2<? super TElement, Integer, TTransformed> selector);
 
     /**
      * Applies the transform against each element in this queryable, returning a zipped version of this queryable
@@ -1332,6 +1358,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * @see #ofType(Class)
      */
     Queryable<TElement> where(Condition<? super TElement> condition);
+    Queryable<TElement> whereIndexed(BiCondition<? super TElement, Integer> condition);
 
     //TODO docs, smartly.
     Queryable<TElement> with(TElement toInclude);
