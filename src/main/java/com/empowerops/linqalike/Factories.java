@@ -82,7 +82,7 @@ public class Factories {
         return new LinqingMap<>(initialEntries);
     }
     public static <TKey, TValue>
-    LinqingMap<TKey, TValue> asMap(Iterable<? extends Map.Entry<TKey, TValue>> initialElements){
+    LinqingMap<TKey, TValue> asMap(Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> initialElements){
         return new LinqingMap<>(initialElements);
     }
     public static <TKey, TValue>

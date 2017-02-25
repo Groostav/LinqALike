@@ -404,7 +404,7 @@ public interface DefaultedBiQueryable<TLeft, TRight> extends BiQueryable<TLeft, 
     }
 
     default LinqingMap<TLeft, TRight> toMap(){
-        return Linq.toMap(lefts(), rights());
+        return Linq.toMap(this);
     }
 
     default <TKey, TValue> LinqingMap<TKey, TValue> toMap(Func2<? super TLeft, ? super TRight, TKey> keySelector,

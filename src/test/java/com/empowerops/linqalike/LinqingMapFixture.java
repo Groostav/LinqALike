@@ -2,6 +2,7 @@ package com.empowerops.linqalike;
 
 import com.empowerops.linqalike.assists.CountingTransform;
 import com.empowerops.linqalike.assists.Exceptions;
+import com.empowerops.linqalike.common.Tuple;
 import org.junit.Test;
 
 import java.util.Map;
@@ -65,6 +66,24 @@ public class LinqingMapFixture {
         //assert
         transform.shouldHaveBeenInvoked(3);
         assertThat(lenghtsToDoubleLenghts).isEqualTo(new LinqingMap<>(from(1, 2, 3), from(1.0, 2.0, 3.0)));
+    }
+
+    @Test
+    public void when_constructing_map_with_biqueryable_should_only_apply_transforms_once(){
+        //setup                                                               '
+        CountingTransform<String, Integer> initialTransform = CountingTransform.track(Integer::parseInt);
+        CountingTransform<Integer, Integer> rightTransform = CountingTransform.track(CommonDelegates.identity());
+        BiQueryable<String, Integer> biQuery = from("1", "2", "3", "4")
+                .pushSelect(initialTransform)
+                .selectRight(rightTransform);
+
+        //act
+        Map<String, Integer> map = biQuery.toMap();
+
+        //assert
+        initialTransform.shouldHaveBeenInvoked(4);
+        rightTransform.shouldHaveBeenInvoked(4);
+        assertThat(map).isEqualTo(Factories.asMap(Pair("1", 1), Pair("2", 2), Pair("3", 3), Pair("4", 4)));
     }
 
     @Test

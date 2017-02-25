@@ -261,6 +261,11 @@ public class Linq {
         return Factories.asMap(keys, values);
     }
 
+    public static <TKey, TValue>
+    LinqingMap<TKey, TValue> toMap(Iterable<? extends Map.Entry<? extends TKey, ? extends TValue>> pairs) {
+        return Factories.asMap(pairs);
+    }
+
     @SuppressWarnings("unchecked") //callers must be certain that their domain logic ensures
                                    //every element in the set is of the desired type!
     public static <TDesired, TElement>
