@@ -34,8 +34,8 @@ public interface FlexibleCollectionChangeListener<TElement> extends ListChangeLi
         while(change.next()) {
             onChanged(
                     change.getList(),
-                    from(change.getAddedSubList()).cast(),
-                    from(change.getRemoved()).cast(),
+                    from(change.getAddedSubList()).unsafeCast(),
+                    from(change.getRemoved()).unsafeCast(),
                     change.getFrom(),
                     change.getTo(),
                     change.wasPermutated()

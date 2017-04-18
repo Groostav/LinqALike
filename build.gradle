@@ -3,7 +3,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 sourceCompatibility = 1.8
-version = '1.0.101.247'
+version = '1.0.105.249'
 
 jar {
     manifest {
@@ -16,9 +16,9 @@ repositories {
     mavenCentral()
 }
 
-signing {
-    sign configurations.archives
-}
+//signing {
+//    sign configurations.archives
+//}
 
 dependencies {
     compile     group: 'org.apache.commons',       name: 'commons-lang3',  version: '3.4'

@@ -53,7 +53,7 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public <TDerived>
-    Queryable<TDerived> cast(){
+    Queryable<TDerived> unsafeCast(){
         return Linq.cast(this);
     }
     /** {@inheritDoc} */ @Override default public <TDerived>
@@ -61,6 +61,10 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
         return Linq.cast(this, desiredType);
     }
 
+    /** {@inheritDoc} */ @Override default public <TDesired extends TElement>
+    Queryable<TDesired> cast(){
+        return Linq.cast(this);
+    }
 
     /** {@inheritDoc} */ @Override default public
 	boolean containsElement(TElement candidate){
@@ -255,9 +259,14 @@ public interface DefaultedQueryable<TElement> extends Queryable<TElement> {
     }
 
     /** {@inheritDoc} */ @Override default public
-	<TElementSubclass extends TElement>
+	  <TElementSubclass extends TElement>
     Queryable<TElementSubclass> ofType(Class<TElementSubclass> desiredClass){
         return Linq.ofType(this, desiredClass);
+    }
+    /** {@inheritDoc} */ @Override default public
+	  <TElementSubclass>
+    Queryable<TElementSubclass> ofDisparateType(Class<TElementSubclass> desiredClass){
+        return Linq.ofDisparateType(this, desiredClass);
     }
 
 

@@ -45,6 +45,19 @@ public class Linq {
     }
 
     /**
+     * Static implementation of {@link Queryable#ofDisparateType(Class)}, forwards to {@link Linq#cast(Iterable)} and
+     * {@link Linq#where(Iterable, Condition)}
+     */
+    public static <TBase, TDerived>
+    Queryable<TDerived> ofDisparateType(Iterable<TBase> sourceElements,
+                                        Class<TDerived> desiredType) {
+
+        return cast(where(sourceElements, desiredType::isInstance));
+    }
+
+
+
+    /**
      * Static implementation of {@link com.empowerops.linqalike.Queryable#single()}.
      * Forwards to {@link ImmediateInspections#single(Iterable, com.empowerops.linqalike.delegate.Condition)}
      */

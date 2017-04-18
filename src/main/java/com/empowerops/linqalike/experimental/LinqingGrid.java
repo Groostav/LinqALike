@@ -19,7 +19,7 @@ public class LinqingGrid<TElement> extends LinqingList<LinqingList<TElement>> {
     public LinqingGrid(Iterator<? extends LinqingList<TElement>> elements)      { super(elements); }
     public LinqingGrid(Iterable<? extends LinqingList<TElement>> linqingLists)  { super(linqingLists); }
     public LinqingGrid(Object[][] initializer){
-        this(from(initializer).select(row -> from(row).<TElement>cast().toList()).toList());
+        this(from(initializer).select(row -> from(row).<TElement>cast().toList()).<LinqingList<TElement>>toList());
     }
 
     public static <TSource> LinqingGrid<Boolean> forDecisions(Iterable<Condition<? super TSource>> columns, Iterable<TSource> rows){
@@ -41,7 +41,7 @@ public class LinqingGrid<TElement> extends LinqingList<LinqingList<TElement>> {
     }
 
     public Queryable<Queryable<TElement>> toQueryable(){
-        return cast();
+        return this.unsafeCast();
     }
 
     @Override

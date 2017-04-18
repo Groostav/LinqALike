@@ -265,12 +265,22 @@ public interface Queryable<TElement> extends Iterable<TElement> {
     /**
      * Returns a cast of this queryable to a queryable of the desired type.
      * <p>
-     * <p><b>This method may lead to heap pollution</b> as it is equivalent to
-     * <code>(Queryable&lt;TDesired&gt;)source}</code>
+     * <p><b>This method may lead to heap pollution</b> as it is equivalent to as simple java cast
+     * <code>(Queryable&lt;TDesired&gt;)source)</code>
      * This method should only be called if, by some means not known to the static type system,
      * the caller is <i>certain</i> that this collection only contains members that implement
-     * <tt>TSuper</tt>. If they do not, a {@link java.lang.ClassCastException} will be thrown
-     * when the problem member is iterated to. Please consider using {@link #ofType(Class)} or
+     * <tt>TDesired</tt>. If they do not the heap will be polluted,
+     * likely resulting in a {@link java.lang.ClassCastException}<b> thrown
+     * at the call site</b>, which can lead to all of the bizarre problems incumbent to heap pollution.
+     * <p>
+     * <p>Consider using:
+     * <ul>
+     *   <li>{@link #ofType(Class)}, which will apply a filter dynamically,
+     *   excluding instances of problem types</li>
+     *   <li>{@link #cast()}, which performs down-casts only,
+     *   which are statically known to be safe as this type is coveriant.</li>
+     *   <li>{@link #cast(Class)}, which will </li>
+     * </ul>
      * doing a check to ensure this cast is safe with
      * <code>
      * collection.all(desiredType::isInstance)
@@ -279,13 +289,14 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @return a Queryable statically parameterized to the specified type. No run-time type checking is performed.
      */
-    <TDesired> Queryable<TDesired> cast();
+    <TDesired> Queryable<TDesired> unsafeCast();
 
     /**
-     * Returns a cast of this queryable to a queryable of the desired type.
+     * Returns a new queryable instance that cast's each element to the desired type (lazily)
      * <p>
      * <p>This method will not pollute the heap but it will cause
-     * lazy {@link java.lang.ClassCastException}s where {@link #cast()} would pollute the heap.
+     * lazy {@link java.lang.ClassCastException}s where {@link #cast()} would pollute the heap,
+     * <i>making it only slightly more safe than {@link #cast()} </i>.
      * The method can be used in conjunction with {@link #immediately()} to force any exceptions
      * to be thrown at the time the queryable is created, rather than having them thrown lazily
      * <p>
@@ -294,8 +305,22 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *     Queryable<Number> numbers = new LinqingList<>(1.0D, 2.0D, 3.0D, /*problem element/*4L);
      *     Queryable<Double> pollutedDoubles = numbers.cast(); //uses javas type inference
      * }</pre>
+     *
+     * @return a new queryable instance of the specified type with each element cast to the specified type
      */
     <TDesired> Queryable<TDesired> cast(Class<TDesired> desiredType);
+
+    /**
+     * Returns <code>this</code> queryable cast to a queryable of the desired type.
+     *
+     * This method is more desirable than {@link #unsafeCast()} as this method cannot cause any heap pollution,
+     * as <code>Queryable</code> is a covariant type.
+     *
+     * @return <code>this</code> queryable cast to a queryable of the desired type.
+     * @see #unsafeCast()
+     * @see #ofType(Class)
+     */
+    <TDesired extends TElement> Queryable<TDesired> cast();
 
     /**
      * Determines if this Queryable contains the supplied candidate element.
@@ -722,7 +747,7 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      * Gets all the elements in this queryable that are instances of the type specified.
      * <p>
      * <p>null is defined not to be an instance of anything, meaning that using this method
-     * will remove all nulls in the resutling <code>queryable</code>
+     * will remove all nulls in the resulting <code>queryable</code>
      * <p>
      * <p>If you wish to cast each element in this queryable to the specified type, and have
      * an exception raised if one element is not of the correct type, consider using
@@ -731,10 +756,31 @@ public interface Queryable<TElement> extends Iterable<TElement> {
      *
      * @param desiredClass       the minimum type that each element in the resulting subset will be
      * @param <TElementSubclass> static type of <code>desiredClass</code>
-     * @return a subset of this queryable containing only instances of <code>TElementSubclass</code>
+     * @return a subsequence of this queryable containing only instances of <code>TElementSubclass</code>
+     *
+     * @see #unsafeCast()
+     * @see #cast()
+     * @see #ofDisparateType(Class)
      */
     <TElementSubclass extends TElement>
     Queryable<TElementSubclass> ofType(Class<TElementSubclass> desiredClass);
+
+    /**
+     * Gets all the elements in this queryable that are instances of the type specified
+     * <p>
+     * <p>null is defined not to be an instance of anything, meaning that using this method
+     * will remove all nulls in the resulting <code>queryable</code>
+     *
+     * @param desiredClass the minimum type that each element in the resulting subset will be
+     * @param <TDesired>   static type of <code>desiredClass</code>
+     * @return a subsequence of this queryable containing only instances of <code>TDesired</code>
+     *
+     * @see #unsafeCast()
+     * @see #cast()
+     * @see #ofType(Class)
+     */
+    <TDesired>
+    Queryable<TDesired> ofDisparateType(Class<TDesired> desiredClass);
 
 
     /**
